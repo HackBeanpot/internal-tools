@@ -14,8 +14,44 @@ a {
 * {
   box-sizing: border-box;
 }
+<<<<<<< HEAD
 
 
+=======
+
+/* .tool-box {
+  padding-left: 15%;
+  padding-right: 15%;
+} */
+
+ @media only screen and (max-width: 600px) {
+  .tool-box {
+margin-right:auto;
+margin-left:auto;
+max-width: 300px;
+
+  }
+
+}
+
+ @media only screen and (min-width: 821px) {
+  .tool-box {
+margin-right:auto;
+margin-left:auto;
+max-width: 1012px;
+
+  } 
+}
+ 
+@media only screen and (max-width: 800px) {
+  .tool-box {
+margin-right:auto;
+margin-left:auto;
+max-width: 700px;
+
+  } 
+}
+>>>>>>> d4e8b7b (preliminary draft for tools page, still need to make the page resizeable through @media)
 
 
 
