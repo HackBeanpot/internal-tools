@@ -1,8 +1,18 @@
 import type { NextPage } from "next";
-import { Button, Container, Divider, FormControl, Grid, Stack, TextField, ThemeProvider, Typography} from "@mui/material";
+import {
+  Button,
+  Container,
+  Divider,
+  FormControl,
+  Grid,
+  Stack,
+  TextField,
+  ThemeProvider,
+  Typography,
+} from "@mui/material";
 import { theme } from "../styles/theme";
 import { useTheme } from "@mui/material/styles";
-import React, { useState } from 'react'
+import { ChangeEvent, useState } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const Sigmaker: NextPage = () => {
@@ -13,17 +23,17 @@ const Sigmaker: NextPage = () => {
     fullName: "",
     title: "",
     phone: "",
-    email: ""
-  })
+    email: "",
+  });
 
-  const handleChange = e => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
-    const value =
+    const value = e.target.value;
     setFormData({
       ...formData,
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -34,10 +44,10 @@ const Sigmaker: NextPage = () => {
         <Typography variant="h5"> Enter your info here! </Typography>
         <FormControl sx={{ my: 3 }}>
           <Stack spacing={3}>
-            <TextField 
-              name = "fullName" 
-              value= { formData.fullName } 
-              onChange = { handleChange }
+            <TextField
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
               label="Full name"
               id="filled-size-small"
               variant="filled"
@@ -45,9 +55,9 @@ const Sigmaker: NextPage = () => {
               sx={{ width: "25ch" }}
             />
             <TextField
-              name = "title" 
-              value= { formData.title } 
-              onChange = { handleChange }
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
               label="Title"
               id="filled-size-small"
               variant="filled"
@@ -55,9 +65,9 @@ const Sigmaker: NextPage = () => {
               sx={{ width: "25ch" }}
             />
             <TextField
-              name = "phone" 
-              value= { formData.phone } 
-              onChange = { handleChange }            
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
               label="Phone"
               id="filled-size-small"
               variant="filled"
@@ -66,10 +76,10 @@ const Sigmaker: NextPage = () => {
             />
             <Grid sx={{ display: isNotMobile ? "flex" : "block" }}>
               <TextField
-              name = "email" 
-              value= { formData.email } 
-              onChange = { handleChange }              
-                label="Email" 
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                label="Email"
                 id="filled-size-small"
                 variant="filled"
                 size="small"
@@ -80,7 +90,14 @@ const Sigmaker: NextPage = () => {
           </Stack>
         </FormControl>
         <div>
-          <Button size="large" color="info" variant="contained">
+          <Button
+            size="large"
+            color="info"
+            variant="contained"
+            onClick={() =>
+              setFormData({ fullName: "", title: "", phone: "", email: "" })
+            }
+          >
             Generate signature!
           </Button>
         </div>
