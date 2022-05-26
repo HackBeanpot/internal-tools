@@ -1,15 +1,15 @@
+import { ThemeProvider, Divider, Typography, Link } from "@mui/material";
 import type { NextPage } from "next";
-import { ThemeProvider } from "@mui/material";
 import { theme } from "../styles/theme";
-import { Divider } from "@mui/material";
-import { Typography } from "@mui/material";
-import Link from "@mui/material/Link";
+
 
 const Home: NextPage = () => {
   return (
     <ThemeProvider theme={theme}>
       <div className="tool-box">
-        <h3>Tools</h3>
+      <Typography variant="h3" component="h3">
+        Tools
+        </Typography>
         <Divider light />
         <Typography variant="body1" component="p">
           🛠 Internal tools + useful things for core members like…
@@ -17,13 +17,11 @@ const Home: NextPage = () => {
         <Typography variant="body1" component="ul">
           <li>
             <Link
-              href="https://tools.hackbeanpot.com/sigmaker/"
-              target="_blank"
+              href="/sigmaker"
               underline="hover"
             >
-              An email signature generator{" "}
+              An email signature generator
             </Link>
-            (last updated September 2019)
           </li>
         </Typography>
       </div>
