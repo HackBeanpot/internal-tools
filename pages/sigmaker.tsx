@@ -13,8 +13,8 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const Sigmaker: NextPage = () => {
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("sm"));
+  const themeMUI = useTheme();
+  const matches = useMediaQuery(themeMUI.breakpoints.up("sm"));
   return (
     <ThemeProvider theme={theme}>
       <Container sx={{ mt: 4 }}>
