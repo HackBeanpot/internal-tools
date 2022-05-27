@@ -4,21 +4,15 @@ import {
   Container,
   Divider,
   FormControl,
-  Grid,
   Stack,
   TextField,
   ThemeProvider,
   Typography,
 } from "@mui/material";
 import { theme } from "../styles/theme";
-import { useTheme } from "@mui/material/styles";
 import { ChangeEvent, useState } from "react";
-import useMediaQuery from "@mui/material/useMediaQuery";
 
 const Sigmaker: NextPage = () => {
-  const themeMUI = useTheme();
-  const isNotMobile = useMediaQuery(themeMUI.breakpoints.up("sm"));
-
   const [formData, setFormData] = useState({
     fullName: "",
     title: "",
@@ -35,6 +29,19 @@ const Sigmaker: NextPage = () => {
     });
   };
 
+  const createInputField = (name: string, value: string, label: string) => (
+    <TextField
+      name={name}
+      value={value}
+      onChange={handleChange}
+      label={label}
+      id="filled-size-small"
+      variant="filled"
+      size="small"
+      sx={{ width: "25ch" }}
+    />
+  );
+
   return (
     <ThemeProvider theme={theme}>
       <Container sx={{ mt: 4 }}>
@@ -44,49 +51,14 @@ const Sigmaker: NextPage = () => {
         <Typography variant="h5"> Enter your info here! </Typography>
         <FormControl sx={{ my: 3 }}>
           <Stack spacing={3}>
-            <TextField
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              label="Full name"
-              id="filled-size-small"
-              variant="filled"
-              size="small"
-              sx={{ width: "25ch" }}
-            />
-            <TextField
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              label="Title"
-              id="filled-size-small"
-              variant="filled"
-              size="small"
-              sx={{ width: "25ch" }}
-            />
-            <TextField
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              label="Phone"
-              id="filled-size-small"
-              variant="filled"
-              size="small"
-              sx={{ width: "25ch" }}
-            />
-            <Grid sx={{ display: isNotMobile ? "flex" : "block" }}>
-              <TextField
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                label="Email"
-                id="filled-size-small"
-                variant="filled"
-                size="small"
-                sx={{ width: "25ch" }}
-              />
-              <Typography sx={{ mt: 2, ml: 1 }}>@hackbeanpot.com</Typography>
-            </Grid>
+            {createInputField("fullName", formData.fullName, "Full name")}
+            {createInputField("title", formData.title, "Title")}
+            {createInputField("phone", formData.phone, "Phone")}
+            {createInputField(
+              "email",
+              formData.email,
+              "Email (@hackbeanpot.com)"
+            )}
           </Stack>
         </FormControl>
         <div>
