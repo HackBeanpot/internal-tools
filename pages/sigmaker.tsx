@@ -47,12 +47,14 @@ const Sigmaker: NextPage = () => {
   const createSignature = () => (
     <Container>
       <table cellPadding={0} cellSpacing={0} className="table">
+        <tbody>
         <tr>
           <td valign="top" className="logoContainer">
             <img className="logo" id="preview-image-url" src="https://tools.hackbeanpot.com/assets/logos/2018_logo_400px.png" />
           </td>
           <td className="contentContainer">
             <table cellPadding={0} cellSpacing={0} className="table">
+              <tbody>
               <tr>
                 <td colSpan={2} className="name">{formData.fullName}</td>
               </tr>
@@ -79,9 +81,11 @@ const Sigmaker: NextPage = () => {
                   <a href="mailto:${email}@hackbeanpot.com" className="link">{formData.email}@hackbeanpot.com</a>
                 </td>
               </tr>
+              </tbody>
             </table>
           </td>
         </tr>
+        </tbody>
       </table>
     </Container>
   )
