@@ -13,14 +13,21 @@ import {
 import { theme } from "../styles/theme";
 import { ChangeEvent, useState } from "react";
 
-
+interface SignatureData {
+  fullName: string
+  title: string
+  phone: string
+  email: string
+}
 const Sigmaker: NextPage = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<SignatureData>({
     fullName: "",
     title: "",
     phone: "",
     email: "",
   });
+
+  const [signatureData, setSignatureData] = useState<undefined | SignatureData>(undefined);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -44,51 +51,74 @@ const Sigmaker: NextPage = () => {
     />
   );
 
-  const createSignature = () => (
-    <Container>
-      <table cellPadding={0} cellSpacing={0} className="table">
-        <tbody>
-        <tr>
-          <td valign="top" className="logoContainer">
-            <img className="logo" id="preview-image-url" src="https://tools.hackbeanpot.com/assets/logos/2018_logo_400px.png" />
-          </td>
-          <td className="contentContainer">
+  const createSignature = () => {
+    if (signatureData) {
+      return (
+        <div>
+          <Typography variant="h4">
+            Paste this into Gmail!
+          </Typography>
+          <Container>
             <table cellPadding={0} cellSpacing={0} className="table">
               <tbody>
-              <tr>
-                <td colSpan={2} className="name">{formData.fullName}</td>
-              </tr>
-              <tr>
-                <td colSpan={2} className="signatureText">{formData.title}</td>
-              </tr>
-              <tr>
-                <td colSpan={2} className="signatureText">
-                  <strong>HackBeanpot, Inc.</strong>
-                </td>
-              </tr>
-              <tr>
-                <td className="phoneNumber">{formData.phone}</td>
-              </tr>
-              <tr>
-                <td valign="top" className="linkContainer">
-                  <a href="https://hackbeanpot.com" className="link">
-                    www.hackbeanpot.com
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td className="signatureText">
-                  <a href="mailto:${email}@hackbeanpot.com" className="link">{formData.email}@hackbeanpot.com</a>
-                </td>
-              </tr>
+                <tr>
+                  <td valign="top" className="logoContainer">
+                    <img className="logo" id="preview-image-url" src="https://tools.hackbeanpot.com/assets/logos/2018_logo_400px.png" />
+                  </td>
+                  <td className="contentContainer">
+                    <table cellPadding={0} cellSpacing={0} className="table">
+                      <tbody>
+                        <tr>
+                          <td colSpan={2} className="name">{signatureData.fullName}</td>
+                        </tr>
+                        <tr>
+                          <td colSpan={2} className="signatureText">{signatureData.title}</td>
+                        </tr>
+                        <tr>
+                          <td colSpan={2} className="signatureText">
+                            <strong>HackBeanpot, Inc.</strong>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="phoneNumber">{signatureData.phone}</td>
+                        </tr>
+                        <tr>
+                          <td valign="top" className="linkContainer">
+                            <a href="https://hackbeanpot.com" className="link">
+                              www.hackbeanpot.com
+                            </a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="signatureText">
+                            <a href="mailto:${email}@hackbeanpot.com" className="link">{signatureData.email}@hackbeanpot.com</a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
               </tbody>
             </table>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </Container>
-  )
+          </Container>
+        </div>
+      )
+    }
+    else {
+      return (
+        <div>
+          <br></br>
+          <br></br>
+
+          <br></br>
+
+          <></>
+
+        </div>
+
+      )
+    }
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -97,7 +127,7 @@ const Sigmaker: NextPage = () => {
         <Divider />
         <br />
         <Grid container spacing={2}>
-          <Grid item>
+          <Grid item xs={12} sm={6}>
             <Typography variant="h5"> Enter your info here! </Typography>
             <FormControl sx={{ my: 3 }}>
               <Stack spacing={3}>
@@ -116,22 +146,22 @@ const Sigmaker: NextPage = () => {
                 size="large"
                 color="info"
                 variant="contained"
-                onClick={() =>
+                onClick={() => {
                   // do something
+                  setSignatureData(formData)
                   setFormData({ fullName: "", title: "", phone: "", email: "" })
-                }
+
+                }}
               >
                 Generate signature!
               </Button>
             </div>
           </Grid>
-          <Grid item>
-            <Typography variant="h4">
-              Paste this into Gmail!
-            </Typography>
-            <div>
+          <Grid item xs={12} sm={6}>
+
+            {<div>
               {createSignature()}
-            </div>
+            </div>}
           </Grid>
         </Grid>
       </Container>
