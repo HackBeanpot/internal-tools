@@ -1,8 +1,8 @@
 const icons = {
-    EXAMPLE_ICON: {
-        image: '/assets/icon.png',
-        altText: 'Example icon'
-    }
+  HBP_LOGO: {
+    image: '/assets/hbplogo.png',
+    altText: 'HackBeanpot logo'
+  }
 }
 
 export { icons };
