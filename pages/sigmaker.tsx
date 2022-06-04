@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { theme } from "../styles/theme";
 import { ChangeEvent, useState } from "react";
+import { icons } from "../styles/icons"
 
 interface SignatureData {
   fullName: string
@@ -55,7 +56,7 @@ const Sigmaker: NextPage = () => {
     if (signatureData) {
       return (
         <div>
-          <Typography variant="h4">
+          <Typography variant="h4" sx={{ pb: "16px" }}>
             Paste this into Gmail!
           </Typography>
           <Container>
@@ -63,7 +64,7 @@ const Sigmaker: NextPage = () => {
               <tbody>
                 <tr>
                   <td valign="top" className="logoContainer">
-                    <img className="logo" id="preview-image-url" src="https://tools.hackbeanpot.com/assets/logos/2018_logo_400px.png" />
+                    <img className="logo" id="preview-image-url" src={icons.HBP_LOGO.image} />
                   </td>
                   <td className="contentContainer">
                     <table cellPadding={0} cellSpacing={0} className="table">
@@ -84,7 +85,7 @@ const Sigmaker: NextPage = () => {
                         </tr>
                         <tr>
                           <td valign="top" className="linkContainer">
-                            <a href="https://hackbeanpot.com" className="link">
+                            <a href="https://hackbeanpot.com" className="link" target="_blank">
                               www.hackbeanpot.com
                             </a>
                           </td>
@@ -106,16 +107,7 @@ const Sigmaker: NextPage = () => {
     }
     else {
       return (
-        <div>
-          <br></br>
-          <br></br>
-
-          <br></br>
-
-          <></>
-
-        </div>
-
+        <></>
       )
     }
   }
@@ -126,8 +118,8 @@ const Sigmaker: NextPage = () => {
         <Typography variant="h3"> Signature Maker </Typography>
         <Divider />
         <br />
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+        <Grid container spacing={2} sx={{ rowGap: 3 }}>
+          <Grid item xs={12} md={6}>
             <Typography variant="h5"> Enter your info here! </Typography>
             <FormControl sx={{ my: 3 }}>
               <Stack spacing={3}>
@@ -147,18 +139,15 @@ const Sigmaker: NextPage = () => {
                 color="info"
                 variant="contained"
                 onClick={() => {
-                  // do something
                   setSignatureData(formData)
                   setFormData({ fullName: "", title: "", phone: "", email: "" })
-
                 }}
               >
                 Generate signature!
               </Button>
             </div>
           </Grid>
-          <Grid item xs={12} sm={6}>
-
+          <Grid item xs={12} md={6}>
             {<div>
               {createSignature()}
             </div>}
