@@ -13,6 +13,7 @@ import {
 import { theme } from "../styles/theme";
 import { ChangeEvent, useState } from "react";
 import { icons } from "../styles/icons"
+import Link from "next/link";
 
 interface SignatureData {
   fullName: string
@@ -64,7 +65,7 @@ const Sigmaker: NextPage = () => {
               <tbody>
                 <tr>
                   <td valign="top" className="logoContainer">
-                    <img className="logo" id="preview-image-url" src={icons.HBP_LOGO.image} />
+                    <img className="logo" id="preview-image-url" src={icons.HBP_LOGO.image} alt={icons.HBP_LOGO.altText}/>
                   </td>
                   <td className="contentContainer">
                     <table cellPadding={0} cellSpacing={0} className="table">
@@ -85,9 +86,9 @@ const Sigmaker: NextPage = () => {
                         </tr>
                         <tr>
                           <td valign="top" className="linkContainer">
-                            <a href="https://hackbeanpot.com" className="link" target="_blank">
+                            <Link href="https://hackbeanpot.com" className="link" target="_blank">
                               www.hackbeanpot.com
-                            </a>
+                            </Link>
                           </td>
                         </tr>
                         <tr>
