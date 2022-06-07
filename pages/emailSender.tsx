@@ -5,7 +5,9 @@ import { theme } from "../styles/theme";
 
 const EmailSender: NextPage = () => {
   const [file, setFile] = useState();
-  const fileReader = new FileReader();
+  if (typeof window !== "undefined") {
+    var reader = new window.FileReader();
+  }
   const handleOnChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -14,12 +16,12 @@ const EmailSender: NextPage = () => {
     e.preventDefault();
 
     if (file) {
-      fileReader.onload = function (event) {
+      reader.onload = function (event) {
         const csvOutput = event.target.result;
         console.log(csvOutput);
       };
 
-      fileReader.readAsText(file);
+      reader.readAsText(file);
     }
   };
   return (
