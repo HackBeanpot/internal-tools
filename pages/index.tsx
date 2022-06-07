@@ -23,6 +23,14 @@ const Home: NextPage = () => {
               An email signature generator
             </Link>
           </li>
+          <li>
+            <Link
+              href="/emailSender"
+              underline="hover"
+            >
+              An email sender
+            </Link>
+          </li>
         </Typography>
       </div>
     </ThemeProvider>
