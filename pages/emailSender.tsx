@@ -7,7 +7,7 @@ const EmailSender: NextPage = () => {
   const [file, setFile] = useState();
   const [csvRowsArray, setCsvRowsArray] = useState([]);
   const [message, setMessage] = useState("");
-  const [finalMessages, setFinalMessages] = useState([]);
+  const [finalMessages, setFinalMessages] = useState<Message[]>([]);
   if (typeof window !== "undefined") {
     var reader = new window.FileReader();
   }
@@ -50,12 +50,17 @@ const EmailSender: NextPage = () => {
     email: string;
   }
 
-  const re = /\${(.*?)}/g;
-
   interface ReplaceObj {
       toReplace: string;
       headerName: string;
   }
+
+  interface Message {
+      to: string;
+      content: string;
+  }
+
+  const re = /\${(.*?)}/g;
 
   const createRegexArray = () => {
     const messageStr = message.toString();
@@ -73,12 +78,28 @@ const EmailSender: NextPage = () => {
   };
 
   const createMessages = () => {
+    const regexArray =  createRegexArray();
+    let finalMessageArr = [];
     for (let i = 0; i < csvRowsArray.length; i++) {
       const currRow: CsvRow = csvRowsArray[i];
-      console.log(currRow);
       const to = currRow.email;
-      createRegexArray();
+      const map = new Map(Object.entries(currRow));
+      const finalMap = new Map();
+      let content = message;
+      for (const [key, value] of map) {
+        finalMap.set(key.trim(), value);
+      }
+      for (let j = 0; j < regexArray.length; j++) {
+        const toReplace = regexArray[j].toReplace;
+        const replaceVal = finalMap.get(regexArray[j].headerName);
+        console.log(toReplace);
+        console.log(replaceVal);
+        content = content.replaceAll(toReplace, replaceVal);
+      }
+      const msg: Message = {to, content};
+      finalMessageArr.push(msg);
     }
+    setFinalMessages(finalMessageArr);
   };
 
   return (
