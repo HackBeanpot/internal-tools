@@ -51,13 +51,13 @@ const EmailSender: NextPage = () => {
   }
 
   interface ReplaceObj {
-      toReplace: string;
-      headerName: string;
+    toReplace: string;
+    headerName: string;
   }
 
   interface Message {
-      to: string;
-      content: string;
+    to: string;
+    content: string;
   }
 
   const re = /\${(.*?)}/g;
@@ -66,19 +66,22 @@ const EmailSender: NextPage = () => {
     const messageStr = message.toString();
     const array = [...messageStr.matchAll(re)];
     const headersArr: Array<String> = [];
-    const headersArrFinal: Array<ReplaceObj>  = [];
+    const headersArrFinal: Array<ReplaceObj> = [];
     for (let i = 0; i < array.length; i++) {
       const header = array[i][1];
       if (!headersArr.includes(header)) {
         headersArr.push(header);
-        headersArrFinal.push({toReplace: array[i][0], headerName: array[i][1]});
+        headersArrFinal.push({
+          toReplace: array[i][0],
+          headerName: array[i][1],
+        });
       }
     }
     return headersArrFinal;
   };
 
   const createMessages = () => {
-    const regexArray =  createRegexArray();
+    const regexArray = createRegexArray();
     let finalMessageArr = [];
     for (let i = 0; i < csvRowsArray.length; i++) {
       const currRow: CsvRow = csvRowsArray[i];
@@ -92,14 +95,24 @@ const EmailSender: NextPage = () => {
       for (let j = 0; j < regexArray.length; j++) {
         const toReplace = regexArray[j].toReplace;
         const replaceVal = finalMap.get(regexArray[j].headerName);
-        console.log(toReplace);
-        console.log(replaceVal);
         content = content.replaceAll(toReplace, replaceVal);
       }
-      const msg: Message = {to, content};
+      const msg: Message = { to, content };
       finalMessageArr.push(msg);
     }
     setFinalMessages(finalMessageArr);
+  };
+
+  const displayMessages = () => {
+    return (
+      <>
+        {finalMessages.map((msg) => (
+          <>
+            <a>To: {msg.to} </a> <br /> <p>Content: {msg.content}</p>
+          </>
+        ))}
+      </>
+    );
   };
 
   return (
@@ -147,7 +160,10 @@ const EmailSender: NextPage = () => {
         </tbody>
       </table>
       <br />
-      <button onClick={createMessages}>Print final messages</button>
+      <button onClick={createMessages}>
+        Print final message
+      </button>
+      <br /> {displayMessages()}
     </ThemeProvider>
   );
 };
