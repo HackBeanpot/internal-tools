@@ -15,13 +15,13 @@ const EmailSender: NextPage = () => {
     setFile(e.target.files[0]);
   };
 
-  const csvFileToArray = (string) => {
+  const csvFileToArray = (string: any) => {
     const csvHeader = string.slice(0, string.indexOf("\n")).split(",");
     const csvRows = string.slice(string.indexOf("\n") + 1).split("\n");
 
     const array = csvRows.map((i) => {
       const values = i.split(",");
-      const obj = csvHeader.reduce((object, header, index) => {
+      const obj = csvHeader.reduce((object: any, header: any, index: any) => {
         object[header] = values[index];
         return object;
       }, {});
@@ -31,12 +31,12 @@ const EmailSender: NextPage = () => {
     setCsvRowsArray(array);
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = (e: any) => {
     e.preventDefault();
 
     if (file) {
       reader.onload = function (event) {
-        const csvOutput = event.target.result;
+        const csvOutput = event.target?.result;
         csvFileToArray(csvOutput);
       };
 
@@ -47,16 +47,39 @@ const EmailSender: NextPage = () => {
   const headerKeys = Object.keys(Object.assign({}, ...csvRowsArray));
 
   interface CsvRow {
-      email: string;
+    email: string;
   }
 
-  const createMessages = () => {
-      for (let i = 0; i < csvRowsArray.length; i++) {
-          const currRow: CsvRow = csvRowsArray[i];
-          console.log(currRow);
-          const to = currRow.email;
-      }
+  const re = /\${(.*?)}/g;
+
+  interface ReplaceObj {
+      toReplace: string;
+      headerName: string;
   }
+
+  const createRegexArray = () => {
+    const messageStr = message.toString();
+    const array = [...messageStr.matchAll(re)];
+    const headersArr: Array<String> = [];
+    const headersArrFinal: Array<ReplaceObj>  = [];
+    for (let i = 0; i < array.length; i++) {
+      const header = array[i][1];
+      if (!headersArr.includes(header)) {
+        headersArr.push(header);
+        headersArrFinal.push({toReplace: array[i][0], headerName: array[i][1]});
+      }
+    }
+    return headersArrFinal;
+  };
+
+  const createMessages = () => {
+    for (let i = 0; i < csvRowsArray.length; i++) {
+      const currRow: CsvRow = csvRowsArray[i];
+      console.log(currRow);
+      const to = currRow.email;
+      createRegexArray();
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -66,9 +89,9 @@ const EmailSender: NextPage = () => {
         <br />
       </Container>
       <form>
-          MESSAGE
-          <textarea onChange={(e) => setMessage(e.target.value)}></textarea>
-          <br/>
+        MESSAGE
+        <textarea onChange={(e) => setMessage(e.target.value)}></textarea>
+        <br />
         <input
           type={"file"}
           id={"csvFileInput"}
