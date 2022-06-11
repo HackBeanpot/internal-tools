@@ -1,7 +1,23 @@
-import { ThemeProvider, Divider, Typography, Container } from "@mui/material";
+import {
+  ThemeProvider,
+  Divider,
+  Typography,
+  Container,
+  Button,
+  FormControl,
+  TextareaAutosize,
+  TableContainer,
+  Table,
+  Paper,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import type { NextPage } from "next";
 import { useState } from "react";
 import { theme } from "../styles/theme";
+import { nanoid } from "nanoid";
 
 const EmailSender: NextPage = () => {
   const [file, setFile] = useState();
@@ -15,9 +31,9 @@ const EmailSender: NextPage = () => {
     setFile(e.target.files[0]);
   };
 
-  const csvFileToArray = (string: any) => {
-    const csvHeader = string.slice(0, string.indexOf("\n")).split(",");
-    const csvRows = string.slice(string.indexOf("\n") + 1).split("\n");
+  const csvFileToArray = (str: any) => {
+    const csvHeader = str.slice(0, str.indexOf("\n")).split(",");
+    const csvRows = str.slice(str.indexOf("\n") + 1).split("\n");
 
     const array = csvRows.map((i) => {
       const values = i.split(",");
@@ -31,7 +47,7 @@ const EmailSender: NextPage = () => {
     setCsvRowsArray(array);
   };
 
-  const handleOnSubmit = (e: any) => {
+  const handleOnSubmit = (e: Event) => {
     e.preventDefault();
 
     if (file) {
@@ -121,49 +137,72 @@ const EmailSender: NextPage = () => {
         <Typography variant="h3"> Email Sender </Typography>
         <Divider />
         <br />
-      </Container>
-      <form>
-        MESSAGE
-        <textarea onChange={(e) => setMessage(e.target.value)}></textarea>
-        <br />
-        <input
-          type={"file"}
-          id={"csvFileInput"}
-          accept={".csv"}
-          onChange={handleOnChange}
-        />
-        <button
-          onClick={(e) => {
-            handleOnSubmit(e);
-          }}
-        >
-          IMPORT CSV
-        </button>
-      </form>
-      <table>
-        <thead>
-          <tr key={"header"}>
-            {headerKeys.map((key) => (
-              <th>{key}</th>
-            ))}
-          </tr>
-        </thead>
-
-        <tbody>
-          {csvRowsArray.map((item) => (
-            <tr key={item.id}>
-              {Object.values(item).map((val) => (
-                <td>{val}</td>
+        <FormControl>
+          <Typography variant="h4" component="h4">
+            Message
+          </Typography>
+          <TextareaAutosize
+            aria-label="message-text-area"
+            placeholder="Paste in message"
+            onChange={(e) => setMessage(e.target.value)}
+            style={{ width: 600 }}
+            minRows={20}
+          />
+          <br />
+          <input
+            type={"file"}
+            id={"csvFileInput"}
+            accept={".csv"}
+            onChange={handleOnChange}
+          />
+          <br />
+          <Button
+            size="large"
+            color="info"
+            variant="contained"
+            onClick={(e) => {
+              handleOnSubmit(e);
+            }}
+          >
+            Import CSV!
+          </Button>
+        </FormControl>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              {headerKeys.map((key) => (
+                <TableCell key={nanoid()}>
+                  <b>{key}</b>
+                </TableCell>
               ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <br />
-      <button onClick={createMessages}>
-        Print final message
-      </button>
-      <br /> {displayMessages()}
+            </TableHead>
+            <TableBody>
+              {csvRowsArray.map((item) => (
+                <TableRow
+                  key={"header"}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  {Object.values(item).map((val) => (
+                    <TableCell key={nanoid()} align="left">
+                      {val}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <br />
+        <Button
+          size="large"
+          color="info"
+          variant="contained"
+          onClick={createMessages}
+        >
+          Print final message
+        </Button>
+        <br /> {displayMessages()}
+      </Container>
     </ThemeProvider>
   );
 };
