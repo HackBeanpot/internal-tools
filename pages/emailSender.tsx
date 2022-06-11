@@ -13,6 +13,8 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  IconButton,
+
 } from "@mui/material";
 import type { NextPage } from "next";
 import { useState } from "react";
@@ -124,7 +126,11 @@ const EmailSender: NextPage = () => {
       <>
         {finalMessages.map((msg) => (
           <>
-            <a>To: {msg.to} </a> <br /> <p>Content: {msg.content}</p>
+            <a>To: {msg.to}</a>
+            <br/>
+            <br/>
+            <a>Content:</a>
+            <p>{msg.content}</p>
           </>
         ))}
       </>
@@ -157,7 +163,6 @@ const EmailSender: NextPage = () => {
           />
           <br />
           <Button
-            size="large"
             color="info"
             variant="contained"
             onClick={(e) => {
@@ -166,6 +171,9 @@ const EmailSender: NextPage = () => {
           >
             Import CSV!
           </Button>
+          <br />
+          <br />
+          <br />
         </FormControl>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -194,13 +202,19 @@ const EmailSender: NextPage = () => {
         </TableContainer>
         <br />
         <Button
-          size="large"
           color="info"
           variant="contained"
           onClick={createMessages}
         >
           Print final message
         </Button>
+        <br />
+        <br />
+        <br />
+        <br />
+        <Typography variant="h4" component="h4">
+          Final Messages
+        </Typography>
         <br /> {displayMessages()}
       </Container>
     </ThemeProvider>
