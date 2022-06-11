@@ -149,7 +149,7 @@ const EmailSender: NextPage = () => {
           <Typography variant="h5" component="h5">
             Message
           </Typography>
-          <br />
+          <br/>
           <TextareaAutosize
             aria-label="message-text-area"
             placeholder="Paste in message"
@@ -165,14 +165,7 @@ const EmailSender: NextPage = () => {
             onChange={handleOnChange}
           />
           <label htmlFor="contained-button-file">
-            <Button
-              variant="contained"
-              color="primary"
-              component="span"
-              onClick={(e) => {
-                handleOnSubmit(e);
-              }}
-            >
+            <Button variant="contained" color="primary" component="span">
               Upload
             </Button>
           </label>
@@ -183,7 +176,7 @@ const EmailSender: NextPage = () => {
             onClick={(e) => {
               handleOnSubmit(e);
             }}
-            sx={{ maxWidth: 200 }}
+            sx={{maxWidth: 200}}
           >
             Import CSV!
           </Button>
