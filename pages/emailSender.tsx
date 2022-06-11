@@ -13,19 +13,21 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  IconButton,
-
 } from "@mui/material";
 import type { NextPage } from "next";
 import { useState } from "react";
-import { theme } from "../styles/theme";
 import { nanoid } from "nanoid";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { style } from "@mui/system";
 
 const EmailSender: NextPage = () => {
   const [file, setFile] = useState();
   const [csvRowsArray, setCsvRowsArray] = useState([]);
   const [message, setMessage] = useState("");
   const [finalMessages, setFinalMessages] = useState<Message[]>([]);
+  const theme = useTheme();
+
   if (typeof window !== "undefined") {
     var reader = new window.FileReader();
   }
@@ -127,8 +129,8 @@ const EmailSender: NextPage = () => {
         {finalMessages.map((msg) => (
           <>
             <a>To: {msg.to}</a>
-            <br/>
-            <br/>
+            <br />
+            <br />
             <a>Content:</a>
             <p>{msg.content}</p>
           </>
@@ -143,24 +145,37 @@ const EmailSender: NextPage = () => {
         <Typography variant="h3"> Email Sender </Typography>
         <Divider />
         <br />
-        <FormControl>
-          <Typography variant="h4" component="h4">
+        <FormControl fullWidth>
+          <Typography variant="h5" component="h5">
             Message
           </Typography>
+          <br />
           <TextareaAutosize
             aria-label="message-text-area"
             placeholder="Paste in message"
             onChange={(e) => setMessage(e.target.value)}
-            style={{ width: 600 }}
             minRows={20}
           />
           <br />
           <input
-            type={"file"}
-            id={"csvFileInput"}
+            style={{ display: "none" }}
+            id="contained-button-file"
             accept={".csv"}
+            type="file"
             onChange={handleOnChange}
           />
+          <label htmlFor="contained-button-file">
+            <Button
+              variant="contained"
+              color="primary"
+              component="span"
+              onClick={(e) => {
+                handleOnSubmit(e);
+              }}
+            >
+              Upload
+            </Button>
+          </label>
           <br />
           <Button
             color="info"
@@ -168,6 +183,7 @@ const EmailSender: NextPage = () => {
             onClick={(e) => {
               handleOnSubmit(e);
             }}
+            sx={{ maxWidth: 200 }}
           >
             Import CSV!
           </Button>
@@ -201,18 +217,14 @@ const EmailSender: NextPage = () => {
           </Table>
         </TableContainer>
         <br />
-        <Button
-          color="info"
-          variant="contained"
-          onClick={createMessages}
-        >
-          Print final message
+        <Button color="info" variant="contained" onClick={createMessages}>
+          Print final messages
         </Button>
         <br />
         <br />
         <br />
         <br />
-        <Typography variant="h4" component="h4">
+        <Typography variant="h5" component="h5">
           Final Messages
         </Typography>
         <br /> {displayMessages()}
