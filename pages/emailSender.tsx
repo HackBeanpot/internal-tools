@@ -68,6 +68,7 @@ const EmailSender: NextPage = () => {
 
   interface CsvRow {
     email: string;
+    subject: string
   }
 
   interface ReplaceObj {
@@ -77,6 +78,7 @@ const EmailSender: NextPage = () => {
 
   interface Message {
     to: string;
+    subject: string;
     content: string;
   }
 
@@ -106,6 +108,7 @@ const EmailSender: NextPage = () => {
     for (let i = 0; i < csvRowsArray.length; i++) {
       const currRow: CsvRow = csvRowsArray[i];
       const to = currRow.email;
+      const subject = currRow.subject
       const map = new Map(Object.entries(currRow));
       const finalMap = new Map();
       let content = message;
@@ -117,7 +120,7 @@ const EmailSender: NextPage = () => {
         const replaceVal = finalMap.get(regexArray[j].headerName);
         content = content.replaceAll(toReplace, replaceVal);
       }
-      const msg: Message = { to, content };
+      const msg: Message = { to, subject, content };
       finalMessageArr.push(msg);
     }
     setFinalMessages(finalMessageArr);
@@ -129,8 +132,10 @@ const EmailSender: NextPage = () => {
         {finalMessages.map((msg) => (
           <>
             <a>To: {msg.to}</a>
-            <br />
-            <br />
+            <br/>
+            <br/>
+            <a>Subject: {msg.subject}</a>
+            <br/>
             <a>Content:</a>
             <p>{msg.content}</p>
           </>
