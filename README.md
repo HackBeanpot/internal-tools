@@ -1,24 +1,104 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Internal Tools
 
-## Getting Started
+## :book: Table of Contents
 
-First, run the development server:
+1. [Introduction](#introduction)
+1. [Getting Started](#getting-started)
+2. [File Structure](#file-structure)
+3. [Technologies](#technologies)<br />
+   - [Vercel](#vercel)<br />
+   - [Learn Next.js](#learn_next.js)
+
+## :joy: Introduction
+
+The Internal Tools contains internal tools that HackBeanpot Core members use. This project contains the following tools: 
+
+- **Signature maker** 
+    > generates email signatures for core members including name, title, phone and email
+- **Email sender**: 
+    > Parses a CSV with the list of senders and other dynamic fields. The application also reads in a message and replaces general fields with the respective ones from the CSV.
+
+## :zany_face: Getting Started
+
+1. **Clone the repository:**
 
 ```bash
-npm run dev
-# or
+git clone https://github.com/HackBeanpot/internal-tools.git
+```
+
+2. **Change directories**
+
+```bash
+cd internal-tools
+```
+
+4. **Install the packages**
+
+```bash
+# In the project directory
+yarn install
+```
+
+5. **Run the server locally**
+
+```bash
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Now the server will run locally, most likely on `http://localhost:3000`. Your work will be displayed, and as changes are saved it will auto-refresh the site.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## :file_folder: File Structure
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+A quick look at the top-level file structure used
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+    .
+    ├── /node_modules
+    ├── /pages
+    ├── /public
+    ├── /styles
+    ├── .gitignore
+    ├── package.json
+    ├── yarn-lock.json
+    ├── tsconfig.json
+    └── README.md
 
-## Learn More
+1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
+
+2.  **`/pages`**: This directory contains all of the pages in the project.
+
+3.  **`/public`**: This directory is used by Next.js to statically serve files.
+
+4.  **`/styles`**: This directory contains the global styles utilized in the project.
+
+5.  **`.gitignore`**: This file tells git which files will not maintain a version history, thus don't need to be tracked.
+
+6. **`package.json`**: A manifest file for Node.js projects, this file includes the metadata for the project. Metadat incluedes the project's name, author, etc. This manifest is how yarn knows which packages to isntall to run the project.
+
+7. **`yarn-lock.json`**: (First see `package.json`, below) This is an automatically generated file based on the exact versions of your yarn dependencies used for the project. **You won't change this file directly.**
+
+8.  **`tsconfig.json`**: This directory contains cross-project reusable styling.
+
+9. **`README.md`**: A reference text file containing information about the project.
+
+## :gear: Technologies
+
+The website is built on the following technologies:
+
+- [Vercel](https://vercel.com/): Site hosting provider
+- [Next.js](https://nextjs.org/): Static site generator for the site
+
+### :diamond_shape_with_a_dot_inside: Vercel
+
+The Internal Tools site is deployed on [Vercel](https://vercel.com/). Vercel is continuous integration and deployment platform that allows you to run web projects at global scale. There are a couple ways to update and deploy the site:
+
+- **Manual Deploy**: Go to [https://vercel.com/hackbeanpot/internal-tools/deployments](https://vercel.com/hackbeanpot/internal-tools/deployments). Click on **Redploy** for a specific preview. Now the build will begin for your site. If your build is successful, the logs will tell you that the site is live! If any errors arise in the logs, please fix them and redeploy.
+
+- **Merging a Pull Request**: Vercel is hooked up to GitHub, thus when a PR is merged into the master branch Vercel will automaticaly deploy to keep the site up-to-date.
+  Note: Upon creating and updating any Pr, a `deploy preview` can be accessed from the bottom of the page - this
+
+Note: In Vercel, when a PR is created there is a link, **Deploy Preview ##**, that will allow you to preview the changes.
+
+### :zap: Learn NextJS
 
 To learn more about Next.js, take a look at the following resources:
 
@@ -26,9 +106,3 @@ To learn more about Next.js, take a look at the following resources:
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
