@@ -39,7 +39,7 @@ const EmailSender: NextPage = () => {
     const csvHeader = str.slice(0, str.indexOf("\n")).split(",");
     const csvRows = str.slice(str.indexOf("\n") + 1).split("\n");
 
-    const array = csvRows.map((i) => {
+    let array = csvRows.map((i) => {
       const values = i.split(",");
       const obj = csvHeader.reduce((object: any, header: any, index: any) => {
         object[header] = values[index];
@@ -47,6 +47,10 @@ const EmailSender: NextPage = () => {
       }, {});
       return obj;
     });
+
+    if (array[array.length -1].email === "" ) {
+      array.pop()
+    }
 
     setCsvRowsArray(array);
   };
