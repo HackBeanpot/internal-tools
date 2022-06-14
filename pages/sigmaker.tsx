@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import {
   Button,
-  Container,
   Divider,
   FormControl,
   Grid,
@@ -12,15 +11,11 @@ import {
 } from "@mui/material";
 import { theme } from "../styles/theme";
 import { ChangeEvent, useState } from "react";
-import { icons } from "../styles/icons"
+import { icons } from "../styles/icons";
 import Link from "next/link";
+import { SignatureData } from "../lib/types";
+import { PageContainer } from "../styles/common";
 
-interface SignatureData {
-  fullName: string
-  title: string
-  phone: string
-  email: string
-}
 const Sigmaker: NextPage = () => {
   const [formData, setFormData] = useState<SignatureData>({
     fullName: "",
@@ -29,7 +24,9 @@ const Sigmaker: NextPage = () => {
     email: "",
   });
 
-  const [signatureData, setSignatureData] = useState<undefined | SignatureData>(undefined);
+  const [signatureData, setSignatureData] = useState<undefined | SignatureData>(
+    undefined
+  );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -60,21 +57,30 @@ const Sigmaker: NextPage = () => {
           <Typography variant="h4" sx={{ pb: "16px" }}>
             Paste this into Gmail!
           </Typography>
-          <Container>
+          <PageContainer>
             <table cellPadding={0} cellSpacing={0} className="table">
               <tbody>
                 <tr>
                   <td valign="top" className="logoContainer">
-                    <img className="logo" id="preview-image-url" src={icons.HBP_LOGO.image} alt={icons.HBP_LOGO.altText}/>
+                    <img
+                      className="logo"
+                      id="preview-image-url"
+                      src={icons.HBP_LOGO.image}
+                      alt={icons.HBP_LOGO.altText}
+                    />
                   </td>
                   <td className="contentContainer">
                     <table cellPadding={0} cellSpacing={0} className="table">
                       <tbody>
                         <tr>
-                          <td colSpan={2} className="name">{signatureData.fullName}</td>
+                          <td colSpan={2} className="name">
+                            {signatureData.fullName}
+                          </td>
                         </tr>
                         <tr>
-                          <td colSpan={2} className="signatureText">{signatureData.title}</td>
+                          <td colSpan={2} className="signatureText">
+                            {signatureData.title}
+                          </td>
                         </tr>
                         <tr>
                           <td colSpan={2} className="signatureText">
@@ -86,14 +92,23 @@ const Sigmaker: NextPage = () => {
                         </tr>
                         <tr>
                           <td valign="top" className="linkContainer">
-                            <Link href="https://hackbeanpot.com" className="link" target="_blank">
+                            <Link
+                              href="https://hackbeanpot.com"
+                              className="link"
+                              target="_blank"
+                            >
                               www.hackbeanpot.com
                             </Link>
                           </td>
                         </tr>
                         <tr>
                           <td className="signatureText">
-                            <a href="mailto:${email}@hackbeanpot.com" className="link">{signatureData.email}@hackbeanpot.com</a>
+                            <a
+                              href="mailto:${email}@hackbeanpot.com"
+                              className="link"
+                            >
+                              {signatureData.email}@hackbeanpot.com
+                            </a>
                           </td>
                         </tr>
                       </tbody>
@@ -102,20 +117,17 @@ const Sigmaker: NextPage = () => {
                 </tr>
               </tbody>
             </table>
-          </Container>
+          </PageContainer>
         </div>
-      )
+      );
+    } else {
+      return <></>;
     }
-    else {
-      return (
-        <></>
-      )
-    }
-  }
+  };
 
   return (
     <ThemeProvider theme={theme}>
-      <Container sx={{ mt: 4 }}>
+      <PageContainer>
         <Typography variant="h3"> Signature Maker </Typography>
         <Divider />
         <br />
@@ -140,8 +152,13 @@ const Sigmaker: NextPage = () => {
                 color="info"
                 variant="contained"
                 onClick={() => {
-                  setSignatureData(formData)
-                  setFormData({ fullName: "", title: "", phone: "", email: "" })
+                  setSignatureData(formData);
+                  setFormData({
+                    fullName: "",
+                    title: "",
+                    phone: "",
+                    email: "",
+                  });
                 }}
               >
                 Generate signature!
@@ -149,12 +166,10 @@ const Sigmaker: NextPage = () => {
             </div>
           </Grid>
           <Grid item xs={12} md={6}>
-            {<div>
-              {createSignature()}
-            </div>}
+            {<div>{createSignature()}</div>}
           </Grid>
         </Grid>
-      </Container>
+      </PageContainer>
     </ThemeProvider>
   );
 };

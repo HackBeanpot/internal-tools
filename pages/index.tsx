@@ -1,12 +1,12 @@
 import { ThemeProvider, Divider, Typography, Link } from "@mui/material";
 import type { NextPage } from "next";
+import { PageContainer } from "../styles/common";
 import { theme } from "../styles/theme";
-
 
 const Home: NextPage = () => {
   return (
     <ThemeProvider theme={theme}>
-      <div className="tool-box">
+      <PageContainer>
       <Typography variant="h3" component="h3">
         Tools
         </Typography>
@@ -24,7 +24,7 @@ const Home: NextPage = () => {
             </Link>
           </li>
         </Typography>
-      </div>
+      </PageContainer>
     </ThemeProvider>
   );
 };
