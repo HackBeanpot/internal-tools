@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Link from "next/link";
 
@@ -27,45 +27,47 @@ const StyledContentContainer = styled("td")({
   lineHeight: "21px",
 });
 
-const StyledSignatureName = styled("td")({
-  paddingBottom: 5,
-  color: "#1B365D",
+const StyledSignatureName = styled("td")(({ theme }) => ({
+  color: theme.palette.HBPNavy.main,
   fontWeight: "bold",
   fontSize: 18,
   fontFamily: `'Nunito Sans', Helvetica, sans-serif`,
-});
+}));
 
 const StyledLogoImage = styled("img")({
   height: 132,
 });
 
-const StyledSignatureText = styled("td")({
-  color: "#1B365D",
+const StyledSignatureText = styled("td")(({ theme }) => ({
+  color: theme.palette.HBPNavy.main,
   fontSize: 14,
-  fontFamily: `'Nunito Sans', Helvetica, sans-serif`,
-});
+  fontFamily: theme.typography.fontFamily
+}));
 
-const StyledPhoneNumber = styled("td")({
-  color: "#1B365D",
+const StyledPhoneNumber = styled("td")(({ theme }) => ({
+  color: theme.palette.HBPNavy.main,
   textDecoration: "none",
   fontSize: 14,
-  fontFamily: `'Nunito Sans', Helvetica, sans-serif`,
-});
+  fontFamily: theme.typography.fontFamily
+}));
 
-const StyledLinkContainer = styled("td")({
+const StyledLinkContainer = styled("td")(({ theme }) => ({
   verticalAlign: "top",
-  color: "#1B365D",
+  color: theme.palette.HBPNavy.main,
   fontSize: 14,
-  fontFamily: `'Nunito Sans', Helvetica, sans-serif`,
-});
+  fontFamily: theme.typography.fontFamily
+}));
 
-const StyledLink = styled(Link)({
-    color: '#52A1B4',
-    textDecoration: 'none',
-    fontWeight: 'normal',
-    fontSize: 14
-  });
-  
+const StyledLink = styled(Link)(({ theme }) => ({
+  color: theme.palette.Mist.main,
+  textDecoration: "none",
+  fontWeight: "normal",
+  fontSize: 14,
+}));
+
+const StyledInputField = styled(TextField)({
+  width: "25ch",
+});
 
 export {
   StyledGmailHeader,
@@ -77,5 +79,6 @@ export {
   StyledSignatureText,
   StyledPhoneNumber,
   StyledLinkContainer,
-  StyledLink
+  StyledLink,
+  StyledInputField,
 };

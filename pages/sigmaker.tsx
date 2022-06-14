@@ -5,7 +5,6 @@ import {
   FormControl,
   Grid,
   Stack,
-  TextField,
   ThemeProvider,
   Typography,
 } from "@mui/material";
@@ -25,7 +24,8 @@ import {
   StyledPhoneNumber,
   StyledLinkContainer,
   StyledLink,
-} from "../styles/pageStyles/sigmaker.styles";
+  StyledInputField
+} from "../pageStyles/sigmaker.styles";
 
 const Sigmaker: NextPage = () => {
   const [formData, setFormData] = useState<SignatureData>({
@@ -34,7 +34,6 @@ const Sigmaker: NextPage = () => {
     phone: "",
     email: "",
   });
-
   const [signatureData, setSignatureData] = useState<undefined | SignatureData>(
     undefined
   );
@@ -49,7 +48,7 @@ const Sigmaker: NextPage = () => {
   };
 
   const createInputField = (name: string, value: string, label: string) => (
-    <TextField
+    <StyledInputField
       name={name}
       value={value}
       onChange={handleChange}
@@ -57,7 +56,6 @@ const Sigmaker: NextPage = () => {
       id="filled-size-small"
       variant="filled"
       size="small"
-      sx={{ width: "25ch" }}
     />
   );
 

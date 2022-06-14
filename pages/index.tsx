@@ -2,7 +2,7 @@ import { ThemeProvider, Divider, Typography, Link } from "@mui/material";
 import type { NextPage } from "next";
 import { PageContainer } from "../styles/common";
 import { theme } from "../styles/theme";
-import { StyledTypographyBody1 } from "../styles/pageStyles/home.styles";
+import { StyledTypographyBody1 } from "../pageStyles/home.styles";
 
 const Home: NextPage = () => {
   return (
