@@ -4,4 +4,4 @@ export interface SignatureData {
     title: string
     phone: string
     email: string
-  }
+}
