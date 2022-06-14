@@ -1,17 +1,17 @@
-import type { NextPage } from "next";
+import type { NextPage } from 'next'
+import React, { ChangeEvent, useState } from 'react'
 import {
   Divider,
   FormControl,
   Grid,
   Stack,
   ThemeProvider,
-  Typography,
-} from "@mui/material";
-import { theme } from "../styles/theme";
-import { ChangeEvent, useState } from "react";
-import { icons } from "../styles/icons";
-import { SignatureData } from "../lib/types";
-import { StyledPageContainer, StyledButton } from "../styles/common";
+  Typography
+} from '@mui/material'
+import { theme } from '../styles/theme'
+import { icons } from '../styles/icons'
+import { SignatureData } from '../lib/types'
+import { StyledPageContainer, StyledButton } from '../styles/common'
 import {
   StyledContentContainer,
   StyledGmailHeader,
@@ -24,27 +24,27 @@ import {
   StyledLinkContainer,
   StyledLink,
   StyledInputField
-} from "../pageStyles/sigmaker.styles";
+} from '../pageStyles/sigmaker.styles'
 
 const Sigmaker: NextPage = () => {
   const [formData, setFormData] = useState<SignatureData>({
-    fullName: "",
-    title: "",
-    phone: "",
-    email: "",
-  });
+    fullName: '',
+    title: '',
+    phone: '',
+    email: ''
+  })
   const [signatureData, setSignatureData] = useState<undefined | SignatureData>(
     undefined
-  );
+  )
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name;
-    const value = e.target.value;
+    const name = e.target.name
+    const value = e.target.value
     setFormData({
       ...formData,
-      [name]: value,
-    });
-  };
+      [name]: value
+    })
+  }
 
   const createInputField = (name: string, value: string, label: string) => (
     <StyledInputField
@@ -56,7 +56,7 @@ const Sigmaker: NextPage = () => {
       variant="filled"
       size="small"
     />
-  );
+  )
 
   const createSignature = () => {
     if (signatureData) {
@@ -111,8 +111,8 @@ const Sigmaker: NextPage = () => {
                         </tr>
                         <tr>
                           <StyledSignatureText>
-                            <StyledLink href="mailto:${email}@hackbeanpot.com">
-                              <>{signatureData.email}@hackbeanpot.com</>
+                            <StyledLink href={`mailto:${signatureData.email}@hackbeanpot.com`}>
+                              <a>{signatureData.email}@hackbeanpot.com</a>
                             </StyledLink>
                           </StyledSignatureText>
                         </tr>
@@ -124,9 +124,9 @@ const Sigmaker: NextPage = () => {
             </StyledTable>
           </StyledPageContainer>
         </div>
-      );
+      )
     }
-  };
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -139,13 +139,13 @@ const Sigmaker: NextPage = () => {
             <Typography variant="h5"> Enter your info here! </Typography>
             <FormControl sx={{ my: 3 }}>
               <Stack spacing={3}>
-                {createInputField("fullName", formData.fullName, "Full name")}
-                {createInputField("title", formData.title, "Title")}
-                {createInputField("phone", formData.phone, "Phone")}
+                {createInputField('fullName', formData.fullName, 'Full name')}
+                {createInputField('title', formData.title, 'Title')}
+                {createInputField('phone', formData.phone, 'Phone')}
                 {createInputField(
-                  "email",
+                  'email',
                   formData.email,
-                  "Email (@hackbeanpot.com)"
+                  'Email (@hackbeanpot.com)'
                 )}
               </Stack>
             </FormControl>
@@ -155,13 +155,13 @@ const Sigmaker: NextPage = () => {
                 color="info"
                 variant="contained"
                 onClick={() => {
-                  setSignatureData(formData);
+                  setSignatureData(formData)
                   setFormData({
-                    fullName: "",
-                    title: "",
-                    phone: "",
-                    email: "",
-                  });
+                    fullName: '',
+                    title: '',
+                    phone: '',
+                    email: ''
+                  })
                 }}
               >
                 Generate signature!
@@ -174,7 +174,7 @@ const Sigmaker: NextPage = () => {
         </Grid>
       </StyledPageContainer>
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default Sigmaker;
+export default Sigmaker

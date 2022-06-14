@@ -1,8 +1,9 @@
-import { ThemeProvider, Divider, Typography, Link } from "@mui/material";
-import type { NextPage } from "next";
-import { StyledPageContainer } from "../styles/common";
-import { theme } from "../styles/theme";
-import { StyledTypographyBody1 } from "../pageStyles/home.styles";
+import React from 'react'
+import { ThemeProvider, Divider, Typography, Link } from '@mui/material'
+import type { NextPage } from 'next'
+import { StyledPageContainer } from '../styles/common'
+import { theme } from '../styles/theme'
+import { StyledTypographyBody1 } from '../pageStyles/home.styles'
 
 const Home: NextPage = () => {
   return (
@@ -26,7 +27,7 @@ const Home: NextPage = () => {
         </ul>
       </StyledPageContainer>
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
