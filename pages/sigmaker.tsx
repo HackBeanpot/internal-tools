@@ -12,9 +12,20 @@ import {
 import { theme } from "../styles/theme";
 import { ChangeEvent, useState } from "react";
 import { icons } from "../styles/icons";
-import Link from "next/link";
 import { SignatureData } from "../lib/types";
 import { PageContainer } from "../styles/common";
+import {
+  StyledContentContainer,
+  StyledGmailHeader,
+  StyledLogoContainer,
+  StyledTable,
+  StyledSignatureName,
+  StyledLogoImage,
+  StyledSignatureText,
+  StyledPhoneNumber,
+  StyledLinkContainer,
+  StyledLink,
+} from "../styles/pageStyles/sigmaker.styles";
 
 const Sigmaker: NextPage = () => {
   const [formData, setFormData] = useState<SignatureData>({
@@ -54,74 +65,69 @@ const Sigmaker: NextPage = () => {
     if (signatureData) {
       return (
         <div>
-          <Typography variant="h4" sx={{ pb: "16px" }}>
+          <StyledGmailHeader variant="h4">
             Paste this into Gmail!
-          </Typography>
+          </StyledGmailHeader>
           <PageContainer>
-            <table cellPadding={0} cellSpacing={0} className="table">
+            <StyledTable cellPadding={0} cellSpacing={0}>
               <tbody>
                 <tr>
-                  <td valign="top" className="logoContainer">
-                    <img
-                      className="logo"
+                  <StyledLogoContainer valign="top">
+                    <StyledLogoImage
                       id="preview-image-url"
                       src={icons.HBP_LOGO.image}
                       alt={icons.HBP_LOGO.altText}
                     />
-                  </td>
-                  <td className="contentContainer">
-                    <table cellPadding={0} cellSpacing={0} className="table">
+                  </StyledLogoContainer>
+                  <StyledContentContainer>
+                    <table cellPadding={0} cellSpacing={0}>
                       <tbody>
                         <tr>
-                          <td colSpan={2} className="name">
+                          <StyledSignatureName colSpan={2}>
                             {signatureData.fullName}
-                          </td>
+                          </StyledSignatureName>
                         </tr>
                         <tr>
-                          <td colSpan={2} className="signatureText">
+                          <StyledSignatureText colSpan={2}>
                             {signatureData.title}
-                          </td>
+                          </StyledSignatureText>
                         </tr>
                         <tr>
-                          <td colSpan={2} className="signatureText">
+                          <StyledSignatureText colSpan={2}>
                             <strong>HackBeanpot, Inc.</strong>
-                          </td>
+                          </StyledSignatureText>
                         </tr>
                         <tr>
-                          <td className="phoneNumber">{signatureData.phone}</td>
+                          <StyledPhoneNumber>
+                            {signatureData.phone}
+                          </StyledPhoneNumber>
                         </tr>
                         <tr>
-                          <td valign="top" className="linkContainer">
-                            <Link
+                          <StyledLinkContainer valign="top">
+                            <StyledLink
                               href="https://hackbeanpot.com"
-                              className="link"
                               target="_blank"
                             >
                               www.hackbeanpot.com
-                            </Link>
-                          </td>
+                            </StyledLink>
+                          </StyledLinkContainer>
                         </tr>
                         <tr>
-                          <td className="signatureText">
-                            <a
-                              href="mailto:${email}@hackbeanpot.com"
-                              className="link"
-                            >
-                              {signatureData.email}@hackbeanpot.com
-                            </a>
-                          </td>
+                          <StyledSignatureText>
+                            <StyledLink href="mailto:${email}@hackbeanpot.com">
+                              <>{signatureData.email}@hackbeanpot.com</>
+                            </StyledLink>
+                          </StyledSignatureText>
                         </tr>
                       </tbody>
                     </table>
-                  </td>
+                  </StyledContentContainer>
                 </tr>
               </tbody>
-            </table>
+            </StyledTable>
           </PageContainer>
         </div>
       );
-    } else {
-      return <></>;
     }
   };
 
