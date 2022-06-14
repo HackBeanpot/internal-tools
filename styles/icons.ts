@@ -5,4 +5,4 @@ const icons = {
   }
 }
 
-export { icons };
+export { icons }
