@@ -6,13 +6,16 @@ const StyledGmailHeader = styled(Typography)({
   paddingBottom: 16,
 });
 
-const StyledTable = styled("table")({
+const StyledTable = styled("table")(({theme}) => ({
   background: "none",
   borderWidth: 0,
   border: 0,
   margin: 0,
   padding: 0,
-});
+  [theme.breakpoints.up('xs')]: {
+    marginLeft: -25
+   }
+}));
 
 const StyledLogoContainer = styled("td")({
   paddingRight: 24,

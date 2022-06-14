@@ -3,10 +3,12 @@ declare module "@mui/material/styles" {
   interface Palette {
     HBPNavy: Palette["primary"];
     Mist: Palette["primary"];
+    DarkGreen: Palette["primary"];
   }
   interface PaletteOptions {
     HBPNavy: PaletteOptions["primary"];
     Mist: PaletteOptions["primary"];
+    DarkGreen: PaletteOptions["primary"];
   }
 }
 
@@ -20,6 +22,9 @@ export const theme = createTheme({
     },
     Mist: {
       main: "#52A1B4"
+    },
+    DarkGreen: {
+      main: "#439A6B"
     }
   },
 });

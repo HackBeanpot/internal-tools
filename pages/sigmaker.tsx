@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import {
-  Button,
   Divider,
   FormControl,
   Grid,
@@ -12,7 +11,7 @@ import { theme } from "../styles/theme";
 import { ChangeEvent, useState } from "react";
 import { icons } from "../styles/icons";
 import { SignatureData } from "../lib/types";
-import { PageContainer } from "../styles/common";
+import { StyledPageContainer, StyledButton } from "../styles/common";
 import {
   StyledContentContainer,
   StyledGmailHeader,
@@ -66,7 +65,7 @@ const Sigmaker: NextPage = () => {
           <StyledGmailHeader variant="h4">
             Paste this into Gmail!
           </StyledGmailHeader>
-          <PageContainer>
+          <StyledPageContainer>
             <StyledTable cellPadding={0} cellSpacing={0}>
               <tbody>
                 <tr>
@@ -123,7 +122,7 @@ const Sigmaker: NextPage = () => {
                 </tr>
               </tbody>
             </StyledTable>
-          </PageContainer>
+          </StyledPageContainer>
         </div>
       );
     }
@@ -131,7 +130,7 @@ const Sigmaker: NextPage = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <PageContainer>
+      <StyledPageContainer>
         <Typography variant="h3"> Signature Maker </Typography>
         <Divider />
         <br />
@@ -151,7 +150,7 @@ const Sigmaker: NextPage = () => {
               </Stack>
             </FormControl>
             <div>
-              <Button
+              <StyledButton
                 size="large"
                 color="info"
                 variant="contained"
@@ -166,14 +165,14 @@ const Sigmaker: NextPage = () => {
                 }}
               >
                 Generate signature!
-              </Button>
+              </StyledButton>
             </div>
           </Grid>
           <Grid item xs={12} md={6}>
             {<div>{createSignature()}</div>}
           </Grid>
         </Grid>
-      </PageContainer>
+      </StyledPageContainer>
     </ThemeProvider>
   );
 };

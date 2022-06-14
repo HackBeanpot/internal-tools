@@ -1,13 +1,13 @@
 import { ThemeProvider, Divider, Typography, Link } from "@mui/material";
 import type { NextPage } from "next";
-import { PageContainer } from "../styles/common";
+import { StyledPageContainer } from "../styles/common";
 import { theme } from "../styles/theme";
 import { StyledTypographyBody1 } from "../pageStyles/home.styles";
 
 const Home: NextPage = () => {
   return (
     <ThemeProvider theme={theme}>
-      <PageContainer>
+      <StyledPageContainer>
         <Typography variant="h3">
           Tools
         </Typography>
@@ -24,7 +24,7 @@ const Home: NextPage = () => {
             </Link>
           </li>
         </ul>
-      </PageContainer>
+      </StyledPageContainer>
     </ThemeProvider>
   );
 };
