@@ -1,47 +1,53 @@
-import type { NextPage } from "next";
+import type { NextPage } from 'next'
+import React, { ChangeEvent, useState } from 'react'
 import {
-  Button,
-  Container,
   Divider,
   FormControl,
   Grid,
   Stack,
-  TextField,
   ThemeProvider,
-  Typography,
-} from "@mui/material";
-import { theme } from "../styles/theme";
-import { ChangeEvent, useState } from "react";
-import { icons } from "../styles/icons"
-import Link from "next/link";
+  Typography
+} from '@mui/material'
+import { theme } from '../styles/theme'
+import { icons } from '../styles/icons'
+import { SignatureData } from '../lib/types'
+import { StyledPageContainer, StyledButton } from '../styles/common'
+import {
+  StyledContentContainer,
+  StyledGmailHeader,
+  StyledLogoContainer,
+  StyledTable,
+  StyledSignatureName,
+  StyledLogoImage,
+  StyledSignatureText,
+  StyledPhoneNumber,
+  StyledLinkContainer,
+  StyledLink,
+  StyledInputField
+} from '../pageStyles/sigmaker.styles'
 
-interface SignatureData {
-  fullName: string
-  title: string
-  phone: string
-  email: string
-}
 const Sigmaker: NextPage = () => {
   const [formData, setFormData] = useState<SignatureData>({
-    fullName: "",
-    title: "",
-    phone: "",
-    email: "",
-  });
-
-  const [signatureData, setSignatureData] = useState<undefined | SignatureData>(undefined);
+    fullName: '',
+    title: '',
+    phone: '',
+    email: ''
+  })
+  const [signatureData, setSignatureData] = useState<undefined | SignatureData>(
+    undefined
+  )
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name;
-    const value = e.target.value;
+    const name = e.target.name
+    const value = e.target.value
     setFormData({
       ...formData,
-      [name]: value,
-    });
-  };
+      [name]: value
+    })
+  }
 
   const createInputField = (name: string, value: string, label: string) => (
-    <TextField
+    <StyledInputField
       name={name}
       value={value}
       onChange={handleChange}
@@ -49,73 +55,82 @@ const Sigmaker: NextPage = () => {
       id="filled-size-small"
       variant="filled"
       size="small"
-      sx={{ width: "25ch" }}
     />
-  );
+  )
 
   const createSignature = () => {
     if (signatureData) {
       return (
         <div>
-          <Typography variant="h4" sx={{ pb: "16px" }}>
+          <StyledGmailHeader variant="h4">
             Paste this into Gmail!
-          </Typography>
-          <Container>
-            <table cellPadding={0} cellSpacing={0} className="table">
+          </StyledGmailHeader>
+          <StyledPageContainer>
+            <StyledTable cellPadding={0} cellSpacing={0}>
               <tbody>
                 <tr>
-                  <td valign="top" className="logoContainer">
-                    <img className="logo" id="preview-image-url" src={icons.HBP_LOGO.image} alt={icons.HBP_LOGO.altText}/>
-                  </td>
-                  <td className="contentContainer">
-                    <table cellPadding={0} cellSpacing={0} className="table">
+                  <StyledLogoContainer valign="top">
+                    <StyledLogoImage
+                      id="preview-image-url"
+                      src={icons.HBP_LOGO.image}
+                      alt={icons.HBP_LOGO.altText}
+                    />
+                  </StyledLogoContainer>
+                  <StyledContentContainer>
+                    <table cellPadding={0} cellSpacing={0}>
                       <tbody>
                         <tr>
-                          <td colSpan={2} className="name">{signatureData.fullName}</td>
+                          <StyledSignatureName colSpan={2}>
+                            {signatureData.fullName}
+                          </StyledSignatureName>
                         </tr>
                         <tr>
-                          <td colSpan={2} className="signatureText">{signatureData.title}</td>
+                          <StyledSignatureText colSpan={2}>
+                            {signatureData.title}
+                          </StyledSignatureText>
                         </tr>
                         <tr>
-                          <td colSpan={2} className="signatureText">
+                          <StyledSignatureText colSpan={2}>
                             <strong>HackBeanpot, Inc.</strong>
-                          </td>
+                          </StyledSignatureText>
                         </tr>
                         <tr>
-                          <td className="phoneNumber">{signatureData.phone}</td>
+                          <StyledPhoneNumber>
+                            {signatureData.phone}
+                          </StyledPhoneNumber>
                         </tr>
                         <tr>
-                          <td valign="top" className="linkContainer">
-                            <Link href="https://hackbeanpot.com" className="link" target="_blank">
+                          <StyledLinkContainer valign="top">
+                            <StyledLink
+                              href="https://hackbeanpot.com"
+                              target="_blank"
+                            >
                               www.hackbeanpot.com
-                            </Link>
-                          </td>
+                            </StyledLink>
+                          </StyledLinkContainer>
                         </tr>
                         <tr>
-                          <td className="signatureText">
-                            <a href="mailto:${email}@hackbeanpot.com" className="link">{signatureData.email}@hackbeanpot.com</a>
-                          </td>
+                          <StyledSignatureText>
+                            <StyledLink href={`mailto:${signatureData.email}@hackbeanpot.com`}>
+                              <a>{signatureData.email}@hackbeanpot.com</a>
+                            </StyledLink>
+                          </StyledSignatureText>
                         </tr>
                       </tbody>
                     </table>
-                  </td>
+                  </StyledContentContainer>
                 </tr>
               </tbody>
-            </table>
-          </Container>
+            </StyledTable>
+          </StyledPageContainer>
         </div>
-      )
-    }
-    else {
-      return (
-        <></>
       )
     }
   }
 
   return (
     <ThemeProvider theme={theme}>
-      <Container sx={{ mt: 4 }}>
+      <StyledPageContainer>
         <Typography variant="h3"> Signature Maker </Typography>
         <Divider />
         <br />
@@ -124,39 +139,42 @@ const Sigmaker: NextPage = () => {
             <Typography variant="h5"> Enter your info here! </Typography>
             <FormControl sx={{ my: 3 }}>
               <Stack spacing={3}>
-                {createInputField("fullName", formData.fullName, "Full name")}
-                {createInputField("title", formData.title, "Title")}
-                {createInputField("phone", formData.phone, "Phone")}
+                {createInputField('fullName', formData.fullName, 'Full name')}
+                {createInputField('title', formData.title, 'Title')}
+                {createInputField('phone', formData.phone, 'Phone')}
                 {createInputField(
-                  "email",
+                  'email',
                   formData.email,
-                  "Email (@hackbeanpot.com)"
+                  'Email (@hackbeanpot.com)'
                 )}
               </Stack>
             </FormControl>
             <div>
-              <Button
+              <StyledButton
                 size="large"
                 color="info"
                 variant="contained"
                 onClick={() => {
                   setSignatureData(formData)
-                  setFormData({ fullName: "", title: "", phone: "", email: "" })
+                  setFormData({
+                    fullName: '',
+                    title: '',
+                    phone: '',
+                    email: ''
+                  })
                 }}
               >
                 Generate signature!
-              </Button>
+              </StyledButton>
             </div>
           </Grid>
           <Grid item xs={12} md={6}>
-            {<div>
-              {createSignature()}
-            </div>}
+            {<div>{createSignature()}</div>}
           </Grid>
         </Grid>
-      </Container>
+      </StyledPageContainer>
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default Sigmaker;
+export default Sigmaker
