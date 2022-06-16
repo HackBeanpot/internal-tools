@@ -3,26 +3,23 @@ import { ThemeProvider, Divider, Typography, Link } from '@mui/material'
 import type { NextPage } from 'next'
 import { StyledPageContainer } from '../styles/common'
 import { theme } from '../styles/theme'
-import { StyledTypographyBody1 } from '../pageStyles/home.styles'
 
 const Home: NextPage = () => {
   return (
     <ThemeProvider theme={theme}>
       <StyledPageContainer>
-        <Typography variant="h3">
-          Tools
-        </Typography>
+        <Typography variant="h3">Tools</Typography>
         <Divider light />
-        <StyledTypographyBody1 variant="body1">
+        <Typography variant="body1">
           🛠 Internal tools + useful things for core members like…
-        </StyledTypographyBody1>
+        </Typography>
         <ul>
           <li>
-            <Link href="/sigmaker" underline="hover">
-              <StyledTypographyBody1 variant="body1">
+            <Typography variant="body1">
+              <Link href="/sigmaker" underline="hover">
                 An email signature generator
-              </StyledTypographyBody1>
-            </Link>
+              </Link>
+            </Typography>
           </li>
         </ul>
       </StyledPageContainer>
