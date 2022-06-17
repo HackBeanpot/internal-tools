@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import {
   ThemeProvider,
   Divider,
   Typography,
-  Container,
   FormControl,
   TableContainer,
   Table,
@@ -16,7 +15,7 @@ import {
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
-import { StyledButton } from '../styles/common'
+import { StyledButton, StyledPageContainer } from '../styles/common'
 import { CsvRow, ReplaceObj, Message } from '../lib/types'
 import {
   SectionContainer,
@@ -25,12 +24,13 @@ import {
   StyledCsvButtonsContainer,
   StyledSubHeader,
   StyledFinalMessagesContainer,
-  StyledTableContainer
+  StyledTableContainer,
+  StyledDivider
 } from '../pageStyles/emailSender.styles'
 
 const EmailSender: NextPage = () => {
   const [file, setFile] = useState()
-  const [csvRowsArray, setCsvRowsArray] = useState([])
+  const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
   const theme = useTheme()
@@ -39,14 +39,13 @@ const EmailSender: NextPage = () => {
   if (typeof window !== 'undefined') {
     reader = new window.FileReader()
   }
-  const handleOnChange = (e) => {
+  const handleOnChange = (e: ChangeEvent) => {
     setFile(e.target.files[0])
   }
 
-  const csvFileToArray = (str: any) => {
+  const csvFileToArray = (str: string) => {
     const csvHeader = str.slice(0, str.indexOf('\n')).split(',')
     const csvRows = str.slice(str.indexOf('\n') + 1).split('\n')
-
     const array = csvRows.map((i) => {
       const values = i.split(',')
       const obj = csvHeader.reduce((object: any, header: any, index: any) => {
@@ -63,21 +62,20 @@ const EmailSender: NextPage = () => {
     setCsvRowsArray(array)
   }
 
-  const handleOnSubmit = (e: Event) => {
+  const handleOnSubmit = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
-
     if (file) {
       reader.onload = function (event) {
         const csvOutput = event.target?.result
-        csvFileToArray(csvOutput)
+        if (typeof csvOutput === 'string') {
+          csvFileToArray(csvOutput)
+        }
       }
-
       reader.readAsText(file)
     }
   }
 
   const headerKeys = Object.keys(Object.assign({}, ...csvRowsArray))
-
   const re = /\${(.*?)}/g
 
   const createRegexArray = () => {
@@ -127,14 +125,15 @@ const EmailSender: NextPage = () => {
       <>
         {finalMessages.map((msg) => (
           <>
+            <StyledDivider />
             <a>To: {msg.to}</a>
             <br />
             <br />
             <a>Subject: {msg.subject}</a>
             <br />
+            <br />
             <a>Content:</a>
             <br />
-            <br/>
             <p>{msg.content}</p>
           </>
         ))}
@@ -144,7 +143,7 @@ const EmailSender: NextPage = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container sx={{ mt: 4 }}>
+      <StyledPageContainer>
         <Typography variant="h3"> Email Sender </Typography>
         <Divider />
         <br />
@@ -229,7 +228,7 @@ const EmailSender: NextPage = () => {
             {displayMessages()}
           </StyledFinalMessagesContainer>
         </SectionContainer>
-      </Container>
+      </StyledPageContainer>
     </ThemeProvider>
   )
 }
