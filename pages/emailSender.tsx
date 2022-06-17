@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { useState } from 'react'
 import {
   ThemeProvider,
   Divider,
@@ -39,7 +39,7 @@ const EmailSender: NextPage = () => {
   if (typeof window !== 'undefined') {
     reader = new window.FileReader()
   }
-  const handleOnChange = (e: ChangeEvent) => {
+  const handleOnChange = (e: any) => {
     setFile(e.target.files[0])
   }
 
@@ -62,7 +62,7 @@ const EmailSender: NextPage = () => {
     setCsvRowsArray(array)
   }
 
-  const handleOnSubmit = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleOnSubmit = (e: any) => {
     e.preventDefault()
     if (file) {
       reader.onload = function (event) {
