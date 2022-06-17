@@ -52,8 +52,11 @@ Now the server will run locally, most likely on `http://localhost:3000`. Your wo
 A quick look at the top-level file structure used
 
     .
+    ├── /.vscode
+    ├── /lib
     ├── /node_modules
     ├── /pages
+    ├── /pageStyles
     ├── /public
     ├── /styles
     ├── .gitignore
@@ -62,23 +65,30 @@ A quick look at the top-level file structure used
     ├── tsconfig.json
     └── README.md
 
-1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
 
-2.  **`/pages`**: This directory contains all of the pages in the project.
+1.  **`/.vscode`**: This directory contains VSCode configurations like automatically fixing ESLint syntax on save.
 
-3.  **`/public`**: This directory is used by Next.js to statically serve files.
+2.  **`/lib`**: This directory contains files with shared information such as types.
 
-4.  **`/styles`**: This directory contains the global styles utilized in the project.
+3.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
 
-5.  **`.gitignore`**: This file tells git which files will not maintain a version history, thus don't need to be tracked.
+4.  **`/pages`**: This directory contains all of the pages in the project.
 
-6. **`package.json`**: A manifest file for Node.js projects, this file includes the metadata for the project. Metadat incluedes the project's name, author, etc. This manifest is how yarn knows which packages to isntall to run the project.
+5.  **`/pageStyles`**: This directory contains the styling for all of the pages.
 
-7. **`yarn-lock.json`**: (First see `package.json`, below) This is an automatically generated file based on the exact versions of your yarn dependencies used for the project. **You won't change this file directly.**
+6.  **`/public`**: This directory is used by Next.js to statically serve files.
 
-8.  **`tsconfig.json`**: This directory contains cross-project reusable styling.
+7.  **`/styles`**: This directory contains the global styles utilized in the project.
 
-9. **`README.md`**: A reference text file containing information about the project.
+8.  **`.gitignore`**: This file tells git which files will not maintain a version history, thus don't need to be tracked.
+
+9. **`package.json`**: A manifest file for Node.js projects, this file includes the metadata for the project. Metadat incluedes the project's name, author, etc. This manifest is how yarn knows which packages to isntall to run the project.
+
+10. **`yarn-lock.json`**: (First see `package.json`, below) This is an automatically generated file based on the exact versions of your yarn dependencies used for the project. **You won't change this file directly.**
+
+11.  **`tsconfig.json`**: This directory contains cross-project reusable styling.
+
+12. **`README.md`**: A reference text file containing information about the project.
 
 ## :gear: Technologies
 

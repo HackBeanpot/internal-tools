@@ -1,32 +1,30 @@
-import { ThemeProvider, Divider, Typography, Link } from "@mui/material";
-import type { NextPage } from "next";
-import { theme } from "../styles/theme";
-
+import React from 'react'
+import { ThemeProvider, Divider, Typography, Link } from '@mui/material'
+import type { NextPage } from 'next'
+import { StyledPageContainer } from '../styles/common'
+import { theme } from '../styles/theme'
 
 const Home: NextPage = () => {
   return (
     <ThemeProvider theme={theme}>
-      <div className="tool-box">
-      <Typography variant="h3" component="h3">
-        Tools
-        </Typography>
+      <StyledPageContainer>
+        <Typography variant="h3">Tools</Typography>
         <Divider light />
-        <Typography variant="body1" component="p">
+        <Typography variant="body1">
           🛠 Internal tools + useful things for core members like…
         </Typography>
-        <Typography variant="body1" component="ul">
+        <ul>
           <li>
-            <Link
-              href="/sigmaker"
-              underline="hover"
-            >
-              An email signature generator
-            </Link>
+            <Typography variant="body1">
+              <Link href="/sigmaker" underline="hover">
+                An email signature generator
+              </Link>
+            </Typography>
           </li>
-        </Typography>
-      </div>
+        </ul>
+      </StyledPageContainer>
     </ThemeProvider>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
