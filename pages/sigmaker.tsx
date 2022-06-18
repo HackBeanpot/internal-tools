@@ -27,7 +27,6 @@ import {
 } from '../pageStyles/sigmaker.styles'
 import { signIn, signOut, useSession } from 'next-auth/react'
 
-
 const Sigmaker: NextPage = () => {
   const [formData, setFormData] = useState<SignatureData>({
     fullName: '',
@@ -39,7 +38,7 @@ const Sigmaker: NextPage = () => {
     undefined
   )
 
-  const { data: session } = useSession();
+  const { data: session } = useSession()
   if (!session) {
     return (
       <>
@@ -48,7 +47,7 @@ const Sigmaker: NextPage = () => {
       </>
     )
   }
-  
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name
     const value = e.target.value

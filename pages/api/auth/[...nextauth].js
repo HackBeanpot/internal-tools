@@ -21,7 +21,7 @@ export default NextAuth({ // a component?
     // functions running in parallel with other functions
     async signIn ({ account, profile }) {
       if (account.provider === 'google') {
-        return profile.email_verified // && profile.email.endsWith("@hackbeanpot.com")
+        return profile.email_verified && profile.email.endsWith('@hackbeanpot.com')
       }
       return false
     },
