@@ -1,10 +1,12 @@
-import "../styles/globals.css"
-import "../styles/home.css"
-import "../styles/sigmaker.css"
+import '../styles/globals.css'
+import '../styles/home.css'
+import '../styles/sigmaker.css'
 import type { AppProps } from 'next/app'
-import { SessionProvider } from "next-auth/react"
+import { SessionProvider } from 'next-auth/react'
 
-function MyApp({ Component, pageProps }: AppProps) {
+import React from 'react'
+
+function MyApp ({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider
       // Provider options are not required but can be useful in situations where
