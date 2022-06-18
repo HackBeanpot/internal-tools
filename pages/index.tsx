@@ -1,40 +1,22 @@
-<<<<<<< HEAD
-import React from 'react'
-import { ThemeProvider, Divider, Typography, Link } from '@mui/material'
-import type { NextPage } from 'next'
-import { StyledPageContainer } from '../styles/common'
-import { theme } from '../styles/theme'
-
-const Home: NextPage = () => {
-  return (
-    <ThemeProvider theme={theme}>
-      <StyledPageContainer>
-        <Typography variant="h3">Tools</Typography>
-        <Divider light />
-        <Typography variant="body1">
-          🛠 Internal tools + useful things for core members like…
-        </Typography>
-        <ul>
-          <li>
-            <Typography variant="body1">
-              <Link href="/sigmaker" underline="hover">
-                An email signature generator
-              </Link>
-            </Typography>
-          </li>
-        </ul>
-      </StyledPageContainer>
-    </ThemeProvider>
-  )
-}
-=======
 import type { NextPage } from "next";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "../styles/theme";
 import { Divider } from "@mui/material";
 import { Typography } from "@mui/material";
+import { signIn, useSession } from "next-auth/react";
+
+
 
 const Home: NextPage = () => {
+  const { data: session } = useSession();
+  if (!session) {
+    return ( 
+      <>
+        Not signed in <br />
+        <button onClick={() => signIn('google', { callbackUrl: 'http://localhost:3000/api/auth/callback/google' })}>Sign in</button>
+      </>
+    )
+  }
   return <ThemeProvider theme={theme}>
     <div className = "tool-box">
     <h3>Tools</h3>
@@ -61,6 +43,5 @@ const Home: NextPage = () => {
    
   </ThemeProvider>;
 };
->>>>>>> d4e8b7b (preliminary draft for tools page, still need to make the page resizeable through @media)
 
 export default Home
