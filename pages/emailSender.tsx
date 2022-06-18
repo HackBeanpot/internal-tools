@@ -5,12 +5,11 @@ import {
   Typography,
   FormControl,
   TableContainer,
-  Table,
   Paper,
   TableBody,
   TableCell,
   TableHead,
-  TableRow
+  Button
 } from '@mui/material'
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
@@ -25,7 +24,9 @@ import {
   StyledSubHeader,
   StyledFinalMessagesContainer,
   StyledTableContainer,
-  StyledDivider
+  StyledDivider,
+  StyledTable,
+  StyledTableRow
 } from '../pageStyles/emailSender.styles'
 
 const EmailSender: NextPage = () => {
@@ -171,9 +172,9 @@ const EmailSender: NextPage = () => {
                 onChange={handleOnChange}
               />
               <label htmlFor="contained-button-file">
-                <StyledCsvButton variant="contained" component="span">
+                <Button variant="contained" component="span">
                   Upload
-                </StyledCsvButton>
+                </Button>
               </label>
               <StyledCsvButton
                 variant="contained"
@@ -188,7 +189,7 @@ const EmailSender: NextPage = () => {
         </FormControl>
         <StyledTableContainer>
           <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <StyledTable aria-label="simple table">
               <TableHead>
                 {headerKeys.map((key) => (
                   <TableCell key={nanoid()}>
@@ -198,19 +199,18 @@ const EmailSender: NextPage = () => {
               </TableHead>
               <TableBody>
                 {csvRowsArray.map((item) => (
-                  <TableRow
+                  <StyledTableRow
                     key={'header'}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     {Object.values(item).map((val) => (
                       <TableCell key={nanoid()} align="left">
                         {val}
                       </TableCell>
                     ))}
-                  </TableRow>
+                  </StyledTableRow>
                 ))}
               </TableBody>
-            </Table>
+            </StyledTable>
           </TableContainer>
         </StyledTableContainer>
         <SectionContainer>

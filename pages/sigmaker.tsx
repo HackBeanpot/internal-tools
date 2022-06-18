@@ -2,7 +2,6 @@ import type { NextPage } from 'next'
 import React, { ChangeEvent, useState } from 'react'
 import {
   Divider,
-  FormControl,
   Grid,
   Stack,
   ThemeProvider,
@@ -23,7 +22,9 @@ import {
   StyledPhoneNumber,
   StyledLinkContainer,
   StyledLink,
-  StyledInputField
+  StyledInputField,
+  StyledGrid,
+  StyledFormControl
 } from '../pageStyles/sigmaker.styles'
 
 const Sigmaker: NextPage = () => {
@@ -134,10 +135,10 @@ const Sigmaker: NextPage = () => {
         <Typography variant="h3"> Signature Maker </Typography>
         <Divider />
         <br />
-        <Grid container spacing={2} sx={{ rowGap: 3 }}>
+        <StyledGrid container spacing={2}>
           <Grid item xs={12} md={6}>
             <Typography variant="h5"> Enter your info here! </Typography>
-            <FormControl sx={{ my: 3 }}>
+            <StyledFormControl>
               <Stack spacing={3}>
                 {createInputField('fullName', formData.fullName, 'Full name')}
                 {createInputField('title', formData.title, 'Title')}
@@ -148,7 +149,7 @@ const Sigmaker: NextPage = () => {
                   'Email (@hackbeanpot.com)'
                 )}
               </Stack>
-            </FormControl>
+            </StyledFormControl>
             <div>
               <StyledButton
                 size="large"
@@ -171,7 +172,7 @@ const Sigmaker: NextPage = () => {
           <Grid item xs={12} md={6}>
             {<div>{createSignature()}</div>}
           </Grid>
-        </Grid>
+        </StyledGrid>
       </StyledPageContainer>
     </ThemeProvider>
   )
