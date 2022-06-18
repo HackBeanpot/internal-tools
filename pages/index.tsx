@@ -3,7 +3,8 @@ import { ThemeProvider } from "@mui/material";
 import { theme } from "../styles/theme";
 import { Divider } from "@mui/material";
 import { Typography } from "@mui/material";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
+
 
 
 
@@ -13,7 +14,7 @@ const Home: NextPage = () => {
     return ( 
       <>
         Not signed in <br />
-        <button onClick={() => signIn('google', { callbackUrl: 'http://localhost:3000/api/auth/callback/google' })}>Sign in</button>
+        <button onClick={() => signIn()}>Sign in</button>
       </>
     )
   }
@@ -31,7 +32,7 @@ const Home: NextPage = () => {
      (last updated September 2019)
       </li>
 
-
+      <button onClick={() => signOut()}>Sign out</button>
     
     </Typography>
     </div>
