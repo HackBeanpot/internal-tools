@@ -1,5 +1,5 @@
 import { styled } from '@mui/system'
-import { Button, Container } from '@mui/material'
+import { Button, Container, Typography } from '@mui/material'
 import { theme } from './theme'
 
 const StyledPageContainer = styled(Container)({
@@ -16,4 +16,8 @@ const StyledButton = styled(Button)(({
   width: 200
 }))
 
-export { StyledPageContainer, StyledButton }
+const StyledBoldTypograhy = styled(Typography)({
+  fontWeight: 600
+})
+
+export { StyledPageContainer, StyledButton, StyledBoldTypograhy }

@@ -14,7 +14,11 @@ import {
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
-import { StyledButton, StyledPageContainer } from '../styles/common'
+import {
+  StyledButton,
+  StyledPageContainer,
+  StyledBoldTypograhy
+} from '../styles/common'
 import { CsvRow, ReplaceObj, Message } from '../lib/types'
 import {
   SectionContainer,
@@ -49,10 +53,13 @@ const EmailSender: NextPage = () => {
     const allRowValues = str.slice(str.indexOf('\n') + 1).split('\n')
     const allRowObjects = allRowValues.map((i) => {
       const currRowValues = i.split(',')
-      const currRowObject = csvHeaders.reduce((object: any, header: any, index: any) => {
-        object[header] = currRowValues[index]
-        return object
-      }, {})
+      const currRowObject = csvHeaders.reduce(
+        (object: any, header: any, index: any) => {
+          object[header] = currRowValues[index]
+          return object
+        },
+        {}
+      )
       return currRowObject
     })
 
@@ -124,18 +131,15 @@ const EmailSender: NextPage = () => {
     return (
       <>
         {finalMessages.map((msg) => (
-          <>
+          <div key={nanoid()}>
             <StyledDivider />
-            <a>To: {msg.to}</a>
+            <Typography variant="body1">To: {msg.to}</Typography>
+            <Typography variant="body1">Subject: {msg.subject}</Typography>
             <br />
+            <Typography variant="body1">Content:</Typography>
             <br />
-            <a>Subject: {msg.subject}</a>
-            <br />
-            <br />
-            <a>Content:</a>
-            <br />
-            <p>{msg.content}</p>
-          </>
+            <Typography variant="body1">{msg.content}</Typography>
+          </div>
         ))}
       </>
     )
@@ -192,15 +196,15 @@ const EmailSender: NextPage = () => {
               <TableHead>
                 {headerKeys.map((key) => (
                   <TableCell key={nanoid()}>
-                    <b>{key}</b>
+                    <StyledBoldTypograhy variant="body1">
+                      {key}
+                    </StyledBoldTypograhy>
                   </TableCell>
                 ))}
               </TableHead>
               <TableBody>
                 {csvRowsArray.map((item) => (
-                  <StyledTableRow
-                    key={'header'}
-                  >
+                  <StyledTableRow key={nanoid()}>
                     {Object.values(item).map((val) => (
                       <TableCell key={nanoid()} align="left">
                         {val}

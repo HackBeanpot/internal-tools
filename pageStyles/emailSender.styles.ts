@@ -34,6 +34,7 @@ const StyledTableContainer = styled('div')({
 })
 
 const StyledDivider = styled(Divider)({
+  marginTop: 50,
   marginBottom: 50
 })
 
