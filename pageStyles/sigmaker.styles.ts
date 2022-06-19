@@ -77,7 +77,8 @@ const StyledGrid = styled(Grid)({
 })
 
 const StyledFormControl = styled(FormControl)({
-  my: 3
+  marginTop: 3,
+  marginBottom: 3
 })
 
 export {

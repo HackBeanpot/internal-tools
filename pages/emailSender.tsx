@@ -45,22 +45,21 @@ const EmailSender: NextPage = () => {
   }
 
   const csvFileToArray = (str: string) => {
-    const csvHeader = str.slice(0, str.indexOf('\n')).split(',')
-    const csvRows = str.slice(str.indexOf('\n') + 1).split('\n')
-    const array = csvRows.map((i) => {
-      const values = i.split(',')
-      const obj = csvHeader.reduce((object: any, header: any, index: any) => {
-        object[header] = values[index]
+    const csvHeaders = str.slice(0, str.indexOf('\n')).split(',')
+    const allRowValues = str.slice(str.indexOf('\n') + 1).split('\n')
+    const allRowObjects = allRowValues.map((i) => {
+      const currRowValues = i.split(',')
+      const currRowObject = csvHeaders.reduce((object: any, header: any, index: any) => {
+        object[header] = currRowValues[index]
         return object
       }, {})
-      return obj
+      return currRowObject
     })
 
-    if (array[array.length - 1].email === '') {
-      array.pop()
+    if (allRowObjects[allRowObjects.length - 1].email === '') {
+      allRowObjects.pop()
     }
-
-    setCsvRowsArray(array)
+    setCsvRowsArray(allRowObjects)
   }
 
   const handleOnSubmit = (e: any) => {
@@ -81,16 +80,16 @@ const EmailSender: NextPage = () => {
 
   const createRegexArray = () => {
     const messageStr = message.toString()
-    const array = [...messageStr.matchAll(re)]
+    const variableMatchesArr = [...messageStr.matchAll(re)]
     const headersArr: Array<String> = []
     const headersArrFinal: Array<ReplaceObj> = []
-    for (let i = 0; i < array.length; i++) {
-      const header = array[i][1]
+    for (let i = 0; i < variableMatchesArr.length; i++) {
+      const header = variableMatchesArr[i][1]
       if (!headersArr.includes(header)) {
         headersArr.push(header)
         headersArrFinal.push({
-          toReplace: array[i][0],
-          headerName: array[i][1]
+          toReplace: variableMatchesArr[i][0],
+          headerName: variableMatchesArr[i][1]
         })
       }
     }
