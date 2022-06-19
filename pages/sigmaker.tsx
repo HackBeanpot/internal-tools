@@ -25,6 +25,7 @@ import {
   StyledLink,
   StyledInputField
 } from '../pageStyles/sigmaker.styles'
+import { signIn, signOut, useSession } from 'next-auth/react'
 
 const Sigmaker: NextPage = () => {
   const [formData, setFormData] = useState<SignatureData>({
@@ -36,6 +37,16 @@ const Sigmaker: NextPage = () => {
   const [signatureData, setSignatureData] = useState<undefined | SignatureData>(
     undefined
   )
+
+  const { data: session } = useSession()
+  if (!session) {
+    return (
+      <>
+        Not signed in <br />
+        <button onClick={() => signIn()}>Sign in</button>
+      </>
+    )
+  }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name
@@ -166,6 +177,7 @@ const Sigmaker: NextPage = () => {
               >
                 Generate signature!
               </StyledButton>
+              <button onClick={() => signOut()}>Sign out</button>
             </div>
           </Grid>
           <Grid item xs={12} md={6}>
