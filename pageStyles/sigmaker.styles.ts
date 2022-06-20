@@ -1,4 +1,4 @@
-import { TextField, Typography } from '@mui/material'
+import { FormControl, Grid, TextField, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Link from 'next/link'
 
@@ -72,6 +72,15 @@ const StyledInputField = styled(TextField)({
   width: '25ch'
 })
 
+const StyledGrid = styled(Grid)({
+  rowGap: 3
+})
+
+const StyledFormControl = styled(FormControl)({
+  marginTop: 40,
+  marginBottom: 40
+})
+
 export {
   StyledGmailHeader,
   StyledTable,
@@ -83,5 +92,7 @@ export {
   StyledPhoneNumber,
   StyledLinkContainer,
   StyledLink,
-  StyledInputField
+  StyledInputField,
+  StyledGrid,
+  StyledFormControl
 }
