@@ -178,6 +178,8 @@ const Sigmaker: NextPage = () => {
               >
                 Generate signature!
               </StyledButton>
+              <br />
+              <br />
               <button onClick={() => signOut()}>Sign out</button>
             </div>
           </Grid>
