@@ -14,6 +14,7 @@ import {
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import {
   StyledButton,
   StyledPageContainer,
@@ -39,6 +40,15 @@ const EmailSender: NextPage = () => {
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
   const theme = useTheme()
+  const { data: session } = useSession()
+  if (!session) {
+    return (
+      <>
+        Not signed in <br />
+        <button onClick={() => signIn()}>Sign in</button>
+      </>
+    )
+  }
 
   let reader: FileReader
   if (typeof window !== 'undefined') {
@@ -232,6 +242,7 @@ const EmailSender: NextPage = () => {
           </StyledFinalMessagesContainer>
         </SectionContainer>
       </StyledPageContainer>
+      <button onClick={() => signOut()}>Sign out</button>
     </ThemeProvider>
   )
 }
