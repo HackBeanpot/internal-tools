@@ -28,7 +28,3 @@ export const theme = createTheme({
     }
   }
 })
-
-theme.typography.body1 = {
-  margin: '16px 0'
-}

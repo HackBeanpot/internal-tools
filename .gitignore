@@ -26,8 +26,9 @@ yarn-error.log*
 .pnpm-debug.log*
 yarn.lock
 
-# local env files
+# env files
 .env*.local
+.env
 package-lock.json
 
 # vercel
@@ -35,4 +36,3 @@ package-lock.json
 
 # typescript
 *.tsbuildinfo
-.env
