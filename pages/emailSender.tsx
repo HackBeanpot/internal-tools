@@ -60,7 +60,11 @@ const EmailSender: NextPage = () => {
 
   const csvFileToArray = (str: string) => {
     const csvHeaders = str.slice(0, str.indexOf('\n')).split(',')
-    const allRowValues = str.slice(str.indexOf('\n') + 1).split('\n')
+    let allRowValues = str.slice(str.indexOf('\n') + 1).split('\n')
+    allRowValues = allRowValues.map((string) => {
+      return string.trim()
+    });
+    console.log(allRowValues)
     const allRowObjects = allRowValues.map((i) => {
       const currRowValues = i.split(',')
       const currRowObject = csvHeaders.reduce(
