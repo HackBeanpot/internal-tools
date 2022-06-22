@@ -33,6 +33,10 @@ const StyledTableContainer = styled('div')({
   marginBottom: 50
 })
 
+const StyledFinalMessageContent = styled('div')({
+  whiteSpace: 'pre-wrap'
+})
+
 const StyledDivider = styled(Divider)({
   marginTop: 50,
   marginBottom: 50
@@ -48,5 +52,6 @@ const StyledTableRow = styled(TableRow)({
 
 export {
   SectionContainer, StyledTextArea, StyledCsvButton, StyledCsvButtonsContainer, StyledSubHeader,
-  StyledFinalMessagesContainer, StyledTableContainer, StyledDivider, StyledTable, StyledTableRow
+  StyledFinalMessagesContainer, StyledTableContainer, StyledDivider, StyledTable, StyledTableRow,
+  StyledFinalMessageContent
 }
