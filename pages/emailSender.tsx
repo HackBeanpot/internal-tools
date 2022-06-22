@@ -31,7 +31,8 @@ import {
   StyledTableContainer,
   StyledDivider,
   StyledTable,
-  StyledTableRow
+  StyledTableRow,
+  StyledFinalMessageContent
 } from '../pageStyles/emailSender.styles'
 
 const EmailSender: NextPage = () => {
@@ -63,8 +64,7 @@ const EmailSender: NextPage = () => {
     let allRowValues = str.slice(str.indexOf('\n') + 1).split('\n')
     allRowValues = allRowValues.map((string) => {
       return string.trim()
-    });
-    console.log(allRowValues)
+    })
     const allRowObjects = allRowValues.map((i) => {
       const currRowValues = i.split(',')
       const currRowObject = csvHeaders.reduce(
@@ -152,7 +152,10 @@ const EmailSender: NextPage = () => {
             <br />
             <Typography variant="body1">Content:</Typography>
             <br />
-            <Typography variant="body1">{msg.content}</Typography>
+            <Typography variant="body1">
+              <StyledFinalMessageContent>{msg.content}</StyledFinalMessageContent>
+            </Typography>
+
           </div>
         ))}
       </>
