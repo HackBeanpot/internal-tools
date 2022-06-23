@@ -1,14 +1,15 @@
 import { getProviders, signIn } from "next-auth/react"
 import { StyledLogoImage } from "../../pageStyles/sigmaker.styles";
-import { StyledButton, StyledPageContainer } from '../../styles/common';
+import { StyledButton } from '../../styles/common';
+import { StyledSignInPageContainer } from "../../pageStyles/signin.styles";
 import { icons } from '../../styles/icons';
 
 
 export default function SignIn({ providers }) {
   return (
-    <StyledPageContainer>
+    <>
       {Object.values(providers).map((provider) => (
-        <div key={provider.name}>
+        <StyledSignInPageContainer key={provider.name}>
            <StyledLogoImage
                       id="preview-image-url"
                       src={icons.HBP_LOGO.image}
@@ -17,9 +18,9 @@ export default function SignIn({ providers }) {
           <StyledButton onClick={() => signIn(provider.id)}>
             Sign in with {provider.name}
           </StyledButton>
-        </div>
+        </StyledSignInPageContainer>
       ))}
-    </StyledPageContainer>
+    </>
   )
 }
 
