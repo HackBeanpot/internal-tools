@@ -9,6 +9,7 @@ const StyledPageContainer = styled(Container)({
 
 const StyledButton = styled(Button)(({
   backgroundColor: theme.palette.DarkGreen.main,
+  color: "white",
   textTransform: 'none',
   '&:hover': {
     backgroundColor: theme.palette.Mist.main
