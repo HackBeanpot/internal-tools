@@ -33,5 +33,11 @@ export default NextAuth({
       return session
     }
   },
+  pages: {
+    signIn: '/auth/signin',
+    signOut: '/auth/signin',
+    error: '/auth/signin',
+    verifyRequest: '/auth/signin'
+  },
   secret: process.env.JWT_SECRET
 })
