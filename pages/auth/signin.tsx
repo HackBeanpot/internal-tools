@@ -4,8 +4,9 @@ import { StyledLogoImage } from "../../pageStyles/sigmaker.styles";
 import { StyledButton } from '../../styles/common';
 import { StyledSignInPageContainer } from "../../pageStyles/signin.styles";
 import { icons } from '../../styles/icons';
-import { Typography } from "@mui/material";
+import { ThemeProvider, Typography } from "@mui/material";
 import { useRouter } from 'next/router';
+import { theme } from '../../styles/theme'
 
 
 
@@ -18,7 +19,7 @@ export default function SignIn({ providers }) {
     }
   }, [router, session.data]);
   return (
-    <>
+    <ThemeProvider theme={theme}>
       {Object.values(providers).map((provider) => (
         <StyledSignInPageContainer key={provider.name}>
           <StyledLogoImage
@@ -28,12 +29,12 @@ export default function SignIn({ providers }) {
           />
           <Typography variant="body1">Welcome to our internal tools portal!!</Typography>
           <br></br>
-          <StyledButton onClick={() => signIn(provider.id)}>
+          <StyledButton bgColor="blue" onClick={() => signIn(provider.id)}>
             Sign in with {provider.name}
           </StyledButton>
         </StyledSignInPageContainer>
       ))}
-    </>
+    </ThemeProvider>
   )
 }
 
