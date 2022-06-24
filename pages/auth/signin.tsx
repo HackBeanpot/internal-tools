@@ -1,23 +1,21 @@
-import React, { useEffect } from 'react';
-import { getProviders, signIn, useSession } from "next-auth/react"
-import { StyledLogoImage } from "../../pageStyles/sigmaker.styles";
-import { StyledButton } from '../../styles/common';
-import { StyledSignInPageContainer } from "../../pageStyles/signin.styles";
-import { icons } from '../../styles/icons';
-import { ThemeProvider, Typography } from "@mui/material";
-import { useRouter } from 'next/router';
+import React, { useEffect } from 'react'
+import { getProviders, signIn, useSession } from 'next-auth/react'
+import { StyledLogoImage } from '../../pageStyles/sigmaker.styles'
+import { StyledButton } from '../../styles/common'
+import { StyledSignInPageContainer } from '../../pageStyles/signin.styles'
+import { icons } from '../../styles/icons'
+import { ThemeProvider, Typography } from '@mui/material'
+import { useRouter } from 'next/router'
 import { theme } from '../../styles/theme'
 
-
-
-export default function SignIn({ providers }) {
-  const router = useRouter();
-  const session = useSession();
+export default function SignIn ({ providers }) {
+  const router = useRouter()
+  const session = useSession()
   useEffect(() => {
     if (session.data) {
-      router.push('/');
+      router.push('/')
     }
-  }, [router, session.data]);
+  }, [router, session.data])
   return (
     <ThemeProvider theme={theme}>
       {Object.values(providers).map((provider) => (
@@ -38,9 +36,9 @@ export default function SignIn({ providers }) {
   )
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps () {
   const providers = await getProviders()
   return {
-    props: { providers },
+    props: { providers }
   }
 }

@@ -9,9 +9,9 @@ const StyledPageContainer = styled(Container)({
 
 const StyledButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'bgColor'
-})  (({ bgColor }) => ({
+})<{ bgColor?: string }>(({ bgColor }) => ({
   backgroundColor: bgColor || theme.palette.DarkGreen.main,
-  color: "white",
+  color: 'white',
   textTransform: 'none',
   '&:hover': {
     backgroundColor: theme.palette.Mist.main
