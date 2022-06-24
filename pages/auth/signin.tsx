@@ -29,7 +29,7 @@ export default function SignIn({ providers }) {
           />
           <Typography variant="body1">Welcome to our internal tools portal!!</Typography>
           <br></br>
-          <StyledButton bgColor="blue" onClick={() => signIn(provider.id)}>
+          <StyledButton bgColor={theme.palette.HBPNavy.main} onClick={() => signIn(provider.id)}>
             Sign in with {provider.name}
           </StyledButton>
         </StyledSignInPageContainer>
