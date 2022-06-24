@@ -9,8 +9,7 @@ import { useRouter } from 'next/router'
 import { theme } from '../../styles/theme'
 import { InferGetServerSidePropsType } from 'next'
 
-
-export default function SignIn({ providers }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function SignIn ({ providers }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter()
   const session = useSession()
   useEffect(() => {
@@ -40,7 +39,7 @@ export default function SignIn({ providers }: InferGetServerSidePropsType<typeof
   }
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps () {
   const providers = await getProviders()
   return {
     props: { providers }
