@@ -33,6 +33,7 @@ import {
   StyledTable,
   StyledTableRow
 } from '../pageStyles/emailSender.styles'
+import Layout from '../components/layout/Layout'
 
 const EmailSender: NextPage = () => {
   const [file, setFile] = useState()
@@ -157,6 +158,11 @@ const EmailSender: NextPage = () => {
 
   return (
     <ThemeProvider theme={theme}>
+       <Layout>
+      <Button variant="contained" color = "secondary">
+          <Button onClick={() => signOut()}>Sign out</Button>
+          </Button>
+          </Layout>
       <StyledPageContainer>
         <Typography variant="h3"> Email Sender </Typography>
         <Divider />
@@ -242,7 +248,6 @@ const EmailSender: NextPage = () => {
           </StyledFinalMessagesContainer>
         </SectionContainer>
       </StyledPageContainer>
-      <button onClick={() => signOut()}>Sign out</button>
     </ThemeProvider>
   )
 }
