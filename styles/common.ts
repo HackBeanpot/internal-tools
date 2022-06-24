@@ -11,7 +11,7 @@ const StyledButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'bgColor'
 })<{ bgColor?: string }>(({ bgColor }) => ({
   backgroundColor: bgColor || theme.palette.DarkGreen.main,
-  color: 'white',
+  color: theme.palette.White.main,
   textTransform: 'none',
   '&:hover': {
     backgroundColor: theme.palette.Mist.main
