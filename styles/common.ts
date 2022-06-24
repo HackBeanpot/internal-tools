@@ -7,8 +7,10 @@ const StyledPageContainer = styled(Container)({
   marginBottom: 40
 })
 
-const StyledButton = styled(Button)(({
-  backgroundColor: theme.palette.DarkGreen.main,
+const StyledButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== 'bgColor'
+})  (({ bgColor }) => ({
+  backgroundColor: bgColor || theme.palette.DarkGreen.main,
   color: "white",
   textTransform: 'none',
   '&:hover': {
