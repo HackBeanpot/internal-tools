@@ -2,35 +2,24 @@ import * as React from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
-import IconButton from '@mui/material/IconButton'
-import MenuIcon from '@mui/icons-material/Menu'
 import { signOut } from 'next-auth/react'
 import PropTypes from 'prop-types'
 import { Props } from 'next/script'
+import { theme } from '../../styles/theme'
+import { ThemeProvider, Divider, Typography, Link, Button } from '@mui/material'
+import { StyledButton } from '../../styles/common'
 
 export default function Layout ({ children }: Props) {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <ThemeProvider theme={theme}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            { children }
-          </Typography>
-          <Button onClick={() => signOut()}>Sign out</Button>
         </Toolbar>
       </AppBar>
-    </Box>
+        <StyledButton bgColor={theme.palette.HBPNavy.main} onClick={() => signOut}>
+            </StyledButton>
+      { children }
+    </ThemeProvider>
   )
 }
 

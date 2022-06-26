@@ -143,7 +143,7 @@ const Sigmaker: NextPage = () => {
   }
 
   return (
-    <div className="layout">
+    <Layout>
     <ThemeProvider theme={theme}>
     <Layout>
       <Button variant="contained" color = "secondary">
@@ -196,7 +196,7 @@ const Sigmaker: NextPage = () => {
         </StyledGrid>
       </StyledPageContainer>
     </ThemeProvider>
-    </div>
+    </Layout>
   )
 }
 
