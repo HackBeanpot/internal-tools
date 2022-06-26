@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
 import React, { ChangeEvent, useState } from 'react'
 import {
-  Button,
   Divider,
   Grid,
   Stack,
@@ -27,7 +26,7 @@ import {
   StyledGrid,
   StyledFormControl
 } from '../pageStyles/sigmaker.styles'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import Layout from '../components/layout/Layout'
 
 const Sigmaker: NextPage = () => {
@@ -145,11 +144,6 @@ const Sigmaker: NextPage = () => {
   return (
     <Layout>
     <ThemeProvider theme={theme}>
-    <Layout>
-      <Button variant="contained" color = "secondary">
-          <Button onClick={() => signOut()}>Sign out</Button>
-          </Button>
-          </Layout>
       <StyledPageContainer>
         <Typography variant="h3"> Signature Maker </Typography>
         <Divider />
