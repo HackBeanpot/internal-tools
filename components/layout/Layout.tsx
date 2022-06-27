@@ -5,21 +5,20 @@ import { signOut } from 'next-auth/react'
 import PropTypes from 'prop-types'
 import { Props } from 'next/script'
 import { theme } from '../../styles/theme'
-import { ThemeProvider, Divider, Typography, Link, Button } from '@mui/material'
+import { ThemeProvider } from '@mui/material'
 import { StyledButton } from '../../styles/common'
 
-export default function Layout ({ children }: Props) {
+export default function Layout({ children }: Props) {
   return (
     <ThemeProvider theme={theme}>
-     
       <AppBar position="static">
-      <StyledButton bgColor={theme.palette.Mist.main} onClick={() => signOut()}>
-        Sign out
-            </StyledButton>
         <Toolbar>
+          <StyledButton bgColor={theme.palette.Mist.main} onClick={() => signOut()}>
+            Sign out
+          </StyledButton>
         </Toolbar>
-      </AppBar> 
-      { children }
+      </AppBar>
+      {children}
     </ThemeProvider>
   )
 }
