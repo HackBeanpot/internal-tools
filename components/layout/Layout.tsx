@@ -8,7 +8,7 @@ import { theme } from '../../styles/theme'
 import { ThemeProvider } from '@mui/material'
 import { StyledButton } from '../../styles/common'
 
-export default function Layout({ children }: Props) {
+export default function Layout ({ children }: Props) {
   return (
     <ThemeProvider theme={theme}>
       <AppBar position="static">
