@@ -22,9 +22,7 @@ import {
   StyledPhoneNumber,
   StyledLinkContainer,
   StyledLink,
-  StyledInputField,
   StyledGrid,
-  StyledFormControl
 } from '../pageStyles/sigmaker.styles'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
@@ -163,26 +161,26 @@ const Sigmaker: NextPage = () => {
                 onSubmit={handleSubmit}
             >
             <Stack spacing={3}>
-            <Typography variant="h5"> Enter your info here! </Typography>
-                {createValidatedInputField('fullName', formData.fullName, 'Full name')}
-                {createValidatedInputField('title', formData.title, 'Title')}
-                {createValidatedInputField('phone', formData.phone, 'Phone')}
-                {createValidatedInputField('email', formData.email, 'Email (@hackbeanpot.com)')}
-                <StyledButton
-                  size="large"
-                  color="info"
-                  variant="contained"
-                  type="submit"
-                >
-                  Generate signature!
-                </StyledButton>
-                </Stack>
-              </ValidatorForm>
-              <div>
-              <br />
-              <br />
-              <button onClick={() => signOut()}>Sign out</button>
-            </div>
+              <Typography variant="h5"> Enter your info here! </Typography>
+              {createValidatedInputField('fullName', formData.fullName, 'Full name')}
+              {createValidatedInputField('title', formData.title, 'Title')}
+              {createValidatedInputField('phone', formData.phone, 'Phone')}
+              {createValidatedInputField('email', formData.email, 'Email (@hackbeanpot.com)')}
+              <StyledButton
+                size="large"
+                color="info"
+                variant="contained"
+                type="submit"
+              >
+                Generate signature!
+              </StyledButton>
+            </Stack>
+          </ValidatorForm>
+          <div>
+            <br />
+            <br />
+            <button onClick={() => signOut()}>Sign out</button>
+          </div>
           </Grid>
           <Grid item xs={12} md={6}>
             {<div>{createSignature()}</div>}
