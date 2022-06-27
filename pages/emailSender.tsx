@@ -14,7 +14,7 @@ import {
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import {
   StyledButton,
   StyledPageContainer,
@@ -157,12 +157,8 @@ const EmailSender: NextPage = () => {
   }
 
   return (
+    <Layout>
     <ThemeProvider theme={theme}>
-       <Layout>
-      <Button variant="contained" color = "secondary">
-          <Button onClick={() => signOut()}>Sign out</Button>
-          </Button>
-          </Layout>
       <StyledPageContainer>
         <Typography variant="h3"> Email Sender </Typography>
         <Divider />
@@ -249,6 +245,7 @@ const EmailSender: NextPage = () => {
         </SectionContainer>
       </StyledPageContainer>
     </ThemeProvider>
+    </Layout>
   )
 }
 
