@@ -16,7 +16,7 @@ const StyledButton = styled(Button, {
   '&:hover': {
     backgroundColor: theme.palette.Mist.main
   },
-  width: 200
+  width: 100
 }))
 
 const StyledBoldTypograhy = styled(Typography)({

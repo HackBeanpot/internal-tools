@@ -26,7 +26,8 @@ import {
   StyledGrid,
   StyledFormControl
 } from '../pageStyles/sigmaker.styles'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
+import Layout from '../components/layout/Layout'
 
 const Sigmaker: NextPage = () => {
   const [formData, setFormData] = useState<SignatureData>({
@@ -141,6 +142,7 @@ const Sigmaker: NextPage = () => {
   }
 
   return (
+    <Layout>
     <ThemeProvider theme={theme}>
       <StyledPageContainer>
         <Typography variant="h3"> Signature Maker </Typography>
@@ -180,7 +182,6 @@ const Sigmaker: NextPage = () => {
               </StyledButton>
               <br />
               <br />
-              <button onClick={() => signOut()}>Sign out</button>
             </div>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -189,6 +190,7 @@ const Sigmaker: NextPage = () => {
         </StyledGrid>
       </StyledPageContainer>
     </ThemeProvider>
+    </Layout>
   )
 }
 
