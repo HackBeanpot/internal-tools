@@ -3,7 +3,7 @@ import { ThemeProvider, Divider, Typography, Link } from '@mui/material'
 import type { NextPage } from 'next'
 import { StyledPageContainer } from '../styles/common'
 import { theme } from '../styles/theme'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { TextContainer } from '../pageStyles/home.styles'
 import Layout from '../components/layout/Layout'
 
