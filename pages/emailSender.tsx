@@ -14,7 +14,7 @@ import {
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import {
   StyledButton,
   StyledPageContainer,
@@ -34,6 +34,7 @@ import {
   StyledTableRow,
   StyledFinalMessageContent
 } from '../pageStyles/emailSender.styles'
+import Layout from '../components/layout/Layout'
 
 const EmailSender: NextPage = () => {
   const [file, setFile] = useState()
@@ -163,6 +164,7 @@ const EmailSender: NextPage = () => {
   }
 
   return (
+    <Layout>
     <ThemeProvider theme={theme}>
       <StyledPageContainer>
         <Typography variant="h3"> Email Sender </Typography>
@@ -249,8 +251,8 @@ const EmailSender: NextPage = () => {
           </StyledFinalMessagesContainer>
         </SectionContainer>
       </StyledPageContainer>
-      <button onClick={() => signOut()}>Sign out</button>
     </ThemeProvider>
+    </Layout>
   )
 }
 

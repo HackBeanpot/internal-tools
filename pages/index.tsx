@@ -3,8 +3,9 @@ import { ThemeProvider, Divider, Typography, Link } from '@mui/material'
 import type { NextPage } from 'next'
 import { StyledPageContainer } from '../styles/common'
 import { theme } from '../styles/theme'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { TextContainer } from '../pageStyles/home.styles'
+import Layout from '../components/layout/Layout'
 
 const Home: NextPage = () => {
   const { data: session } = useSession()
@@ -17,6 +18,7 @@ const Home: NextPage = () => {
     )
   }
   return (
+    <Layout>
     <ThemeProvider theme={theme}>
       <StyledPageContainer>
         <Typography variant="h3">Tools</Typography>
@@ -41,10 +43,10 @@ const Home: NextPage = () => {
               </Typography>
             </li>
           </ul>
-          <button onClick={() => signOut()}>Sign out</button>
         </TextContainer>
       </StyledPageContainer>
     </ThemeProvider>
+    </Layout>
   )
 }
 

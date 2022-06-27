@@ -26,6 +26,7 @@ import {
 } from '../pageStyles/sigmaker.styles'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import Layout from '../components/layout/Layout'
 
 const Sigmaker: NextPage = () => {
   const [formData, setFormData] = useState<SignatureData>({
@@ -150,6 +151,7 @@ const Sigmaker: NextPage = () => {
   }
 
   return (
+    <Layout>
     <ThemeProvider theme={theme}>
       <StyledPageContainer>
         <Typography variant="h3"> Signature Maker </Typography>
@@ -188,6 +190,7 @@ const Sigmaker: NextPage = () => {
         </StyledGrid>
       </StyledPageContainer>
     </ThemeProvider>
+    </Layout>
   )
 }
 
