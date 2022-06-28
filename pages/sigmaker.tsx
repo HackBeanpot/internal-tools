@@ -22,11 +22,10 @@ import {
   StyledPhoneNumber,
   StyledLinkContainer,
   StyledLink,
-  StyledInputField,
   StyledGrid,
-  StyledFormControl
 } from '../pageStyles/sigmaker.styles'
-import { signIn, useSession } from 'next-auth/react'
+import { signIn, signOut, useSession } from 'next-auth/react'
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import Layout from '../components/layout/Layout'
 
 const Sigmaker: NextPage = () => {
@@ -59,15 +58,25 @@ const Sigmaker: NextPage = () => {
     })
   }
 
-  const createInputField = (name: string, value: string, label: string) => (
-    <StyledInputField
-      name={name}
-      value={value}
-      onChange={handleChange}
+  const handleSubmit = () => {
+    setSignatureData(formData)
+    setFormData({
+      fullName: '',
+      title: '',
+      phone: '',
+      email: ''
+    })
+  }
+
+  const createValidatedInputField = (name: string, value: string, label: string) => (
+    <TextValidator
       label={label}
-      id="filled-size-small"
-      variant="filled"
-      size="small"
+      onChange={handleChange}
+      name={name}
+      type="text"
+      validators={['required']}
+      errorMessages={['Required.']}
+      value={value}
     />
   )
 
@@ -150,39 +159,30 @@ const Sigmaker: NextPage = () => {
         <br />
         <StyledGrid container spacing={2}>
           <Grid item xs={12} md={6}>
-            <Typography variant="h5"> Enter your info here! </Typography>
-            <StyledFormControl>
-              <Stack spacing={3}>
-                {createInputField('fullName', formData.fullName, 'Full name')}
-                {createInputField('title', formData.title, 'Title')}
-                {createInputField('phone', formData.phone, 'Phone')}
-                {createInputField(
-                  'email',
-                  formData.email,
-                  'Email (@hackbeanpot.com)'
-                )}
-              </Stack>
-            </StyledFormControl>
-            <div>
+          <ValidatorForm
+                onSubmit={handleSubmit}
+            >
+            <Stack spacing={3}>
+              <Typography variant="h5"> Enter your info here! </Typography>
+              {createValidatedInputField('fullName', formData.fullName, 'Full name')}
+              {createValidatedInputField('title', formData.title, 'Title')}
+              {createValidatedInputField('phone', formData.phone, 'Phone')}
+              {createValidatedInputField('email', formData.email, 'Email (@hackbeanpot.com)')}
               <StyledButton
                 size="large"
                 color="info"
                 variant="contained"
-                onClick={() => {
-                  setSignatureData(formData)
-                  setFormData({
-                    fullName: '',
-                    title: '',
-                    phone: '',
-                    email: ''
-                  })
-                }}
+                type="submit"
               >
                 Generate signature!
               </StyledButton>
-              <br />
-              <br />
-            </div>
+            </Stack>
+          </ValidatorForm>
+          <div>
+            <br />
+            <br />
+            <button onClick={() => signOut()}>Sign out</button>
+          </div>
           </Grid>
           <Grid item xs={12} md={6}>
             {<div>{createSignature()}</div>}
