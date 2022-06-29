@@ -27,6 +27,8 @@ import {
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import Layout from '../components/layout/Layout'
+import { GetServerSideProps } from 'next';
+import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect';
 
 const Sigmaker: NextPage = () => {
   const [formData, setFormData] = useState<SignatureData>({
@@ -39,15 +41,6 @@ const Sigmaker: NextPage = () => {
     undefined
   )
 
-  const { data: session } = useSession()
-  if (!session) {
-    return (
-      <>
-        Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
-      </>
-    )
-  }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name
@@ -187,11 +180,6 @@ const Sigmaker: NextPage = () => {
               </StyledButton>
             </Stack>
           </ValidatorForm>
-          <div>
-            <br />
-            <br />
-            <button onClick={() => signOut()}>Sign out</button>
-          </div>
           </Grid>
           <Grid item xs={12} md={6}>
             {<div>{createSignature()}</div>}
@@ -203,4 +191,7 @@ const Sigmaker: NextPage = () => {
   )
 }
 
+export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect;
+
 export default Sigmaker
+
