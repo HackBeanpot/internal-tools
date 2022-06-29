@@ -41,6 +41,7 @@ const EmailSender: NextPage = () => {
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
+  const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([])
   const theme = useTheme()
   const { data: session } = useSession()
   if (!session) {
@@ -136,7 +137,7 @@ const EmailSender: NextPage = () => {
         const replaceVal = finalMap.get(regexArray[j].headerName)
         content = content.replaceAll(toReplace, replaceVal)
       }
-      const msg: Message = { to, subject, content }
+      const msg: Message = { id: nanoid(), to, subject, content }
       finalMessageArr.push(msg)
     }
     setFinalMessages(finalMessageArr)
@@ -248,6 +249,20 @@ const EmailSender: NextPage = () => {
           >
             Print final messages
           </StyledButton>
+          <br/>
+          <br/>
+          <StyledSubHeader variant="h5">
+            4) Send emails
+          </StyledSubHeader>
+          <StyledButton
+            color="info"
+            variant="contained"
+            onClick={createMessages}
+            width="medium"
+          >
+            Send!
+          </StyledButton>
+
           <StyledFinalMessagesContainer>
             {displayMessages()}
           </StyledFinalMessagesContainer>
