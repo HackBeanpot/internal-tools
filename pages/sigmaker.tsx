@@ -173,6 +173,7 @@ const Sigmaker: NextPage = () => {
                 color="info"
                 variant="contained"
                 type="submit"
+                sx={{width:220}}
               >
                 Generate signature!
               </StyledButton>
