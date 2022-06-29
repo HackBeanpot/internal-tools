@@ -9,14 +9,14 @@ const StyledPageContainer = styled(Container)({
 
 const StyledButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'bgColor'
-})<{ bgColor?: string }>(({ bgColor }) => ({
+})<{ bgColor?: string; width?: string }>(({ bgColor, width }) => ({
   backgroundColor: bgColor || theme.palette.DarkGreen.main,
   color: theme.palette.White.main,
   textTransform: 'none',
   '&:hover': {
     backgroundColor: theme.palette.Mist.main
   },
-  width: 100
+  width: width === 'medium' ? 200 : 100
 }))
 
 const StyledBoldTypograhy = styled(Typography)({
