@@ -168,6 +168,7 @@ const Sigmaker: NextPage = () => {
                 size="large"
                 color="info"
                 variant="contained"
+                width="medium"
                 onClick={() => {
                   setSignatureData(formData)
                   setFormData({
