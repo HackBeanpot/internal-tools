@@ -17,7 +17,13 @@ export interface ReplaceObj {
 }
 
 export interface Message {
+    id: string;
     to: string;
     subject: string;
     content: string;
+}
+
+export interface ErrorMessage {
+    id: string;
+    message: string;
 }
