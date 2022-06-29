@@ -50,8 +50,12 @@ const StyledTableRow = styled(TableRow)({
   '&:last-child td, &:last-child th': { border: 0 }
 })
 
+const StyledErrorMessage = styled('a')({
+  color: 'red'
+})
+
 export {
   SectionContainer, StyledTextArea, StyledCsvButton, StyledCsvButtonsContainer, StyledSubHeader,
   StyledFinalMessagesContainer, StyledTableContainer, StyledDivider, StyledTable, StyledTableRow,
-  StyledFinalMessageContent
+  StyledFinalMessageContent, StyledErrorMessage
 }
