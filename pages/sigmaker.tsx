@@ -192,6 +192,5 @@ const Sigmaker: NextPage = () => {
 }
 
 export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect;
-
 export default Sigmaker
 
