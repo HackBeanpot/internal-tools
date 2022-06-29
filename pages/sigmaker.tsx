@@ -176,6 +176,7 @@ const Sigmaker: NextPage = () => {
                 onSubmit={handleSubmit}
             >
             <Stack spacing={3}>
+<<<<<<< HEAD
             <Typography variant="h5"> Enter your info here! </Typography>
                 {createValidatedInputField('fullName', formData.fullName, 'Full name')}
                 {createValidatedInputField('title', formData.title, 'Title')}
@@ -195,6 +196,29 @@ const Sigmaker: NextPage = () => {
               <br />
               <br />
             </div>
+=======
+              <Typography variant="h5"> Enter your info here! </Typography>
+              {createValidatedInputField('fullName', formData.fullName, 'Full name')}
+              {createValidatedInputField('title', formData.title, 'Title')}
+              {createValidatedInputField('phone', formData.phone, 'Phone')}
+              {createValidatedInputField('email', formData.email, 'Email (@hackbeanpot.com)')}
+              <StyledButton
+                size="large"
+                color="info"
+                variant="contained"
+                type="submit"
+                sx={{width:220}}
+              >
+                Generate signature!
+              </StyledButton>
+            </Stack>
+          </ValidatorForm>
+          <div>
+            <br />
+            <br />
+            <button onClick={() => signOut()}>Sign out</button>
+          </div>
+>>>>>>> 70712fe (Fix generate button width)
           </Grid>
           <Grid item xs={12} md={6}>
             {<div>{createSignature()}</div>}
