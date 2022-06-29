@@ -172,7 +172,16 @@ const Sigmaker: NextPage = () => {
                 size="large"
                 color="info"
                 variant="contained"
-                type="submit"
+                width="medium"
+                onClick={() => {
+                  setSignatureData(formData)
+                  setFormData({
+                    fullName: '',
+                    title: '',
+                    phone: '',
+                    email: ''
+                  })
+                }}
               >
                 Generate signature!
               </StyledButton>
