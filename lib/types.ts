@@ -27,3 +27,8 @@ export interface ErrorMessage {
     id: string;
     message: string;
 }
+
+export interface ResultMessage {
+   isError: boolean;
+   message: string;
+}

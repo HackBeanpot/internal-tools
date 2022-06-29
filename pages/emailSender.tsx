@@ -20,7 +20,7 @@ import {
   StyledPageContainer,
   StyledBoldTypograhy
 } from '../styles/common'
-import { CsvRow, ReplaceObj, Message, ErrorMessage } from '../lib/types'
+import { CsvRow, ReplaceObj, Message, ErrorMessage, ResultMessage } from '../lib/types'
 import {
   SectionContainer,
   StyledCsvButton,
@@ -33,9 +33,12 @@ import {
   StyledTable,
   StyledTableRow,
   StyledFinalMessageContent,
-  StyledErrorMessage
+  StyledErrorMessage,
+  StyledResultMessage
+
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
+import { Empty } from 'antd'
 
 const EmailSender: NextPage = () => {
   const [file, setFile] = useState()
@@ -43,6 +46,7 @@ const EmailSender: NextPage = () => {
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
   const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([])
+  const [resultMessage, setResultMessage] = useState<ResultMessage>({ isError: false, message: '' })
   const theme = useTheme()
   const { data: session } = useSession()
   if (!session) {
@@ -125,6 +129,11 @@ const EmailSender: NextPage = () => {
       if (i % 2 === 0) {
         setErrorMessages(prev => [...prev, { id: finalMessages[i].id, message: 'Errorrrr!' }])
       }
+    }
+    if (errorMessages.length === 0) {
+      setResultMessage({ isError: false, message: 'Sent Emails Successfully' })
+    } else {
+      setResultMessage({ isError: true, message: `Error sending ${errorMessages.length} of ${finalMessages.length}` })
     }
   }
 
@@ -282,7 +291,9 @@ const EmailSender: NextPage = () => {
             <StyledFinalMessagesContainer>
               {displayMessages()}
             </StyledFinalMessagesContainer>
+            <StyledResultMessage isError = {errorMessages.length > 0 }> {errorMessages.length === 0 ? 'Sent emails Successfully' : `Error sending ${errorMessages.length} of ${finalMessages.length}` }</StyledResultMessage>
           </SectionContainer>
+
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
