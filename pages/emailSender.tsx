@@ -200,6 +200,7 @@ const EmailSender: NextPage = () => {
               </label>
               <StyledCsvButton
                 variant="contained"
+                width="medium"
                 onClick={(e) => {
                   handleOnSubmit(e)
                 }}
@@ -243,6 +244,7 @@ const EmailSender: NextPage = () => {
             color="info"
             variant="contained"
             onClick={createMessages}
+            width="medium"
           >
             Print final messages
           </StyledButton>
