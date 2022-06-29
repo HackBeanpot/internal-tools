@@ -20,7 +20,7 @@ import {
   StyledPageContainer,
   StyledBoldTypograhy
 } from '../styles/common'
-import { CsvRow, ReplaceObj, Message } from '../lib/types'
+import { CsvRow, ReplaceObj, Message, ErrorMessage } from '../lib/types'
 import {
   SectionContainer,
   StyledCsvButton,
@@ -32,7 +32,8 @@ import {
   StyledDivider,
   StyledTable,
   StyledTableRow,
-  StyledFinalMessageContent
+  StyledFinalMessageContent,
+  StyledErrorMessage
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 
@@ -119,6 +120,14 @@ const EmailSender: NextPage = () => {
     return headersArrFinal
   }
 
+  const sendEmails = () => {
+    for (let i = 0; i < finalMessages.length; i++) {
+      if (i % 2 === 0) {
+        setErrorMessages(prev => [...prev, { id: finalMessages[i].id, message: 'Errorrrr!' }])
+      }
+    }
+  }
+
   const createMessages = () => {
     const regexArray = createRegexArray()
     const finalMessageArr = []
@@ -143,21 +152,30 @@ const EmailSender: NextPage = () => {
     setFinalMessages(finalMessageArr)
   }
 
+  const getErrorMessage = (id : string) => {
+    return errorMessages.find(currentMessage => currentMessage.id === id)?.message
+  }
+
   const displayMessages = () => {
     return (
       <>
         {finalMessages.map((msg) => (
           <div key={nanoid()}>
             <StyledDivider />
+            {getErrorMessage(msg.id) && <StyledErrorMessage> Error: {getErrorMessage(msg.id)} </StyledErrorMessage>}
+            <br/>
+            <br/>
+
             <Typography variant="body1">To: {msg.to}</Typography>
             <Typography variant="body1">Subject: {msg.subject}</Typography>
             <br />
             <Typography variant="body1">Content:</Typography>
             <br />
             <Typography variant="body1">
-              <StyledFinalMessageContent>{msg.content}</StyledFinalMessageContent>
+              <StyledFinalMessageContent>
+                {msg.content}
+              </StyledFinalMessageContent>
             </Typography>
-
           </div>
         ))}
       </>
@@ -166,109 +184,107 @@ const EmailSender: NextPage = () => {
 
   return (
     <Layout>
-    <ThemeProvider theme={theme}>
-      <StyledPageContainer>
-        <Typography variant="h3"> Email Sender </Typography>
-        <Divider />
-        <br />
-        <FormControl fullWidth>
-          <SectionContainer>
-            <StyledSubHeader variant="h5">1) Enter message</StyledSubHeader>
-            <br />
-            <StyledTextArea
-              aria-label="message-text-area"
-              placeholder="Paste in message"
-              onChange={(e) => setMessage(e.target.value)}
-              minRows={20}
-            />
-          </SectionContainer>
+      <ThemeProvider theme={theme}>
+        <StyledPageContainer>
+          <Typography variant="h3"> Email Sender </Typography>
+          <Divider />
+          <br />
+          <FormControl fullWidth>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">1) Enter message</StyledSubHeader>
+              <br />
+              <StyledTextArea
+                aria-label="message-text-area"
+                placeholder="Paste in message"
+                onChange={(e) => setMessage(e.target.value)}
+                minRows={20}
+              />
+            </SectionContainer>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">
+                2) Upload and import csv
+              </StyledSubHeader>
+              <StyledCsvButtonsContainer>
+                <input
+                  style={{ display: 'none' }}
+                  id="contained-button-file"
+                  accept={'.csv'}
+                  type="file"
+                  onChange={handleOnChange}
+                />
+                <label htmlFor="contained-button-file">
+                  <Button variant="contained" component="span">
+                    Upload
+                  </Button>
+                </label>
+                <StyledCsvButton
+                  variant="contained"
+                  width="medium"
+                  onClick={(e) => {
+                    handleOnSubmit(e)
+                  }}
+                >
+                  Import CSV!
+                </StyledCsvButton>
+              </StyledCsvButtonsContainer>
+            </SectionContainer>
+          </FormControl>
+          <StyledTableContainer>
+            <TableContainer component={Paper}>
+              <StyledTable aria-label="simple table">
+                <TableHead>
+                  {headerKeys.map((key) => (
+                    <TableCell key={nanoid()}>
+                      <StyledBoldTypograhy variant="body1">
+                        {key}
+                      </StyledBoldTypograhy>
+                    </TableCell>
+                  ))}
+                </TableHead>
+                <TableBody>
+                  {csvRowsArray.map((item) => (
+                    <StyledTableRow key={nanoid()}>
+                      {Object.values(item).map((val) => (
+                        <TableCell key={nanoid()} align="left">
+                          {val}
+                        </TableCell>
+                      ))}
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </StyledTable>
+            </TableContainer>
+          </StyledTableContainer>
           <SectionContainer>
             <StyledSubHeader variant="h5">
-              2) Upload and import csv
+              3) Verify final messages
             </StyledSubHeader>
-            <StyledCsvButtonsContainer>
-              <input
-                style={{ display: 'none' }}
-                id="contained-button-file"
-                accept={'.csv'}
-                type="file"
-                onChange={handleOnChange}
-              />
-              <label htmlFor="contained-button-file">
-                <Button variant="contained" component="span">
-                  Upload
-                </Button>
-              </label>
-              <StyledCsvButton
-                variant="contained"
-                width="medium"
-                onClick={(e) => {
-                  handleOnSubmit(e)
-                }}
-              >
-                Import CSV!
-              </StyledCsvButton>
-            </StyledCsvButtonsContainer>
-          </SectionContainer>
-        </FormControl>
-        <StyledTableContainer>
-          <TableContainer component={Paper}>
-            <StyledTable aria-label="simple table">
-              <TableHead>
-                {headerKeys.map((key) => (
-                  <TableCell key={nanoid()}>
-                    <StyledBoldTypograhy variant="body1">
-                      {key}
-                    </StyledBoldTypograhy>
-                  </TableCell>
-                ))}
-              </TableHead>
-              <TableBody>
-                {csvRowsArray.map((item) => (
-                  <StyledTableRow key={nanoid()}>
-                    {Object.values(item).map((val) => (
-                      <TableCell key={nanoid()} align="left">
-                        {val}
-                      </TableCell>
-                    ))}
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </StyledTable>
-          </TableContainer>
-        </StyledTableContainer>
-        <SectionContainer>
-          <StyledSubHeader variant="h5">
-            3) Verify final messages
-          </StyledSubHeader>
-          <StyledButton
-            color="info"
-            variant="contained"
-            onClick={createMessages}
-            width="medium"
-          >
-            Print final messages
-          </StyledButton>
-          <br/>
-          <br/>
-          <StyledSubHeader variant="h5">
-            4) Send emails
-          </StyledSubHeader>
-          <StyledButton
-            color="info"
-            variant="contained"
-            onClick={createMessages}
-            width="medium"
-          >
-            Send!
-          </StyledButton>
+            <StyledButton
+              color="info"
+              variant="contained"
+              onClick={createMessages}
+              width="medium"
+            >
+              Print final messages
+            </StyledButton>
+            <br />
+            <br />
+            <StyledSubHeader variant="h5">4) Send emails</StyledSubHeader>
+            <StyledButton
+              color="info"
+              variant="contained"
+              onClick={() => sendEmails()}
+              width="medium"
+            >
+              Send!
+            </StyledButton>
 
-          <StyledFinalMessagesContainer>
-            {displayMessages()}
-          </StyledFinalMessagesContainer>
-        </SectionContainer>
-      </StyledPageContainer>
-    </ThemeProvider>
+            <StyledFinalMessagesContainer>
+              {displayMessages()}
+            </StyledFinalMessagesContainer>
+          </SectionContainer>
+        </StyledPageContainer>
+      </ThemeProvider>
     </Layout>
   )
 }
