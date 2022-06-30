@@ -23,9 +23,10 @@ import {
   StyledLinkContainer,
   StyledLink,
   StyledGrid,
+  StyledTextValidator
 } from '../pageStyles/sigmaker.styles'
 import { signIn, signOut, useSession } from 'next-auth/react'
-import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import { ValidatorForm } from 'react-material-ui-form-validator';
 import Layout from '../components/layout/Layout'
 
 const Sigmaker: NextPage = () => {
@@ -69,7 +70,7 @@ const Sigmaker: NextPage = () => {
   }
 
   const createValidatedInputField = (name: string, value: string, label: string) => (
-    <TextValidator
+    <StyledTextValidator
       label={label}
       onChange={handleChange}
       name={name}
@@ -173,17 +174,12 @@ const Sigmaker: NextPage = () => {
                 color="info"
                 variant="contained"
                 type="submit"
-                sx={{width:220}}
+                width="medium"
               >
                 Generate signature!
               </StyledButton>
             </Stack>
           </ValidatorForm>
-          <div>
-            <br />
-            <br />
-            <button onClick={() => signOut()}>Sign out</button>
-          </div>
           </Grid>
           <Grid item xs={12} md={6}>
             {<div>{createSignature()}</div>}
