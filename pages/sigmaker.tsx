@@ -22,12 +22,12 @@ import {
   StyledPhoneNumber,
   StyledLinkContainer,
   StyledLink,
-  StyledGrid,
-  StyledTextValidator
+  StyledGrid
 } from '../pageStyles/sigmaker.styles'
-import { signIn, signOut, useSession } from 'next-auth/react'
-import { ValidatorForm } from 'react-material-ui-form-validator';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import Layout from '../components/layout/Layout'
+import { GetServerSideProps } from 'next'
+import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 
 const Sigmaker: NextPage = () => {
   const [formData, setFormData] = useState<SignatureData>({
@@ -39,16 +39,6 @@ const Sigmaker: NextPage = () => {
   const [signatureData, setSignatureData] = useState<undefined | SignatureData>(
     undefined
   )
-
-  const { data: session } = useSession()
-  if (!session) {
-    return (
-      <>
-        Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
-      </>
-    )
-  }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name
@@ -191,4 +181,5 @@ const Sigmaker: NextPage = () => {
   )
 }
 
+export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect
 export default Sigmaker
