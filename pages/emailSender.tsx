@@ -155,10 +155,32 @@ const EmailSender: NextPage = () => {
     )
   }
 
+  const sendEmails = () => {
+    const dataToSend = { csvData: csvRowsArray, body: message }
+    fetch('/api/email/send', {
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dataToSend)
+    })
+      .then((res) => {
+        // TODO: Use status to determine whether there was an error or not
+        console.log(res.status)
+        return res.json()
+      })
+      .then((data) => {
+        // TODO: surface this to the client
+        console.log(data.result)
+      })
+  }
+
   return (
     <Layout>
     <ThemeProvider theme={theme}>
       <StyledPageContainer>
+        <Button onClick={sendEmails}>Send emails!</Button>
         <Typography variant="h3"> Email Sender </Typography>
         <Divider />
         <br />
