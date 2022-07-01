@@ -56,7 +56,7 @@ const StyledErrorMessage = styled(Typography)({
   color: theme.palette.Red.main
 })
 
-const StyledResultMessage= styled(Typography, {
+const StyledResultMessage = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'isError'
 })<{ isError?: boolean; }>(({ isError }) => ({
   color: isError ? theme.palette.Red.main : theme.palette.Mist.main

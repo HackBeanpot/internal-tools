@@ -271,8 +271,10 @@ const EmailSender: NextPage = () => {
             >
               Print final messages
             </StyledButton>
+            </SectionContainer>
             <br />
             <br />
+            <SectionContainer>
             <StyledSubHeader variant="h5">4) Send emails</StyledSubHeader>
             <StyledButton
               color="info"
@@ -282,13 +284,12 @@ const EmailSender: NextPage = () => {
             >
               Send!
             </StyledButton>
-
+            </SectionContainer>
             <StyledFinalMessagesContainer>
               {displayMessages()}
             </StyledFinalMessagesContainer>
-            <StyledResultMessage isError = {resultErrorMessage.resultMessage.isError }> {resultErrorMessage.resultMessage.message }</StyledResultMessage>
-          </SectionContainer>
-
+            <StyledDivider/>
+            <StyledResultMessage variant='h5' isError={resultErrorMessage.resultMessage.isError }> {resultErrorMessage.resultMessage.message }</StyledResultMessage>
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
