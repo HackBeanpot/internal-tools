@@ -9,7 +9,8 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  Button
+  Button, 
+  Link
 } from '@mui/material'
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
@@ -166,10 +167,21 @@ const EmailSender: NextPage = () => {
   return (
     <Layout>
     <ThemeProvider theme={theme}>
+   
       <StyledPageContainer>
-        <Typography variant="h3"> Email Sender </Typography>
+      
+        <Typography variant="h3"> Email Sender  
+        
+          </Typography>
+          
         <Divider />
+        
         <br />
+        <Typography variant="body1">
+                <Link href="/help" underline="hover">
+                    Help
+                </Link>
+              </Typography>
         <FormControl fullWidth>
           <SectionContainer>
             <StyledSubHeader variant="h5">1) Enter message</StyledSubHeader>
