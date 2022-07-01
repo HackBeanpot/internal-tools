@@ -58,7 +58,8 @@ const StyledErrorMessage = styled(Typography)({
 const StyledResultMessage = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'isError'
 })<{ isError?: boolean; }>(({ isError }) => ({
-  color: isError ? theme.palette.Red.main : theme.palette.Mist.main
+  color: isError ? theme.palette.Red.main : theme.palette.Mist.main,
+  paddingTop: 50
 }))
 
 export {
