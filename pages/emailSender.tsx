@@ -53,7 +53,7 @@ const EmailSender: NextPage = () => {
   }
 
   const csvFileToArray = (str: string) => {
-    const csvHeaders = str.slice(0, str.indexOf('\n')).split(',')
+    const csvHeaders = str.slice(0, str.indexOf('\n')).trim().split(',')
     let allRowValues = str.slice(str.indexOf('\n') + 1).split('\n')
     allRowValues = allRowValues.map((string) => {
       return string.trim()
@@ -156,7 +156,10 @@ const EmailSender: NextPage = () => {
   }
 
   const sendEmails = () => {
-    const dataToSend = { csvData: csvRowsArray, body: message }
+    // Hardcoding this, as user values in useSession() are undefined for some reason
+    const from = 'Dean Frame <dean@hackbeanpot.com>'
+    console.log(csvRowsArray)
+    const dataToSend = { csvData: csvRowsArray, from, emailText: message }
     fetch('/api/email/send', {
       method: 'POST',
       cache: 'no-cache',
@@ -171,7 +174,7 @@ const EmailSender: NextPage = () => {
         return res.json()
       })
       .then((data) => {
-        // TODO: surface this to the client
+        // TODO: surface this to UI
         console.log(data.result)
       })
   }
