@@ -22,9 +22,10 @@ import {
   StyledPhoneNumber,
   StyledLinkContainer,
   StyledLink,
-  StyledGrid
+  StyledGrid,
+  StyledTextValidator
 } from '../pageStyles/sigmaker.styles'
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
+import { ValidatorForm } from 'react-material-ui-form-validator'
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
@@ -60,7 +61,7 @@ const Sigmaker: NextPage = () => {
   }
 
   const createValidatedInputField = (name: string, value: string, label: string) => (
-    <StyledTextValidator
+    <TextValidator
       label={label}
       onChange={handleChange}
       name={name}
@@ -163,8 +164,16 @@ const Sigmaker: NextPage = () => {
                 size="large"
                 color="info"
                 variant="contained"
-                type="submit"
                 width="medium"
+                onClick={() => {
+                  setSignatureData(formData)
+                  setFormData({
+                    fullName: '',
+                    title: '',
+                    phone: '',
+                    email: ''
+                  })
+                }}
               >
                 Generate signature!
               </StyledButton>
