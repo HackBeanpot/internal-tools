@@ -20,7 +20,7 @@ import {
   StyledPageContainer,
   StyledBoldTypograhy
 } from '../styles/common'
-import { CsvRow, ReplaceObj, Message, ErrorMessage, ResultMessage, ResultErrorMessage } from '../lib/types'
+import { CsvRow, ReplaceObj, Message, ErrorMessage, ResultErrorMessage } from '../lib/types'
 import {
   SectionContainer,
   StyledCsvButton,
@@ -38,7 +38,6 @@ import {
 
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
-import { Empty } from 'antd'
 
 const EmailSender: NextPage = () => {
   const [file, setFile] = useState()
@@ -158,7 +157,7 @@ const EmailSender: NextPage = () => {
   }
 
   const getErrorMessage = (id : string) => {
-    return errorMessages.find(currentMessage => currentMessage.id === id)?.message
+    return resultErrorMessage.errorMessages.find(currentMessage => currentMessage.id === id)?.message
   }
 
   const displayMessages = () => {
@@ -287,7 +286,7 @@ const EmailSender: NextPage = () => {
             <StyledFinalMessagesContainer>
               {displayMessages()}
             </StyledFinalMessagesContainer>
-            <StyledResultMessage isError = {errorMessages.length > 0 }> {errorMessages.length === 0 ? 'Sent emails Successfully' : `Error sending ${errorMessages.length} of ${finalMessages.length}` }</StyledResultMessage>
+            <StyledResultMessage isError = {resultErrorMessage.resultMessage.isError }> {resultErrorMessage.resultMessage.message }</StyledResultMessage>
           </SectionContainer>
 
         </StyledPageContainer>
