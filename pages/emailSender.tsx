@@ -20,7 +20,13 @@ import {
   StyledPageContainer,
   StyledBoldTypograhy
 } from '../styles/common'
-import { CsvRow, ReplaceObj, Message, ErrorMessage, ResultErrorMessage } from '../lib/types'
+import {
+  CsvRow,
+  ReplaceObj,
+  Message,
+  ErrorMessage,
+  ResultErrorMessage
+} from '../lib/types'
 import {
   SectionContainer,
   StyledCsvButton,
@@ -35,7 +41,6 @@ import {
   StyledFinalMessageContent,
   StyledErrorMessage,
   StyledResultMessage
-
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 
@@ -44,7 +49,11 @@ const EmailSender: NextPage = () => {
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
-  const [resultErrorMessage, setResultErrorMessage] = useState<ResultErrorMessage>({ errorMessages: [], resultMessage: { isError: false, message: '' } })
+  const [resultErrorMessage, setResultErrorMessage] =
+    useState<ResultErrorMessage>({
+      errorMessages: [],
+      resultMessage: { isError: false, message: '' }
+    })
   const theme = useTheme()
   const { data: session } = useSession()
   if (!session) {
@@ -123,13 +132,19 @@ const EmailSender: NextPage = () => {
   }
 
   const sendEmails = () => {
-    const localErrorMessages : ErrorMessage[] = []
+    const localErrorMessages: ErrorMessage[] = []
     for (let i = 0; i < finalMessages.length; i++) {
       if (i % 2 === 0) {
-        localErrorMessages.push({ id: finalMessages[i].id, message: 'Errorrrr!' })
+        localErrorMessages.push({
+          id: finalMessages[i].id,
+          message: 'Errorrrr!'
+        })
       }
     }
-    setResultErrorMessage({ errorMessages: localErrorMessages, resultMessage: { isError: localErrorMessages.length > 0, message: localErrorMessages.length > 0 ? `Error sending ${localErrorMessages.length} of ${finalMessages.length}` : 'Sent emails successfully' } })
+    setResultErrorMessage({
+      errorMessages: localErrorMessages,
+      resultMessage: { isError: localErrorMessages.length > 0, message: localErrorMessages.length > 0 ? `Error sending ${localErrorMessages.length} of ${finalMessages.length}` : 'Sent emails successfully' }
+    })
   }
 
   const createMessages = () => {
@@ -156,8 +171,10 @@ const EmailSender: NextPage = () => {
     setFinalMessages(finalMessageArr)
   }
 
-  const getErrorMessage = (id : string) => {
-    return resultErrorMessage.errorMessages.find(currentMessage => currentMessage.id === id)?.message
+  const getErrorMessage = (id: string) => {
+    return resultErrorMessage.errorMessages.find(
+      (currentMessage) => currentMessage.id === id
+    )?.message
   }
 
   const displayMessages = () => {
@@ -166,10 +183,14 @@ const EmailSender: NextPage = () => {
         {finalMessages.map((msg) => (
           <div key={nanoid()}>
             <StyledDivider />
-            {getErrorMessage(msg.id) && <StyledErrorMessage> Error: {getErrorMessage(msg.id)} </StyledErrorMessage>}
-            <br/>
-            <br/>
-
+            {getErrorMessage(msg.id) && (
+              <StyledErrorMessage>
+                {' '}
+                Error: {getErrorMessage(msg.id)}{' '}
+              </StyledErrorMessage>
+            )}
+            <br />
+            <br />
             <Typography variant="body1">To: {msg.to}</Typography>
             <Typography variant="body1">Subject: {msg.subject}</Typography>
             <br />
@@ -224,6 +245,7 @@ const EmailSender: NextPage = () => {
                 <StyledCsvButton
                   variant="contained"
                   width="medium"
+                  disabled={file === undefined}
                   onClick={(e) => {
                     handleOnSubmit(e)
                   }}
@@ -267,29 +289,35 @@ const EmailSender: NextPage = () => {
               color="info"
               variant="contained"
               onClick={createMessages}
+              disabled={csvRowsArray.length === 0}
               width="medium"
             >
               Print final messages
             </StyledButton>
-            </SectionContainer>
-            <br />
-            <br />
-            <SectionContainer>
+          </SectionContainer>
+          <br />
+          <br />
+          <SectionContainer>
             <StyledSubHeader variant="h5">4) Send emails</StyledSubHeader>
             <StyledButton
               color="info"
               variant="contained"
               onClick={() => sendEmails()}
               width="medium"
+              disabled={finalMessages.length === 0}
             >
               Send!
             </StyledButton>
-            </SectionContainer>
-            <StyledFinalMessagesContainer>
-              {displayMessages()}
-            </StyledFinalMessagesContainer>
-            <StyledDivider/>
-            <StyledResultMessage variant='h5' isError={resultErrorMessage.resultMessage.isError }> {resultErrorMessage.resultMessage.message }</StyledResultMessage>
+            <StyledResultMessage
+            variant="h5"
+            isError={resultErrorMessage.resultMessage.isError}
+          >
+            {resultErrorMessage.resultMessage.message}
+          </StyledResultMessage>
+          </SectionContainer>
+          <StyledFinalMessagesContainer>
+            {displayMessages()}
+          </StyledFinalMessagesContainer>
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
