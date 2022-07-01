@@ -20,7 +20,7 @@ import {
   StyledPageContainer,
   StyledBoldTypograhy
 } from '../styles/common'
-import { CsvRow, ReplaceObj, Message, ErrorMessage, ResultMessage } from '../lib/types'
+import { CsvRow, ReplaceObj, Message, ErrorMessage, ResultMessage, ResultErrorMessage } from '../lib/types'
 import {
   SectionContainer,
   StyledCsvButton,
@@ -45,8 +45,7 @@ const EmailSender: NextPage = () => {
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
-  const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([])
-  const [resultMessage, setResultMessage] = useState<ResultMessage>({ isError: false, message: '' })
+  const [resultErrorMessage, setResultErrorMessage] = useState<ResultErrorMessage>({ errorMessages: [], resultMessage: { isError: false, message: '' } })
   const theme = useTheme()
   const { data: session } = useSession()
   if (!session) {
@@ -125,16 +124,13 @@ const EmailSender: NextPage = () => {
   }
 
   const sendEmails = () => {
+    const localErrorMessages : ErrorMessage[] = []
     for (let i = 0; i < finalMessages.length; i++) {
       if (i % 2 === 0) {
-        setErrorMessages(prev => [...prev, { id: finalMessages[i].id, message: 'Errorrrr!' }])
+        localErrorMessages.push({ id: finalMessages[i].id, message: 'Errorrrr!' })
       }
     }
-    if (errorMessages.length === 0) {
-      setResultMessage({ isError: false, message: 'Sent Emails Successfully' })
-    } else {
-      setResultMessage({ isError: true, message: `Error sending ${errorMessages.length} of ${finalMessages.length}` })
-    }
+    setResultErrorMessage({ errorMessages: localErrorMessages, resultMessage: { isError: localErrorMessages.length > 0, message: localErrorMessages.length > 0 ? `Error sending ${localErrorMessages.length} of ${finalMessages.length}` : 'Sent emails successfully' } })
   }
 
   const createMessages = () => {
