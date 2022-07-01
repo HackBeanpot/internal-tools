@@ -134,6 +134,9 @@ const EmailSender: NextPage = () => {
   const sendEmails = () => {
     const localErrorMessages: ErrorMessage[] = []
     for (let i = 0; i < finalMessages.length; i++) {
+      // This if statement is just for testing / a mock. You can read this as if (error)
+      // to represent the error case. Replace the following line when actually implementing
+      // the error check.
       if (i % 2 === 0) {
         localErrorMessages.push({
           id: finalMessages[i].id,
@@ -263,7 +266,7 @@ const EmailSender: NextPage = () => {
           </FormControl>
           <StyledTableContainer>
             <TableContainer component={Paper}>
-              <StyledTable aria-label="simple table">
+              <StyledTable aria-label="uploaded csv table">
                 <TableHead>
                   {headerKeys.map((key) => (
                     <TableCell key={nanoid()}>
