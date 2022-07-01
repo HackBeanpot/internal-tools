@@ -143,7 +143,13 @@ const EmailSender: NextPage = () => {
     }
     setResultErrorMessage({
       errorMessages: localErrorMessages,
-      resultMessage: { isError: localErrorMessages.length > 0, message: localErrorMessages.length > 0 ? `Error sending ${localErrorMessages.length} of ${finalMessages.length}` : 'Sent emails successfully' }
+      resultMessage: {
+        isError: localErrorMessages.length > 0,
+        message:
+          localErrorMessages.length > 0
+            ? `Error sending ${localErrorMessages.length} of ${finalMessages.length}`
+            : 'Sent emails successfully'
+      }
     })
   }
 
@@ -309,11 +315,11 @@ const EmailSender: NextPage = () => {
               Send!
             </StyledButton>
             <StyledResultMessage
-            variant="h5"
-            isError={resultErrorMessage.resultMessage.isError}
-          >
-            {resultErrorMessage.resultMessage.message}
-          </StyledResultMessage>
+              variant="h5"
+              isError={resultErrorMessage.resultMessage.isError}
+            >
+              {resultErrorMessage.resultMessage.message}
+            </StyledResultMessage>
           </SectionContainer>
           <StyledFinalMessagesContainer>
             {displayMessages()}
