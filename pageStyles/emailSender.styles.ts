@@ -1,6 +1,5 @@
 import { Divider, Table, TableRow, TextareaAutosize, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { isError } from 'util'
 import { StyledButton } from '../styles/common'
 import { theme } from '../styles/theme'
 
