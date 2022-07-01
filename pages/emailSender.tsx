@@ -194,8 +194,7 @@ const EmailSender: NextPage = () => {
             <StyledDivider />
             {getErrorMessage(msg.id) && (
               <StyledErrorMessage>
-                {' '}
-                Error: {getErrorMessage(msg.id)}{' '}
+                Error: {getErrorMessage(msg.id)}
               </StyledErrorMessage>
             )}
             <br />
