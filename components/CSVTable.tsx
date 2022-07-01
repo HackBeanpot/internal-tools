@@ -28,10 +28,10 @@ export default function CSVTable () {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>email</TableCell>
-            <TableCell align="right">subject</TableCell>
-            <TableCell align="right">name</TableCell>
-            <TableCell align="right">company</TableCell>
+          <TableCell align="left">email</TableCell>
+            <TableCell align="left">subject</TableCell>
+            <TableCell align="left">name</TableCell>
+            <TableCell align="left">company</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -40,13 +40,10 @@ export default function CSVTable () {
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.email}</TableCell>
-              <TableCell align="right">{row.subject}</TableCell>
-              <TableCell align="right">{row.name}</TableCell>
-              <TableCell align="right">{row.company}</TableCell>
+              <TableCell align="left">{row.email}</TableCell>
+              <TableCell align="left">{row.subject}</TableCell>
+              <TableCell align="left">{row.name}</TableCell>
+              <TableCell align="left">{row.company}</TableCell>
             </TableRow>
           ))}
         </TableBody>
