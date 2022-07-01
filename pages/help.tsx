@@ -67,9 +67,9 @@ If you’re interested, please let me know when would be a good time. In the mea
   We really appreciate it, and we are looking forward to hearing from you soon.<br />
 Best, <br /> Cindy
 </Typography>
-            </TextContainer>
-            <br />
+<br />
             <CSVTable></CSVTable>
+            </TextContainer>
           </StyledPageContainer>
         </ThemeProvider>
         </Layout>
