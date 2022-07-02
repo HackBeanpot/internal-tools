@@ -61,18 +61,19 @@ const EmailSender: NextPage = () => {
 
   const handleEmailStandard = (e: ChangeEvent<HTMLInputElement>) => {
     (e.target.value === 'standard') 
-      ? setSubjectCustomization(true) 
-      : setSubjectCustomization(false);
+      ? setSubjectCustomization(false) 
+      : setSubjectCustomization(true);
+  }
+
+  const printStandardEmailSubject = () => {
     if (!subjectCustomization) {
       return (
-        <div> 
-          <TextField 
-            id="outlined-basic" 
-            label="Email subject" 
-            variant="outlined" 
-            onChange={handleEmailSubject}
-          />
-        </div>
+        <TextField 
+          id="outlined-basic" 
+          label="Email subject" 
+          variant="outlined" 
+          onChange={handleEmailSubject}
+        />
       )
     }
   }
@@ -215,6 +216,7 @@ const EmailSender: NextPage = () => {
               <FormControlLabel value="customized" control={<Radio />} label="Customized" />
               <FormControlLabel value="standard" control={<Radio />} label="Standard" />
             </RadioGroup>
+            <div>{printStandardEmailSubject()}</div>
           </SectionContainer>          
           <SectionContainer>
             <StyledSubHeader variant="h5">2) Enter message</StyledSubHeader>
