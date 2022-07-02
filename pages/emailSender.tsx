@@ -1,15 +1,20 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import {
   ThemeProvider,
+  Button,
   Divider,
-  Typography,
   FormControl,
-  TableContainer,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
   Paper,
   TableBody,
+  TableContainer,
   TableCell,
   TableHead,
-  Button
+  TextField,
+  Typography,
 } from '@mui/material'
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
@@ -39,6 +44,8 @@ import Layout from '../components/layout/Layout'
 const EmailSender: NextPage = () => {
   const [file, setFile] = useState()
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
+  const [subjectCustomization, setSubjectCustomization] = useState(true)
+  const [standardSubject, setStandardSubject] = useState('')
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
   const theme = useTheme()
@@ -50,6 +57,28 @@ const EmailSender: NextPage = () => {
         <button onClick={() => signIn()}>Sign in</button>
       </>
     )
+  }
+
+  const handleEmailStandard = (e: ChangeEvent<HTMLInputElement>) => {
+    (e.target.value === 'standard') 
+      ? setSubjectCustomization(true) 
+      : setSubjectCustomization(false);
+    if (!subjectCustomization) {
+      return (
+        <div> 
+          <TextField 
+            id="outlined-basic" 
+            label="Email subject" 
+            variant="outlined" 
+            onChange={handleEmailSubject}
+          />
+        </div>
+      )
+    }
+  }
+
+  const handleEmailSubject = (e: ChangeEvent<HTMLInputElement>) => {
+    setStandardSubject(e.target.value)
   }
 
   let reader: FileReader
@@ -124,7 +153,7 @@ const EmailSender: NextPage = () => {
     for (let i = 0; i < csvRowsArray.length; i++) {
       const currRow: CsvRow = csvRowsArray[i]
       const to = currRow.email
-      const subject = currRow.subject
+      const subject = (subjectCustomization) ? currRow.subject : standardSubject
       const map = new Map(Object.entries(currRow))
       const finalMap = new Map()
       let content = message
@@ -156,7 +185,6 @@ const EmailSender: NextPage = () => {
             <Typography variant="body1">
               <StyledFinalMessageContent>{msg.content}</StyledFinalMessageContent>
             </Typography>
-
           </div>
         ))}
       </>
@@ -171,8 +199,25 @@ const EmailSender: NextPage = () => {
         <Divider />
         <br />
         <FormControl fullWidth>
+        <SectionContainer>
+            <StyledSubHeader variant="h5">
+              1) Email subject
+            </StyledSubHeader>
+            <br />
+            <FormLabel id="choose-email-subject">
+              Use customized or standard email subjects?
+            </FormLabel>
+            <RadioGroup
+              aria-labelledby="choose-email-subject"
+              name="email-subject"
+              onChange={handleEmailStandard}
+            >
+              <FormControlLabel value="customized" control={<Radio />} label="Customized" />
+              <FormControlLabel value="standard" control={<Radio />} label="Standard" />
+            </RadioGroup>
+          </SectionContainer>          
           <SectionContainer>
-            <StyledSubHeader variant="h5">1) Enter message</StyledSubHeader>
+            <StyledSubHeader variant="h5">2) Enter message</StyledSubHeader>
             <br />
             <StyledTextArea
               aria-label="message-text-area"
@@ -183,7 +228,7 @@ const EmailSender: NextPage = () => {
           </SectionContainer>
           <SectionContainer>
             <StyledSubHeader variant="h5">
-              2) Upload and import csv
+              3) Upload and import csv
             </StyledSubHeader>
             <StyledCsvButtonsContainer>
               <input
@@ -238,7 +283,7 @@ const EmailSender: NextPage = () => {
         </StyledTableContainer>
         <SectionContainer>
           <StyledSubHeader variant="h5">
-            3) Verify final messages
+            4) Verify final messages
           </StyledSubHeader>
           <StyledButton
             color="info"
