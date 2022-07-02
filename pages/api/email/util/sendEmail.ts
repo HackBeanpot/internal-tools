@@ -14,7 +14,7 @@ export interface EmailCsvData {
  * @param emailText Email text
  * @returns [HTTP status code, message]
  */
-export async function sendEmail (csvData: EmailCsvData[], from: string, emailText: string) {
+export async function sendEmail(csvData: EmailCsvData[], from: string, emailText: string) {
   // TODO: Implement batch sending. For now, we grab the first email out the list
 
   // Some things you'll need to do:
@@ -48,21 +48,50 @@ export async function sendEmail (csvData: EmailCsvData[], from: string, emailTex
     return [500, 'env variables undefined']
   }
 
-  const emailToSend = csvData[0]
-  console.log('emailToSend:', emailToSend)
+  console.log("HERE!!! check name" + csvData[0].name);
+  // const emailToSend = csvData[0]
+  // console.log('emailToSend:', emailToSend)
   console.log('from:', from)
+
   const mailgun = new Mailgun(FormData)
   const client = mailgun.client({ username: 'api', key: process.env.MAILGUN_API_KEY })
 
+  // replace occurances of ${company}
+  emailText = emailText.replaceAll("${company}", "%recipient.company%");
+
   const messageData = {
     from, // this is shorthand for from: from
-    to: emailToSend.email,
-    subject: emailToSend.subject,
-    text: emailText
+    to: constructEmailList(csvData),
+    subject: '%recipient.subject%',
+    text: emailText, 
+    'recipient-variables':
+    constructRecipientVariable(csvData),
   }
-
   const messagesSendResult = await client.messages.create(process.env.MAILGUN_DOMAIN, messageData)
 
   console.log(messagesSendResult)
   return [messagesSendResult.status, messagesSendResult.message]
+}
+
+// idk if this is right?
+function constructRecipientVariable(csvData: EmailCsvData[]): string {
+  const recipentVar: string = JSON.stringify("{");
+
+  
+  csvData.forEach(function (item: EmailCsvData) {
+    const data: string = JSON.stringify(item.email + ":{ name:" + item.name + ", company: " + item.company + ", subject: " + item.subject);
+    recipentVar.concat(data);
+  });
+  recipentVar.concat("}");
+  return recipentVar;
+}
+
+//uhhh?
+function constructEmailList(csvData: EmailCsvData[]): string[] { 
+  // is this how you construct an array? 
+  const emails: string[] = new Array(csvData.length); 
+  for (var _i = 0; _i < csvData.length; _i++) {
+    emails[_i] = csvData[_i].email
+  }
+  return emails;
 }
