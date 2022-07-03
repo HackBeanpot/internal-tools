@@ -19,7 +19,6 @@ import {
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
-import { signIn, useSession } from 'next-auth/react'
 import {
   StyledButton,
   StyledPageContainer,
@@ -40,6 +39,8 @@ import {
   StyledFinalMessageContent
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
+import { GetServerSideProps } from 'next'
+import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 
 const EmailSender: NextPage = () => {
   const [file, setFile] = useState()
@@ -49,15 +50,6 @@ const EmailSender: NextPage = () => {
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
   const theme = useTheme()
-  const { data: session } = useSession()
-  if (!session) {
-    return (
-      <>
-        Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
-      </>
-    )
-  }
 
   const handleEmailStandard = (e: ChangeEvent<HTMLInputElement>) => {
     (e.target.value === 'standard') 
@@ -304,5 +296,7 @@ const EmailSender: NextPage = () => {
     </Layout>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect
 
 export default EmailSender
