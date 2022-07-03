@@ -174,7 +174,7 @@ const EmailSender: NextPage = () => {
           <br />
           <Typography variant="body1">
             <Link href="/help" underline="hover">
-              Help
+              Help Page
             </Link>
           </Typography>
           <FormControl fullWidth>
