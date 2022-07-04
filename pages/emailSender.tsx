@@ -19,11 +19,11 @@ import { signIn, useSession } from 'next-auth/react'
 import {
   StyledButton,
   StyledPageContainer,
-  StyledBoldTypograhy
+  StyledBoldTypograhy,
+  SectionContainer
 } from '../styles/common'
 import { CsvRow, ReplaceObj, Message } from '../lib/types'
 import {
-  SectionContainer,
   StyledCsvButton,
   StyledTextArea,
   StyledCsvButtonsContainer,
