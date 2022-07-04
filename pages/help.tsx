@@ -3,11 +3,25 @@ import type { NextPage } from 'next'
 import Layout from '../components/layout/Layout'
 import CSVTable from '../components/csvTable/CSVTable'
 import { ThemeProvider, Typography, Divider } from '@mui/material'
-import { StyledPageContainer } from '../styles/common'
+import { StyledPageContainer, SectionContainer } from '../styles/common'
 import { StyledSubHeader } from '../pageStyles/help.styles'
 import { TextContainer } from '../pageStyles/home.styles'
 import { theme } from '../styles/theme'
 
+function createData (
+  email: string,
+  subject: string,
+  name: string,
+  company: string
+) {
+  return { email, subject, name, company }
+}
+
+const rows = [
+  createData('example@facebook.com', 'Sponsoring HackBeanpot', 'Danaerys', 'Facebook'),
+  createData('example@google.com', 'Sponsoring HackBeanpot', 'Jaime', 'Google'),
+  createData('example@appfolio.com', 'Sponsoring HackBeanpot', 'Tyrion', 'Appfolio')
+]
 const Help: NextPage = () => {
   return (
         <Layout>
@@ -20,52 +34,53 @@ const Help: NextPage = () => {
                         Use this email sender to quickly send the same email to multiple recipients at once
                     </Typography>
                     <TextContainer>
+                        <SectionContainer>
                         <Typography variant="h5">Steps: </Typography>
                         <br />
-
                         <StyledSubHeader variant="h5">1) Enter message</StyledSubHeader>
-
-                        <Typography variant="body1">
-                            <ul>
-                                <li>
+                        <ul>
+                            <li>
+                                <Typography variant="body1">
                                     Enter the message inside the email. The words that vary among each email should be wrapped in {'$ {}'}
                                     (with no spaces between the {'$'} and the brackets). In the example below, those words are {'$ {name}'} and {'$ {company}'},
-                                     but in general, it is up to you how to name the variables in the brackets. Those
+                                    but in general, it is up to you how to name the variables in the brackets. Those
                                     words will be filled automatically according to the CSV file uploaded.
-
-                                </li>
-                            </ul>
-                        </Typography>
+                                </Typography>
+                            </li>
+                        </ul>
                         <StyledSubHeader variant="h5">
                             2) Upload and import csv
                         </StyledSubHeader>
-                        <Typography variant="body1">
-                            <ul>
-                                <li>
+                        <ul>
+                            <li>
+                                <Typography variant="body1">
                                     Import a CSV file that includes a table that fills at least 2 columns titled --
-                                    email, subject -- where email is each recipient&apos;s email and subject is the subject of the email. You can add more columns with any title that you want. These titles should be what you hope to include in the brackets in the above step(in our example it was name and company).
-                                     Scroll down to see the full CSV file example.
-                                </li>
-                            </ul>
-                        </Typography>
-
+                                    email, subject -- where email is each recipient&apos;s email and subject is the subject of the email.
+                                     You can add more columns with any title that you want. These titles should be what you hope to include
+                                      in the brackets in the above step(in our example it was name and company).
+                                    Scroll down to see the full CSV file example.
+                                </Typography>
+                            </li>
+                        </ul>
                         <StyledSubHeader variant="h5">
                             3) Verify final messages
                         </StyledSubHeader>
-
-                        <Typography variant="body1">
-                            <ul>
-                                <li>
-                                    Click on &quot;print final messages&quot; to verify the messages
-                                </li>
-                                <li> Click &quot;send&quot; to send the emails
-                                to the specified recipients
-                                </li>
-                            </ul>
-                        </Typography>
-
+                        <ul>
+                            <li>
+                                <Typography variant="body1">
+                                    Click on &quot;print final messages&quot; to verify if the printed message is what you want to send in the emails(all grammar and spelling is correct, etc)
+                                </Typography>
+                            </li>
+                            <li>
+                                <Typography variant="body1">
+                                    Click &quot;send&quot; to send the emails
+                                    to the specified recipients
+                                </Typography>
+                            </li>
+                        </ul>
+                        </SectionContainer>
                         <Divider light />
-                        <br />
+                        <SectionContainer>
                         <Typography variant="h6">Example Message: </Typography>
                         <Typography variant="body1">
                             <br />
@@ -87,13 +102,12 @@ const Help: NextPage = () => {
                             We really appreciate it, and we are looking forward to hearing from you soon.<br /><br />
                             Best, <br /> Cindy
                         </Typography>
-                        <br />
+                        </SectionContainer>
                         <Divider light />
-                        <br />
                         <Typography variant="h6">Example CSV: </Typography>
                         <br />
-                        <CSVTable></CSVTable>
                     </TextContainer>
+                    <CSVTable headers={['email', 'subject', 'name', 'company']} rows={rows} />
                 </StyledPageContainer>
             </ThemeProvider>
         </Layout>
