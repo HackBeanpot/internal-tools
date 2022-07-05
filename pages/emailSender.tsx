@@ -35,11 +35,9 @@ import {
   StyledFinalMessageContent
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
-<<<<<<< HEAD
-=======
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
->>>>>>> 3cf60ef (REmoved unused imports.)
+import { signIn, useSession } from 'next-auth/react'
 
 const EmailSender: NextPage = () => {
   const [file, setFile] = useState()
@@ -177,7 +175,7 @@ const EmailSender: NextPage = () => {
           <Divider />
           <br />
           <Typography variant="body1">
-            <Link href="/help" underline="hover">
+            <Link href="/emailSenderHelp" underline="hover">
               Help Page
             </Link>
           </Typography>
@@ -269,9 +267,6 @@ const EmailSender: NextPage = () => {
   )
 }
 
-<<<<<<< HEAD
-=======
 export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect
 
->>>>>>> 3cf60ef (REmoved unused imports.)
 export default EmailSender

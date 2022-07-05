@@ -22,21 +22,12 @@ import {
   StyledPhoneNumber,
   StyledLinkContainer,
   StyledLink,
-<<<<<<< HEAD
-  StyledInputField,
-  StyledGrid,
-  StyledFormControl
-} from '../pageStyles/sigmaker.styles'
-import { signIn, signOut, useSession } from 'next-auth/react'
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
-=======
   StyledGrid
 } from '../pageStyles/sigmaker.styles'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
->>>>>>> 3cf60ef (REmoved unused imports.)
 
 const Sigmaker: NextPage = () => {
   const [formData, setFormData] = useState<SignatureData>({
@@ -49,19 +40,6 @@ const Sigmaker: NextPage = () => {
     undefined
   )
 
-<<<<<<< HEAD
-  const { data: session } = useSession()
-  if (!session) {
-    return (
-      <>
-        Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
-      </>
-    )
-  }
-
-=======
->>>>>>> 3cf60ef (REmoved unused imports.)
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name
     const value = e.target.value
@@ -176,27 +154,6 @@ const Sigmaker: NextPage = () => {
                 onSubmit={handleSubmit}
             >
             <Stack spacing={3}>
-<<<<<<< HEAD
-            <Typography variant="h5"> Enter your info here! </Typography>
-                {createValidatedInputField('fullName', formData.fullName, 'Full name')}
-                {createValidatedInputField('title', formData.title, 'Title')}
-                {createValidatedInputField('phone', formData.phone, 'Phone')}
-                {createValidatedInputField('email', formData.email, 'Email (@hackbeanpot.com)')}
-                <StyledButton
-                  size="large"
-                  color="info"
-                  variant="contained"
-                  type="submit"
-                >
-                  Generate signature!
-                </StyledButton>
-                </Stack>
-              </ValidatorForm>
-              <div>
-              <br />
-              <br />
-            </div>
-=======
               <Typography variant="h5"> Enter your info here! </Typography>
               {createValidatedInputField('fullName', formData.fullName, 'Full name')}
               {createValidatedInputField('title', formData.title, 'Title')}
@@ -206,19 +163,21 @@ const Sigmaker: NextPage = () => {
                 size="large"
                 color="info"
                 variant="contained"
-                type="submit"
-                sx={{width:220}}
+                width="medium"
+                onClick={() => {
+                  setSignatureData(formData)
+                  setFormData({
+                    fullName: '',
+                    title: '',
+                    phone: '',
+                    email: ''
+                  })
+                }}
               >
                 Generate signature!
               </StyledButton>
             </Stack>
           </ValidatorForm>
-          <div>
-            <br />
-            <br />
-            <button onClick={() => signOut()}>Sign out</button>
-          </div>
->>>>>>> 70712fe (Fix generate button width)
           </Grid>
           <Grid item xs={12} md={6}>
             {<div>{createSignature()}</div>}
@@ -230,12 +189,6 @@ const Sigmaker: NextPage = () => {
   )
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect;
->>>>>>> b2264c3 (Eslint.)
-=======
 export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect
->>>>>>> 3cf60ef (REmoved unused imports.)
+
 export default Sigmaker
