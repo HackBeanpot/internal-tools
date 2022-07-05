@@ -13,7 +13,6 @@ import {
   TableContainer,
   TableCell,
   TableHead,
-  TextField,
   Typography,
 } from '@mui/material'
 import type { NextPage } from 'next'
@@ -28,15 +27,16 @@ import { CsvRow, ReplaceObj, Message } from '../lib/types'
 import {
   SectionContainer,
   StyledCsvButton,
-  StyledTextArea,
   StyledCsvButtonsContainer,
-  StyledSubHeader,
-  StyledFinalMessagesContainer,
-  StyledTableContainer,
   StyledDivider,
+  StyledFinalMessagesContainer,
+  StyledFinalMessageContent,
+  StyledSubHeader,
   StyledTable,
+  StyledTableContainer,
   StyledTableRow,
-  StyledFinalMessageContent
+  StyledTextField,
+  StyledTextArea
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
@@ -60,12 +60,29 @@ const EmailSender: NextPage = () => {
   const printStandardEmailSubject = () => {
     if (!subjectCustomization) {
       return (
-        <TextField 
-          id="outlined-basic" 
-          label="Email subject" 
-          variant="outlined" 
-          onChange={handleEmailSubject}
-        />
+        <div>
+          <StyledSubHeader variant="h5">2) Enter standard email subject</StyledSubHeader>
+          <StyledTextField 
+            id="outlined-basic" 
+            label="Email subject" 
+            variant="outlined" 
+            onChange={handleEmailSubject}
+          />
+        </div>
+      )
+    }
+  }
+
+  // Increments step number of email entry if standard email subject step is added in
+  const printEnterEmailMessage = () => {
+    if (!subjectCustomization) {
+      return (
+        <StyledSubHeader variant="h5">3) Enter email content</StyledSubHeader>
+      )
+    }
+    else {
+      return (
+        <StyledSubHeader variant="h5">2) Enter email content</StyledSubHeader>
       )
     }
   }
@@ -205,13 +222,15 @@ const EmailSender: NextPage = () => {
               name="email-subject"
               onChange={handleEmailStandard}
             >
-              <FormControlLabel value="customized" control={<Radio />} label="Customized" />
-              <FormControlLabel value="standard" control={<Radio />} label="Standard" />
+              <FormControlLabel value="customized" control={<Radio />} label="Customized (add subjects from CSV)" />
+              <FormControlLabel value="standard" control={<Radio />} label="Standard (enter one subject for all emails)" />
             </RadioGroup>
+          </SectionContainer> 
+          <SectionContainer> 
             <div>{printStandardEmailSubject()}</div>
-          </SectionContainer>          
+          </SectionContainer>         
           <SectionContainer>
-            <StyledSubHeader variant="h5">2) Enter message</StyledSubHeader>
+            {printEnterEmailMessage()}
             <br />
             <StyledTextArea
               aria-label="message-text-area"
