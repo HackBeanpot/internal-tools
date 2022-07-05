@@ -194,4 +194,8 @@ const Sigmaker: NextPage = () => {
   )
 }
 
+<<<<<<< HEAD
+=======
+export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect;
+>>>>>>> b2264c3 (Eslint.)
 export default Sigmaker
