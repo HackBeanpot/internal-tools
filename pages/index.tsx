@@ -5,24 +5,10 @@ import { StyledPageContainer } from '../styles/common'
 import { theme } from '../styles/theme'
 import { TextContainer } from '../pageStyles/home.styles'
 import Layout from '../components/layout/Layout'
-<<<<<<< HEAD
-
-const Home: NextPage = () => {
-  const { data: session } = useSession()
-  if (!session) {
-    return (
-      <>
-        Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
-      </>
-    )
-  }
-=======
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 
 const Home: NextPage = () => {
->>>>>>> 3cf60ef (REmoved unused imports.)
   return (
     <Layout>
     <ThemeProvider theme={theme}>
@@ -56,9 +42,6 @@ const Home: NextPage = () => {
   )
 }
 
-<<<<<<< HEAD
-=======
 export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect
 
->>>>>>> 3cf60ef (REmoved unused imports.)
 export default Home
