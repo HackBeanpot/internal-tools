@@ -22,12 +22,21 @@ import {
   StyledPhoneNumber,
   StyledLinkContainer,
   StyledLink,
+<<<<<<< HEAD
   StyledInputField,
   StyledGrid,
   StyledFormControl
 } from '../pageStyles/sigmaker.styles'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
+=======
+  StyledGrid
+} from '../pageStyles/sigmaker.styles'
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
+import Layout from '../components/layout/Layout'
+import { GetServerSideProps } from 'next'
+import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
+>>>>>>> 3cf60ef (REmoved unused imports.)
 
 const Sigmaker: NextPage = () => {
   const [formData, setFormData] = useState<SignatureData>({
@@ -40,6 +49,7 @@ const Sigmaker: NextPage = () => {
     undefined
   )
 
+<<<<<<< HEAD
   const { data: session } = useSession()
   if (!session) {
     return (
@@ -50,6 +60,8 @@ const Sigmaker: NextPage = () => {
     )
   }
 
+=======
+>>>>>>> 3cf60ef (REmoved unused imports.)
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name
     const value = e.target.value
@@ -195,7 +207,11 @@ const Sigmaker: NextPage = () => {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect;
 >>>>>>> b2264c3 (Eslint.)
+=======
+export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect
+>>>>>>> 3cf60ef (REmoved unused imports.)
 export default Sigmaker
