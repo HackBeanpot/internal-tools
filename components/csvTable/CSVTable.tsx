@@ -12,7 +12,6 @@ export default function CSVTable ({ headers, rows }: CSVTableProps) {
   const rowValues = rows
   return (
     <>
-
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
