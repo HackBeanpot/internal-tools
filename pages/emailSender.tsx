@@ -15,7 +15,6 @@ import {
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
-import { signIn, useSession } from 'next-auth/react'
 import {
   StyledButton,
   StyledPageContainer,
@@ -36,6 +35,11 @@ import {
   StyledFinalMessageContent
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
+<<<<<<< HEAD
+=======
+import { GetServerSideProps } from 'next'
+import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
+>>>>>>> 3cf60ef (REmoved unused imports.)
 
 const EmailSender: NextPage = () => {
   const [file, setFile] = useState()
@@ -265,4 +269,9 @@ const EmailSender: NextPage = () => {
   )
 }
 
+<<<<<<< HEAD
+=======
+export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect
+
+>>>>>>> 3cf60ef (REmoved unused imports.)
 export default EmailSender
