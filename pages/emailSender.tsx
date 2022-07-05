@@ -37,7 +37,10 @@ import {
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
+<<<<<<< HEAD
 import { signIn, useSession } from 'next-auth/react'
+=======
+>>>>>>> main
 
 const EmailSender: NextPage = () => {
   const [file, setFile] = useState()
@@ -45,15 +48,6 @@ const EmailSender: NextPage = () => {
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
   const theme = useTheme()
-  const { data: session } = useSession()
-  if (!session) {
-    return (
-      <>
-        Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
-      </>
-    )
-  }
 
   let reader: FileReader
   if (typeof window !== 'undefined') {
