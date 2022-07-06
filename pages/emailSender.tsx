@@ -21,7 +21,13 @@ import {
   StyledBoldTypograhy,
   SectionContainer
 } from '../styles/common'
-import { CsvRow, ReplaceObj, Message } from '../lib/types'
+import {
+  CsvRow,
+  ReplaceObj,
+  Message,
+  ErrorMessage,
+  ResultErrorMessage
+} from '../lib/types'
 import {
   StyledCsvButton,
   StyledTextArea,
@@ -32,7 +38,9 @@ import {
   StyledDivider,
   StyledTable,
   StyledTableRow,
-  StyledFinalMessageContent
+  StyledFinalMessageContent,
+  StyledErrorMessage,
+  StyledResultMessage
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
@@ -43,6 +51,11 @@ const EmailSender: NextPage = () => {
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
+  const [resultErrorMessage, setResultErrorMessage] =
+    useState<ResultErrorMessage>({
+      errorMessages: [],
+      resultMessage: { isError: false, message: '' }
+    })
   const theme = useTheme()
 
   let reader: FileReader
@@ -111,6 +124,31 @@ const EmailSender: NextPage = () => {
     return headersArrFinal
   }
 
+  const sendEmails = () => {
+    const localErrorMessages: ErrorMessage[] = []
+    for (let i = 0; i < finalMessages.length; i++) {
+      // This if statement is just for testing / a mock. You can read this as if (error)
+      // to represent the error case. Replace the following line when actually implementing
+      // the error check.
+      if (i % 2 === 0) {
+        localErrorMessages.push({
+          id: finalMessages[i].id,
+          message: 'Errorrrr!'
+        })
+      }
+    }
+    setResultErrorMessage({
+      errorMessages: localErrorMessages,
+      resultMessage: {
+        isError: localErrorMessages.length > 0,
+        message:
+          localErrorMessages.length > 0
+            ? `Error sending ${localErrorMessages.length} of ${finalMessages.length}`
+            : 'Sent emails successfully'
+      }
+    })
+  }
+
   const createMessages = () => {
     const regexArray = createRegexArray()
     const finalMessageArr = []
@@ -129,10 +167,16 @@ const EmailSender: NextPage = () => {
         const replaceVal = finalMap.get(regexArray[j].headerName)
         content = content.replaceAll(toReplace, replaceVal)
       }
-      const msg: Message = { to, subject, content }
+      const msg: Message = { id: nanoid(), to, subject, content }
       finalMessageArr.push(msg)
     }
     setFinalMessages(finalMessageArr)
+  }
+
+  const getErrorMessage = (id: string) => {
+    return resultErrorMessage.errorMessages.find(
+      (currentMessage) => currentMessage.id === id
+    )?.message
   }
 
   const displayMessages = () => {
@@ -141,15 +185,23 @@ const EmailSender: NextPage = () => {
         {finalMessages.map((msg) => (
           <div key={nanoid()}>
             <StyledDivider />
+            {getErrorMessage(msg.id) && (
+              <StyledErrorMessage>
+                Error: {getErrorMessage(msg.id)}
+              </StyledErrorMessage>
+            )}
+            <br />
+            <br />
             <Typography variant="body1">To: {msg.to}</Typography>
             <Typography variant="body1">Subject: {msg.subject}</Typography>
             <br />
             <Typography variant="body1">Content:</Typography>
             <br />
             <Typography variant="body1">
-              <StyledFinalMessageContent>{msg.content}</StyledFinalMessageContent>
+              <StyledFinalMessageContent>
+                {msg.content}
+              </StyledFinalMessageContent>
             </Typography>
-
           </div>
         ))}
       </>
@@ -200,6 +252,7 @@ const EmailSender: NextPage = () => {
                 <StyledCsvButton
                   variant="contained"
                   width="medium"
+                  disabled={file === undefined}
                   onClick={(e) => {
                     handleOnSubmit(e)
                   }}
@@ -211,7 +264,7 @@ const EmailSender: NextPage = () => {
           </FormControl>
           <StyledTableContainer>
             <TableContainer component={Paper}>
-              <StyledTable aria-label="simple table">
+              <StyledTable aria-label="uploaded csv table">
                 <TableHead>
                   {headerKeys.map((key) => (
                     <TableCell key={nanoid()}>
@@ -243,14 +296,35 @@ const EmailSender: NextPage = () => {
               color="info"
               variant="contained"
               onClick={createMessages}
+              disabled={csvRowsArray.length === 0}
               width="medium"
             >
               Print final messages
             </StyledButton>
-            <StyledFinalMessagesContainer>
-              {displayMessages()}
-            </StyledFinalMessagesContainer>
           </SectionContainer>
+          <br />
+          <br />
+          <SectionContainer>
+            <StyledSubHeader variant="h5">4) Send emails</StyledSubHeader>
+            <StyledButton
+              color="info"
+              variant="contained"
+              onClick={() => sendEmails()}
+              width="medium"
+              disabled={finalMessages.length === 0}
+            >
+              Send!
+            </StyledButton>
+            <StyledResultMessage
+              variant="h5"
+              isError={resultErrorMessage.resultMessage.isError}
+            >
+              {resultErrorMessage.resultMessage.message}
+            </StyledResultMessage>
+          </SectionContainer>
+          <StyledFinalMessagesContainer>
+            {displayMessages()}
+          </StyledFinalMessagesContainer>
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
