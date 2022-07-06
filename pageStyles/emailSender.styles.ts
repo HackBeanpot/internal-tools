@@ -2,11 +2,6 @@ import { Divider, Table, TableRow, TextareaAutosize, Typography } from '@mui/mat
 import { styled } from '@mui/material/styles'
 import { StyledButton } from '../styles/common'
 
-const SectionContainer = styled('div')({
-  marginTop: 30,
-  marginBottom: 30
-})
-
 const StyledTextArea = styled(TextareaAutosize)({
   width: '100%'
 })
@@ -51,7 +46,7 @@ const StyledTableRow = styled(TableRow)({
 })
 
 export {
-  SectionContainer, StyledTextArea, StyledCsvButton, StyledCsvButtonsContainer, StyledSubHeader,
+  StyledTextArea, StyledCsvButton, StyledCsvButtonsContainer, StyledSubHeader,
   StyledFinalMessagesContainer, StyledTableContainer, StyledDivider, StyledTable, StyledTableRow,
   StyledFinalMessageContent
 }
