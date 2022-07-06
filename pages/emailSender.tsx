@@ -37,10 +37,6 @@ import {
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
-<<<<<<< HEAD
-import { signIn, useSession } from 'next-auth/react'
-=======
->>>>>>> main
 
 const EmailSender: NextPage = () => {
   const [file, setFile] = useState()
