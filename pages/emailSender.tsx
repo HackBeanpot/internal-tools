@@ -9,7 +9,8 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  Button
+  Button,
+  Link
 } from '@mui/material'
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
@@ -17,11 +18,11 @@ import { useTheme } from '@mui/material/styles'
 import {
   StyledButton,
   StyledPageContainer,
-  StyledBoldTypograhy
+  StyledBoldTypograhy,
+  SectionContainer
 } from '../styles/common'
 import { CsvRow, ReplaceObj, Message } from '../lib/types'
 import {
-  SectionContainer,
   StyledCsvButton,
   StyledTextArea,
   StyledCsvButtonsContainer,
@@ -157,95 +158,101 @@ const EmailSender: NextPage = () => {
 
   return (
     <Layout>
-    <ThemeProvider theme={theme}>
-      <StyledPageContainer>
-        <Typography variant="h3"> Email Sender </Typography>
-        <Divider />
-        <br />
-        <FormControl fullWidth>
-          <SectionContainer>
-            <StyledSubHeader variant="h5">1) Enter message</StyledSubHeader>
-            <br />
-            <StyledTextArea
-              aria-label="message-text-area"
-              placeholder="Paste in message"
-              onChange={(e) => setMessage(e.target.value)}
-              minRows={20}
-            />
-          </SectionContainer>
+      <ThemeProvider theme={theme}>
+        <StyledPageContainer>
+          <Typography variant="h3"> Email Sender
+          </Typography>
+          <Divider />
+          <br />
+          <Typography variant="body1">
+            <Link href="/emailSenderHelp" underline="hover">
+              Help Page
+            </Link>
+          </Typography>
+          <FormControl fullWidth>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">1) Enter message</StyledSubHeader>
+              <br />
+              <StyledTextArea
+                aria-label="message-text-area"
+                placeholder="Paste in message"
+                onChange={(e) => setMessage(e.target.value)}
+                minRows={20}
+              />
+            </SectionContainer>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">
+                2) Upload and import csv
+              </StyledSubHeader>
+              <StyledCsvButtonsContainer>
+                <input
+                  style={{ display: 'none' }}
+                  id="contained-button-file"
+                  accept={'.csv'}
+                  type="file"
+                  onChange={handleOnChange}
+                />
+                <label htmlFor="contained-button-file">
+                  <Button variant="contained" component="span">
+                    Upload
+                  </Button>
+                </label>
+                <StyledCsvButton
+                  variant="contained"
+                  width="medium"
+                  onClick={(e) => {
+                    handleOnSubmit(e)
+                  }}
+                >
+                  Import CSV!
+                </StyledCsvButton>
+              </StyledCsvButtonsContainer>
+            </SectionContainer>
+          </FormControl>
+          <StyledTableContainer>
+            <TableContainer component={Paper}>
+              <StyledTable aria-label="simple table">
+                <TableHead>
+                  {headerKeys.map((key) => (
+                    <TableCell key={nanoid()}>
+                      <StyledBoldTypograhy variant="body1">
+                        {key}
+                      </StyledBoldTypograhy>
+                    </TableCell>
+                  ))}
+                </TableHead>
+                <TableBody>
+                  {csvRowsArray.map((item) => (
+                    <StyledTableRow key={nanoid()}>
+                      {Object.values(item).map((val) => (
+                        <TableCell key={nanoid()} align="left">
+                          {val}
+                        </TableCell>
+                      ))}
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </StyledTable>
+            </TableContainer>
+          </StyledTableContainer>
           <SectionContainer>
             <StyledSubHeader variant="h5">
-              2) Upload and import csv
+              3) Verify final messages
             </StyledSubHeader>
-            <StyledCsvButtonsContainer>
-              <input
-                style={{ display: 'none' }}
-                id="contained-button-file"
-                accept={'.csv'}
-                type="file"
-                onChange={handleOnChange}
-              />
-              <label htmlFor="contained-button-file">
-                <Button variant="contained" component="span">
-                  Upload
-                </Button>
-              </label>
-              <StyledCsvButton
-                variant="contained"
-                width="medium"
-                onClick={(e) => {
-                  handleOnSubmit(e)
-                }}
-              >
-                Import CSV!
-              </StyledCsvButton>
-            </StyledCsvButtonsContainer>
+            <StyledButton
+              color="info"
+              variant="contained"
+              onClick={createMessages}
+              width="medium"
+            >
+              Print final messages
+            </StyledButton>
+            <StyledFinalMessagesContainer>
+              {displayMessages()}
+            </StyledFinalMessagesContainer>
           </SectionContainer>
-        </FormControl>
-        <StyledTableContainer>
-          <TableContainer component={Paper}>
-            <StyledTable aria-label="simple table">
-              <TableHead>
-                {headerKeys.map((key) => (
-                  <TableCell key={nanoid()}>
-                    <StyledBoldTypograhy variant="body1">
-                      {key}
-                    </StyledBoldTypograhy>
-                  </TableCell>
-                ))}
-              </TableHead>
-              <TableBody>
-                {csvRowsArray.map((item) => (
-                  <StyledTableRow key={nanoid()}>
-                    {Object.values(item).map((val) => (
-                      <TableCell key={nanoid()} align="left">
-                        {val}
-                      </TableCell>
-                    ))}
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </StyledTable>
-          </TableContainer>
-        </StyledTableContainer>
-        <SectionContainer>
-          <StyledSubHeader variant="h5">
-            3) Verify final messages
-          </StyledSubHeader>
-          <StyledButton
-            color="info"
-            variant="contained"
-            onClick={createMessages}
-            width="medium"
-          >
-            Print final messages
-          </StyledButton>
-          <StyledFinalMessagesContainer>
-            {displayMessages()}
-          </StyledFinalMessagesContainer>
-        </SectionContainer>
-      </StyledPageContainer>
-    </ThemeProvider>
+        </StyledPageContainer>
+      </ThemeProvider>
     </Layout>
   )
 }
