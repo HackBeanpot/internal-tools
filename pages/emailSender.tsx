@@ -9,16 +9,17 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  Button
+  Button,
+  Link
 } from '@mui/material'
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
-import { signIn, useSession } from 'next-auth/react'
 import {
   StyledButton,
   StyledPageContainer,
-  StyledBoldTypograhy
+  StyledBoldTypograhy,
+  SectionContainer
 } from '../styles/common'
 import {
   CsvRow,
@@ -28,7 +29,6 @@ import {
   ResultErrorMessage
 } from '../lib/types'
 import {
-  SectionContainer,
   StyledCsvButton,
   StyledTextArea,
   StyledCsvButtonsContainer,
@@ -43,6 +43,8 @@ import {
   StyledResultMessage
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
+import { GetServerSideProps } from 'next'
+import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 
 const EmailSender: NextPage = () => {
   const [file, setFile] = useState()
@@ -55,15 +57,6 @@ const EmailSender: NextPage = () => {
       resultMessage: { isError: false, message: '' }
     })
   const theme = useTheme()
-  const { data: session } = useSession()
-  if (!session) {
-    return (
-      <>
-        Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
-      </>
-    )
-  }
 
   let reader: FileReader
   if (typeof window !== 'undefined') {
@@ -219,9 +212,15 @@ const EmailSender: NextPage = () => {
     <Layout>
       <ThemeProvider theme={theme}>
         <StyledPageContainer>
-          <Typography variant="h3"> Email Sender </Typography>
+          <Typography variant="h3"> Email Sender
+          </Typography>
           <Divider />
           <br />
+          <Typography variant="body1">
+            <Link href="/emailSenderHelp" underline="hover">
+              Help Page
+            </Link>
+          </Typography>
           <FormControl fullWidth>
             <SectionContainer>
               <StyledSubHeader variant="h5">1) Enter message</StyledSubHeader>
@@ -331,5 +330,7 @@ const EmailSender: NextPage = () => {
     </Layout>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect
 
 export default EmailSender
