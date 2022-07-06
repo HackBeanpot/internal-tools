@@ -1,5 +1,6 @@
 import { FormControl, Grid, TextField, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { TextValidator } from 'react-material-ui-form-validator';
 import Link from 'next/link'
 
 const StyledGmailHeader = styled(Typography)({
@@ -81,6 +82,10 @@ const StyledFormControl = styled(FormControl)({
   marginBottom: 40
 })
 
+const StyledTextValidator = styled(TextValidator)({
+  width: 280
+})
+
 export {
   StyledGmailHeader,
   StyledTable,
@@ -94,5 +99,6 @@ export {
   StyledLink,
   StyledInputField,
   StyledGrid,
-  StyledFormControl
+  StyledFormControl,
+  StyledTextValidator
 }
