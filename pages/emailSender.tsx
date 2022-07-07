@@ -158,8 +158,7 @@ const EmailSender: NextPage = () => {
   const sendEmails = () => {
     // Hardcoding this, as user values in useSession() are undefined for some reason
     const from = 'Dean Frame <dean@hackbeanpot.com>'
-    console.log(csvRowsArray)
-    const dataToSend = { csvData: csvRowsArray, from, emailText: message }
+    const dataToSend = { emailData: finalMessages, from }
     fetch('/api/email/send', {
       method: 'POST',
       cache: 'no-cache',
