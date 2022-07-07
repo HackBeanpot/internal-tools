@@ -9,7 +9,9 @@ import { useRouter } from 'next/router'
 import { theme } from '../../styles/theme'
 import { InferGetServerSidePropsType } from 'next'
 
-export default function SignIn ({ providers }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function SignIn ({
+  providers
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter()
   const session = useSession()
   useEffect(() => {
@@ -27,9 +29,15 @@ export default function SignIn ({ providers }: InferGetServerSidePropsType<typeo
               src={icons.HBP_LOGO.image}
               alt={icons.HBP_LOGO.altText}
             />
-            <Typography variant="body1">Welcome to our internal tools portal!!</Typography>
+            <Typography variant="body1">
+              Welcome to our internal tools portal!!
+            </Typography>
             <br></br>
-            <StyledButton bgColor={theme.palette.HBPNavy.main} onClick={() => signIn(provider.id)} width='medium'>
+            <StyledButton
+              bgColor={theme.palette.HBPNavy.main}
+              onClick={() => signIn(provider.id)}
+              width="medium"
+            >
               Sign in with {provider.name}
             </StyledButton>
           </StyledSignInPageContainer>
