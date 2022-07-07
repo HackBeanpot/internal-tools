@@ -9,7 +9,8 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  Button
+  Button,
+  Link
 } from '@mui/material'
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
@@ -17,11 +18,17 @@ import { useTheme } from '@mui/material/styles'
 import {
   StyledButton,
   StyledPageContainer,
-  StyledBoldTypograhy
+  StyledBoldTypograhy,
+  SectionContainer
 } from '../styles/common'
-import { CsvRow, ReplaceObj, Message } from '../lib/types'
 import {
-  SectionContainer,
+  CsvRow,
+  ReplaceObj,
+  Message,
+  // ErrorMessage,
+  ResultErrorMessage
+} from '../lib/types'
+import {
   StyledCsvButton,
   StyledTextArea,
   StyledCsvButtonsContainer,
@@ -31,7 +38,9 @@ import {
   StyledDivider,
   StyledTable,
   StyledTableRow,
-  StyledFinalMessageContent
+  StyledFinalMessageContent,
+  StyledErrorMessage,
+  StyledResultMessage
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
@@ -42,6 +51,11 @@ const EmailSender: NextPage = () => {
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
+  const [resultErrorMessage, setResultErrorMessage] =
+    useState<ResultErrorMessage>({
+      errorMessages: [],
+      resultMessage: { isError: false, message: '' }
+    })
   const theme = useTheme()
 
   let reader: FileReader
@@ -110,6 +124,31 @@ const EmailSender: NextPage = () => {
     return headersArrFinal
   }
 
+  // const sendEmails = () => {
+  //   const localErrorMessages: ErrorMessage[] = []
+  //   for (let i = 0; i < finalMessages.length; i++) {
+  //     // This if statement is just for testing / a mock. You can read this as if (error)
+  //     // to represent the error case. Replace the following line when actually implementing
+  //     // the error check.
+  //     if (i % 2 === 0) {
+  //       localErrorMessages.push({
+  //         id: finalMessages[i].id,
+  //         message: 'Errorrrr!'
+  //       })
+  //     }
+  //   }
+  //   setResultErrorMessage({
+  //     errorMessages: localErrorMessages,
+  //     resultMessage: {
+  //       isError: localErrorMessages.length > 0,
+  //       message:
+  //         localErrorMessages.length > 0
+  //           ? `Error sending ${localErrorMessages.length} of ${finalMessages.length}`
+  //           : 'Sent emails successfully'
+  //     }
+  //   })
+  // }
+
   const createMessages = () => {
     const regexArray = createRegexArray()
     const finalMessageArr = []
@@ -128,10 +167,16 @@ const EmailSender: NextPage = () => {
         const replaceVal = finalMap.get(regexArray[j].headerName)
         content = content.replaceAll(toReplace, replaceVal)
       }
-      const msg: Message = { to, subject, content }
+      const msg: Message = { id: nanoid(), to, subject, content }
       finalMessageArr.push(msg)
     }
     setFinalMessages(finalMessageArr)
+  }
+
+  const getErrorMessage = (id: string) => {
+    return resultErrorMessage.errorMessages.find(
+      (currentMessage) => currentMessage.id === id
+    )?.message
   }
 
   const displayMessages = () => {
@@ -140,15 +185,23 @@ const EmailSender: NextPage = () => {
         {finalMessages.map((msg) => (
           <div key={nanoid()}>
             <StyledDivider />
+            {getErrorMessage(msg.id) && (
+              <StyledErrorMessage>
+                Error: {getErrorMessage(msg.id)}
+              </StyledErrorMessage>
+            )}
+            <br />
+            <br />
             <Typography variant="body1">To: {msg.to}</Typography>
             <Typography variant="body1">Subject: {msg.subject}</Typography>
             <br />
             <Typography variant="body1">Content:</Typography>
             <br />
             <Typography variant="body1">
-              <StyledFinalMessageContent>{msg.content}</StyledFinalMessageContent>
+              <StyledFinalMessageContent>
+                {msg.content}
+              </StyledFinalMessageContent>
             </Typography>
-
           </div>
         ))}
       </>
@@ -168,8 +221,16 @@ const EmailSender: NextPage = () => {
       body: JSON.stringify(dataToSend)
     })
       .then((res) => {
-        // TODO: Use status to determine whether there was an error or not
-        console.log(res.status)
+        // TODO: Make this error check more robust
+        if (res.status === 500) {
+          setResultErrorMessage({
+            errorMessages: [],
+            resultMessage: {
+              isError: true,
+              message: res.statusText
+            }
+          })
+        }
         return res.json()
       })
       .then((data) => {
@@ -180,96 +241,124 @@ const EmailSender: NextPage = () => {
 
   return (
     <Layout>
-    <ThemeProvider theme={theme}>
-      <StyledPageContainer>
-        <Button onClick={sendEmails}>Send emails!</Button>
-        <Typography variant="h3"> Email Sender </Typography>
-        <Divider />
-        <br />
-        <FormControl fullWidth>
-          <SectionContainer>
-            <StyledSubHeader variant="h5">1) Enter message</StyledSubHeader>
-            <br />
-            <StyledTextArea
-              aria-label="message-text-area"
-              placeholder="Paste in message"
-              onChange={(e) => setMessage(e.target.value)}
-              minRows={20}
-            />
-          </SectionContainer>
+      <ThemeProvider theme={theme}>
+        <StyledPageContainer>
+          <Button onClick={sendEmails}>Send emails!</Button>
+          <Typography variant="h3"> Email Sender
+          </Typography>
+          <Divider />
+          <br />
+          <Typography variant="body1">
+            <Link href="/emailSenderHelp" underline="hover">
+              Help Page
+            </Link>
+          </Typography>
+          <FormControl fullWidth>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">1) Enter message</StyledSubHeader>
+              <br />
+              <StyledTextArea
+                aria-label="message-text-area"
+                placeholder="Paste in message"
+                onChange={(e) => setMessage(e.target.value)}
+                minRows={20}
+              />
+            </SectionContainer>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">
+                2) Upload and import csv
+              </StyledSubHeader>
+              <StyledCsvButtonsContainer>
+                <input
+                  style={{ display: 'none' }}
+                  id="contained-button-file"
+                  accept={'.csv'}
+                  type="file"
+                  onChange={handleOnChange}
+                />
+                <label htmlFor="contained-button-file">
+                  <Button variant="contained" component="span">
+                    Upload
+                  </Button>
+                </label>
+                <StyledCsvButton
+                  variant="contained"
+                  width="medium"
+                  disabled={file === undefined}
+                  onClick={(e) => {
+                    handleOnSubmit(e)
+                  }}
+                >
+                  Import CSV!
+                </StyledCsvButton>
+              </StyledCsvButtonsContainer>
+            </SectionContainer>
+          </FormControl>
+          <StyledTableContainer>
+            <TableContainer component={Paper}>
+              <StyledTable aria-label="uploaded csv table">
+                <TableHead>
+                  {headerKeys.map((key) => (
+                    <TableCell key={nanoid()}>
+                      <StyledBoldTypograhy variant="body1">
+                        {key}
+                      </StyledBoldTypograhy>
+                    </TableCell>
+                  ))}
+                </TableHead>
+                <TableBody>
+                  {csvRowsArray.map((item) => (
+                    <StyledTableRow key={nanoid()}>
+                      {Object.values(item).map((val) => (
+                        <TableCell key={nanoid()} align="left">
+                          {val}
+                        </TableCell>
+                      ))}
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </StyledTable>
+            </TableContainer>
+          </StyledTableContainer>
           <SectionContainer>
             <StyledSubHeader variant="h5">
-              2) Upload and import csv
+              3) Verify final messages
             </StyledSubHeader>
-            <StyledCsvButtonsContainer>
-              <input
-                style={{ display: 'none' }}
-                id="contained-button-file"
-                accept={'.csv'}
-                type="file"
-                onChange={handleOnChange}
-              />
-              <label htmlFor="contained-button-file">
-                <Button variant="contained" component="span">
-                  Upload
-                </Button>
-              </label>
-              <StyledCsvButton
-                variant="contained"
-                width="medium"
-                onClick={(e) => {
-                  handleOnSubmit(e)
-                }}
-              >
-                Import CSV!
-              </StyledCsvButton>
-            </StyledCsvButtonsContainer>
+            <StyledButton
+              color="info"
+              variant="contained"
+              onClick={createMessages}
+              disabled={csvRowsArray.length === 0}
+              width="medium"
+            >
+              Print final messages
+            </StyledButton>
           </SectionContainer>
-        </FormControl>
-        <StyledTableContainer>
-          <TableContainer component={Paper}>
-            <StyledTable aria-label="simple table">
-              <TableHead>
-                {headerKeys.map((key) => (
-                  <TableCell key={nanoid()}>
-                    <StyledBoldTypograhy variant="body1">
-                      {key}
-                    </StyledBoldTypograhy>
-                  </TableCell>
-                ))}
-              </TableHead>
-              <TableBody>
-                {csvRowsArray.map((item) => (
-                  <StyledTableRow key={nanoid()}>
-                    {Object.values(item).map((val) => (
-                      <TableCell key={nanoid()} align="left">
-                        {val}
-                      </TableCell>
-                    ))}
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </StyledTable>
-          </TableContainer>
-        </StyledTableContainer>
-        <SectionContainer>
-          <StyledSubHeader variant="h5">
-            3) Verify final messages
-          </StyledSubHeader>
-          <StyledButton
-            color="info"
-            variant="contained"
-            onClick={createMessages}
-            width="medium"
-          >
-            Print final messages
-          </StyledButton>
+          <br />
+          <br />
+          <SectionContainer>
+            <StyledSubHeader variant="h5">4) Send emails</StyledSubHeader>
+            <StyledButton
+              color="info"
+              variant="contained"
+              onClick={() => sendEmails()}
+              width="medium"
+              disabled={finalMessages.length === 0}
+            >
+              Send!
+            </StyledButton>
+            <StyledResultMessage
+              variant="h5"
+              isError={resultErrorMessage.resultMessage.isError}
+            >
+              {resultErrorMessage.resultMessage.message}
+            </StyledResultMessage>
+          </SectionContainer>
           <StyledFinalMessagesContainer>
             {displayMessages()}
           </StyledFinalMessagesContainer>
-        </SectionContainer>
-      </StyledPageContainer>
-    </ThemeProvider>
+        </StyledPageContainer>
+      </ThemeProvider>
     </Layout>
   )
 }
