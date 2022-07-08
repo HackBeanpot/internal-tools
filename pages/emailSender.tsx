@@ -243,7 +243,6 @@ const EmailSender: NextPage = () => {
     <Layout>
       <ThemeProvider theme={theme}>
         <StyledPageContainer>
-          <Button onClick={sendEmails}>Send emails!</Button>
           <Typography variant="h3"> Email Sender
           </Typography>
           <Divider />
