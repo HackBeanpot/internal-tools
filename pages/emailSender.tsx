@@ -25,7 +25,7 @@ import {
   CsvRow,
   ReplaceObj,
   Message,
-  ErrorMessage,
+  // ErrorMessage,
   ResultErrorMessage
 } from '../lib/types'
 import {
@@ -67,7 +67,7 @@ const EmailSender: NextPage = () => {
   }
 
   const csvFileToArray = (str: string) => {
-    const csvHeaders = str.slice(0, str.indexOf('\n')).split(',')
+    const csvHeaders = str.slice(0, str.indexOf('\n')).trim().split(',')
     let allRowValues = str.slice(str.indexOf('\n') + 1).split('\n')
     allRowValues = allRowValues.map((string) => {
       return string.trim()
@@ -124,30 +124,30 @@ const EmailSender: NextPage = () => {
     return headersArrFinal
   }
 
-  const sendEmails = () => {
-    const localErrorMessages: ErrorMessage[] = []
-    for (let i = 0; i < finalMessages.length; i++) {
-      // This if statement is just for testing / a mock. You can read this as if (error)
-      // to represent the error case. Replace the following line when actually implementing
-      // the error check.
-      if (i % 2 === 0) {
-        localErrorMessages.push({
-          id: finalMessages[i].id,
-          message: 'Errorrrr!'
-        })
-      }
-    }
-    setResultErrorMessage({
-      errorMessages: localErrorMessages,
-      resultMessage: {
-        isError: localErrorMessages.length > 0,
-        message:
-          localErrorMessages.length > 0
-            ? `Error sending ${localErrorMessages.length} of ${finalMessages.length}`
-            : 'Sent emails successfully'
-      }
-    })
-  }
+  // const sendEmails = () => {
+  //   const localErrorMessages: ErrorMessage[] = []
+  //   for (let i = 0; i < finalMessages.length; i++) {
+  //     // This if statement is just for testing / a mock. You can read this as if (error)
+  //     // to represent the error case. Replace the following line when actually implementing
+  //     // the error check.
+  //     if (i % 2 === 0) {
+  //       localErrorMessages.push({
+  //         id: finalMessages[i].id,
+  //         message: 'Errorrrr!'
+  //       })
+  //     }
+  //   }
+  //   setResultErrorMessage({
+  //     errorMessages: localErrorMessages,
+  //     resultMessage: {
+  //       isError: localErrorMessages.length > 0,
+  //       message:
+  //         localErrorMessages.length > 0
+  //           ? `Error sending ${localErrorMessages.length} of ${finalMessages.length}`
+  //           : 'Sent emails successfully'
+  //     }
+  //   })
+  // }
 
   const createMessages = () => {
     const regexArray = createRegexArray()
@@ -206,6 +206,37 @@ const EmailSender: NextPage = () => {
         ))}
       </>
     )
+  }
+
+  const sendEmails = () => {
+    // Hardcoding this, as user values in useSession() are undefined for some reason
+    const from = 'Dean Frame <dean@hackbeanpot.com>'
+    const dataToSend = { emailData: finalMessages, from }
+    fetch('/api/email/send', {
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dataToSend)
+    })
+      .then((res) => {
+        // TODO: Make this error check more robust
+        if (res.status === 500) {
+          setResultErrorMessage({
+            errorMessages: [],
+            resultMessage: {
+              isError: true,
+              message: res.statusText
+            }
+          })
+        }
+        return res.json()
+      })
+      .then((data) => {
+        // TODO: surface this to UI
+        console.log(data.result)
+      })
   }
 
   return (
