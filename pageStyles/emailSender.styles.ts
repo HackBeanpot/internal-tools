@@ -1,6 +1,7 @@
 import { Divider, Table, TableRow, TextareaAutosize, TextField, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { StyledButton } from '../styles/common'
+import { theme } from '../styles/theme'
 
 const SectionContainer = styled('div') ({
   marginTop: 30,
@@ -56,8 +57,19 @@ const StyledTableContainer = styled('div') ({
   marginBottom: 50
 })
 
+const StyledErrorMessage = styled(Typography)({
+  color: theme.palette.Red.main
+})
+
+const StyledResultMessage = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'isError'
+})<{ isError?: boolean; }>(({ isError }) => ({
+  color: isError ? theme.palette.Red.main : theme.palette.Mist.main,
+  paddingTop: 50
+}))
+
 export {
   SectionContainer, StyledTextArea, StyledTextField, StyledCsvButton, StyledCsvButtonsContainer, 
-  StyledSubHeader, StyledFinalMessagesContainer, StyledTableContainer, StyledDivider, StyledTable, 
-  StyledTableRow, StyledFinalMessageContent
+  StyledSubHeader, StyledFinalMessagesContainer, StyledTableContainer, StyledDivider, 
+  StyledTable, StyledTableRow, StyledFinalMessageContent, StyledErrorMessage, StyledResultMessage
 }
