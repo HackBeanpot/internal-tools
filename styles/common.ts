@@ -23,4 +23,9 @@ const StyledBoldTypograhy = styled(Typography)({
   fontWeight: 600
 })
 
-export { StyledPageContainer, StyledButton, StyledBoldTypograhy }
+const SectionContainer = styled('div')({
+  marginTop: 30,
+  marginBottom: 30
+})
+
+export { StyledPageContainer, StyledButton, StyledBoldTypograhy, SectionContainer }
