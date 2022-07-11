@@ -10,7 +10,10 @@ import {
   TableCell,
   TableHead,
   Button,
-  Link
+  Link, 
+  Dialog, 
+  DialogActions, 
+  DialogTitle
 } from '@mui/material'
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
@@ -47,6 +50,7 @@ import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 
 const EmailSender: NextPage = () => {
+  const [open, setOpen] = useState(false);
   const [file, setFile] = useState()
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
   const [message, setMessage] = useState('')
@@ -239,6 +243,13 @@ const EmailSender: NextPage = () => {
       })
   }
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  }
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Layout>
       <ThemeProvider theme={theme}>
@@ -340,12 +351,28 @@ const EmailSender: NextPage = () => {
             <StyledButton
               color="info"
               variant="contained"
-              onClick={() => sendEmails()}
+              onClick={() => handleClickOpen()}
               width="medium"
               disabled={finalMessages.length === 0}
             >
               Send!
             </StyledButton>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Are you sure you want to send all emails?"}
+              </DialogTitle>
+              <DialogActions>
+                <Button variant="contained" onClick={handleClose}>No</Button>
+                <Button variant="outlined" onClick={() => { handleClose(); sendEmails(); }} autoFocus>
+                  Yes
+                </Button>
+              </DialogActions>
+            </Dialog>
             <StyledResultMessage
               variant="h5"
               isError={resultErrorMessage.resultMessage.isError}
