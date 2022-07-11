@@ -50,7 +50,7 @@ import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 
 const EmailSender: NextPage = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
   const [file, setFile] = useState()
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
   const [message, setMessage] = useState('')
@@ -244,11 +244,11 @@ const EmailSender: NextPage = () => {
   }
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpen(true)
   }
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <Layout>
@@ -364,11 +364,13 @@ const EmailSender: NextPage = () => {
               aria-describedby="alert-dialog-description"
             >
               <DialogTitle id="alert-dialog-title">
-                {"Are you sure you want to send all emails?"}
+                Are you sure you want to send all emails?
               </DialogTitle>
               <DialogActions>
                 <Button variant="contained" onClick={handleClose}>No</Button>
-                <Button variant="outlined" onClick={() => { handleClose(); sendEmails(); }} autoFocus>
+                <Button variant="outlined" onClick={() => {
+                  handleClose(); sendEmails()
+                }} autoFocus>
                   Yes
                 </Button>
               </DialogActions>
