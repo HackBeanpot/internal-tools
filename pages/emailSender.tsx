@@ -10,9 +10,9 @@ import {
   TableCell,
   TableHead,
   Button,
-  Link, 
-  Dialog, 
-  DialogActions, 
+  Link,
+  Dialog,
+  DialogActions,
   DialogTitle
 } from '@mui/material'
 import type { NextPage } from 'next'
