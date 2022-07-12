@@ -3,57 +3,57 @@ import { styled } from '@mui/material/styles'
 import { StyledButton } from '../styles/common'
 import { theme } from '../styles/theme'
 
-const SectionContainer = styled('div') ({
+const SectionContainer = styled('div')({
   marginTop: 30,
   marginBottom: 30
 })
 
-const StyledCsvButton = styled(StyledButton) ({
+const StyledCsvButton = styled(StyledButton)({
   marginLeft: 5,
   marginRight: 5
 })
 
-const StyledCsvButtonsContainer = styled('div') ({
+const StyledCsvButtonsContainer = styled('div')({
   display: 'flex'
 })
 
-const StyledDivider = styled(Divider) ({
+const StyledDivider = styled(Divider)({
   marginTop: 50,
   marginBottom: 50
 })
 
-const StyledFinalMessagesContainer = styled('div') ({
+const StyledFinalMessagesContainer = styled('div')({
   marginTop: 50,
   marginBottom: 50
 })
 
-const StyledFinalMessageContent = styled('div') ({
+const StyledFinalMessageContent = styled('div')({
   whiteSpace: 'pre-wrap'
 })
 
-const StyledSubHeader = styled(Typography) ({
+const StyledSubHeader = styled(Typography)({
   paddingBottom: 25
 })
 
-const StyledTable = styled(Table) ({
+const StyledTable = styled(Table)({
   minWidth: 650
 })
 
-const StyledTableRow = styled(TableRow) ({
-  '&:last-child td, &:last-child th': { 
-    border: 0 
+const StyledTableRow = styled(TableRow)({
+  '&:last-child td, &:last-child th': {
+    border: 0
   }
 })
 
-const StyledTextArea = styled(TextareaAutosize) ({
+const StyledTextArea = styled(TextareaAutosize)({
   width: '100%'
 })
 
-const StyledTextField = styled(TextField) ({
+const StyledTextField = styled(TextField)({
   width: 280
 })
 
-const StyledTableContainer = styled('div') ({
+const StyledTableContainer = styled('div')({
   marginBottom: 50
 })
 
@@ -69,7 +69,7 @@ const StyledResultMessage = styled(Typography, {
 }))
 
 export {
-  SectionContainer, StyledTextArea, StyledTextField, StyledCsvButton, StyledCsvButtonsContainer, 
-  StyledSubHeader, StyledFinalMessagesContainer, StyledTableContainer, StyledDivider, 
+  SectionContainer, StyledTextArea, StyledTextField, StyledCsvButton, StyledCsvButtonsContainer,
+  StyledSubHeader, StyledFinalMessagesContainer, StyledTableContainer, StyledDivider,
   StyledTable, StyledTableRow, StyledFinalMessageContent, StyledErrorMessage, StyledResultMessage
 }
