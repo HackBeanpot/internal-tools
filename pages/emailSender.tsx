@@ -285,27 +285,26 @@ const EmailSender: NextPage = () => {
             </Link>
         </Typography>
         <FormControl fullWidth>
-        <SectionContainer>
-          <StyledSubHeader variant="h5">
-            1) Email subject
-          </StyledSubHeader>
-          <br />
-          <FormLabel id="choose-email-subject">
-            Use customized or standard email subjects?
-          </FormLabel>
-          <RadioGroup
-            aria-labelledby="choose-email-subject"
-            name="email-subject"
-            onChange={handleEmailStandard}
-          >
-            <FormControlLabel value="customized" control={<Radio />} label="Customized (add subjects from CSV)" />
-            <FormControlLabel value="standard" control={<Radio />} label="Standard (enter one subject for all emails)" />
-          </RadioGroup>
-          <br />
-        </SectionContainer>
-        <SectionContainer> 
-          <div>{printStandardEmailSubject()}</div>
-        </SectionContainer>         
+          <SectionContainer>
+            <StyledSubHeader variant="h5">
+              1) Email subject
+            </StyledSubHeader>
+            <FormLabel id="choose-email-subject">
+              Use customized or standard email subjects?
+            </FormLabel>
+            <RadioGroup
+              aria-labelledby="choose-email-subject"
+              name="email-subject"
+              onChange={handleEmailStandard}
+            >
+              <FormControlLabel value="customized" control={<Radio />} label="Customized (add subjects from CSV)" />
+              <FormControlLabel value="standard" control={<Radio />} label="Standard (enter one subject for all emails)" />
+            </RadioGroup>
+            <br />
+          </SectionContainer>
+          <SectionContainer> 
+            <div>{printStandardEmailSubject()}</div>
+          </SectionContainer>         
           <SectionContainer>
             <StyledSubHeader variant="h5">
               2) Enter email content
@@ -372,78 +371,41 @@ const EmailSender: NextPage = () => {
                 </StyledTable>
               </TableContainer>
             </StyledTableContainer>
-          <SectionContainer>
-            <StyledButton
-              color="info"
-              variant="contained"
-              onClick={createMessages}
-              disabled={csvRowsArray.length === 0}
-              width="medium"
-            >
-              Print final messages
-            </StyledButton>
-          </SectionContainer>
-          <SectionContainer>
-            <StyledSubHeader variant="h5">4) Send emails</StyledSubHeader>
-            <StyledButton
-              color="info"
-              variant="contained"
-              onClick={() => sendEmails()}
-              width="medium"
-              disabled={finalMessages.length === 0}
-            >
-              Send!
-            </StyledButton>
-            <StyledResultMessage
-              variant="h5"
-              isError={resultErrorMessage.resultMessage.isError}
-            >
-              {resultErrorMessage.resultMessage.message}
-            </StyledResultMessage>
-          </SectionContainer>
-        </FormControl>
-          <StyledTableContainer>
-            <TableContainer component={Paper}>
-              <StyledTable aria-label="simple table">
-                <TableHead>
-                  {headerKeys.map((key) => (
-                    <TableCell key={nanoid()}>
-                      <StyledBoldTypograhy variant="body1">
-                        {key}
-                      </StyledBoldTypograhy>
-                    </TableCell>
-                  ))}
-                </TableHead>
-                <TableBody>
-                  {csvRowsArray.map((item) => (
-                    <StyledTableRow key={nanoid()}>
-                      {Object.values(item).map((val) => (
-                        <TableCell key={nanoid()} align="left">
-                          {val}
-                        </TableCell>
-                      ))}
-                    </StyledTableRow>
-                  ))}
-                </TableBody>
-              </StyledTable>
-            </TableContainer>
-          </StyledTableContainer>
-          <SectionContainer>
-            <StyledSubHeader variant="h5">
-              5) Verify final messages
-            </StyledSubHeader>
-            <StyledButton
-              color="info"
-              variant="contained"
-              onClick={createMessages}
-              width="medium"
-            >
-              Print final messages
-            </StyledButton>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">
+                4) Verify final messages
+              </StyledSubHeader>
+              <StyledButton
+                color="info"
+                variant="contained"
+                onClick={createMessages}
+                width="medium"
+              >
+                Print final messages
+              </StyledButton>
+            </SectionContainer>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">5) Send emails</StyledSubHeader>
+              <StyledButton
+                color="info"
+                variant="contained"
+                onClick={() => sendEmails()}
+                width="medium"
+                disabled={finalMessages.length === 0}
+              >
+                Send!
+              </StyledButton>
+              <StyledResultMessage
+                variant="h5"
+                isError={resultErrorMessage.resultMessage.isError}
+              >
+                {resultErrorMessage.resultMessage.message}
+              </StyledResultMessage>
+            </SectionContainer>
             <StyledFinalMessagesContainer>
               {displayMessages()}
             </StyledFinalMessagesContainer>
-          </SectionContainer>
+          </FormControl>
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
