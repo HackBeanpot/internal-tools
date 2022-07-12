@@ -385,37 +385,6 @@ const EmailSender: NextPage = () => {
                 </StyledTable>
               </TableContainer>
             </StyledTableContainer>
-            <SectionContainer>
-              <StyledSubHeader variant="h5">
-                4) Verify final messages
-              </StyledSubHeader>
-              <StyledButton
-                color="info"
-                variant="contained"
-                onClick={createMessages}
-                width="medium"
-              >
-                Print final messages
-              </StyledButton>
-            </SectionContainer>
-            <SectionContainer>
-              <StyledSubHeader variant="h5">5) Send emails</StyledSubHeader>
-              <StyledButton
-                color="info"
-                variant="contained"
-                onClick={() => sendEmails()}
-                width="medium"
-                disabled={finalMessages.length === 0}
-              >
-                Send!
-              </StyledButton>
-              <StyledResultMessage
-                variant="h5"
-                isError={resultErrorMessage.resultMessage.isError}
-              >
-                {resultErrorMessage.resultMessage.message}
-              </StyledResultMessage>
-            </SectionContainer>
             <StyledFinalMessagesContainer>
               {displayMessages()}
             </StyledFinalMessagesContainer>
