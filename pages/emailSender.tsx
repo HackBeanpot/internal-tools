@@ -361,7 +361,6 @@ const EmailSender: NextPage = () => {
               open={open}
               onClose={handleClose}
               aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
             >
               <DialogTitle id="alert-dialog-title">
                 Are you sure you want to send all emails?
