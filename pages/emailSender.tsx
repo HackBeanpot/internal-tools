@@ -357,37 +357,8 @@ const EmailSender: NextPage = () => {
                 >
                   Import CSV!
                 </StyledCsvButton>
-              </StyledCsvButtonsContainer>
+                </StyledCsvButtonsContainer>
             </SectionContainer>
-            <StyledTableContainer>
-              <TableContainer component={Paper}>
-                <StyledTable aria-label="uploaded csv table">
-                  <TableHead>
-                    {headerKeys.map((key) => (
-                      <TableCell key={nanoid()}>
-                        <StyledBoldTypograhy variant="body1">
-                          {key}
-                        </StyledBoldTypograhy>
-                      </TableCell>
-                    ))}
-                  </TableHead>
-                  <TableBody>
-                    {csvRowsArray.map((item) => (
-                      <StyledTableRow key={nanoid()}>
-                        {Object.values(item).map((val) => (
-                          <TableCell key={nanoid()} align="left">
-                            {val}
-                          </TableCell>
-                        ))}
-                      </StyledTableRow>
-                    ))}
-                  </TableBody>
-                </StyledTable>
-              </TableContainer>
-            </StyledTableContainer>
-            <StyledFinalMessagesContainer>
-              {displayMessages()}
-            </StyledFinalMessagesContainer>
           </FormControl>
           <StyledTableContainer>
             <TableContainer component={Paper}>
@@ -417,7 +388,7 @@ const EmailSender: NextPage = () => {
           </StyledTableContainer>
           <SectionContainer>
             <StyledSubHeader variant="h5">
-              3) Verify final messages
+              4) Verify final messages
             </StyledSubHeader>
             <StyledButton
               color="info"
@@ -432,7 +403,7 @@ const EmailSender: NextPage = () => {
           <br />
           <br />
           <SectionContainer>
-            <StyledSubHeader variant="h5">4) Send emails</StyledSubHeader>
+            <StyledSubHeader variant="h5">5) Send emails</StyledSubHeader>
             <StyledButton
               color="info"
               variant="contained"
