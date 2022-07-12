@@ -1,19 +1,23 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import {
   ThemeProvider,
+  Button,
   Divider,
-  Typography,
+  Link,
   FormControl,
-  TableContainer,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
   Paper,
   TableBody,
+  TableContainer,
   TableCell,
   TableHead,
-  Button,
-  Link,
   Dialog,
   DialogActions,
-  DialogTitle
+  DialogTitle,
+  Typography
 } from '@mui/material'
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
@@ -33,17 +37,18 @@ import {
 } from '../lib/types'
 import {
   StyledCsvButton,
-  StyledTextArea,
   StyledCsvButtonsContainer,
-  StyledSubHeader,
-  StyledFinalMessagesContainer,
-  StyledTableContainer,
   StyledDivider,
-  StyledTable,
-  StyledTableRow,
-  StyledFinalMessageContent,
   StyledErrorMessage,
-  StyledResultMessage
+  StyledFinalMessagesContainer,
+  StyledFinalMessageContent,
+  StyledResultMessage,
+  StyledSubHeader,
+  StyledTable,
+  StyledTableContainer,
+  StyledTableRow,
+  StyledTextField,
+  StyledTextArea
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
@@ -53,6 +58,8 @@ const EmailSender: NextPage = () => {
   const [open, setOpen] = useState(false)
   const [file, setFile] = useState()
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
+  const [subjectCustomization, setSubjectCustomization] = useState(true)
+  const [standardSubject, setStandardSubject] = useState('')
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
   const [resultErrorMessage, setResultErrorMessage] =
@@ -61,6 +68,32 @@ const EmailSender: NextPage = () => {
       resultMessage: { isError: false, message: '' }
     })
   const theme = useTheme()
+
+  const handleEmailStandard = (e: ChangeEvent<HTMLInputElement>) => {
+    (e.target.value === 'standard')
+      ? setSubjectCustomization(false)
+      : setSubjectCustomization(true)
+  }
+
+  const printStandardEmailSubject = () => {
+    if (!subjectCustomization) {
+      return (
+        <div>
+          <StyledSubHeader variant="h5">1b) Enter standard email subject</StyledSubHeader>
+          <StyledTextField
+            id="outlined-basic"
+            label="Email subject"
+            variant="outlined"
+            onChange={handleEmailSubject}
+          />
+        </div>
+      )
+    }
+  }
+
+  const handleEmailSubject = (e: ChangeEvent<HTMLInputElement>) => {
+    setStandardSubject(e.target.value)
+  }
 
   let reader: FileReader
   if (typeof window !== 'undefined') {
@@ -159,7 +192,7 @@ const EmailSender: NextPage = () => {
     for (let i = 0; i < csvRowsArray.length; i++) {
       const currRow: CsvRow = csvRowsArray[i]
       const to = currRow.email
-      const subject = currRow.subject
+      const subject = (subjectCustomization) ? currRow.subject : standardSubject
       const map = new Map(Object.entries(currRow))
       const finalMap = new Map()
       let content = message
@@ -254,8 +287,7 @@ const EmailSender: NextPage = () => {
     <Layout>
       <ThemeProvider theme={theme}>
         <StyledPageContainer>
-          <Typography variant="h3"> Email Sender
-          </Typography>
+          <Typography variant="h3"> Email Sender </Typography>
           <Divider />
           <br />
           <Typography variant="body1">
@@ -265,8 +297,31 @@ const EmailSender: NextPage = () => {
           </Typography>
           <FormControl fullWidth>
             <SectionContainer>
-              <StyledSubHeader variant="h5">1) Enter message</StyledSubHeader>
+              <StyledSubHeader variant="h5">
+                1) Email subject
+              </StyledSubHeader>
+              <FormLabel id="choose-email-subject">
+                Use customized or standard email subjects?
+              </FormLabel>
+              <RadioGroup
+                aria-labelledby="choose-email-subject"
+                name="email-subject"
+                onChange={handleEmailStandard}
+              >
+                <FormControlLabel value="customized" control={<Radio />}
+                  label="Customized (add subjects from CSV)" />
+                <FormControlLabel value="standard" control={<Radio />}
+                  label="Standard (enter one subject for all emails)" />
+              </RadioGroup>
               <br />
+            </SectionContainer>
+            <SectionContainer>
+              <div>{printStandardEmailSubject()}</div>
+            </SectionContainer>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">
+                2) Enter email content
+              </StyledSubHeader>
               <StyledTextArea
                 aria-label="message-text-area"
                 placeholder="Paste in message"
@@ -276,7 +331,7 @@ const EmailSender: NextPage = () => {
             </SectionContainer>
             <SectionContainer>
               <StyledSubHeader variant="h5">
-                2) Upload and import csv
+                3) Upload and import csv
               </StyledSubHeader>
               <StyledCsvButtonsContainer>
                 <input
@@ -303,6 +358,66 @@ const EmailSender: NextPage = () => {
                 </StyledCsvButton>
               </StyledCsvButtonsContainer>
             </SectionContainer>
+            <StyledTableContainer>
+              <TableContainer component={Paper}>
+                <StyledTable aria-label="uploaded csv table">
+                  <TableHead>
+                    {headerKeys.map((key) => (
+                      <TableCell key={nanoid()}>
+                        <StyledBoldTypograhy variant="body1">
+                          {key}
+                        </StyledBoldTypograhy>
+                      </TableCell>
+                    ))}
+                  </TableHead>
+                  <TableBody>
+                    {csvRowsArray.map((item) => (
+                      <StyledTableRow key={nanoid()}>
+                        {Object.values(item).map((val) => (
+                          <TableCell key={nanoid()} align="left">
+                            {val}
+                          </TableCell>
+                        ))}
+                      </StyledTableRow>
+                    ))}
+                  </TableBody>
+                </StyledTable>
+              </TableContainer>
+            </StyledTableContainer>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">
+                4) Verify final messages
+              </StyledSubHeader>
+              <StyledButton
+                color="info"
+                variant="contained"
+                onClick={createMessages}
+                width="medium"
+              >
+                Print final messages
+              </StyledButton>
+            </SectionContainer>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">5) Send emails</StyledSubHeader>
+              <StyledButton
+                color="info"
+                variant="contained"
+                onClick={() => sendEmails()}
+                width="medium"
+                disabled={finalMessages.length === 0}
+              >
+                Send!
+              </StyledButton>
+              <StyledResultMessage
+                variant="h5"
+                isError={resultErrorMessage.resultMessage.isError}
+              >
+                {resultErrorMessage.resultMessage.message}
+              </StyledResultMessage>
+            </SectionContainer>
+            <StyledFinalMessagesContainer>
+              {displayMessages()}
+            </StyledFinalMessagesContainer>
           </FormControl>
           <StyledTableContainer>
             <TableContainer component={Paper}>
