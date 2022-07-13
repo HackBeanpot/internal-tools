@@ -55,6 +55,10 @@ import {
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
+import TextField from '@mui/material/TextField'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 const EmailSender: NextPage = () => {
   const [open, setOpen] = useState(false)
@@ -70,6 +74,7 @@ const EmailSender: NextPage = () => {
       resultMessage: { isError: false, message: '' }
     })
   const theme = useTheme()
+  const [date, setDeliveryDate] = useState<Date[]>([])
 
   const handleEmailStandard = (e: ChangeEvent<HTMLInputElement>) => {
     e.target.value === 'standard'
@@ -77,11 +82,11 @@ const EmailSender: NextPage = () => {
       : setSubjectCustomization(true)
   }
 
-  const handleDeliveryTime = (e: ChangeEvent<HTMLInputElement>) => {
-    e.target.value === 'standard'
-      ? setSubjectCustomization(false)
-      : setSubjectCustomization(true)
-  }
+  // const handleDeliveryTime = (e: ChangeEvent<HTMLInputElement>) => {
+  //   e.target.value === 'standard'
+  //     ? setSubjectCustomization(false)
+  //     : setSubjectCustomization(true)
+  // }
 
   const printStandardEmailSubject = () => {
     if (!subjectCustomization) {
@@ -423,10 +428,24 @@ const EmailSender: NextPage = () => {
             </FormLabel>
             <FormGroup>
               <FormControlLabel
-                control={<Checkbox onChange={e => console.log(e.target.value)} />}
+                control={
+                  <Checkbox onChange={(e) => console.log(e.target.value)} />
+                }
                 label="Select custom delivery time"
               />
             </FormGroup>
+
+            {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label="Basic example"
+                value={date}
+                onChange={(date) => {
+                  setDeliveryDate(date)
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider> */}
+
             <StyledButton
               color="info"
               variant="contained"
