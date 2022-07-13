@@ -57,6 +57,7 @@ import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 
 const EmailSender: NextPage = () => {
+  const [checkedDeliveryBox, setCheckedDeliveryBox] = useState(false)
   const [open, setOpen] = useState(false)
   const [file, setFile] = useState()
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
@@ -72,12 +73,6 @@ const EmailSender: NextPage = () => {
   const theme = useTheme()
 
   const handleEmailStandard = (e: ChangeEvent<HTMLInputElement>) => {
-    e.target.value === 'standard'
-      ? setSubjectCustomization(false)
-      : setSubjectCustomization(true)
-  }
-
-  const handleDeliveryTime = (e: ChangeEvent<HTMLInputElement>) => {
     e.target.value === 'standard'
       ? setSubjectCustomization(false)
       : setSubjectCustomization(true)
@@ -423,7 +418,7 @@ const EmailSender: NextPage = () => {
             </FormLabel>
             <FormGroup>
               <FormControlLabel
-                control={<Checkbox onChange={e => console.log(e.target.value)} />}
+                control={<Checkbox onChange={e => setCheckedDeliveryBox(e.target.checked)} />}
                 label="Select custom delivery time"
               />
             </FormGroup>
