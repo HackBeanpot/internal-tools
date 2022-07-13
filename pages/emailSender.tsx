@@ -61,6 +61,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 const EmailSender: NextPage = () => {
+  const [checkedDeliveryBox, setCheckedDeliveryBox] = useState(false)
   const [open, setOpen] = useState(false)
   const [file, setFile] = useState()
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
@@ -431,6 +432,7 @@ const EmailSender: NextPage = () => {
                 control={
                   <Checkbox onChange={(e) => console.log(e.target.value)} />
                 }
+                // control={<Checkbox onChange={e => setCheckedDeliveryBox(e.target.checked)} />}
                 label="Select custom delivery time"
               />
             </FormGroup>
