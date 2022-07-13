@@ -17,7 +17,9 @@ import {
   Typography,
   Dialog,
   DialogActions,
-  DialogTitle
+  DialogTitle,
+  FormGroup,
+  Checkbox
 } from '@mui/material'
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
@@ -70,7 +72,13 @@ const EmailSender: NextPage = () => {
   const theme = useTheme()
 
   const handleEmailStandard = (e: ChangeEvent<HTMLInputElement>) => {
-    (e.target.value === 'standard')
+    e.target.value === 'standard'
+      ? setSubjectCustomization(false)
+      : setSubjectCustomization(true)
+  }
+
+  const handleDeliveryTime = (e: ChangeEvent<HTMLInputElement>) => {
+    e.target.value === 'standard'
       ? setSubjectCustomization(false)
       : setSubjectCustomization(true)
   }
@@ -79,7 +87,9 @@ const EmailSender: NextPage = () => {
     if (!subjectCustomization) {
       return (
         <div>
-          <StyledSubHeader variant="h5">1b) Enter standard email subject</StyledSubHeader>
+          <StyledSubHeader variant="h5">
+            1b) Enter standard email subject
+          </StyledSubHeader>
           <StyledTextField
             id="outlined-basic"
             label="Email subject"
@@ -192,7 +202,7 @@ const EmailSender: NextPage = () => {
     for (let i = 0; i < csvRowsArray.length; i++) {
       const currRow: CsvRow = csvRowsArray[i]
       const to = currRow.email
-      const subject = (subjectCustomization) ? currRow.subject : standardSubject
+      const subject = subjectCustomization ? currRow.subject : standardSubject
       const map = new Map(Object.entries(currRow))
       const finalMap = new Map()
       let content = message
@@ -295,42 +305,46 @@ const EmailSender: NextPage = () => {
             <Link href="/emailSenderHelp" underline="hover">
               Help Page
             </Link>
-        </Typography>
-        <FormControl fullWidth>
-          <SectionContainer>
-            <StyledSubHeader variant="h5">
-              1) Email subject
-            </StyledSubHeader>
-            <FormLabel id="choose-email-subject">
-              Use customized or standard email subjects?
-            </FormLabel>
-            <RadioGroup
-              aria-labelledby="choose-email-subject"
-              name="email-subject"
-              onChange={handleEmailStandard}
-            >
-              <FormControlLabel value="customized" control={<Radio />}
-              label="Customized (add subjects from CSV)" />
-              <FormControlLabel value="standard" control={<Radio />}
-              label="Standard (enter one subject for all emails)" />
-            </RadioGroup>
-            <br />
-          </SectionContainer>
-          <SectionContainer>
-            <div>{printStandardEmailSubject()}</div>
-          </SectionContainer>
-          <SectionContainer>
-            <StyledSubHeader variant="h5">
-              2) Enter email content
-            </StyledSubHeader>
-            <StyledTextArea
-              aria-label="message-text-area"
-              placeholder="Paste in message"
-              onChange={(e) => setMessage(e.target.value)}
-              minRows={20}
-            />
-          </SectionContainer>
-          <SectionContainer>
+          </Typography>
+          <FormControl fullWidth>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">1) Email subject</StyledSubHeader>
+              <FormLabel id="choose-email-subject">
+                Use customized or standard email subjects?
+              </FormLabel>
+              <RadioGroup
+                aria-labelledby="choose-email-subject"
+                name="email-subject"
+                onChange={handleEmailStandard}
+              >
+                <FormControlLabel
+                  value="customized"
+                  control={<Radio />}
+                  label="Customized (add subjects from CSV)"
+                />
+                <FormControlLabel
+                  value="standard"
+                  control={<Radio />}
+                  label="Standard (enter one subject for all emails)"
+                />
+              </RadioGroup>
+              <br />
+            </SectionContainer>
+            <SectionContainer>
+              <div>{printStandardEmailSubject()}</div>
+            </SectionContainer>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">
+                2) Enter email content
+              </StyledSubHeader>
+              <StyledTextArea
+                aria-label="message-text-area"
+                placeholder="Paste in message"
+                onChange={(e) => setMessage(e.target.value)}
+                minRows={20}
+              />
+            </SectionContainer>
+            <SectionContainer>
               <StyledSubHeader variant="h5">
                 3) Upload and import csv
               </StyledSubHeader>
@@ -357,7 +371,7 @@ const EmailSender: NextPage = () => {
                 >
                   Import CSV!
                 </StyledCsvButton>
-                </StyledCsvButtonsContainer>
+              </StyledCsvButtonsContainer>
             </SectionContainer>
           </FormControl>
           <StyledTableContainer>
@@ -404,10 +418,22 @@ const EmailSender: NextPage = () => {
           <br />
           <SectionContainer>
             <StyledSubHeader variant="h5">5) Send emails</StyledSubHeader>
+            <FormLabel id="choose-email-subject">
+              Use customized or standard email subjects?
+            </FormLabel>
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox onChange={e => console.log(e.target.value)} />}
+                label="Select custom delivery time"
+              />
+            </FormGroup>
             <StyledButton
               color="info"
               variant="contained"
-              onClick={() => { console.log('test'); handleClickOpen() }}
+              onClick={() => {
+                console.log('test')
+                handleClickOpen()
+              }}
               width="medium"
               disabled={finalMessages.length === 0}
             >
@@ -422,10 +448,17 @@ const EmailSender: NextPage = () => {
                 Are you sure you want to send all emails?
               </DialogTitle>
               <DialogActions>
-                <Button variant="contained" onClick={handleClose}>No</Button>
-                <Button variant="outlined" onClick={() => {
-                  handleClose(); sendEmails()
-                }} autoFocus>
+                <Button variant="contained" onClick={handleClose}>
+                  No
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    handleClose()
+                    sendEmails()
+                  }}
+                  autoFocus
+                >
                   Yes
                 </Button>
               </DialogActions>
@@ -446,6 +479,7 @@ const EmailSender: NextPage = () => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect
+export const getServerSideProps: GetServerSideProps =
+  getServerSideSessionOrRedirect
 
 export default EmailSender
