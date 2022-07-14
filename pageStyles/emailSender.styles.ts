@@ -2,6 +2,7 @@ import { Divider, Table, TableRow, TextareaAutosize, TextField, Typography } fro
 import { styled } from '@mui/material/styles'
 import { StyledButton } from '../styles/common'
 import { theme } from '../styles/theme'
+// import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 
 const SectionContainer = styled('div')({
   marginTop: 30,
@@ -68,8 +69,14 @@ const StyledResultMessage = styled(Typography, {
   paddingTop: 50
 }))
 
+const StyledDateTimeDiv = styled('div')({
+  marginTop: 15,
+  marginBottom: 50
+})
+
 export {
   SectionContainer, StyledTextArea, StyledTextField, StyledCsvButton, StyledCsvButtonsContainer,
   StyledSubHeader, StyledFinalMessagesContainer, StyledTableContainer, StyledDivider,
-  StyledTable, StyledTableRow, StyledFinalMessageContent, StyledErrorMessage, StyledResultMessage
+  StyledTable, StyledTableRow, StyledFinalMessageContent, StyledErrorMessage, StyledResultMessage,
+  StyledDateTimeDiv
 }
