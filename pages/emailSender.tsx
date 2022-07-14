@@ -75,19 +75,13 @@ const EmailSender: NextPage = () => {
       resultMessage: { isError: false, message: '' }
     })
   const theme = useTheme()
-  const [date, setDeliveryDate] = useState<Date[]>([])
+  const [date, setDeliveryDate] = useState<Date | null>(null)
 
   const handleEmailStandard = (e: ChangeEvent<HTMLInputElement>) => {
     e.target.value === 'standard'
       ? setSubjectCustomization(false)
       : setSubjectCustomization(true)
   }
-
-  // const handleDeliveryTime = (e: ChangeEvent<HTMLInputElement>) => {
-  //   e.target.value === 'standard'
-  //     ? setSubjectCustomization(false)
-  //     : setSubjectCustomization(true)
-  // }
 
   const printStandardEmailSubject = () => {
     if (!subjectCustomization) {
@@ -429,15 +423,12 @@ const EmailSender: NextPage = () => {
             </FormLabel>
             <FormGroup>
               <FormControlLabel
-                control={
-                  <Checkbox onChange={(e) => console.log(e.target.value)} />
-                }
-                // control={<Checkbox onChange={e => setCheckedDeliveryBox(e.target.checked)} />}
+                control={<Checkbox onChange={e => setCheckedDeliveryBox(e.target.checked)} />}
                 label="Select custom delivery time"
               />
             </FormGroup>
 
-            {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Basic example"
                 value={date}
@@ -446,7 +437,7 @@ const EmailSender: NextPage = () => {
                 }}
                 renderInput={(params) => <TextField {...params} />}
               />
-            </LocalizationProvider> */}
+            </LocalizationProvider>
 
             <StyledButton
               color="info"
