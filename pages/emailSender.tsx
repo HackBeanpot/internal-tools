@@ -50,7 +50,8 @@ import {
   StyledTableContainer,
   StyledTableRow,
   StyledTextField,
-  StyledTextArea
+  StyledTextArea,
+  StyledDateTimeDiv
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
@@ -58,7 +59,8 @@ import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOr
 import TextField from '@mui/material/TextField'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
+import Stack from '@mui/material/Stack'
 
 const EmailSender: NextPage = () => {
   const [checkedDeliveryBox, setCheckedDeliveryBox] = useState(false)
@@ -75,7 +77,7 @@ const EmailSender: NextPage = () => {
       resultMessage: { isError: false, message: '' }
     })
   const theme = useTheme()
-  const [date, setDeliveryDate] = useState<Date | null>(null)
+  const [dateTime, setDeliveryDateTime] = useState<Date | null>(null)
 
   const handleEmailStandard = (e: ChangeEvent<HTMLInputElement>) => {
     e.target.value === 'standard'
@@ -423,22 +425,29 @@ const EmailSender: NextPage = () => {
             </FormLabel>
             <FormGroup>
               <FormControlLabel
-                control={<Checkbox onChange={e => setCheckedDeliveryBox(e.target.checked)} />}
+                control={
+                  <Checkbox
+                    onChange={(e) => setCheckedDeliveryBox(e.target.checked)}
+                  />
+                }
                 label="Select custom delivery time"
               />
             </FormGroup>
-
+            {checkedDeliveryBox &&
+            <StyledDateTimeDiv>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                label="Basic example"
-                value={date}
-                onChange={(date) => {
-                  setDeliveryDate(date)
-                }}
-                renderInput={(params) => <TextField {...params} />}
-              />
+              <Stack spacing={3}>
+                <DateTimePicker
+                  label="DateTimePicker"
+                  value={dateTime}
+                  onChange={(dateTime: Date | null) => {
+                    setDeliveryDateTime(dateTime)
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </Stack>
             </LocalizationProvider>
-
+          </StyledDateTimeDiv>}
             <StyledButton
               color="info"
               variant="contained"
