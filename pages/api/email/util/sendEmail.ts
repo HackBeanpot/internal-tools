@@ -7,7 +7,7 @@ import { Message } from '../../../../lib/types'
  * @param from Who the email is from - ex. 'Dean Frame <dean@hackbeanpot.com>
  * @returns [HTTP status code, message]
  */
-export async function sendEmail (messages: Message[], from: string) {
+export async function sendEmail (messages: Message[], from: string, date: string | undefined) {
   if (!process.env.MAILGUN_API_KEY || !process.env.MAILGUN_DOMAIN) {
     return [500, 'Server env variables undefined!']
   }
@@ -15,13 +15,21 @@ export async function sendEmail (messages: Message[], from: string) {
   const mailgun = new Mailgun(FormData)
   const client = mailgun.client({ username: 'api', key: process.env.MAILGUN_API_KEY })
 
+  let modifiedDate
+  if (date) {
+    modifiedDate = date.split(' ')
+    modifiedDate.pop()
+    modifiedDate = modifiedDate.join(' ').concat(' -0400')
+  }
   const messageData = {
     from,
     to: messages.map((message) => message.to),
     subject: '%recipient.subject%',
     text: '%recipient.content%',
-    'recipient-variables': constructRecipientVariables(messages)
+    'recipient-variables': constructRecipientVariables(messages),
+    'o:deliverytime': modifiedDate
   }
+
   const messagesSendResult = await client.messages.create(process.env.MAILGUN_DOMAIN, messageData)
 
   return [messagesSendResult.status, messagesSendResult.message]
