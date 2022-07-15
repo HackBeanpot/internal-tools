@@ -79,9 +79,7 @@ const EmailSender: NextPage = () => {
     const finalMessageArr = []
     const content = messageContent
     console.log(content)
-    // eslint-disable-next-line array-callback-return
     const finalMessageIndex = finalMessages.findIndex(finalMessage => {
-      // eslint-disable-next-line no-unused-expressions
       return finalMessage.id === id
     })
     console.log(finalMessageIndex)
