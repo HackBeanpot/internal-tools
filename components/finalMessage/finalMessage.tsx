@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { Typography, Button } from '@mui/material'
 
 import { StyledFinalMessageContent, StyledTextArea } from '../../pageStyles/emailSender.styles'
-
 type FinalMessageProps = {
     id: string,
     to: string,
@@ -55,6 +54,7 @@ export default function FinalMessage
 
                         </StyledTextArea>
                         <Button
+                            color="success"
                             variant="contained"
                             size="small"
                             onClick={handleSubmitButton}
@@ -69,6 +69,7 @@ export default function FinalMessage
                             {messageContent}
                         </StyledFinalMessageContent>
                         <Button
+                            color="primary"
                             variant="contained"
                             size="small"
                             onClick={handleEditButton}
