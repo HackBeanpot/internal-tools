@@ -77,12 +77,17 @@ const EmailSender: NextPage = () => {
 
   const parentCallback = (id: string, to: string, subject: string, messageContent : string) => {
     const finalMessageArr = []
+    const content = messageContent
+    console.log(content)
+    // eslint-disable-next-line array-callback-return
     const finalMessageIndex = finalMessages.findIndex(finalMessage => {
-      finalMessage.id === id
+      // eslint-disable-next-line no-unused-expressions
+      return finalMessage.id === id
     })
+    console.log(finalMessageIndex)
     for (let i = 0; i < finalMessages.length; i++) {
       if (i === finalMessageIndex) {
-        const msg: Message = { id, to, subject, messageContent }
+        const msg: Message = { id, to, subject, content }
         finalMessageArr.push(msg)
       } else {
         finalMessageArr.push(finalMessages[i])
@@ -236,20 +241,21 @@ const EmailSender: NextPage = () => {
     return (
       <>
         {finalMessages.map((msg) => (
-          <StyledDivider key={nanoid()}>
+          <div key={nanoid()}>
+          <StyledDivider/>
             {getErrorMessage(msg.id) && (
               <StyledErrorMessage>
                 Error: {getErrorMessage(msg.id)}
               </StyledErrorMessage>
             )}
             <FinalMessage
-            id={nanoid()}
+            id={msg.id}
             to={msg.to}
             subject={msg.subject}
             parentCallback={parentCallback}
             content={msg.content}>
             </FinalMessage>
-          </StyledDivider>
+          </div>
         ))}
       </>
     )
