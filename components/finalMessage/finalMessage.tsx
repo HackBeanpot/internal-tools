@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { Typography, Button } from '@mui/material'
 
-import { StyledFinalMessageContent, StyledTextField } from '../../pageStyles/emailSender.styles'
+import { StyledFinalMessageContent, StyledTextArea } from '../../pageStyles/emailSender.styles'
 
 type FinalMessageProps = {
     id: string,
@@ -46,14 +46,14 @@ export default function FinalMessage
 
                 {isEditing
                   ? <div>
-                        <StyledTextField
+                        <StyledTextArea
                             value={messageContent}
                             id="outlined-basic"
                             label="Email subject"
                             variant="outlined"
                             onChange={handleEditMessage}>
 
-                        </StyledTextField>
+                        </StyledTextArea>
                         <Button
                             variant="contained"
                             size="small"
