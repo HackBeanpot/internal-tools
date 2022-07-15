@@ -41,7 +41,6 @@ import {
   StyledDivider,
   StyledErrorMessage,
   StyledFinalMessagesContainer,
-  StyledFinalMessageContent,
   StyledResultMessage,
   StyledSubHeader,
   StyledTable,
@@ -51,6 +50,7 @@ import {
   StyledTextArea
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
+import FinalMessage from '../components/finalMessage/finalMessage'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 
@@ -73,6 +73,22 @@ const EmailSender: NextPage = () => {
     (e.target.value === 'standard')
       ? setSubjectCustomization(false)
       : setSubjectCustomization(true)
+  }
+
+  const parentCallback = (id: string, to: string, subject: string, messageContent : string) => {
+    const finalMessageArr = []
+    const finalMessageIndex = finalMessages.findIndex(finalMessage => {
+      finalMessage.id === id
+    })
+    for (let i = 0; i < finalMessages.length; i++) {
+      if (i === finalMessageIndex) {
+        const msg: Message = { id, to, subject, messageContent }
+        finalMessageArr.push(msg)
+      } else {
+        finalMessageArr.push(finalMessages[i])
+      }
+    }
+    setFinalMessages(finalMessageArr)
   }
 
   const printStandardEmailSubject = () => {
@@ -220,26 +236,20 @@ const EmailSender: NextPage = () => {
     return (
       <>
         {finalMessages.map((msg) => (
-          <div key={nanoid()}>
-            <StyledDivider />
+          <StyledDivider key={nanoid()}>
             {getErrorMessage(msg.id) && (
               <StyledErrorMessage>
                 Error: {getErrorMessage(msg.id)}
               </StyledErrorMessage>
             )}
-            <br />
-            <br />
-            <Typography variant="body1">To: {msg.to}</Typography>
-            <Typography variant="body1">Subject: {msg.subject}</Typography>
-            <br />
-            <Typography variant="body1">Content:</Typography>
-            <br />
-            <Typography variant="body1">
-              <StyledFinalMessageContent>
-                {msg.content}
-              </StyledFinalMessageContent>
-            </Typography>
-          </div>
+            <FinalMessage
+            id={nanoid()}
+            to={msg.to}
+            subject={msg.subject}
+            parentCallback={parentCallback}
+            content={msg.content}>
+            </FinalMessage>
+          </StyledDivider>
         ))}
       </>
     )
@@ -277,7 +287,7 @@ const EmailSender: NextPage = () => {
   }
 
   const handleClickOpen = () => {
-    console.log('HERE')
+    console.log(finalMessages)
     setOpen(true)
   }
   const handleClose = () => {
