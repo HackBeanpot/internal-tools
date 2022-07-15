@@ -14,7 +14,6 @@ type FinalMessageProps = {
 
 export default function FinalMessage
 ({ id, to, subject, content, parentCallback }: FinalMessageProps) {
-  console.log(parentCallback)
   const toMessage = to
   const subjectMessage = subject
   const idMail = id
@@ -32,11 +31,12 @@ export default function FinalMessage
 
   const handleSubmitButton = () => {
     setIsEditing(false)
-    parentCallback(id, messageContent)
+    console.log(idMail)
+    parentCallback(idMail, to, subject, messageContent)
   }
 
   return (
-        <div id={idMail}>
+        <div>
             <Typography variant="body1">To:{toMessage}</Typography>
             <Typography variant="body1">Subject: {subjectMessage}</Typography>
             <br />
