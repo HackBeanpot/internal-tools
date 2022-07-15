@@ -19,7 +19,7 @@ export async function sendEmail (messages: Message[], from: string, date: string
   if (date) {
     modifiedDate = date.split(' ')
     modifiedDate.pop()
-    modifiedDate = modifiedDate.join(' ').concat(' -0400')
+    modifiedDate = modifiedDate.join(' ').concat(' -0000')
   }
   const messageData = {
     from,
