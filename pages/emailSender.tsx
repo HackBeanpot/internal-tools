@@ -443,7 +443,7 @@ const EmailSender: NextPage = () => {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <Stack spacing={3}>
                 <DateTimePicker
-                  label="DateTimePicker"
+                  label="Select date and time"
                   value={dateTime}
                   onChange={(dateTime: Date | null) => {
                     setDeliveryDateTime(dateTime)
