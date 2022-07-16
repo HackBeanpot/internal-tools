@@ -134,6 +134,14 @@ const EmailSender: NextPage = () => {
     if (allRowObjects[allRowObjects.length - 1].email === '') {
       allRowObjects.pop()
     }
+
+    if (new Set(allRowObjects.map((rowObj) => rowObj.email)).size !== allRowObjects.length) {
+      setErrorMessages([{
+        id: nanoid(),
+        message: 'No email address should appear more than once'
+      }])
+      return
+    }
     setCsvRowsArray(allRowObjects)
     setErrorMessages([])
   }
@@ -275,7 +283,6 @@ const EmailSender: NextPage = () => {
       body: JSON.stringify(dataToSend)
     })
       .then((res) => {
-        // TODO: Make this error check more robust
         if (res.status === 500) {
           setResultMessage({
             isError: true,
