@@ -1,5 +1,5 @@
 import { styled } from '@mui/system'
-import { Button, Container, Typography } from '@mui/material'
+import { Button, Container, TextareaAutosize, Typography } from '@mui/material'
 import { theme } from './theme'
 
 const StyledPageContainer = styled(Container)({
@@ -28,4 +28,19 @@ const SectionContainer = styled('div')({
   marginBottom: 30
 })
 
-export { StyledPageContainer, StyledButton, StyledBoldTypograhy, SectionContainer }
+const StyledTextArea = styled(TextareaAutosize)({
+  width: '100%'
+})
+
+const StyledEditButton = styled(Button)({
+  float: 'right'
+})
+
+const StyledFinalMessageContent = styled('div')({
+  whiteSpace: 'pre-wrap'
+})
+
+export {
+  StyledPageContainer, StyledButton, StyledBoldTypograhy, SectionContainer, StyledTextArea,
+  StyledFinalMessageContent, StyledEditButton
+}

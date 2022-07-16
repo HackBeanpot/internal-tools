@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
+import { Typography } from '@mui/material'
+import { StyledEditButton, StyledFinalMessageContent, StyledTextArea } from '../../styles/common'
 
-import { Typography, Button } from '@mui/material'
-
-import { StyledFinalMessageContent, StyledTextArea } from '../../pageStyles/emailSender.styles'
 type FinalMessageProps = {
     id: string,
     to: string,
@@ -30,13 +29,19 @@ export default function FinalMessage
 
   const handleSubmitButton = () => {
     setIsEditing(false)
-    console.log(idMail)
     parentCallback(idMail, to, subject, messageContent)
   }
 
   return (
-        <div>
-            <Typography variant="body1">To:{toMessage}</Typography>
+    <>
+            <StyledEditButton
+                variant="contained"
+                size="small"
+                onClick={isEditing ? handleSubmitButton : handleEditButton}
+            >
+                {isEditing ? 'Save' : 'Edit'}
+            </StyledEditButton>
+            <Typography variant="body1">To: {toMessage}</Typography>
             <Typography variant="body1">Subject: {subjectMessage}</Typography>
             <br />
             <Typography variant="body1">Content:</Typography>
@@ -48,19 +53,8 @@ export default function FinalMessage
                         <StyledTextArea
                             value={messageContent}
                             id="outlined-basic"
-                            label="Email subject"
-                            variant="outlined"
                             onChange={handleEditMessage}>
-
                         </StyledTextArea>
-                        <Button
-                            color="success"
-                            variant="contained"
-                            size="small"
-                            onClick={handleSubmitButton}
-                        >
-                            Save
-                        </Button>
                     </div>
 
                   : <div>
@@ -68,18 +62,10 @@ export default function FinalMessage
 
                             {messageContent}
                         </StyledFinalMessageContent>
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            size="small"
-                            onClick={handleEditButton}
-                        >
-                            Edit
-                        </Button>
                     </div>
 
                 }
             </Typography>
-        </div>
+            </>
   )
 }
