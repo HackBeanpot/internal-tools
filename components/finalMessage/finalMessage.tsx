@@ -53,8 +53,8 @@ export default function FinalMessage
                         <StyledTextArea
                             value={messageContent}
                             id="outlined-basic"
-                            onChange={handleEditMessage}>
-                        </StyledTextArea>
+                            onChange={handleEditMessage}
+                        />
                     </div>
 
                   : <div>
