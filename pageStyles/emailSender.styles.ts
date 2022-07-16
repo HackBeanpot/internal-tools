@@ -1,4 +1,4 @@
-import { Divider, Table, TableRow, TextareaAutosize, TextField, Typography } from '@mui/material'
+import { Divider, Table, TableRow, TextField, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { StyledButton } from '../styles/common'
 import { theme } from '../styles/theme'
@@ -27,10 +27,6 @@ const StyledFinalMessagesContainer = styled('div')({
   marginBottom: 50
 })
 
-const StyledFinalMessageContent = styled('div')({
-  whiteSpace: 'pre-wrap'
-})
-
 const StyledSubHeader = styled(Typography)({
   paddingBottom: 25
 })
@@ -43,10 +39,6 @@ const StyledTableRow = styled(TableRow)({
   '&:last-child td, &:last-child th': {
     border: 0
   }
-})
-
-const StyledTextArea = styled(TextareaAutosize)({
-  width: '100%'
 })
 
 const StyledTextField = styled(TextField)({
@@ -69,7 +61,7 @@ const StyledResultMessage = styled(Typography, {
 }))
 
 export {
-  SectionContainer, StyledTextArea, StyledTextField, StyledCsvButton, StyledCsvButtonsContainer,
+  SectionContainer, StyledTextField, StyledCsvButton, StyledCsvButtonsContainer,
   StyledSubHeader, StyledFinalMessagesContainer, StyledTableContainer, StyledDivider,
-  StyledTable, StyledTableRow, StyledFinalMessageContent, StyledErrorMessage, StyledResultMessage
+  StyledTable, StyledTableRow, StyledErrorMessage, StyledResultMessage
 }

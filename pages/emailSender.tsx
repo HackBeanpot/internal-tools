@@ -26,7 +26,9 @@ import {
   StyledButton,
   StyledPageContainer,
   StyledBoldTypograhy,
-  SectionContainer
+  SectionContainer,
+  StyledTextArea
+
 } from '../styles/common'
 import {
   CsvRow,
@@ -41,16 +43,15 @@ import {
   StyledDivider,
   StyledErrorMessage,
   StyledFinalMessagesContainer,
-  StyledFinalMessageContent,
   StyledResultMessage,
   StyledSubHeader,
   StyledTable,
   StyledTableContainer,
   StyledTableRow,
-  StyledTextField,
-  StyledTextArea
+  StyledTextField
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
+import FinalMessage from '../components/finalMessage/finalMessage'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 
@@ -73,6 +74,23 @@ const EmailSender: NextPage = () => {
     (e.target.value === 'standard')
       ? setSubjectCustomization(false)
       : setSubjectCustomization(true)
+  }
+
+  const editFinalMessages = (id: string, to: string, subject: string, messageContent: string) => {
+    const finalMessageArr = []
+    const content = messageContent
+    const finalMessageIndex = finalMessages.findIndex(finalMessage => {
+      return finalMessage.id === id
+    })
+    for (let i = 0; i < finalMessages.length; i++) {
+      if (i === finalMessageIndex) {
+        const msg: Message = { id, to, subject, content }
+        finalMessageArr.push(msg)
+      } else {
+        finalMessageArr.push(finalMessages[i])
+      }
+    }
+    setFinalMessages(finalMessageArr)
   }
 
   const printStandardEmailSubject = () => {
@@ -227,18 +245,13 @@ const EmailSender: NextPage = () => {
                 Error: {getErrorMessage(msg.id)}
               </StyledErrorMessage>
             )}
-            <br />
-            <br />
-            <Typography variant="body1">To: {msg.to}</Typography>
-            <Typography variant="body1">Subject: {msg.subject}</Typography>
-            <br />
-            <Typography variant="body1">Content:</Typography>
-            <br />
-            <Typography variant="body1">
-              <StyledFinalMessageContent>
-                {msg.content}
-              </StyledFinalMessageContent>
-            </Typography>
+            <FinalMessage
+              id={msg.id}
+              to={msg.to}
+              subject={msg.subject}
+              parentCallback={editFinalMessages}
+              content={msg.content}
+            />
           </div>
         ))}
       </>
@@ -277,7 +290,6 @@ const EmailSender: NextPage = () => {
   }
 
   const handleClickOpen = () => {
-    console.log('HERE')
     setOpen(true)
   }
   const handleClose = () => {
@@ -295,42 +307,42 @@ const EmailSender: NextPage = () => {
             <Link href="/emailSenderHelp" underline="hover">
               Help Page
             </Link>
-        </Typography>
-        <FormControl fullWidth>
-          <SectionContainer>
-            <StyledSubHeader variant="h5">
-              1) Email subject
-            </StyledSubHeader>
-            <FormLabel id="choose-email-subject">
-              Use customized or standard email subjects?
-            </FormLabel>
-            <RadioGroup
-              aria-labelledby="choose-email-subject"
-              name="email-subject"
-              onChange={handleEmailStandard}
-            >
-              <FormControlLabel value="customized" control={<Radio />}
-              label="Customized (add subjects from CSV)" />
-              <FormControlLabel value="standard" control={<Radio />}
-              label="Standard (enter one subject for all emails)" />
-            </RadioGroup>
-            <br />
-          </SectionContainer>
-          <SectionContainer>
-            <div>{printStandardEmailSubject()}</div>
-          </SectionContainer>
-          <SectionContainer>
-            <StyledSubHeader variant="h5">
-              2) Enter email content
-            </StyledSubHeader>
-            <StyledTextArea
-              aria-label="message-text-area"
-              placeholder="Paste in message"
-              onChange={(e) => setMessage(e.target.value)}
-              minRows={20}
-            />
-          </SectionContainer>
-          <SectionContainer>
+          </Typography>
+          <FormControl fullWidth>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">
+                1) Email subject
+              </StyledSubHeader>
+              <FormLabel id="choose-email-subject">
+                Use customized or standard email subjects?
+              </FormLabel>
+              <RadioGroup
+                aria-labelledby="choose-email-subject"
+                name="email-subject"
+                onChange={handleEmailStandard}
+              >
+                <FormControlLabel value="customized" control={<Radio />}
+                  label="Customized (add subjects from CSV)" />
+                <FormControlLabel value="standard" control={<Radio />}
+                  label="Standard (enter one subject for all emails)" />
+              </RadioGroup>
+              <br />
+            </SectionContainer>
+            <SectionContainer>
+              <div>{printStandardEmailSubject()}</div>
+            </SectionContainer>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">
+                2) Enter email content
+              </StyledSubHeader>
+              <StyledTextArea
+                aria-label="message-text-area"
+                placeholder="Paste in message"
+                onChange={(e) => setMessage(e.target.value)}
+                minRows={20}
+              />
+            </SectionContainer>
+            <SectionContainer>
               <StyledSubHeader variant="h5">
                 3) Upload and import csv
               </StyledSubHeader>
@@ -357,7 +369,7 @@ const EmailSender: NextPage = () => {
                 >
                   Import CSV!
                 </StyledCsvButton>
-                </StyledCsvButtonsContainer>
+              </StyledCsvButtonsContainer>
             </SectionContainer>
           </FormControl>
           <StyledTableContainer>
