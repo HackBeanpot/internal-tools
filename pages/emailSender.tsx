@@ -99,7 +99,9 @@ const EmailSender: NextPage = () => {
   }
   const handleUploadCsv = (e: any) => {
     setFile(e.target.files[0])
+    setErrorMessages([])
     setCsvRowsArray([])
+    setResultMessage({ isError: false, message: '' })
   }
 
   const csvFileToArray = (str: string) => {
@@ -119,6 +121,7 @@ const EmailSender: NextPage = () => {
     allRowValues = allRowValues.map((string) => {
       return string.trim()
     })
+    const errorList: ErrorMessage[] = []
     const allRowObjects = allRowValues.map((i) => {
       const currRowValues = i.split(',')
       const currRowObject = csvHeaders.reduce(
@@ -128,8 +131,26 @@ const EmailSender: NextPage = () => {
         },
         {}
       )
+      if (currRowObject.email && Object.values(currRowObject).includes('')) {
+        errorList.push({
+          id: nanoid(),
+          message: 'CSV cannot contain empty cells'
+        })
+      }
+
+      if (currRowObject.email && !validEmail(currRowObject.email)) {
+        errorList.push({
+          id: nanoid(),
+          message: `Email "${currRowObject.email}" not a valid email`
+        })
+      }
       return currRowObject
     })
+
+    if (errorList.length !== 0) {
+      setErrorMessages(errorList)
+      return
+    }
 
     if (allRowObjects[allRowObjects.length - 1].email === '') {
       allRowObjects.pop()
@@ -142,8 +163,8 @@ const EmailSender: NextPage = () => {
       }])
       return
     }
+
     setCsvRowsArray(allRowObjects)
-    setErrorMessages([])
   }
 
   const handleImportCsv = (e: any) => {
@@ -180,42 +201,13 @@ const EmailSender: NextPage = () => {
     return headersArrFinal
   }
 
-  // const sendEmails = () => {
-  //   const localErrorMessages: ErrorMessage[] = []
-  //   for (let i = 0; i < finalMessages.length; i++) {
-  //     // This if statement is just for testing / a mock. You can read this as if (error)
-  //     // to represent the error case. Replace the following line when actually implementing
-  //     // the error check.
-  //     if (i % 2 === 0) {
-  //       localErrorMessages.push({
-  //         id: finalMessages[i].id,
-  //         message: 'Errorrrr!'
-  //       })
-  //     }
-  //   }
-  //   setResultErrorMessage({
-  //     errorMessages: localErrorMessages,
-  //     resultMessage: {
-  //       isError: localErrorMessages.length > 0,
-  //       message:
-  //         localErrorMessages.length > 0
-  //           ? `Error sending ${localErrorMessages.length} of ${finalMessages.length}`
-  //           : 'Sent emails successfully'
-  //     }
-  //   })
-  // }
-
   const createMessages = () => {
+    setResultMessage({ isError: false, message: '' })
     const regexArray = createRegexArray()
     const finalMessageArr = []
+    let error: string = ''
     for (let i = 0; i < csvRowsArray.length; i++) {
       const currRow: CsvRow = csvRowsArray[i]
-      if (!validEmail(currRow.email)) {
-        setErrorMessages((errorMessages) => (
-          [...errorMessages, { id: nanoid(), message: `Email ${currRow.email} not a valid email` }]
-        ))
-        continue
-      }
       const to = currRow.email
       const subject = (subjectCustomization) ? currRow.subject : standardSubject
       const map = new Map(Object.entries(currRow))
@@ -227,12 +219,19 @@ const EmailSender: NextPage = () => {
       for (let j = 0; j < regexArray.length; j++) {
         const toReplace = regexArray[j].toReplace
         const replaceVal = finalMap.get(regexArray[j].headerName)
+        if (replaceVal === undefined) {
+          error = `Value for ${toReplace} not found.`
+        }
         content = content.replaceAll(toReplace, replaceVal)
       }
       const msg: Message = { id: nanoid(), to, subject, content }
       finalMessageArr.push(msg)
     }
-    setFinalMessages(finalMessageArr)
+    if (error) {
+      setResultMessage({ isError: true, message: error })
+    } else {
+      setFinalMessages(finalMessageArr)
+    }
   }
 
   const getErrorMessage = (id: string) => {
@@ -382,6 +381,7 @@ const EmailSender: NextPage = () => {
               </StyledCsvButtonsContainer>
               {errorMessages.map((errorMessage) => (
                 <StyledErrorMessage key={errorMessage.id}>
+                  <br/>
                   {errorMessage.message}
                 </StyledErrorMessage>
               ))}
