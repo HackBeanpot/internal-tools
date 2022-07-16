@@ -26,7 +26,9 @@ import {
   StyledButton,
   StyledPageContainer,
   StyledBoldTypograhy,
-  SectionContainer
+  SectionContainer,
+  StyledTextArea
+
 } from '../styles/common'
 import {
   CsvRow,
@@ -46,8 +48,7 @@ import {
   StyledTable,
   StyledTableContainer,
   StyledTableRow,
-  StyledTextField,
-  StyledTextArea
+  StyledTextField
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 import FinalMessage from '../components/finalMessage/finalMessage'
@@ -75,14 +76,12 @@ const EmailSender: NextPage = () => {
       : setSubjectCustomization(true)
   }
 
-  const parentCallback = (id: string, to: string, subject: string, messageContent : string) => {
+  const editFinalMessages = (id: string, to: string, subject: string, messageContent: string) => {
     const finalMessageArr = []
     const content = messageContent
-    console.log(content)
     const finalMessageIndex = finalMessages.findIndex(finalMessage => {
       return finalMessage.id === id
     })
-    console.log(finalMessageIndex)
     for (let i = 0; i < finalMessages.length; i++) {
       if (i === finalMessageIndex) {
         const msg: Message = { id, to, subject, content }
@@ -240,19 +239,19 @@ const EmailSender: NextPage = () => {
       <>
         {finalMessages.map((msg) => (
           <div key={nanoid()}>
-          <StyledDivider/>
+            <StyledDivider />
             {getErrorMessage(msg.id) && (
               <StyledErrorMessage>
                 Error: {getErrorMessage(msg.id)}
               </StyledErrorMessage>
             )}
             <FinalMessage
-            id={msg.id}
-            to={msg.to}
-            subject={msg.subject}
-            parentCallback={parentCallback}
-            content={msg.content}>
-            </FinalMessage>
+              id={msg.id}
+              to={msg.to}
+              subject={msg.subject}
+              parentCallback={editFinalMessages}
+              content={msg.content}
+            />
           </div>
         ))}
       </>
@@ -291,7 +290,6 @@ const EmailSender: NextPage = () => {
   }
 
   const handleClickOpen = () => {
-    console.log(finalMessages)
     setOpen(true)
   }
   const handleClose = () => {
@@ -309,42 +307,42 @@ const EmailSender: NextPage = () => {
             <Link href="/emailSenderHelp" underline="hover">
               Help Page
             </Link>
-        </Typography>
-        <FormControl fullWidth>
-          <SectionContainer>
-            <StyledSubHeader variant="h5">
-              1) Email subject
-            </StyledSubHeader>
-            <FormLabel id="choose-email-subject">
-              Use customized or standard email subjects?
-            </FormLabel>
-            <RadioGroup
-              aria-labelledby="choose-email-subject"
-              name="email-subject"
-              onChange={handleEmailStandard}
-            >
-              <FormControlLabel value="customized" control={<Radio />}
-              label="Customized (add subjects from CSV)" />
-              <FormControlLabel value="standard" control={<Radio />}
-              label="Standard (enter one subject for all emails)" />
-            </RadioGroup>
-            <br />
-          </SectionContainer>
-          <SectionContainer>
-            <div>{printStandardEmailSubject()}</div>
-          </SectionContainer>
-          <SectionContainer>
-            <StyledSubHeader variant="h5">
-              2) Enter email content
-            </StyledSubHeader>
-            <StyledTextArea
-              aria-label="message-text-area"
-              placeholder="Paste in message"
-              onChange={(e) => setMessage(e.target.value)}
-              minRows={20}
-            />
-          </SectionContainer>
-          <SectionContainer>
+          </Typography>
+          <FormControl fullWidth>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">
+                1) Email subject
+              </StyledSubHeader>
+              <FormLabel id="choose-email-subject">
+                Use customized or standard email subjects?
+              </FormLabel>
+              <RadioGroup
+                aria-labelledby="choose-email-subject"
+                name="email-subject"
+                onChange={handleEmailStandard}
+              >
+                <FormControlLabel value="customized" control={<Radio />}
+                  label="Customized (add subjects from CSV)" />
+                <FormControlLabel value="standard" control={<Radio />}
+                  label="Standard (enter one subject for all emails)" />
+              </RadioGroup>
+              <br />
+            </SectionContainer>
+            <SectionContainer>
+              <div>{printStandardEmailSubject()}</div>
+            </SectionContainer>
+            <SectionContainer>
+              <StyledSubHeader variant="h5">
+                2) Enter email content
+              </StyledSubHeader>
+              <StyledTextArea
+                aria-label="message-text-area"
+                placeholder="Paste in message"
+                onChange={(e) => setMessage(e.target.value)}
+                minRows={20}
+              />
+            </SectionContainer>
+            <SectionContainer>
               <StyledSubHeader variant="h5">
                 3) Upload and import csv
               </StyledSubHeader>
@@ -371,7 +369,7 @@ const EmailSender: NextPage = () => {
                 >
                   Import CSV!
                 </StyledCsvButton>
-                </StyledCsvButtonsContainer>
+              </StyledCsvButtonsContainer>
             </SectionContainer>
           </FormControl>
           <StyledTableContainer>
