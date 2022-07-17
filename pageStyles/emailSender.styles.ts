@@ -60,8 +60,14 @@ const StyledResultMessage = styled(Typography, {
   paddingTop: 50
 }))
 
+const StyledDateTimeDiv = styled('div')({
+  marginTop: 15,
+  marginBottom: 50
+})
+
 export {
   SectionContainer, StyledTextField, StyledCsvButton, StyledCsvButtonsContainer,
   StyledSubHeader, StyledFinalMessagesContainer, StyledTableContainer, StyledDivider,
-  StyledTable, StyledTableRow, StyledErrorMessage, StyledResultMessage
+  StyledTable, StyledTableRow, StyledFinalMessageContent, StyledErrorMessage, StyledResultMessage,
+  StyledDateTimeDiv
 }
