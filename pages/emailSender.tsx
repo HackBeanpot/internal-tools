@@ -28,7 +28,9 @@ import {
   StyledButton,
   StyledPageContainer,
   StyledBoldTypograhy,
-  SectionContainer
+  SectionContainer,
+  StyledTextArea
+
 } from '../styles/common'
 import {
   CsvRow,
@@ -43,7 +45,6 @@ import {
   StyledDivider,
   StyledErrorMessage,
   StyledFinalMessagesContainer,
-  StyledFinalMessageContent,
   StyledResultMessage,
   StyledSubHeader,
   StyledTable,
@@ -54,6 +55,7 @@ import {
   StyledDateTimeDiv
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
+import FinalMessage from '../components/finalMessage/finalMessage'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 import TextField from '@mui/material/TextField'
@@ -83,6 +85,23 @@ const EmailSender: NextPage = () => {
     e.target.value === 'standard'
       ? setSubjectCustomization(false)
       : setSubjectCustomization(true)
+  }
+
+  const editFinalMessages = (id: string, to: string, subject: string, messageContent: string) => {
+    const finalMessageArr = []
+    const content = messageContent
+    const finalMessageIndex = finalMessages.findIndex(finalMessage => {
+      return finalMessage.id === id
+    })
+    for (let i = 0; i < finalMessages.length; i++) {
+      if (i === finalMessageIndex) {
+        const msg: Message = { id, to, subject, content }
+        finalMessageArr.push(msg)
+      } else {
+        finalMessageArr.push(finalMessages[i])
+      }
+    }
+    setFinalMessages(finalMessageArr)
   }
 
   const printStandardEmailSubject = () => {
@@ -239,18 +258,13 @@ const EmailSender: NextPage = () => {
                 Error: {getErrorMessage(msg.id)}
               </StyledErrorMessage>
             )}
-            <br />
-            <br />
-            <Typography variant="body1">To: {msg.to}</Typography>
-            <Typography variant="body1">Subject: {msg.subject}</Typography>
-            <br />
-            <Typography variant="body1">Content:</Typography>
-            <br />
-            <Typography variant="body1">
-              <StyledFinalMessageContent>
-                {msg.content}
-              </StyledFinalMessageContent>
-            </Typography>
+            <FinalMessage
+              id={msg.id}
+              to={msg.to}
+              subject={msg.subject}
+              parentCallback={editFinalMessages}
+              content={msg.content}
+            />
           </div>
         ))}
       </>
@@ -315,7 +329,9 @@ const EmailSender: NextPage = () => {
           </Typography>
           <FormControl fullWidth>
             <SectionContainer>
-              <StyledSubHeader variant="h5">1) Email subject</StyledSubHeader>
+              <StyledSubHeader variant="h5">
+                1) Email subject
+              </StyledSubHeader>
               <FormLabel id="choose-email-subject">
                 Use customized or standard email subjects?
               </FormLabel>
