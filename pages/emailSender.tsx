@@ -17,7 +17,9 @@ import {
   Typography,
   Dialog,
   DialogActions,
-  DialogTitle
+  DialogTitle,
+  FormGroup,
+  Checkbox
 } from '@mui/material'
 import type { NextPage } from 'next'
 import { useSession } from "next-auth/react"
@@ -29,7 +31,6 @@ import {
   StyledBoldTypograhy,
   SectionContainer,
   StyledTextArea
-
 } from '../styles/common'
 import {
   CsvRow,
@@ -49,15 +50,22 @@ import {
   StyledTable,
   StyledTableContainer,
   StyledTableRow,
-  StyledTextField
+  StyledTextField,
+  StyledDateTimeDiv
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 import FinalMessage from '../components/finalMessage/finalMessage'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
+import TextField from '@mui/material/TextField'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
+import Stack from '@mui/material/Stack'
 
 const EmailSender: NextPage = () => {
   const { data: session, status } = useSession({ required: true })
+  const [checkedDeliveryBox, setCheckedDeliveryBox] = useState(false)
   const [open, setOpen] = useState(false)
   const [file, setFile] = useState()
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
@@ -71,9 +79,10 @@ const EmailSender: NextPage = () => {
       resultMessage: { isError: false, message: '' }
     })
   const theme = useTheme()
+  const [dateTime, setDeliveryDateTime] = useState<Date | null>(null)
 
   const handleEmailStandard = (e: ChangeEvent<HTMLInputElement>) => {
-    (e.target.value === 'standard')
+    e.target.value === 'standard'
       ? setSubjectCustomization(false)
       : setSubjectCustomization(true)
   }
@@ -99,7 +108,9 @@ const EmailSender: NextPage = () => {
     if (!subjectCustomization) {
       return (
         <div>
-          <StyledSubHeader variant="h5">1b) Enter standard email subject</StyledSubHeader>
+          <StyledSubHeader variant="h5">
+            1b) Enter standard email subject
+          </StyledSubHeader>
           <StyledTextField
             id="outlined-basic"
             label="Email subject"
@@ -212,7 +223,7 @@ const EmailSender: NextPage = () => {
     for (let i = 0; i < csvRowsArray.length; i++) {
       const currRow: CsvRow = csvRowsArray[i]
       const to = currRow.email
-      const subject = (subjectCustomization) ? currRow.subject : standardSubject
+      const subject = subjectCustomization ? currRow.subject : standardSubject
       const map = new Map(Object.entries(currRow))
       const finalMap = new Map()
       let content = message
@@ -263,8 +274,14 @@ const EmailSender: NextPage = () => {
   const sendEmails = () => {
     // format: 'FName LName <email@hackbeanpot.com>'
     const from = '' + session?.user?.name + ' <' + session?.user?.email + '>'
-
-    const dataToSend = { emailData: finalMessages, from }
+    
+    const dataToSend = {
+      emailData: finalMessages,
+      from,
+      date: checkedDeliveryBox
+        ? dateTime?.toUTCString()
+        : undefined
+    }
     fetch('/api/email/send', {
       method: 'POST',
       cache: 'no-cache',
@@ -324,10 +341,16 @@ const EmailSender: NextPage = () => {
                 name="email-subject"
                 onChange={handleEmailStandard}
               >
-                <FormControlLabel value="customized" control={<Radio />}
-                  label="Customized (add subjects from CSV)" />
-                <FormControlLabel value="standard" control={<Radio />}
-                  label="Standard (enter one subject for all emails)" />
+                <FormControlLabel
+                  value="customized"
+                  control={<Radio />}
+                  label="Customized (add subjects from CSV)"
+                />
+                <FormControlLabel
+                  value="standard"
+                  control={<Radio />}
+                  label="Standard (enter one subject for all emails)"
+                />
               </RadioGroup>
               <br />
             </SectionContainer>
@@ -419,10 +442,40 @@ const EmailSender: NextPage = () => {
           <br />
           <SectionContainer>
             <StyledSubHeader variant="h5">5) Send emails</StyledSubHeader>
+            <FormLabel id="choose-email-subject">
+              Use customized or standard email subjects?
+            </FormLabel>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    onChange={(e) => setCheckedDeliveryBox(e.target.checked)}
+                  />
+                }
+                label="Select custom delivery time"
+              />
+            </FormGroup>
+            {checkedDeliveryBox &&
+            <StyledDateTimeDiv>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <Stack spacing={3}>
+                <DateTimePicker
+                  label="Select date and time"
+                  value={dateTime}
+                  onChange={(dateTime: Date | null) => {
+                    setDeliveryDateTime(dateTime)
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </Stack>
+            </LocalizationProvider>
+          </StyledDateTimeDiv>}
             <StyledButton
               color="info"
               variant="contained"
-              onClick={() => { console.log('test'); handleClickOpen() }}
+              onClick={() => {
+                handleClickOpen()
+              }}
               width="medium"
               disabled={finalMessages.length === 0}
             >
@@ -437,10 +490,17 @@ const EmailSender: NextPage = () => {
                 Are you sure you want to send all emails?
               </DialogTitle>
               <DialogActions>
-                <Button variant="contained" onClick={handleClose}>No</Button>
-                <Button variant="outlined" onClick={() => {
-                  handleClose(); sendEmails()
-                }} autoFocus>
+                <Button variant="contained" onClick={handleClose}>
+                  No
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    handleClose()
+                    sendEmails()
+                  }}
+                  autoFocus
+                >
                   Yes
                 </Button>
               </DialogActions>
@@ -461,6 +521,7 @@ const EmailSender: NextPage = () => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect
+export const getServerSideProps: GetServerSideProps =
+  getServerSideSessionOrRedirect
 
 export default EmailSender
