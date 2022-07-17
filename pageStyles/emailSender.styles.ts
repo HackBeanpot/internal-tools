@@ -65,6 +65,10 @@ const StyledDateTimeDiv = styled('div')({
   marginBottom: 50
 })
 
+const StyledFinalMessageContent = styled('div')({
+  whiteSpace: 'pre-wrap'
+})
+
 export {
   SectionContainer, StyledTextField, StyledCsvButton, StyledCsvButtonsContainer,
   StyledSubHeader, StyledFinalMessagesContainer, StyledTableContainer, StyledDivider,
