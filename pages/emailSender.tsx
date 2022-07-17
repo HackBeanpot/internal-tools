@@ -30,7 +30,6 @@ import {
   StyledBoldTypograhy,
   SectionContainer,
   StyledTextArea
-
 } from '../styles/common'
 import {
   CsvRow,
@@ -51,7 +50,6 @@ import {
   StyledTableContainer,
   StyledTableRow,
   StyledTextField,
-  StyledTextArea,
   StyledDateTimeDiv
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
