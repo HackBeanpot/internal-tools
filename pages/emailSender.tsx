@@ -20,6 +20,7 @@ import {
   DialogTitle
 } from '@mui/material'
 import type { NextPage } from 'next'
+import { useSession } from "next-auth/react"
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
 import {
@@ -55,6 +56,7 @@ import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 
 const EmailSender: NextPage = () => {
+  const { data: session, status } = useSession({ required: true })
   const [open, setOpen] = useState(false)
   const [file, setFile] = useState()
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
@@ -246,8 +248,9 @@ const EmailSender: NextPage = () => {
   }
 
   const sendEmails = () => {
-    // Hardcoding this, as user values in useSession() are undefined for some reason
-    const from = 'Dean Frame <dean@hackbeanpot.com>'
+    // format: 'FName LName <email@hackbeanpot.com>'
+    const from = '' + session?.user?.name + ' <' + session?.user?.email + '>'
+
     const dataToSend = { emailData: finalMessages, from }
     fetch('/api/email/send', {
       method: 'POST',
