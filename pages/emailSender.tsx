@@ -35,8 +35,8 @@ import {
   CsvRow,
   ReplaceObj,
   Message,
-  // ErrorMessage,
-  ResultErrorMessage
+  ErrorMessage,
+  ResultMessage
 } from '../lib/types'
 import {
   StyledCsvButton,
@@ -56,6 +56,7 @@ import Layout from '../components/layout/Layout'
 import FinalMessage from '../components/finalMessage/finalMessage'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
+import { validEmail } from '../lib/validateEmail'
 import TextField from '@mui/material/TextField'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -71,11 +72,8 @@ const EmailSender: NextPage = () => {
   const [standardSubject, setStandardSubject] = useState('')
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
-  const [resultErrorMessage, setResultErrorMessage] =
-    useState<ResultErrorMessage>({
-      errorMessages: [],
-      resultMessage: { isError: false, message: '' }
-    })
+  const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([])
+  const [resultMessage, setResultMessage] = useState<ResultMessage>({ isError: false, message: '' })
   const theme = useTheme()
   const [dateTime, setDeliveryDateTime] = useState<Date | null>(null)
 
@@ -128,16 +126,39 @@ const EmailSender: NextPage = () => {
   if (typeof window !== 'undefined') {
     reader = new window.FileReader()
   }
-  const handleOnChange = (e: any) => {
-    setFile(e.target.files[0])
+  const handleUploadCsv = (e: any) => {
+    const filename = e.target.files[0].name
+    if (filename.substring(filename.length - 3) !== 'csv') {
+      setErrorMessages([{
+        id: nanoid(),
+        message: 'Uploaded file must be a .csv file'
+      }])
+    } else {
+      setFile(e.target.files[0])
+      setErrorMessages([])
+      setCsvRowsArray([])
+      setResultMessage({ isError: false, message: '' })
+    }
   }
 
   const csvFileToArray = (str: string) => {
     const csvHeaders = str.slice(0, str.indexOf('\n')).trim().split(',')
+    if (!csvHeaders.includes('email')) {
+      setErrorMessages([{ id: nanoid(), message: 'CSV must contain an email column' }])
+      return
+    }
+    if (!csvHeaders.includes('subject') && subjectCustomization) {
+      setErrorMessages([{
+        id: nanoid(),
+        message: 'CSV must contain a subject column if subject is customized'
+      }])
+      return
+    }
     let allRowValues = str.slice(str.indexOf('\n') + 1).split('\n')
     allRowValues = allRowValues.map((string) => {
       return string.trim()
     })
+    const errorList: ErrorMessage[] = []
     const allRowObjects = allRowValues.map((i) => {
       const currRowValues = i.split(',')
       const currRowObject = csvHeaders.reduce(
@@ -147,16 +168,45 @@ const EmailSender: NextPage = () => {
         },
         {}
       )
+      if (currRowObject.email && Object.values(currRowObject)
+        .map((value) => typeof value === 'string' ? value.trim() : value)
+        .includes('')) {
+        errorList.push({
+          id: nanoid(),
+          message: 'CSV cannot contain empty cells'
+        })
+      }
+
+      if (currRowObject.email && !validEmail(currRowObject.email)) {
+        errorList.push({
+          id: nanoid(),
+          message: `Email "${currRowObject.email}" not a valid email`
+        })
+      }
       return currRowObject
     })
+
+    if (errorList.length !== 0) {
+      setErrorMessages(errorList)
+      return
+    }
 
     if (allRowObjects[allRowObjects.length - 1].email === '') {
       allRowObjects.pop()
     }
+
+    if (new Set(allRowObjects.map((rowObj) => rowObj.email)).size !== allRowObjects.length) {
+      setErrorMessages([{
+        id: nanoid(),
+        message: 'No email address should appear more than once'
+      }])
+      return
+    }
+
     setCsvRowsArray(allRowObjects)
   }
 
-  const handleOnSubmit = (e: any) => {
+  const handleImportCsv = (e: any) => {
     e.preventDefault()
     if (file) {
       reader.onload = function (event) {
@@ -190,34 +240,11 @@ const EmailSender: NextPage = () => {
     return headersArrFinal
   }
 
-  // const sendEmails = () => {
-  //   const localErrorMessages: ErrorMessage[] = []
-  //   for (let i = 0; i < finalMessages.length; i++) {
-  //     // This if statement is just for testing / a mock. You can read this as if (error)
-  //     // to represent the error case. Replace the following line when actually implementing
-  //     // the error check.
-  //     if (i % 2 === 0) {
-  //       localErrorMessages.push({
-  //         id: finalMessages[i].id,
-  //         message: 'Errorrrr!'
-  //       })
-  //     }
-  //   }
-  //   setResultErrorMessage({
-  //     errorMessages: localErrorMessages,
-  //     resultMessage: {
-  //       isError: localErrorMessages.length > 0,
-  //       message:
-  //         localErrorMessages.length > 0
-  //           ? `Error sending ${localErrorMessages.length} of ${finalMessages.length}`
-  //           : 'Sent emails successfully'
-  //     }
-  //   })
-  // }
-
   const createMessages = () => {
+    setResultMessage({ isError: false, message: '' })
     const regexArray = createRegexArray()
     const finalMessageArr = []
+    let error: string = ''
     for (let i = 0; i < csvRowsArray.length; i++) {
       const currRow: CsvRow = csvRowsArray[i]
       const to = currRow.email
@@ -231,16 +258,23 @@ const EmailSender: NextPage = () => {
       for (let j = 0; j < regexArray.length; j++) {
         const toReplace = regexArray[j].toReplace
         const replaceVal = finalMap.get(regexArray[j].headerName)
+        if (replaceVal === undefined) {
+          error = `Value for ${toReplace} not found.`
+        }
         content = content.replaceAll(toReplace, replaceVal)
       }
       const msg: Message = { id: nanoid(), to, subject, content }
       finalMessageArr.push(msg)
     }
-    setFinalMessages(finalMessageArr)
+    if (error) {
+      setResultMessage({ isError: true, message: error })
+    } else {
+      setFinalMessages(finalMessageArr)
+    }
   }
 
   const getErrorMessage = (id: string) => {
-    return resultErrorMessage.errorMessages.find(
+    return errorMessages.find(
       (currentMessage) => currentMessage.id === id
     )?.message
   }
@@ -288,21 +322,19 @@ const EmailSender: NextPage = () => {
       body: JSON.stringify(dataToSend)
     })
       .then((res) => {
-        // TODO: Make this error check more robust
         if (res.status === 500) {
-          setResultErrorMessage({
-            errorMessages: [],
-            resultMessage: {
-              isError: true,
-              message: res.statusText
-            }
+          setResultMessage({
+            isError: true,
+            message: res.statusText
           })
         }
         return res.json()
       })
       .then((data) => {
-        // TODO: surface this to UI
-        console.log(data.result)
+        setResultMessage({
+          isError: false,
+          message: 'Success! Emails will be sent shortly.'
+        })
       })
   }
 
@@ -375,7 +407,7 @@ const EmailSender: NextPage = () => {
                   id="contained-button-file"
                   accept={'.csv'}
                   type="file"
-                  onChange={handleOnChange}
+                  onChange={handleUploadCsv}
                 />
                 <label htmlFor="contained-button-file">
                   <Button variant="contained" component="span">
@@ -387,12 +419,18 @@ const EmailSender: NextPage = () => {
                   width="medium"
                   disabled={file === undefined}
                   onClick={(e) => {
-                    handleOnSubmit(e)
+                    handleImportCsv(e)
                   }}
                 >
                   Import CSV!
                 </StyledCsvButton>
               </StyledCsvButtonsContainer>
+              {errorMessages.map((errorMessage) => (
+                <StyledErrorMessage key={errorMessage.id}>
+                  <br />
+                  {errorMessage.message}
+                </StyledErrorMessage>
+              ))}
             </SectionContainer>
           </FormControl>
           <StyledTableContainer>
@@ -462,7 +500,7 @@ const EmailSender: NextPage = () => {
                   onChange={(dateTime: Date | null) => {
                     setDeliveryDateTime(dateTime)
                   }}
-                  renderInput={(params) => <TextField {...params} />}
+                  renderInput={(params: any) => <TextField {...params} />}
                 />
               </Stack>
             </LocalizationProvider>
@@ -474,7 +512,7 @@ const EmailSender: NextPage = () => {
                 handleClickOpen()
               }}
               width="medium"
-              disabled={finalMessages.length === 0}
+              disabled={finalMessages.length === 0 || errorMessages.length > 0}
             >
               Send!
             </StyledButton>
@@ -504,9 +542,9 @@ const EmailSender: NextPage = () => {
             </Dialog>
             <StyledResultMessage
               variant="h5"
-              isError={resultErrorMessage.resultMessage.isError}
+              isError={resultMessage.isError}
             >
-              {resultErrorMessage.resultMessage.message}
+              {resultMessage.message}
             </StyledResultMessage>
           </SectionContainer>
           <StyledFinalMessagesContainer>
