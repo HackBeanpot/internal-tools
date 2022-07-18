@@ -32,8 +32,3 @@ export interface ResultMessage {
    isError: boolean;
    message: string;
 }
-
-export interface ResultErrorMessage {
-    errorMessages: ErrorMessage[];
-    resultMessage: ResultMessage;
- }
