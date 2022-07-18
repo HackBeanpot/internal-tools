@@ -98,10 +98,18 @@ const EmailSender: NextPage = () => {
     reader = new window.FileReader()
   }
   const handleUploadCsv = (e: any) => {
-    setFile(e.target.files[0])
-    setErrorMessages([])
-    setCsvRowsArray([])
-    setResultMessage({ isError: false, message: '' })
+    const filename = e.target.files[0].name
+    if (filename.substring(filename.length - 3) !== 'csv') {
+      setErrorMessages([{
+        id: nanoid(),
+        message: 'Uploaded file must be a .csv file'
+      }])
+    } else {
+      setFile(e.target.files[0])
+      setErrorMessages([])
+      setCsvRowsArray([])
+      setResultMessage({ isError: false, message: '' })
+    }
   }
 
   const csvFileToArray = (str: string) => {
@@ -131,7 +139,9 @@ const EmailSender: NextPage = () => {
         },
         {}
       )
-      if (currRowObject.email && Object.values(currRowObject).includes('')) {
+      if (currRowObject.email && Object.values(currRowObject)
+        .map((value) => typeof value === 'string' ? value.trim() : value)
+        .includes('')) {
         errorList.push({
           id: nanoid(),
           message: 'CSV cannot contain empty cells'
@@ -381,7 +391,7 @@ const EmailSender: NextPage = () => {
               </StyledCsvButtonsContainer>
               {errorMessages.map((errorMessage) => (
                 <StyledErrorMessage key={errorMessage.id}>
-                  <br/>
+                  <br />
                   {errorMessage.message}
                 </StyledErrorMessage>
               ))}
