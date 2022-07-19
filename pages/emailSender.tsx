@@ -65,6 +65,7 @@ import Stack from '@mui/material/Stack'
 
 const EmailSender: NextPage = () => {
   const [checkedDeliveryBox, setCheckedDeliveryBox] = useState(false)
+  const attachmentFileRef = React.useRef<HTMLInputElement | null>(null)
   const [open, setOpen] = useState(false)
   const [file, setFile] = useState()
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
@@ -73,10 +74,12 @@ const EmailSender: NextPage = () => {
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
   const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([])
-  const [resultMessage, setResultMessage] = useState<ResultMessage>({ isError: false, message: '' })
+  const [resultMessage, setResultMessage] = useState<ResultMessage>({
+    isError: false,
+    message: ''
+  })
   const theme = useTheme()
   const [dateTime, setDeliveryDateTime] = useState<Date | null>(null)
-  console.log(file)
 
   const handleEmailStandard = (e: ChangeEvent<HTMLInputElement>) => {
     e.target.value === 'standard'
@@ -84,10 +87,15 @@ const EmailSender: NextPage = () => {
       : setSubjectCustomization(true)
   }
 
-  const editFinalMessages = (id: string, to: string, subject: string, messageContent: string) => {
+  const editFinalMessages = (
+    id: string,
+    to: string,
+    subject: string,
+    messageContent: string
+  ) => {
     const finalMessageArr = []
     const content = messageContent
-    const finalMessageIndex = finalMessages.findIndex(finalMessage => {
+    const finalMessageIndex = finalMessages.findIndex((finalMessage) => {
       return finalMessage.id === id
     })
     for (let i = 0; i < finalMessages.length; i++) {
@@ -130,10 +138,12 @@ const EmailSender: NextPage = () => {
   const handleUploadCsv = (e: any) => {
     const filename = e.target.files[0].name
     if (filename.substring(filename.length - 3) !== 'csv') {
-      setErrorMessages([{
-        id: nanoid(),
-        message: 'Uploaded file must be a .csv file'
-      }])
+      setErrorMessages([
+        {
+          id: nanoid(),
+          message: 'Uploaded file must be a .csv file'
+        }
+      ])
     } else {
       setFile(e.target.files[0])
       setErrorMessages([])
@@ -141,18 +151,36 @@ const EmailSender: NextPage = () => {
       setResultMessage({ isError: false, message: '' })
     }
   }
-
+  /*
+  const handleUploadAttachment = async (
+    e: React.MouseEvent<HTMLInputElement>
+  ) => {
+    const formData = new FormData()
+    console.log('CHeckpoint1')
+    if (attachmentFileRef.current?.files?.length) {
+      console.log(attachmentFileRef.current.files)
+      Object.values(attachmentFileRef.current.files).forEach((file) => {
+        formData.append('file', file)
+      })
+      console.log(formData)
+    }
+  }
+*/
   const csvFileToArray = (str: string) => {
     const csvHeaders = str.slice(0, str.indexOf('\n')).trim().split(',')
     if (!csvHeaders.includes('email')) {
-      setErrorMessages([{ id: nanoid(), message: 'CSV must contain an email column' }])
+      setErrorMessages([
+        { id: nanoid(), message: 'CSV must contain an email column' }
+      ])
       return
     }
     if (!csvHeaders.includes('subject') && subjectCustomization) {
-      setErrorMessages([{
-        id: nanoid(),
-        message: 'CSV must contain a subject column if subject is customized'
-      }])
+      setErrorMessages([
+        {
+          id: nanoid(),
+          message: 'CSV must contain a subject column if subject is customized'
+        }
+      ])
       return
     }
     let allRowValues = str.slice(str.indexOf('\n') + 1).split('\n')
@@ -169,9 +197,12 @@ const EmailSender: NextPage = () => {
         },
         {}
       )
-      if (currRowObject.email && Object.values(currRowObject)
-        .map((value) => typeof value === 'string' ? value.trim() : value)
-        .includes('')) {
+      if (
+        currRowObject.email &&
+        Object.values(currRowObject)
+          .map((value) => (typeof value === 'string' ? value.trim() : value))
+          .includes('')
+      ) {
         errorList.push({
           id: nanoid(),
           message: 'CSV cannot contain empty cells'
@@ -196,11 +227,16 @@ const EmailSender: NextPage = () => {
       allRowObjects.pop()
     }
 
-    if (new Set(allRowObjects.map((rowObj) => rowObj.email)).size !== allRowObjects.length) {
-      setErrorMessages([{
-        id: nanoid(),
-        message: 'No email address should appear more than once'
-      }])
+    if (
+      new Set(allRowObjects.map((rowObj) => rowObj.email)).size !==
+      allRowObjects.length
+    ) {
+      setErrorMessages([
+        {
+          id: nanoid(),
+          message: 'No email address should appear more than once'
+        }
+      ])
       return
     }
 
@@ -275,9 +311,8 @@ const EmailSender: NextPage = () => {
   }
 
   const getErrorMessage = (id: string) => {
-    return errorMessages.find(
-      (currentMessage) => currentMessage.id === id
-    )?.message
+    return errorMessages.find((currentMessage) => currentMessage.id === id)
+      ?.message
   }
 
   const displayMessages = () => {
@@ -304,16 +339,30 @@ const EmailSender: NextPage = () => {
     )
   }
 
-  const sendEmails = () => {
+  const sendEmails = async () => {
     // Hardcoding this, as user values in useSession() are undefined for some reason
     const from = 'Dean Frame <dean@hackbeanpot.com>'
     const dataToSend = {
       emailData: finalMessages,
       from,
-      date: checkedDeliveryBox
-        ? dateTime?.toUTCString()
-        : undefined
+      date: checkedDeliveryBox ? dateTime?.toUTCString() : undefined
     }
+    const formData = new FormData()
+    console.log('CHeckpoint1')
+    if (attachmentFileRef.current?.files?.length) {
+      console.log(attachmentFileRef.current.files)
+      Object.values(attachmentFileRef.current.files).forEach((file) => {
+        formData.append('file', file)
+      })
+      console.log(formData)
+    }
+    /* Send request to our api route */
+    /*
+    await fetch('/api/upload', {
+      method: 'POST',
+      body: formData
+    }).then((res) => console.log(res))
+    */
     fetch('/api/email/send', {
       method: 'POST',
       cache: 'no-cache',
@@ -360,9 +409,7 @@ const EmailSender: NextPage = () => {
           </Typography>
           <FormControl fullWidth>
             <SectionContainer>
-              <StyledSubHeader variant="h5">
-                1) Email subject
-              </StyledSubHeader>
+              <StyledSubHeader variant="h5">1) Email subject</StyledSubHeader>
               <FormLabel id="choose-email-subject">
                 Use customized or standard email subjects?
               </FormLabel>
@@ -434,6 +481,19 @@ const EmailSender: NextPage = () => {
               ))}
             </SectionContainer>
           </FormControl>
+          <form>
+            <input
+              style={{ display: 'none' }}
+              id="attachment-button"
+              type="file"
+              ref={attachmentFileRef}
+            />
+            <label htmlFor="attachment-button">
+              <Button variant="contained" component="span">
+                Upload Attachment
+              </Button>
+            </label>
+          </form>
           <StyledTableContainer>
             <TableContainer component={Paper}>
               <StyledTable aria-label="uploaded csv table">
@@ -491,21 +551,22 @@ const EmailSender: NextPage = () => {
                 label="Select custom delivery time"
               />
             </FormGroup>
-            {checkedDeliveryBox &&
-            <StyledDateTimeDiv>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <Stack spacing={3}>
-                <DateTimePicker
-                  label="Select date and time"
-                  value={dateTime}
-                  onChange={(dateTime: Date | null) => {
-                    setDeliveryDateTime(dateTime)
-                  }}
-                  renderInput={(params: any) => <TextField {...params} />}
-                />
-              </Stack>
-            </LocalizationProvider>
-          </StyledDateTimeDiv>}
+            {checkedDeliveryBox && (
+              <StyledDateTimeDiv>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <Stack spacing={3}>
+                    <DateTimePicker
+                      label="Select date and time"
+                      value={dateTime}
+                      onChange={(dateTime: Date | null) => {
+                        setDeliveryDateTime(dateTime)
+                      }}
+                      renderInput={(params: any) => <TextField {...params} />}
+                    />
+                  </Stack>
+                </LocalizationProvider>
+              </StyledDateTimeDiv>
+            )}
             <StyledButton
               color="info"
               variant="contained"
@@ -541,10 +602,7 @@ const EmailSender: NextPage = () => {
                 </Button>
               </DialogActions>
             </Dialog>
-            <StyledResultMessage
-              variant="h5"
-              isError={resultMessage.isError}
-            >
+            <StyledResultMessage variant="h5" isError={resultMessage.isError}>
               {resultMessage.message}
             </StyledResultMessage>
           </SectionContainer>

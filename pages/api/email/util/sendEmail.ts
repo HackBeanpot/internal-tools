@@ -24,8 +24,8 @@ export async function sendEmail (messages: Message[], from: string, date: string
     modifiedDate = modifiedDate.join(' ').concat(' -0000')
   }
   const file = {
-    filename: 'Hedwig.pdf',
-    data: await fsPromises.readFile('/Users/judyzhang/Desktop/Hedwig.pdf')
+    filename: '3_NewsletterBanner.png',
+    data: await fsPromises.readFile('/Users/judyzhang/Hackbeanpot/internal-tools/uploads/3_NewsletterBanner.png')
   }
   const attachment = [file]
   const messageData = {
