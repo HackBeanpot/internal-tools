@@ -76,6 +76,7 @@ const EmailSender: NextPage = () => {
   const [resultMessage, setResultMessage] = useState<ResultMessage>({ isError: false, message: '' })
   const theme = useTheme()
   const [dateTime, setDeliveryDateTime] = useState<Date | null>(null)
+  console.log(file)
 
   const handleEmailStandard = (e: ChangeEvent<HTMLInputElement>) => {
     e.target.value === 'standard'

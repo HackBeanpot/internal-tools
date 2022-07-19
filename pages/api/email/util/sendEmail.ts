@@ -1,6 +1,8 @@
 import FormData from 'form-data'
 import Mailgun from 'mailgun.js'
 import { Message } from '../../../../lib/types'
+const path = require('path')
+const fsPromises = require('fs').promises
 
 /**
  * @param messages Array of data for each recipent - see interface definition above
@@ -21,13 +23,19 @@ export async function sendEmail (messages: Message[], from: string, date: string
     modifiedDate.pop()
     modifiedDate = modifiedDate.join(' ').concat(' -0000')
   }
+  const file = {
+    filename: 'Hedwig.pdf',
+    data: await fsPromises.readFile('/Users/judyzhang/Desktop/Hedwig.pdf')
+  }
+  const attachment = [file]
   const messageData = {
     from,
     to: messages.map((message) => message.to),
     subject: '%recipient.subject%',
     text: '%recipient.content%',
     'recipient-variables': constructRecipientVariables(messages),
-    'o:deliverytime': modifiedDate
+    'o:deliverytime': modifiedDate,
+    attachment
   }
 
   const messagesSendResult = await client.messages.create(process.env.MAILGUN_DOMAIN, messageData)
