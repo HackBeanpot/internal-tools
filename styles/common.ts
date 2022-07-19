@@ -1,6 +1,7 @@
 import { styled } from '@mui/system'
-import { Button, Container, TextareaAutosize, Typography } from '@mui/material'
+import { Button, Container, TextareaAutosize, Toolbar, Typography } from '@mui/material'
 import { theme } from './theme'
+
 
 const StyledPageContainer = styled(Container)({
   marginTop: 40,
@@ -40,7 +41,12 @@ const StyledFinalMessageContent = styled('div')({
   whiteSpace: 'pre-wrap'
 })
 
+const StyledToolbar = styled(Toolbar)({
+  backgroundColor: theme.palette.HBPNavy.main
+
+})
+
 export {
   StyledPageContainer, StyledButton, StyledBoldTypograhy, SectionContainer, StyledTextArea,
-  StyledFinalMessageContent, StyledEditButton
+  StyledFinalMessageContent, StyledEditButton, StyledToolbar
 }

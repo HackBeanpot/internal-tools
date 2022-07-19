@@ -6,17 +6,17 @@ import PropTypes from 'prop-types'
 import { Props } from 'next/script'
 import { theme } from '../../styles/theme'
 import { ThemeProvider } from '@mui/material'
-import { StyledButton } from '../../styles/common'
+import { StyledButton, StyledToolbar } from '../../styles/common'
 
 export default function Layout ({ children }: Props) {
   return (
     <ThemeProvider theme={theme}>
       <AppBar position="static">
-        <Toolbar>
+        <StyledToolbar>
           <StyledButton bgColor={theme.palette.Mist.main} onClick={() => signOut()}>
             Sign out
           </StyledButton>
-        </Toolbar>
+        </StyledToolbar>
       </AppBar>
       {children}
     </ThemeProvider>
