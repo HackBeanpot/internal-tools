@@ -2,7 +2,6 @@ import { styled } from '@mui/system'
 import { Button, Container, TextareaAutosize, Toolbar, Typography } from '@mui/material'
 import { theme } from './theme'
 
-
 const StyledPageContainer = styled(Container)({
   marginTop: 40,
   marginBottom: 40
@@ -42,11 +41,23 @@ const StyledFinalMessageContent = styled('div')({
 })
 
 const StyledToolbar = styled(Toolbar)({
-  backgroundColor: theme.palette.HBPNavy.main
+  backgroundColor: theme.palette.Teal.main,
+  justifyContent: 'flex-end'
+})
 
+const StyledSignOutButton = styled(Button)({
+  backgroundColor: theme.palette.HBPCTA.main
+})
+
+const StyledHeaderLogoImage = styled('img')({
+  height: 80,
+  alignItems: 'left',
+  float: 'left',
+  margin: '0 15px 0 0'
 })
 
 export {
   StyledPageContainer, StyledButton, StyledBoldTypograhy, SectionContainer, StyledTextArea,
-  StyledFinalMessageContent, StyledEditButton, StyledToolbar
+  StyledFinalMessageContent, StyledEditButton, StyledToolbar, StyledSignOutButton,
+  StyledHeaderLogoImage
 }
