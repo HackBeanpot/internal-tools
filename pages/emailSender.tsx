@@ -22,6 +22,7 @@ import {
   Checkbox
 } from '@mui/material'
 import type { NextPage } from 'next'
+import { useSession } from 'next-auth/react'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
 import {
@@ -64,6 +65,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import Stack from '@mui/material/Stack'
 
 const EmailSender: NextPage = () => {
+  const { data: session } = useSession({ required: true })
   const [checkedDeliveryBox, setCheckedDeliveryBox] = useState(false)
   const attachmentFileRef = React.useRef<HTMLInputElement | null>(null)
   const [open, setOpen] = useState(false)
@@ -339,9 +341,9 @@ const EmailSender: NextPage = () => {
     )
   }
 
-  const sendEmails = async () => {
-    // Hardcoding this, as user values in useSession() are undefined for some reason
-    const from = 'Dean Frame <dean@hackbeanpot.com>'
+  const sendEmails = () => {
+    // format: 'FName LName <email@hackbeanpot.com>'
+    const from = '' + session?.user?.name + ' <' + session?.user?.email + '>'
     const dataToSend = {
       emailData: finalMessages,
       from,
