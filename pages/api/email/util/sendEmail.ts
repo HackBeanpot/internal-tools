@@ -30,6 +30,7 @@ export async function sendEmail (messages: Message[], from: string, date: string
   const attachment = [file]
   const messageData = {
     from,
+    "h:sender": from,
     to: messages.map((message) => message.to),
     subject: '%recipient.subject%',
     text: '%recipient.content%',
