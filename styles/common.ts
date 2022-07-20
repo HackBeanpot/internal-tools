@@ -41,12 +41,17 @@ const StyledFinalMessageContent = styled('div')({
 })
 
 const StyledToolbar = styled(Toolbar)({
-  backgroundColor: theme.palette.Teal.main,
-  justifyContent: 'flex-end'
+  backgroundColor: theme.palette.Teal.main
 })
 
 const StyledSignOutButton = styled(Button)({
-  backgroundColor: theme.palette.HBPCTA.main
+  backgroundColor: theme.palette.HBPCTA.main,
+  float: 'right',
+  marginLeft: '-50%'
+})
+
+const StyledToolbarRightDiv = styled('div')({
+  flex: '1'
 })
 
 const StyledHeaderLogoImage = styled('img')({
@@ -59,5 +64,5 @@ const StyledHeaderLogoImage = styled('img')({
 export {
   StyledPageContainer, StyledButton, StyledBoldTypograhy, SectionContainer, StyledTextArea,
   StyledFinalMessageContent, StyledEditButton, StyledToolbar, StyledSignOutButton,
-  StyledHeaderLogoImage
+  StyledHeaderLogoImage, StyledToolbarRightDiv
 }
