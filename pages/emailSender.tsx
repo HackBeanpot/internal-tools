@@ -153,21 +153,7 @@ const EmailSender: NextPage = () => {
       setResultMessage({ isError: false, message: '' })
     }
   }
-  /*
-  const handleUploadAttachment = async (
-    e: React.MouseEvent<HTMLInputElement>
-  ) => {
-    const formData = new FormData()
-    console.log('CHeckpoint1')
-    if (attachmentFileRef.current?.files?.length) {
-      console.log(attachmentFileRef.current.files)
-      Object.values(attachmentFileRef.current.files).forEach((file) => {
-        formData.append('file', file)
-      })
-      console.log(formData)
-    }
-  }
-*/
+
   const csvFileToArray = (str: string) => {
     const csvHeaders = str.slice(0, str.indexOf('\n')).trim().split(',')
     if (!csvHeaders.includes('email')) {
