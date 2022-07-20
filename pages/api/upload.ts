@@ -3,7 +3,6 @@ import { promises as fs } from 'fs'
 import path from 'path'
 import formidable, { File } from 'formidable'
 
-/* Don't miss that! */
 export const config = {
   api: {
     bodyParser: false
