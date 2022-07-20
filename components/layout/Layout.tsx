@@ -5,7 +5,12 @@ import PropTypes from 'prop-types'
 import { Props } from 'next/script'
 import { theme } from '../../styles/theme'
 import { ThemeProvider } from '@mui/material'
-import { StyledToolbar, StyledSignOutButton, StyledHeaderLogoImage } from '../../styles/common'
+import {
+  StyledToolbar,
+  StyledSignOutButton,
+  StyledHeaderLogoImage,
+  StyledToolbarRightDiv
+} from '../../styles/common'
 import { icons } from '../../styles/icons'
 
 export default function Layout ({ children }: Props) {
@@ -18,9 +23,12 @@ export default function Layout ({ children }: Props) {
             src={icons.HBP_LOGO.image}
             alt={icons.HBP_LOGO.altText}
           />
+          <StyledToolbarRightDiv>
           <StyledSignOutButton onClick={() => signOut()}>
             Sign out
           </StyledSignOutButton>
+          </StyledToolbarRightDiv>
+
         </StyledToolbar>
       </AppBar>
       {children}
