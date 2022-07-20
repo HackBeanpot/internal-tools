@@ -1,7 +1,7 @@
 import FormData from 'form-data'
 import Mailgun from 'mailgun.js'
 import { Message } from '../../../../lib/types'
-const path = require('path')
+import path from 'path'
 const fsPromises = require('fs').promises
 
 /**
@@ -9,7 +9,8 @@ const fsPromises = require('fs').promises
  * @param from Who the email is from - ex. 'Dean Frame <dean@hackbeanpot.com>
  * @returns [HTTP status code, message]
  */
-export async function sendEmail (messages: Message[], from: string, date: string | undefined) {
+export async function sendEmail (messages: Message[], from: string, date: string | undefined,
+  fileName: string | undefined) {
   if (!process.env.MAILGUN_API_KEY || !process.env.MAILGUN_DOMAIN) {
     return [500, 'Server env variables undefined!']
   }
@@ -23,14 +24,18 @@ export async function sendEmail (messages: Message[], from: string, date: string
     modifiedDate.pop()
     modifiedDate = modifiedDate.join(' ').concat(' -0000')
   }
-  const file = {
-    filename: '3_NewsletterBanner.png',
-    data: await fsPromises.readFile('/Users/judyzhang/Hackbeanpot/internal-tools/uploads/3_NewsletterBanner.png')
+  let file
+  if (fileName) {
+    const filePath = path.join(process.cwd(), '/uploads/', fileName)
+    file = {
+      filename: fileName,
+      data: await fsPromises.readFile(filePath)
+    }
   }
   const attachment = [file]
   const messageData = {
     from,
-    "h:sender": from,
+    'h:sender': from,
     to: messages.map((message) => message.to),
     subject: '%recipient.subject%',
     text: '%recipient.content%',

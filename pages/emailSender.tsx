@@ -341,30 +341,38 @@ const EmailSender: NextPage = () => {
     )
   }
 
-  const sendEmails = () => {
+  const sendEmails = async () => {
     // format: 'FName LName <email@hackbeanpot.com>'
     const from = '' + session?.user?.name + ' <' + session?.user?.email + '>'
-    const dataToSend = {
-      emailData: finalMessages,
-      from,
-      date: checkedDeliveryBox ? dateTime?.toUTCString() : undefined
-    }
     const formData = new FormData()
-    console.log('CHeckpoint1')
     if (attachmentFileRef.current?.files?.length) {
-      console.log(attachmentFileRef.current.files)
+      console.log(attachmentFileRef.current.files[0])
       Object.values(attachmentFileRef.current.files).forEach((file) => {
         formData.append('file', file)
       })
       console.log(formData)
     }
     /* Send request to our api route */
-    /*
-    await fetch('/api/upload', {
+
+    const response = await fetch('/api/upload', {
       method: 'POST',
       body: formData
-    }).then((res) => console.log(res))
-    */
+    })
+
+    const body = (await response.json()) as {
+      status: 'ok' | 'fail';
+      message: string;
+    }
+    console.log(body.status)
+    const dataToSend = {
+      emailData: finalMessages,
+      from,
+      date: checkedDeliveryBox ? dateTime?.toUTCString() : undefined,
+      fileName: attachmentFileRef.current?.files?.length
+        ? attachmentFileRef.current.files[0].name
+        : undefined
+    }
+
     fetch('/api/email/send', {
       method: 'POST',
       cache: 'no-cache',
