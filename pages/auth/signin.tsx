@@ -15,6 +15,8 @@ export default function SignIn ({
   const router = useRouter()
   const session = useSession()
   useEffect(() => {
+    console.log(session)
+    console.log('HEREEEE:D')
     if (session.data) {
       router.push('/')
     }
