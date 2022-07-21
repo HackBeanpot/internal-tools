@@ -8,21 +8,16 @@ import { ThemeProvider } from '@mui/material'
 import {
   StyledToolbar,
   StyledSignOutButton,
-  StyledHeaderLogoImage,
   StyledToolbarRightDiv
 } from '../../styles/common'
-import { icons } from '../../styles/icons'
+import { LogoIconWhite } from '../../public/assets/logo-icon-white'
 
 export default function Layout ({ children }: Props) {
   return (
     <ThemeProvider theme={theme}>
       <AppBar position="static">
         <StyledToolbar>
-          <StyledHeaderLogoImage
-            id="preview-image-url"
-            src={icons.HBP_LOGO.image}
-            alt={icons.HBP_LOGO.altText}
-          />
+          <LogoIconWhite/>
           <StyledToolbarRightDiv>
           <StyledSignOutButton onClick={() => signOut()}>
             Sign out

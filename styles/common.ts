@@ -41,10 +41,11 @@ const StyledFinalMessageContent = styled('div')({
 })
 
 const StyledToolbar = styled(Toolbar)({
-  backgroundColor: theme.palette.Teal.main
+  backgroundColor: theme.palette.HBPNavy.main
 })
 
 const StyledSignOutButton = styled(Button)({
+  color: theme.palette.White.main,
   backgroundColor: theme.palette.HBPCTA.main,
   float: 'right',
   marginLeft: '-50%'
