@@ -28,9 +28,9 @@ export default NextAuth({
     }
   },
   pages: {
-    signIn: '/auth/signin',
-    signOut: '/auth/signin',
-    error: '/auth/signin',
-    verifyRequest: '/auth/signin'
+    signIn: '/auth/signin'
+    // signOut: '/auth/signin',
+    // error: '/auth/signin',
+    // verifyRequest: '/auth/signin'
   }
 })
