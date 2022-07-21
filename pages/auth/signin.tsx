@@ -21,7 +21,8 @@ export default function SignIn ({
       router.push('/')
     }
   }, [router, session.data])
-  if (providers != null) {
+  console.log(providers)
+  if (providers !== null) {
     return (
       <ThemeProvider theme={theme}>
         {Object.values(providers).map((provider) => (
@@ -47,6 +48,7 @@ export default function SignIn ({
       </ThemeProvider>
     )
   }
+  return <>this is not working</>
 }
 
 export async function getServerSideProps () {
