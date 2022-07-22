@@ -497,7 +497,11 @@ const EmailSender: NextPage = () => {
               onChange={handleUploadAttachment}
             />
             <label htmlFor="attachment-button">
-              <Button variant="contained" component="span">
+              <Button
+                variant="contained"
+                component="span"
+                disabled={csvRowsArray.length === 0}
+              >
                 Upload Attachment
               </Button>
             </label>
