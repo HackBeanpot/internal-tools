@@ -37,7 +37,8 @@ import {
   ReplaceObj,
   Message,
   ErrorMessage,
-  ResultMessage
+  ResultMessage,
+  SignatureData
 } from '../lib/types'
 import {
   StyledCsvButton,
@@ -55,6 +56,7 @@ import {
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 import FinalMessage from '../components/finalMessage/finalMessage'
+import EmailSignatureForm from '../components/emailSignature/emailSignatureForm'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 import { validEmail } from '../lib/validateEmail'
@@ -63,6 +65,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import Stack from '@mui/material/Stack'
+import EmailSignature from '../components/emailSignature/emailSignature'
 
 const EmailSender: NextPage = () => {
   const { data: session } = useSession({ required: true })
@@ -78,6 +81,8 @@ const EmailSender: NextPage = () => {
   const [resultMessage, setResultMessage] = useState<ResultMessage>({ isError: false, message: '' })
   const theme = useTheme()
   const [dateTime, setDeliveryDateTime] = useState<Date | null>(null)
+  const [useSignature, setUseSignature] = useState(false)
+  const [signatureData, setSignatureData] = useState<SignatureData | undefined>(undefined)
 
   const handleEmailStandard = (e: ChangeEvent<HTMLInputElement>) => {
     e.target.value === 'standard'
@@ -398,6 +403,20 @@ const EmailSender: NextPage = () => {
                 onChange={(e) => setMessage(e.target.value)}
                 minRows={20}
               />
+              <br />
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={useSignature}
+                      onChange={(e) => setUseSignature(e.target.checked)}
+                    />
+                  }
+                  label="Use HackBeanpot email signature?"
+                />
+              </FormGroup>
+              <br />
+              {useSignature && <EmailSignatureForm setSignatureData={setSignatureData} embedded />}
             </SectionContainer>
             <SectionContainer>
               <StyledSubHeader variant="h5">
@@ -479,9 +498,6 @@ const EmailSender: NextPage = () => {
           <br />
           <SectionContainer>
             <StyledSubHeader variant="h5">5) Send emails</StyledSubHeader>
-            <FormLabel id="choose-email-subject">
-              Use customized or standard email subjects?
-            </FormLabel>
             <FormGroup>
               <FormControlLabel
                 control={
@@ -493,20 +509,20 @@ const EmailSender: NextPage = () => {
               />
             </FormGroup>
             {checkedDeliveryBox &&
-            <StyledDateTimeDiv>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <Stack spacing={3}>
-                <DateTimePicker
-                  label="Select date and time"
-                  value={dateTime}
-                  onChange={(dateTime: Date | null) => {
-                    setDeliveryDateTime(dateTime)
-                  }}
-                  renderInput={(params: any) => <TextField {...params} />}
-                />
-              </Stack>
-            </LocalizationProvider>
-          </StyledDateTimeDiv>}
+              <StyledDateTimeDiv>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <Stack spacing={3}>
+                    <DateTimePicker
+                      label="Select date and time"
+                      value={dateTime}
+                      onChange={(dateTime: Date | null) => {
+                        setDeliveryDateTime(dateTime)
+                      }}
+                      renderInput={(params: any) => <TextField {...params} />}
+                    />
+                  </Stack>
+                </LocalizationProvider>
+              </StyledDateTimeDiv>}
             <StyledButton
               color="info"
               variant="contained"
@@ -550,6 +566,13 @@ const EmailSender: NextPage = () => {
             </StyledResultMessage>
           </SectionContainer>
           <StyledFinalMessagesContainer>
+            {useSignature && signatureData && (
+              <>
+                <StyledDivider />
+                <Typography>Email signature preview:</Typography>
+                <EmailSignature signatureData={signatureData} />
+              </>
+            )}
             {displayMessages()}
           </StyledFinalMessagesContainer>
         </StyledPageContainer>

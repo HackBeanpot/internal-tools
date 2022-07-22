@@ -1,10 +1,5 @@
-import { Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Link from 'next/link'
-
-const StyledGmailHeader = styled(Typography)({
-  paddingBottom: 16
-})
 
 const StyledTable = styled('table')(({ theme }) => ({
   background: 'none',
@@ -69,7 +64,6 @@ const StyledLink = styled(Link)(({ theme }) => ({
 }))
 
 export {
-  StyledGmailHeader,
   StyledTable,
   StyledLogoContainer,
   StyledContentContainer,
