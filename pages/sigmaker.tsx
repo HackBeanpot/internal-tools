@@ -8,20 +8,9 @@ import {
   Typography
 } from '@mui/material'
 import { theme } from '../styles/theme'
-import { icons } from '../styles/icons'
 import { SignatureData } from '../lib/types'
 import { StyledPageContainer, StyledButton } from '../styles/common'
 import {
-  StyledContentContainer,
-  StyledGmailHeader,
-  StyledLogoContainer,
-  StyledTable,
-  StyledSignatureName,
-  StyledLogoImage,
-  StyledSignatureText,
-  StyledPhoneNumber,
-  StyledLinkContainer,
-  StyledLink,
   StyledGrid,
   StyledTextValidator
 } from '../pageStyles/sigmaker.styles'
@@ -29,6 +18,7 @@ import { ValidatorForm } from 'react-material-ui-form-validator'
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
+import EmailSignature from '../components/emailSignature/emailSignature'
 
 const Sigmaker: NextPage = () => {
   const [formData, setFormData] = useState<SignatureData>({
@@ -72,76 +62,6 @@ const Sigmaker: NextPage = () => {
     />
   )
 
-  const createSignature = () => {
-    if (signatureData) {
-      return (
-        <div>
-          <StyledGmailHeader variant="h4">
-            Paste this into Gmail!
-          </StyledGmailHeader>
-          <StyledPageContainer>
-            <StyledTable cellPadding={0} cellSpacing={0}>
-              <tbody>
-                <tr>
-                  <StyledLogoContainer valign="top">
-                    <StyledLogoImage
-                      id="preview-image-url"
-                      src={icons.HBP_LOGO.image}
-                      alt={icons.HBP_LOGO.altText}
-                    />
-                  </StyledLogoContainer>
-                  <StyledContentContainer>
-                    <table cellPadding={0} cellSpacing={0}>
-                      <tbody>
-                        <tr>
-                          <StyledSignatureName colSpan={2}>
-                            {signatureData.fullName}
-                          </StyledSignatureName>
-                        </tr>
-                        <tr>
-                          <StyledSignatureText colSpan={2}>
-                            {signatureData.title}
-                          </StyledSignatureText>
-                        </tr>
-                        <tr>
-                          <StyledSignatureText colSpan={2}>
-                            <strong>HackBeanpot, Inc.</strong>
-                          </StyledSignatureText>
-                        </tr>
-                        <tr>
-                          <StyledPhoneNumber>
-                            {signatureData.phone}
-                          </StyledPhoneNumber>
-                        </tr>
-                        <tr>
-                          <StyledLinkContainer valign="top">
-                            <StyledLink
-                              href="https://hackbeanpot.com"
-                              target="_blank"
-                            >
-                              www.hackbeanpot.com
-                            </StyledLink>
-                          </StyledLinkContainer>
-                        </tr>
-                        <tr>
-                          <StyledSignatureText>
-                            <StyledLink href={`mailto:${signatureData.email}@hackbeanpot.com`}>
-                              <a>{signatureData.email}@hackbeanpot.com</a>
-                            </StyledLink>
-                          </StyledSignatureText>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </StyledContentContainer>
-                </tr>
-              </tbody>
-            </StyledTable>
-          </StyledPageContainer>
-        </div>
-      )
-    }
-  }
-
   return (
     <Layout>
     <ThemeProvider theme={theme}>
@@ -173,7 +93,7 @@ const Sigmaker: NextPage = () => {
           </ValidatorForm>
           </Grid>
           <Grid item xs={12} md={6}>
-            {<div>{createSignature()}</div>}
+            <EmailSignature signatureData={signatureData} />
           </Grid>
         </StyledGrid>
       </StyledPageContainer>
