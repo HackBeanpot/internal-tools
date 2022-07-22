@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import {
   ThemeProvider,
   Button,
@@ -327,16 +327,16 @@ const EmailSender: NextPage = () => {
     )
   }
 
+  console.log(attachmentFileRef.current?.files)
+
   const sendEmails = async () => {
     // format: 'FName LName <email@hackbeanpot.com>'
     const from = '' + session?.user?.name + ' <' + session?.user?.email + '>'
     const formData = new FormData()
     if (attachmentFileRef.current?.files?.length) {
-      console.log(attachmentFileRef.current.files[0])
       Object.values(attachmentFileRef.current.files).forEach((file) => {
         formData.append('file', file)
       })
-      console.log(formData)
     }
     /* Send request to our api route */
 
@@ -390,6 +390,9 @@ const EmailSender: NextPage = () => {
   const handleClose = () => {
     setOpen(false)
   }
+
+  useEffect(() => {
+  }, [attachmentFileRef.current?.files])
 
   return (
     <Layout>
@@ -477,19 +480,34 @@ const EmailSender: NextPage = () => {
               ))}
             </SectionContainer>
           </FormControl>
-          <form>
-            <input
-              style={{ display: 'none' }}
-              id="attachment-button"
-              type="file"
-              ref={attachmentFileRef}
-            />
-            <label htmlFor="attachment-button">
-              <Button variant="contained" component="span">
-                Upload Attachment
-              </Button>
-            </label>
-          </form>
+          <SectionContainer>
+            <StyledSubHeader variant="h5">
+              4) Upload and import csv
+            </StyledSubHeader>
+            <form>
+              <input
+                style={{ display: 'none' }}
+                id="attachment-button"
+                type="file"
+                ref={attachmentFileRef}
+              />
+              <label htmlFor="attachment-button">
+                <Button variant="contained" component="span">
+                  Upload Attachment
+                </Button>
+              </label>
+              <br />
+              <br />
+              {attachmentFileRef.current?.files?.length &&
+              attachmentFileRef.current.files[0]
+                ? (
+                <>{attachmentFileRef.current.files[0].name} attached!</>
+                  )
+                : (
+                    ''
+                  )}
+            </form>
+          </SectionContainer>
           <StyledTableContainer>
             <TableContainer component={Paper}>
               <StyledTable aria-label="uploaded csv table">
@@ -518,7 +536,7 @@ const EmailSender: NextPage = () => {
           </StyledTableContainer>
           <SectionContainer>
             <StyledSubHeader variant="h5">
-              4) Verify final messages
+              5) Verify final messages
             </StyledSubHeader>
             <StyledButton
               color="info"
@@ -533,7 +551,7 @@ const EmailSender: NextPage = () => {
           <br />
           <br />
           <SectionContainer>
-            <StyledSubHeader variant="h5">5) Send emails</StyledSubHeader>
+            <StyledSubHeader variant="h5">6) Send emails</StyledSubHeader>
             <FormLabel id="choose-email-subject">
               Use customized or standard email subjects?
             </FormLabel>
