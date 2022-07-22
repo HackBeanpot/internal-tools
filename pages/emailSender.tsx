@@ -341,18 +341,26 @@ const EmailSender: NextPage = () => {
     if (attachment) {
       formData.append('file', attachment)
     }
-    /* Send request to our api route */
 
-    const response = await fetch('/api/upload', {
+    const uploadAttachmentsResponse = await fetch('/api/uploadAttachments', {
       method: 'POST',
       body: formData
     })
 
-    const body = (await response.json()) as {
+    const uploadAttachmentsBody = (await uploadAttachmentsResponse.json()) as {
       status: 'ok' | 'fail';
       message: string;
     }
-    console.log(body.status)
+
+    if (uploadAttachmentsBody.status === 'fail') {
+      setErrorMessages([
+        {
+          id: nanoid(),
+          message: uploadAttachmentsBody.message
+        }
+      ])
+    }
+
     const dataToSend = {
       emailData: finalMessages,
       from,

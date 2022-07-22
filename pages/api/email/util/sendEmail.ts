@@ -26,7 +26,7 @@ export async function sendEmail (messages: Message[], from: string, date: string
   }
   let file
   if (fileName) {
-    const filePath = path.join(process.cwd(), '/uploads/', fileName)
+    const filePath = path.join(process.cwd(), '/attachments/', fileName)
     file = {
       filename: fileName,
       data: await fsPromises.readFile(filePath)
