@@ -2,7 +2,6 @@ import React from 'react'
 import { SignatureData } from '../../lib/types'
 import {
   StyledContentContainer,
-  StyledGmailHeader,
   StyledLogoContainer,
   StyledTable,
   StyledSignatureName,
@@ -14,6 +13,8 @@ import {
 } from '../../styles/emailSignature'
 import { StyledPageContainer } from '../../styles/common'
 import { icons } from '../../styles/icons'
+import { theme } from '../../styles/theme'
+import { ThemeProvider } from '@mui/material'
 
 interface EmailSignatureProps {
   signatureData?: SignatureData
@@ -23,10 +24,7 @@ export default function EmailSignature ({ signatureData }: EmailSignatureProps) 
   return <>
     {signatureData &&
       (
-        <div>
-          <StyledGmailHeader variant="h4">
-            Paste this into Gmail!
-          </StyledGmailHeader>
+        <ThemeProvider theme={theme}>
           <StyledPageContainer>
             <StyledTable cellPadding={0} cellSpacing={0}>
               <tbody>
@@ -85,7 +83,7 @@ export default function EmailSignature ({ signatureData }: EmailSignatureProps) 
               </tbody>
             </StyledTable>
           </StyledPageContainer>
-        </div>
+        </ThemeProvider>
       )}
   </>
 }
