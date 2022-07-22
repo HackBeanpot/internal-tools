@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let status = 200
   let resultBody = { status: 'ok', message: 'Files were uploaded successfully' }
 
-  /* Get files using formidable */
+  // Get files using formidable
   const files = await new Promise<ProcessedFiles | undefined>((resolve, reject) => {
     const form = new formidable.IncomingForm()
     const files: ProcessedFiles = []
@@ -44,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await fs.mkdir(targetPath)
     }
 
-    /* Move uploaded files to directory */
+    // Move uploaded files to directory
     for (const file of files) {
       const tempPath = file[1].filepath
       await fs.rename(tempPath, targetPath + file[1].originalFilename)
