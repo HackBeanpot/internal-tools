@@ -28,7 +28,7 @@ import { useTheme } from '@mui/material/styles'
 import {
   StyledButton,
   StyledPageContainer,
-  StyledBoldTypograhy,
+  StyledBoldTypography,
   SectionContainer,
   StyledTextArea
 } from '../styles/common'
@@ -510,8 +510,10 @@ const EmailSender: NextPage = () => {
             {attachment
               ? (
               <>
-                {attachment.name} attached!
-                <button onClick={() => setAttachment(undefined)}>x</button>
+                <Typography variant="body1">
+                  {attachment.name} attached!
+                  <button onClick={() => setAttachment(undefined)}>x</button>
+                </Typography>
               </>
                 )
               : (
@@ -524,9 +526,9 @@ const EmailSender: NextPage = () => {
                 <TableHead>
                   {headerKeys.map((key) => (
                     <TableCell key={nanoid()}>
-                      <StyledBoldTypograhy variant="body1">
+                      <StyledBoldTypography variant="body1">
                         {key}
-                      </StyledBoldTypograhy>
+                      </StyledBoldTypography>
                     </TableCell>
                   ))}
                 </TableHead>
