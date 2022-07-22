@@ -1,6 +1,6 @@
 import { FormControl, Grid, TextField, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { TextValidator } from 'react-material-ui-form-validator';
+import { TextValidator } from 'react-material-ui-form-validator'
 import Link from 'next/link'
 
 const StyledGmailHeader = styled(Typography)({
