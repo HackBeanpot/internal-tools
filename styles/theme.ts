@@ -9,6 +9,8 @@ declare module '@mui/material/styles' {
     SproutGreen: Palette['primary'];
     White: Palette['primary'];
     Red: Palette ['primary'];
+    HBPCTA: Palette ['primary'];
+    Teal: Palette ['primary'];
   }
   interface PaletteOptions {
     HBPNavy: PaletteOptions['primary'];
@@ -19,6 +21,8 @@ declare module '@mui/material/styles' {
     SproutGreen: PaletteOptions['primary'];
     White: PaletteOptions['primary'];
     Red: PaletteOptions ['primary'];
+    HBPCTA: PaletteOptions ['primary'];
+    Teal: PaletteOptions ['primary'];
   }
 }
 
@@ -50,6 +54,12 @@ export const theme = createTheme({
     },
     Red: {
       main: '#FF0000'
+    },
+    HBPCTA: {
+      main: '#FBDD40'
+    },
+    Teal: {
+      main: '#25C9D0'
     }
   }
 })
