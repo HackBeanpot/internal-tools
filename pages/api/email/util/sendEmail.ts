@@ -41,7 +41,7 @@ export async function sendEmail (messages: Message[], from: string, date: string
     text: '%recipient.content%',
     'recipient-variables': constructRecipientVariables(messages),
     'o:deliverytime': modifiedDate,
-    attachment: attachment !== null ? attachment : undefined
+    attachment: fileName ? attachment : undefined
   }
 
   const messagesSendResult = await client.messages.create(process.env.MAILGUN_DOMAIN, messageData)

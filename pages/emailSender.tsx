@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import {
   ThemeProvider,
   Button,
@@ -67,7 +67,7 @@ import Stack from '@mui/material/Stack'
 const EmailSender: NextPage = () => {
   const { data: session } = useSession({ required: true })
   const [checkedDeliveryBox, setCheckedDeliveryBox] = useState(false)
-  const attachmentFileRef = React.useRef<HTMLInputElement | null>(null)
+  const [attachment, setAttachment] = useState<File>()
   const [open, setOpen] = useState(false)
   const [file, setFile] = useState()
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
@@ -244,6 +244,13 @@ const EmailSender: NextPage = () => {
     }
   }
 
+  const handleUploadAttachment = (e: any) => {
+    const filename = e.target.files[0].name
+    if (filename) {
+      setAttachment(e.target.files[0])
+    }
+  }
+
   const headerKeys = Object.keys(Object.assign({}, ...csvRowsArray))
   const re = /\${(.*?)}/g
 
@@ -327,16 +334,12 @@ const EmailSender: NextPage = () => {
     )
   }
 
-  console.log(attachmentFileRef.current?.files)
-
   const sendEmails = async () => {
     // format: 'FName LName <email@hackbeanpot.com>'
     const from = '' + session?.user?.name + ' <' + session?.user?.email + '>'
     const formData = new FormData()
-    if (attachmentFileRef.current?.files?.length) {
-      Object.values(attachmentFileRef.current.files).forEach((file) => {
-        formData.append('file', file)
-      })
+    if (attachment) {
+      formData.append('file', attachment)
     }
     /* Send request to our api route */
 
@@ -354,9 +357,7 @@ const EmailSender: NextPage = () => {
       emailData: finalMessages,
       from,
       date: checkedDeliveryBox ? dateTime?.toUTCString() : undefined,
-      fileName: attachmentFileRef.current?.files?.length
-        ? attachmentFileRef.current.files[0].name
-        : undefined
+      fileName: attachment?.name || undefined
     }
 
     fetch('/api/email/send', {
@@ -390,9 +391,6 @@ const EmailSender: NextPage = () => {
   const handleClose = () => {
     setOpen(false)
   }
-
-  useEffect(() => {
-  }, [attachmentFileRef.current?.files])
 
   return (
     <Layout>
@@ -484,29 +482,29 @@ const EmailSender: NextPage = () => {
             <StyledSubHeader variant="h5">
               4) Upload and import csv
             </StyledSubHeader>
-            <form>
-              <input
-                style={{ display: 'none' }}
-                id="attachment-button"
-                type="file"
-                ref={attachmentFileRef}
-              />
-              <label htmlFor="attachment-button">
-                <Button variant="contained" component="span">
-                  Upload Attachment
-                </Button>
-              </label>
-              <br />
-              <br />
-              {attachmentFileRef.current?.files?.length &&
-              attachmentFileRef.current.files[0]
-                ? (
-                <>{attachmentFileRef.current.files[0].name} attached!</>
-                  )
-                : (
-                    ''
-                  )}
-            </form>
+            <input
+              style={{ display: 'none' }}
+              id="attachment-button"
+              type="file"
+              onChange={handleUploadAttachment}
+            />
+            <label htmlFor="attachment-button">
+              <Button variant="contained" component="span">
+                Upload Attachment
+              </Button>
+            </label>
+            <br />
+            <br />
+            {attachment
+              ? (
+              <>
+                {attachment.name} attached!
+                <button onClick={() => setAttachment(undefined)}>x</button>
+              </>
+                )
+              : (
+                  ''
+                )}
           </SectionContainer>
           <StyledTableContainer>
             <TableContainer component={Paper}>
