@@ -340,25 +340,25 @@ const EmailSender: NextPage = () => {
     const formData = new FormData()
     if (attachment) {
       formData.append('file', attachment)
-    }
+      const uploadAttachmentsResponse = await fetch('/api/uploadAttachments', {
+        method: 'POST',
+        body: formData
+      })
 
-    const uploadAttachmentsResponse = await fetch('/api/uploadAttachments', {
-      method: 'POST',
-      body: formData
-    })
-
-    const uploadAttachmentsBody = (await uploadAttachmentsResponse.json()) as {
-      status: 'ok' | 'fail';
-      message: string;
-    }
-
-    if (uploadAttachmentsBody.status === 'fail') {
-      setErrorMessages([
-        {
-          id: nanoid(),
-          message: uploadAttachmentsBody.message
+      const uploadAttachmentsBody =
+        (await uploadAttachmentsResponse.json()) as {
+          status: 'ok' | 'fail';
+          message: string;
         }
-      ])
+
+      if (uploadAttachmentsBody.status === 'fail') {
+        setErrorMessages([
+          {
+            id: nanoid(),
+            message: uploadAttachmentsBody.message
+          }
+        ])
+      }
     }
 
     const dataToSend = {
@@ -443,6 +443,32 @@ const EmailSender: NextPage = () => {
               <StyledSubHeader variant="h5">
                 2) Enter email content
               </StyledSubHeader>
+              <input
+                style={{ display: 'none' }}
+                id="attachment-button"
+                type="file"
+                onChange={handleUploadAttachment}
+              />
+              <label htmlFor="attachment-button">
+                <Button variant="contained" component="span">
+                  Upload Attachment
+                </Button>
+              </label>
+              <br />
+              <br />
+              {attachment
+                ? (
+                <>
+                  <Typography variant="body1">
+                    {attachment.name} attached!
+                    <button onClick={() => setAttachment(undefined)}>x</button>
+                  </Typography>
+                  <br />
+                </>
+                  )
+                : (
+                    ''
+                  )}
               <StyledTextArea
                 aria-label="message-text-area"
                 placeholder="Paste in message"
@@ -486,40 +512,6 @@ const EmailSender: NextPage = () => {
               ))}
             </SectionContainer>
           </FormControl>
-          <SectionContainer>
-            <StyledSubHeader variant="h5">
-              4) Upload and import csv
-            </StyledSubHeader>
-            <input
-              style={{ display: 'none' }}
-              id="attachment-button"
-              type="file"
-              onChange={handleUploadAttachment}
-            />
-            <label htmlFor="attachment-button">
-              <Button
-                variant="contained"
-                component="span"
-                disabled={csvRowsArray.length === 0}
-              >
-                Upload Attachment
-              </Button>
-            </label>
-            <br />
-            <br />
-            {attachment
-              ? (
-              <>
-                <Typography variant="body1">
-                  {attachment.name} attached!
-                  <button onClick={() => setAttachment(undefined)}>x</button>
-                </Typography>
-              </>
-                )
-              : (
-                  ''
-                )}
-          </SectionContainer>
           <StyledTableContainer>
             <TableContainer component={Paper}>
               <StyledTable aria-label="uploaded csv table">
@@ -548,7 +540,7 @@ const EmailSender: NextPage = () => {
           </StyledTableContainer>
           <SectionContainer>
             <StyledSubHeader variant="h5">
-              5) Verify final messages
+              4) Verify final messages
             </StyledSubHeader>
             <StyledButton
               color="info"
@@ -563,7 +555,7 @@ const EmailSender: NextPage = () => {
           <br />
           <br />
           <SectionContainer>
-            <StyledSubHeader variant="h5">6) Send emails</StyledSubHeader>
+            <StyledSubHeader variant="h5">5) Send emails</StyledSubHeader>
             <FormLabel id="choose-email-subject">
               Use customized or standard email subjects?
             </FormLabel>
