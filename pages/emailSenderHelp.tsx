@@ -42,28 +42,51 @@ const Help: NextPage = () => {
           <Typography variant="body1">
             <br />
             Use this email sender to quickly send the same email to multiple
-            recipients at once
+            recipients at once!
           </Typography>
           <TextContainer>
             <SectionContainer>
               <Typography variant="h5">Steps: </Typography>
               <br />
-              <StyledSubHeader variant="h5">1) Enter message</StyledSubHeader>
+              <StyledSubHeader variant="h6">
+                1) Email subject
+              </StyledSubHeader>
+              <ul>
+                <li>
+                  <Typography variant="body1">
+                    Choose between inputting a standard email subject (same words sent to all)
+                    or revising the subject per recipient. If you choose to send a standard subject
+                    then you will be prompted to input it here. It will not need to also be uploaded
+                    through the CSV, and if you do upload different subjects, they will not be
+                    populated by default.
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="body1">
+                    If you choose to customize the subject per recipient then you need to add
+                    a &quot;subject&quot; column to your CSV of emails. This must be filled for
+                    every recipient column.
+                  </Typography>
+                </li>
+              </ul>
+              <StyledSubHeader variant="h6">
+                2) Enter email content
+              </StyledSubHeader>
               <ul>
                 <li>
                   <Typography variant="body1">
                     Enter the message inside the email. The words that vary
-                    among each email should be wrapped in {'$ {}'}
-                    (with no spaces between the {'$'} and the brackets). In the
-                    example below, those words are {'$ {name}'} and{' '}
-                    {'$ {company}'}, but in general, it is up to you how to name
+                    among each email should be wrapped in `{'$ {}'}`
+                    (with no spaces between the `{'$'}` and the brackets). In the
+                    example below, those words are `{'$ {name}'}` and `{'$ {company}'}`,
+                    but in general, it is up to you how to name
                     the variables in the brackets. Those words will be filled
                     automatically according to the CSV file uploaded.
                   </Typography>
                 </li>
               </ul>
-              <StyledSubHeader variant="h5">
-                2) Upload and import csv
+              <StyledSubHeader variant="h6">
+                3) Upload and import csv
               </StyledSubHeader>
               <ul>
                 <li>
@@ -78,26 +101,60 @@ const Help: NextPage = () => {
                   </Typography>
                 </li>
               </ul>
-              <StyledSubHeader variant="h5">
-                3) Verify final messages
+              <StyledSubHeader variant="h6">
+                4) Verify final messages
               </StyledSubHeader>
               <ul>
                 <li>
                   <Typography variant="body1">
                     Click on &quot;print final messages&quot; to verify if the
-                    printed message is what you want to send in the emails(all
-                    grammar and spelling is correct, etc)
+                    printed messages are what you intent to send in the emails. Check
+                    that all grammar, punctuation, and per-recipient customization have
+                    been completed as intended.
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="body1">
+                    If you see any issues, you can either reupload a fixed CSV or you can
+                    make edits directly on the email sender by clicking the &quot;edit&quot;
+                    button next to email drafts. Remember to change ALL emails requiring
+                    revisions if you make them in one place, because they will not auto-update
+                    through our interface.
+                  </Typography>
+                </li>
+              </ul>
+              <StyledSubHeader variant="h6">
+                5) Send messages
+              </StyledSubHeader>
+              <ul>
+                <li>
+                  <Typography variant="body1">
+                    Verify that you are logged in to the site with the email from which you wish
+                    to send the emails out. The emails will automatically be sent through this
+                    email.
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="body1">
+                    If you would like to schedule your email to be sent at a later date and time
+                    then you may specify this up to 3 days ahead of the current time. Ignore this
+                    step if you would like to send out the emails immediately.
                   </Typography>
                 </li>
                 <li>
                   <Typography variant="body1">
                     Click &quot;send&quot; to send the emails to the specified
-                    recipients
+                    recipients. NOTE: The emails will be sent from the account of the logged in user
+                    logged in to this site, so prior to sending you should ensure that you are
+                    logged in with the correct account.
                   </Typography>
                 </li>
               </ul>
             </SectionContainer>
             <Divider light />
+            <SectionContainer>
+              <Typography variant="h5">Example Data: </Typography>
+            </SectionContainer>
             <SectionContainer>
               <Typography variant="h6">Example Message: </Typography>
               <Typography variant="body1">
@@ -133,13 +190,15 @@ const Help: NextPage = () => {
               </Typography>
             </SectionContainer>
             <Divider light />
-            <Typography variant="h6">Example CSV: </Typography>
-            <br />
+            <SectionContainer>
+              <Typography variant="h6">Example CSV: </Typography>
+              <br />
+            <CSVTable
+              headers={['email', 'subject', 'name', 'company']}
+              rows={rows}
+            />
+          </SectionContainer>
           </TextContainer>
-          <CSVTable
-            headers={['email', 'subject', 'name', 'company']}
-            rows={rows}
-          />
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
