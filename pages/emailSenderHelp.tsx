@@ -54,18 +54,23 @@ const Help: NextPage = () => {
               <ul>
                 <li>
                   <Typography variant="body1">
-                    Choose between inputting a standard email subject (same words sent to all)
-                    or revising the subject per recipient. If you choose to send a standard subject
-                    then you will be prompted to input it here. It will not need to also be uploaded
-                    through the CSV, and if you do upload different subjects, they will not be
-                    populated by default.
+                    Choose between inputting a standard email subject (same subject sent
+                    to all recipients) or specifying the subject per recipient.
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="body1">
+                    If you choose to send a standard subject then you will be prompted
+                    to input it here. It will not need to also be uploaded through the CSV.
+                    In other words, if you select the standard subject and
+                    have a subject column in your csv, the standard subject will be applied.
                   </Typography>
                 </li>
                 <li>
                   <Typography variant="body1">
                     If you choose to customize the subject per recipient then you need to add
                     a &quot;subject&quot; column to your CSV of emails. This must be filled for
-                    every recipient column.
+                    every recipient row.
                   </Typography>
                 </li>
               </ul>
@@ -76,9 +81,9 @@ const Help: NextPage = () => {
                 <li>
                   <Typography variant="body1">
                     Enter the message inside the email. The words that vary
-                    among each email should be wrapped in `{'$ {}'}`
-                    (with no spaces between the `{'$'}` and the brackets). In the
-                    example below, those words are `{'$ {name}'}` and `{'$ {company}'}`,
+                    among each email should be wrapped in {'$ {}'}
+                    (with no spaces between the {'$'} and the brackets). In the
+                    example below, those words are {'$ {name}'} and {'$ {company}'},
                     but in general, it is up to you how to name
                     the variables in the brackets. Those words will be filled
                     automatically according to the CSV file uploaded.
