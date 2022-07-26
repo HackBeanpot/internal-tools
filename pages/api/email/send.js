@@ -5,7 +5,7 @@ export default async function handler (req, res) {
     req.body.emailData,
     req.body.from,
     req.body.date,
-    req.body.fileName
+    req.body.fileNames
   )
   res.status(status).json({ result: message })
 }

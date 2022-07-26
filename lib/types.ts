@@ -32,3 +32,8 @@ export interface ResultMessage {
    isError: boolean;
    message: string;
 }
+
+export interface FileObject {
+    id: string;
+    file: File;
+ }
