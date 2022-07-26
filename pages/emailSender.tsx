@@ -52,7 +52,8 @@ import {
   StyledTableContainer,
   StyledTableRow,
   StyledTextField,
-  StyledDateTimeDiv
+  StyledDateTimeDiv,
+  StyledDeleteIcon
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 import FinalMessage from '../components/finalMessage/finalMessage'
@@ -94,7 +95,7 @@ const EmailSender: NextPage = () => {
   useEffect(() => {
     if (newAttachment) {
       const fileObj: FileObject = { id: nanoid(), file: newAttachment }
-      setAttachments(prev => [...prev, fileObj])
+      setAttachments((prev) => [...prev, fileObj])
     }
   }, [newAttachment])
 
@@ -482,15 +483,13 @@ const EmailSender: NextPage = () => {
                     <div key={attachment.id}>
                       <Typography variant="body1">
                         {attachment.file.name} attached!
-                        <button
+                        <StyledDeleteIcon
                           onClick={() =>
                             setAttachments((prev) =>
                               prev.filter((curr) => curr.id !== attachment.id)
                             )
                           }
-                        >
-                          x
-                        </button>
+                        />
                       </Typography>
                       <br />
                     </div>

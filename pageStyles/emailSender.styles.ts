@@ -1,5 +1,6 @@
 import { Divider, Table, TableRow, TextField, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import DeleteIcon from '@mui/icons-material/Delete'
 import { StyledButton } from '../styles/common'
 import { theme } from '../styles/theme'
 
@@ -69,9 +70,15 @@ const StyledFinalMessageContent = styled('div')({
   whiteSpace: 'pre-wrap'
 })
 
+const StyledDeleteIcon = styled(DeleteIcon)({
+  marginBottom: -5,
+  marginLeft: 5,
+  cursor: 'pointer'
+})
+
 export {
   SectionContainer, StyledTextField, StyledCsvButton, StyledCsvButtonsContainer,
   StyledSubHeader, StyledFinalMessagesContainer, StyledTableContainer, StyledDivider,
   StyledTable, StyledTableRow, StyledFinalMessageContent, StyledErrorMessage, StyledResultMessage,
-  StyledDateTimeDiv
+  StyledDateTimeDiv, StyledDeleteIcon
 }
