@@ -10,11 +10,11 @@ const fsPromises = require('fs').promises
  * @returns [HTTP status code, message]
  */
 export async function sendEmail (messages: Message[], from: string, date: string | undefined,
-  fileName: string | undefined) {
+  fileNames: string[]) {
   if (!process.env.MAILGUN_API_KEY || !process.env.MAILGUN_DOMAIN) {
     return [500, 'Server env variables undefined!']
   }
-
+  console.log(fileNames)
   const mailgun = new Mailgun(FormData)
   const client = mailgun.client({ username: 'api', key: process.env.MAILGUN_API_KEY })
 
@@ -33,16 +33,17 @@ export async function sendEmail (messages: Message[], from: string, date: string
       data: await fsPromises.readFile(filePath)
     }
   } */
-  const file1 = {
-    filename: '3_LinkedInCover.png',
-    data: await fsPromises.readFile(path.join(process.cwd(), '/attachments/', '3_LinkedInCover.png'))
+  const attachments = []
+  for (let i = 0; i < fileNames.length; i++) {
+    const file = {
+      filename: fileNames[i],
+      data: await fsPromises.readFile(path.join(process.cwd(), '/attachments/', fileNames[i]))
+    }
+    attachments.push(file)
   }
-  const file2 = {
-    filename: '3_NewsletterBanner.png',
-    data: await fsPromises.readFile(path.join(process.cwd(), '/attachments/', '3_NewsletterBanner.png'))
-  }
+
   // const attachment = [file]
-  const attachment = [file1, file2]
+
   const messageData = {
     from,
     'h:sender': from,
@@ -52,7 +53,7 @@ export async function sendEmail (messages: Message[], from: string, date: string
     'recipient-variables': constructRecipientVariables(messages),
     'o:deliverytime': modifiedDate,
     // attachment: fileName ? attachment : undefined
-    attachment
+    attachment: attachments
   }
 
   const messagesSendResult = await client.messages.create(process.env.MAILGUN_DOMAIN, messageData)

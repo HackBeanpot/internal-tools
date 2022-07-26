@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import {
   ThemeProvider,
   Button,
@@ -37,7 +37,8 @@ import {
   ReplaceObj,
   Message,
   ErrorMessage,
-  ResultMessage
+  ResultMessage,
+  FileObject
 } from '../lib/types'
 import {
   StyledCsvButton,
@@ -67,7 +68,8 @@ import Stack from '@mui/material/Stack'
 const EmailSender: NextPage = () => {
   const { data: session } = useSession({ required: true })
   const [checkedDeliveryBox, setCheckedDeliveryBox] = useState(false)
-  const [attachment, setAttachment] = useState<File>()
+  const [attachments, setAttachments] = useState<FileObject[]>([])
+  const [newAttachment, setNewAttachment] = useState<File>()
   const [open, setOpen] = useState(false)
   const [file, setFile] = useState()
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
@@ -88,6 +90,15 @@ const EmailSender: NextPage = () => {
       ? setSubjectCustomization(false)
       : setSubjectCustomization(true)
   }
+
+  useEffect(() => {
+    if (newAttachment) {
+      const fileObj: FileObject = { id: nanoid(), file: newAttachment }
+      setAttachments(prev => [...prev, fileObj])
+    }
+  }, [newAttachment])
+
+  console.log(attachments)
 
   const editFinalMessages = (
     id: string,
@@ -247,7 +258,7 @@ const EmailSender: NextPage = () => {
   const handleUploadAttachment = (e: any) => {
     const filename = e.target.files[0].name
     if (filename) {
-      setAttachment(e.target.files[0])
+      setNewAttachment(e.target.files[0])
     }
   }
 
@@ -338,8 +349,10 @@ const EmailSender: NextPage = () => {
     // format: 'FName LName <email@hackbeanpot.com>'
     const from = '' + session?.user?.name + ' <' + session?.user?.email + '>'
     const formData = new FormData()
-    if (attachment) {
-      formData.append('file', attachment)
+    if (attachments.length > 0) {
+      for (let i = 0; i < attachments.length; i++) {
+        formData.append('file', attachments[i].file)
+      }
       const uploadAttachmentsResponse = await fetch('/api/uploadAttachments', {
         method: 'POST',
         body: formData
@@ -361,11 +374,19 @@ const EmailSender: NextPage = () => {
       }
     }
 
+    const fileNames = () => {
+      const fileNamesArr = []
+      for (let i = 0; i < attachments.length; i++) {
+        fileNamesArr.push(attachments[i].file.name)
+      }
+      return fileNamesArr
+    }
+
     const dataToSend = {
       emailData: finalMessages,
       from,
       date: checkedDeliveryBox ? dateTime?.toUTCString() : undefined,
-      fileName: attachment?.name || undefined
+      fileNames: fileNames()
     }
 
     fetch('/api/email/send', {
@@ -456,19 +477,25 @@ const EmailSender: NextPage = () => {
               </label>
               <br />
               <br />
-              {attachment
-                ? (
-                <>
-                  <Typography variant="body1">
-                    {attachment.name} attached!
-                    <button onClick={() => setAttachment(undefined)}>x</button>
-                  </Typography>
-                  <br />
-                </>
-                  )
-                : (
-                    ''
-                  )}
+              {attachments.length > 0
+                ? attachments.map((attachment) => (
+                    <div key={attachment.id}>
+                      <Typography variant="body1">
+                        {attachment.file.name} attached!
+                        <button
+                          onClick={() =>
+                            setAttachments((prev) =>
+                              prev.filter((curr) => curr.id !== attachment.id)
+                            )
+                          }
+                        >
+                          x
+                        </button>
+                      </Typography>
+                      <br />
+                    </div>
+                ))
+                : ''}
               <StyledTextArea
                 aria-label="message-text-area"
                 placeholder="Paste in message"
