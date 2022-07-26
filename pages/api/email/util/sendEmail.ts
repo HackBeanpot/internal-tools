@@ -24,6 +24,7 @@ export async function sendEmail (messages: Message[], from: string, date: string
     modifiedDate.pop()
     modifiedDate = modifiedDate.join(' ').concat(' -0000')
   }
+  /*
   let file
   if (fileName) {
     const filePath = path.join(process.cwd(), '/attachments/', fileName)
@@ -31,8 +32,17 @@ export async function sendEmail (messages: Message[], from: string, date: string
       filename: fileName,
       data: await fsPromises.readFile(filePath)
     }
+  } */
+  const file1 = {
+    filename: '3_LinkedInCover.png',
+    data: await fsPromises.readFile(path.join(process.cwd(), '/attachments/', '3_LinkedInCover.png'))
   }
-  const attachment = [file]
+  const file2 = {
+    filename: '3_NewsletterBanner.png',
+    data: await fsPromises.readFile(path.join(process.cwd(), '/attachments/', '3_NewsletterBanner.png'))
+  }
+  // const attachment = [file]
+  const attachment = [file1, file2]
   const messageData = {
     from,
     'h:sender': from,
@@ -41,7 +51,8 @@ export async function sendEmail (messages: Message[], from: string, date: string
     text: '%recipient.content%',
     'recipient-variables': constructRecipientVariables(messages),
     'o:deliverytime': modifiedDate,
-    attachment: fileName ? attachment : undefined
+    // attachment: fileName ? attachment : undefined
+    attachment
   }
 
   const messagesSendResult = await client.messages.create(process.env.MAILGUN_DOMAIN, messageData)
