@@ -16,8 +16,11 @@ const uploadAttachmentHandler: NextApiHandler = async (req, res) => {
     case 'POST':
       await postHandler(req, res)
       break
+    case 'DELETE':
+      await deleteHandler(req, res)
+      break
     default:
-      return res.status(405).setHeader('Allow', 'GET, POST').send(undefined)
+      return res.status(405).setHeader('Allow', 'GET, DELETE').send(undefined)
   }
 }
 
@@ -59,6 +62,17 @@ const postHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       const tempPath = file[1].filepath
       await fs.rename(tempPath, targetPath + file[1].originalFilename)
     }
+  }
+  res.status(status).json(resultBody)
+}
+
+const deleteHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const status = 200
+  const resultBody = { status: 'ok', message: 'Files were uploaded successfully' }
+  console.log(req.body)
+  for (const fileName of req.body.fileNames) {
+    const targetPath = path.join(process.cwd(), '/attachments/', fileName)
+    await fs.unlink(targetPath)
   }
   res.status(status).json(resultBody)
 }

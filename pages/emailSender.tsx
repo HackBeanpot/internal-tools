@@ -390,6 +390,8 @@ const EmailSender: NextPage = () => {
       fileNames: fileNames()
     }
 
+    const fileNamesArr = { fileNames: fileNames() }
+
     fetch('/api/email/send', {
       method: 'POST',
       cache: 'no-cache',
@@ -413,6 +415,10 @@ const EmailSender: NextPage = () => {
           message: 'Success! Emails will be sent shortly.'
         })
       })
+    await fetch('/api/uploadAttachments', {
+      method: 'DELETE',
+      body: JSON.stringify(fileNamesArr)
+    }).then((res) => console.log(res))
   }
 
   const handleClickOpen = () => {
