@@ -1,36 +1,18 @@
 import React, { ChangeEvent, useState } from 'react'
 import {
   ThemeProvider,
-  Button,
   Divider,
   Link,
   FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  Paper,
-  TableBody,
-  TableContainer,
-  TableCell,
-  TableHead,
-  Typography,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  FormGroup,
-  Checkbox
+  Typography
 } from '@mui/material'
 import type { NextPage } from 'next'
 import { useSession } from 'next-auth/react'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
 import {
-  StyledButton,
   StyledPageContainer,
-  StyledBoldTypograhy,
-  SectionContainer,
-  StyledTextArea
+  SectionContainer
 } from '../styles/common'
 import {
   CsvRow,
@@ -43,24 +25,14 @@ import {
   StyledDivider,
   StyledErrorMessage,
   StyledFinalMessagesContainer,
-  StyledResultMessage,
   StyledSubHeader,
-  StyledTable,
-  StyledTableContainer,
-  StyledTableRow,
-  StyledTextField,
-  StyledDateTimeDiv
+  StyledTextField
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 import FinalMessage from '../components/finalMessage/finalMessage'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 import { validEmail } from '../lib/validateEmail'
-import TextField from '@mui/material/TextField'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import Stack from '@mui/material/Stack'
 import PrintMessage from '../components/printMessages/printMessages'
 import ImportCSVSection from '../components/importCSVSection/importCSVSection'
 import SubjectSection from '../components/subjectSection/subjectSection'
