@@ -40,8 +40,6 @@ import {
   ResultMessage
 } from '../lib/types'
 import {
-  StyledCsvButton,
-  StyledCsvButtonsContainer,
   StyledDivider,
   StyledErrorMessage,
   StyledFinalMessagesContainer,
@@ -63,6 +61,12 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import Stack from '@mui/material/Stack'
+import PrintMessage from '../components/printMessages/printMessages'
+import ImportCSVSection from '../components/importCSVSection/importCSVSection'
+import SubjectSection from '../components/subjectSection/subjectSection'
+import EmailContent from '../components/emailContentSection/emailContentSection'
+import SendEmails from '../components/sendEmails/sendEmails'
+import CSVTable from '../components/csvTable/CSVTable'
 
 const EmailSender: NextPage = () => {
   const { data: session } = useSession({ required: true })
@@ -360,73 +364,19 @@ const EmailSender: NextPage = () => {
             </Link>
           </Typography>
           <FormControl fullWidth>
+            <SubjectSection
+            handleEmailStandard={handleEmailStandard}
+            printStandardEmailSubject={printStandardEmailSubject}
+            />
+           <EmailContent
+           setMessage={setMessage}
+           />
             <SectionContainer>
-              <StyledSubHeader variant="h5">
-                1) Email subject
-              </StyledSubHeader>
-              <FormLabel id="choose-email-subject">
-                Use customized or standard email subjects?
-              </FormLabel>
-              <RadioGroup
-                aria-labelledby="choose-email-subject"
-                name="email-subject"
-                onChange={handleEmailStandard}
-              >
-                <FormControlLabel
-                  value="customized"
-                  control={<Radio />}
-                  label="Customized (add subjects from CSV)"
-                />
-                <FormControlLabel
-                  value="standard"
-                  control={<Radio />}
-                  label="Standard (enter one subject for all emails)"
-                />
-              </RadioGroup>
-              <br />
-            </SectionContainer>
-            <SectionContainer>
-              <div>{printStandardEmailSubject()}</div>
-            </SectionContainer>
-            <SectionContainer>
-              <StyledSubHeader variant="h5">
-                2) Enter email content
-              </StyledSubHeader>
-              <StyledTextArea
-                aria-label="message-text-area"
-                placeholder="Paste in message"
-                onChange={(e) => setMessage(e.target.value)}
-                minRows={20}
+              <ImportCSVSection
+              file={file === undefined}
+              handleImportCsv={handleImportCsv}
+              handleUploadCsv={handleUploadCsv}
               />
-            </SectionContainer>
-            <SectionContainer>
-              <StyledSubHeader variant="h5">
-                3) Upload and import csv
-              </StyledSubHeader>
-              <StyledCsvButtonsContainer>
-                <input
-                  style={{ display: 'none' }}
-                  id="contained-button-file"
-                  accept={'.csv'}
-                  type="file"
-                  onChange={handleUploadCsv}
-                />
-                <label htmlFor="contained-button-file">
-                  <Button variant="contained" component="span">
-                    Upload
-                  </Button>
-                </label>
-                <StyledCsvButton
-                  variant="contained"
-                  width="medium"
-                  disabled={file === undefined}
-                  onClick={(e) => {
-                    handleImportCsv(e)
-                  }}
-                >
-                  Import CSV!
-                </StyledCsvButton>
-              </StyledCsvButtonsContainer>
               {errorMessages.map((errorMessage) => (
                 <StyledErrorMessage key={errorMessage.id}>
                   <br />
@@ -435,120 +385,29 @@ const EmailSender: NextPage = () => {
               ))}
             </SectionContainer>
           </FormControl>
-          <StyledTableContainer>
-            <TableContainer component={Paper}>
-              <StyledTable aria-label="uploaded csv table">
-                <TableHead>
-                  {headerKeys.map((key) => (
-                    <TableCell key={nanoid()}>
-                      <StyledBoldTypograhy variant="body1">
-                        {key}
-                      </StyledBoldTypograhy>
-                    </TableCell>
-                  ))}
-                </TableHead>
-                <TableBody>
-                  {csvRowsArray.map((item) => (
-                    <StyledTableRow key={nanoid()}>
-                      {Object.values(item).map((val) => (
-                        <TableCell key={nanoid()} align="left">
-                          {val}
-                        </TableCell>
-                      ))}
-                    </StyledTableRow>
-                  ))}
-                </TableBody>
-              </StyledTable>
-            </TableContainer>
-          </StyledTableContainer>
-          <SectionContainer>
-            <StyledSubHeader variant="h5">
-              4) Verify final messages
-            </StyledSubHeader>
-            <StyledButton
-              color="info"
-              variant="contained"
-              onClick={createMessages}
-              disabled={csvRowsArray.length === 0}
-              width="medium"
-            >
-              Print final messages
-            </StyledButton>
-          </SectionContainer>
+          <CSVTable
+          headers={headerKeys}
+          rows={csvRowsArray}
+          />
+          <PrintMessage
+          length={csvRowsArray.length}
+          createMessages={createMessages}
+          />
           <br />
           <br />
-          <SectionContainer>
-            <StyledSubHeader variant="h5">5) Send emails</StyledSubHeader>
-            <FormLabel id="choose-email-subject">
-              Use customized or standard email subjects?
-            </FormLabel>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    onChange={(e) => setCheckedDeliveryBox(e.target.checked)}
-                  />
-                }
-                label="Select custom delivery time"
-              />
-            </FormGroup>
-            {checkedDeliveryBox &&
-            <StyledDateTimeDiv>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <Stack spacing={3}>
-                <DateTimePicker
-                  label="Select date and time"
-                  value={dateTime}
-                  onChange={(dateTime: Date | null) => {
-                    setDeliveryDateTime(dateTime)
-                  }}
-                  renderInput={(params: any) => <TextField {...params} />}
-                />
-              </Stack>
-            </LocalizationProvider>
-          </StyledDateTimeDiv>}
-            <StyledButton
-              color="info"
-              variant="contained"
-              onClick={() => {
-                handleClickOpen()
-              }}
-              width="medium"
-              disabled={finalMessages.length === 0 || errorMessages.length > 0}
-            >
-              Send!
-            </StyledButton>
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-            >
-              <DialogTitle id="alert-dialog-title">
-                Are you sure you want to send all emails?
-              </DialogTitle>
-              <DialogActions>
-                <Button variant="contained" onClick={handleClose}>
-                  No
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    handleClose()
-                    sendEmails()
-                  }}
-                  autoFocus
-                >
-                  Yes
-                </Button>
-              </DialogActions>
-            </Dialog>
-            <StyledResultMessage
-              variant="h5"
-              isError={resultMessage.isError}
-            >
-              {resultMessage.message}
-            </StyledResultMessage>
-          </SectionContainer>
+          <SendEmails
+          setCheckedDeliveryBox={setCheckedDeliveryBox}
+          checkedDeliveryBox={checkedDeliveryBox}
+          dateTime={dateTime}
+          handleClickOpen={handleClickOpen}
+          setDeliveryDateTime={setDeliveryDateTime}
+          finalMessagesLength={finalMessages.length === 0}
+          errorMessagesLength={errorMessages.length > 0}
+          handleClose={handleClose}
+          sendEmails={sendEmails}
+          resultMessage={resultMessage}
+          open={open}
+          />
           <StyledFinalMessagesContainer>
             {displayMessages()}
           </StyledFinalMessagesContainer>
