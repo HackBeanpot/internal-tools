@@ -2,13 +2,15 @@ import React from 'react'
 import { StyledFinalMessagesContainer } from '../../pageStyles/emailSender.styles'
 
 type DisplayMessagesProps = {
-    displayMessages: any,
-}
+  displayMessages: any;
+};
 
-export default function DisplayMessages ({ displayMessages } :DisplayMessagesProps) {
+export default function DisplayMessages ({
+  displayMessages
+}: DisplayMessagesProps) {
   return (
     <StyledFinalMessagesContainer>
-        {displayMessages()}
+      {displayMessages()}
     </StyledFinalMessagesContainer>
   )
 }

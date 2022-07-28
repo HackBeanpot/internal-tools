@@ -1,6 +1,7 @@
 import { Button } from '@mui/material'
 import React from 'react'
 import {
+  SectionContainer,
   StyledCsvButton,
   StyledCsvButtonsContainer,
   StyledSubHeader
@@ -18,7 +19,7 @@ export default function ImportCSVSection ({
   handleUploadCsv
 }: ImportCSVSectionProps) {
   return (
-    <>
+    <SectionContainer>
       <StyledSubHeader variant="h5">3) Upload and import csv</StyledSubHeader>
       <StyledCsvButtonsContainer>
         <input
@@ -44,6 +45,6 @@ export default function ImportCSVSection ({
           Import CSV!
         </StyledCsvButton>
       </StyledCsvButtonsContainer>
-    </>
+    </SectionContainer>
   )
 }
