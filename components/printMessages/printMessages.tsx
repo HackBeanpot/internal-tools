@@ -3,12 +3,14 @@ import { StyledSubHeader } from '../../pageStyles/emailSender.styles'
 import { SectionContainer, StyledButton } from '../../styles/common'
 
 type PrintMessagesProps = {
-    length: number,
-    createMessages: any,
+  length: number;
+  createMessages: any;
+};
 
-}
-
-export default function PrintMessages ({ length, createMessages } :PrintMessagesProps) {
+export default function PrintMessages ({
+  length,
+  createMessages
+}: PrintMessagesProps) {
   return (
     <SectionContainer>
       <StyledSubHeader variant="h5">4) Verify final messages</StyledSubHeader>

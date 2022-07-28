@@ -10,10 +10,7 @@ import type { NextPage } from 'next'
 import { useSession } from 'next-auth/react'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
-import {
-  StyledPageContainer,
-  SectionContainer
-} from '../styles/common'
+import { StyledPageContainer, SectionContainer } from '../styles/common'
 import {
   CsvRow,
   ReplaceObj,
@@ -51,7 +48,10 @@ const EmailSender: NextPage = () => {
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
   const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([])
-  const [resultMessage, setResultMessage] = useState<ResultMessage>({ isError: false, message: '' })
+  const [resultMessage, setResultMessage] = useState<ResultMessage>({
+    isError: false,
+    message: ''
+  })
   const theme = useTheme()
   const [dateTime, setDeliveryDateTime] = useState<Date | null>(null)
 
@@ -61,10 +61,15 @@ const EmailSender: NextPage = () => {
       : setSubjectCustomization(true)
   }
 
-  const editFinalMessages = (id: string, to: string, subject: string, messageContent: string) => {
+  const editFinalMessages = (
+    id: string,
+    to: string,
+    subject: string,
+    messageContent: string
+  ) => {
     const finalMessageArr = []
     const content = messageContent
-    const finalMessageIndex = finalMessages.findIndex(finalMessage => {
+    const finalMessageIndex = finalMessages.findIndex((finalMessage) => {
       return finalMessage.id === id
     })
     for (let i = 0; i < finalMessages.length; i++) {
@@ -107,10 +112,12 @@ const EmailSender: NextPage = () => {
   const handleUploadCsv = (e: any) => {
     const filename = e.target.files[0].name
     if (filename.substring(filename.length - 3) !== 'csv') {
-      setErrorMessages([{
-        id: nanoid(),
-        message: 'Uploaded file must be a .csv file'
-      }])
+      setErrorMessages([
+        {
+          id: nanoid(),
+          message: 'Uploaded file must be a .csv file'
+        }
+      ])
     } else {
       setFile(e.target.files[0])
       setErrorMessages([])
@@ -122,14 +129,18 @@ const EmailSender: NextPage = () => {
   const csvFileToArray = (str: string) => {
     const csvHeaders = str.slice(0, str.indexOf('\n')).trim().split(',')
     if (!csvHeaders.includes('email')) {
-      setErrorMessages([{ id: nanoid(), message: 'CSV must contain an email column' }])
+      setErrorMessages([
+        { id: nanoid(), message: 'CSV must contain an email column' }
+      ])
       return
     }
     if (!csvHeaders.includes('subject') && subjectCustomization) {
-      setErrorMessages([{
-        id: nanoid(),
-        message: 'CSV must contain a subject column if subject is customized'
-      }])
+      setErrorMessages([
+        {
+          id: nanoid(),
+          message: 'CSV must contain a subject column if subject is customized'
+        }
+      ])
       return
     }
     let allRowValues = str.slice(str.indexOf('\n') + 1).split('\n')
@@ -146,9 +157,12 @@ const EmailSender: NextPage = () => {
         },
         {}
       )
-      if (currRowObject.email && Object.values(currRowObject)
-        .map((value) => typeof value === 'string' ? value.trim() : value)
-        .includes('')) {
+      if (
+        currRowObject.email &&
+        Object.values(currRowObject)
+          .map((value) => (typeof value === 'string' ? value.trim() : value))
+          .includes('')
+      ) {
         errorList.push({
           id: nanoid(),
           message: 'CSV cannot contain empty cells'
@@ -173,11 +187,16 @@ const EmailSender: NextPage = () => {
       allRowObjects.pop()
     }
 
-    if (new Set(allRowObjects.map((rowObj) => rowObj.email)).size !== allRowObjects.length) {
-      setErrorMessages([{
-        id: nanoid(),
-        message: 'No email address should appear more than once'
-      }])
+    if (
+      new Set(allRowObjects.map((rowObj) => rowObj.email)).size !==
+      allRowObjects.length
+    ) {
+      setErrorMessages([
+        {
+          id: nanoid(),
+          message: 'No email address should appear more than once'
+        }
+      ])
       return
     }
 
@@ -252,9 +271,8 @@ const EmailSender: NextPage = () => {
   }
 
   const getErrorMessage = (id: string) => {
-    return errorMessages.find(
-      (currentMessage) => currentMessage.id === id
-    )?.message
+    return errorMessages.find((currentMessage) => currentMessage.id === id)
+      ?.message
   }
 
   const displayMessages = () => {
@@ -287,9 +305,7 @@ const EmailSender: NextPage = () => {
     const dataToSend = {
       emailData: finalMessages,
       from,
-      date: checkedDeliveryBox
-        ? dateTime?.toUTCString()
-        : undefined
+      date: checkedDeliveryBox ? dateTime?.toUTCString() : undefined
     }
     fetch('/api/email/send', {
       method: 'POST',
@@ -337,18 +353,16 @@ const EmailSender: NextPage = () => {
           </Typography>
           <FormControl fullWidth>
             <SubjectSection
-            handleEmailStandard={handleEmailStandard}
-            printStandardEmailSubject={printStandardEmailSubject}
+              handleEmailStandard={handleEmailStandard}
+              printStandardEmailSubject={printStandardEmailSubject}
             />
-           <EmailContent
-           setMessage={setMessage}
-           />
-            <SectionContainer>
-              <ImportCSVSection
+            <EmailContent setMessage={setMessage} />
+            <ImportCSVSection
               file={file === undefined}
               handleImportCsv={handleImportCsv}
               handleUploadCsv={handleUploadCsv}
-              />
+            />
+            <SectionContainer>
               {errorMessages.map((errorMessage) => (
                 <StyledErrorMessage key={errorMessage.id}>
                   <br />
@@ -357,32 +371,27 @@ const EmailSender: NextPage = () => {
               ))}
             </SectionContainer>
           </FormControl>
-          <CSVTable
-          headers={headerKeys}
-          rows={csvRowsArray}
-          />
+          <CSVTable headers={headerKeys} rows={csvRowsArray} />
           <PrintMessage
-          length={csvRowsArray.length}
-          createMessages={createMessages}
+            length={csvRowsArray.length}
+            createMessages={createMessages}
           />
           <br />
           <br />
           <SendEmails
-          setCheckedDeliveryBox={setCheckedDeliveryBox}
-          checkedDeliveryBox={checkedDeliveryBox}
-          dateTime={dateTime}
-          handleClickOpen={handleClickOpen}
-          setDeliveryDateTime={setDeliveryDateTime}
-          finalMessagesLength={finalMessages.length === 0}
-          errorMessagesLength={errorMessages.length > 0}
-          handleClose={handleClose}
-          sendEmails={sendEmails}
-          resultMessage={resultMessage}
-          open={open}
+            setCheckedDeliveryBox={setCheckedDeliveryBox}
+            checkedDeliveryBox={checkedDeliveryBox}
+            dateTime={dateTime}
+            handleClickOpen={handleClickOpen}
+            setDeliveryDateTime={setDeliveryDateTime}
+            finalMessagesLength={finalMessages.length === 0}
+            errorMessagesLength={errorMessages.length > 0}
+            handleClose={handleClose}
+            sendEmails={sendEmails}
+            resultMessage={resultMessage}
+            open={open}
           />
-          <DisplayMessages
-          displayMessages={displayMessages}
-          />
+          <DisplayMessages displayMessages={displayMessages} />
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>

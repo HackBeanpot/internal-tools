@@ -1,16 +1,17 @@
-
 import React from 'react'
 import { FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material'
 import { StyledSubHeader } from '../../pageStyles/emailSender.styles'
 import { SectionContainer } from '../../styles/common'
 
 type SubjectSectionProps = {
-    handleEmailStandard : any,
-    printStandardEmailSubject : any,
-}
+  handleEmailStandard: any;
+  printStandardEmailSubject: any;
+};
 
-export default function SubjectSection ({ handleEmailStandard, printStandardEmailSubject }
-    : SubjectSectionProps) {
+export default function SubjectSection ({
+  handleEmailStandard,
+  printStandardEmailSubject
+}: SubjectSectionProps) {
   return (
     <>
       <SectionContainer>
