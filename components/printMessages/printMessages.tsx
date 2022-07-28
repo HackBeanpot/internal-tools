@@ -2,13 +2,13 @@ import React from 'react'
 import { StyledSubHeader } from '../../pageStyles/emailSender.styles'
 import { SectionContainer, StyledButton } from '../../styles/common'
 
-type PrintMessageProps = {
+type PrintMessagesProps = {
     length: number,
     createMessages: any,
 
 }
 
-export default function PrintMessage ({ length, createMessages } :PrintMessageProps) {
+export default function PrintMessages ({ length, createMessages } :PrintMessagesProps) {
   return (
     <SectionContainer>
       <StyledSubHeader variant="h5">4) Verify final messages</StyledSubHeader>
