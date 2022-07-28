@@ -53,7 +53,9 @@ import {
   StyledTableRow,
   StyledTextField,
   StyledDateTimeDiv,
-  StyledDeleteIcon
+  StyledDeleteIcon,
+  StyledLoadingTypography,
+  StyledLoadingContainer
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 import FinalMessage from '../components/finalMessage/finalMessage'
@@ -65,6 +67,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import Stack from '@mui/material/Stack'
+import { TailSpin } from 'react-loader-spinner'
 
 const EmailSender: NextPage = () => {
   const { data: session } = useSession({ required: true })
@@ -496,7 +499,24 @@ const EmailSender: NextPage = () => {
               </label>
               <br />
               <br />
-              {uploadingAttachment ? <p>uploading attachment....</p> : ''}
+
+              <div
+                data-tip="TailSpin"
+                data-for="happyFace"
+                className="loaderBox"
+              ></div>
+              {uploadingAttachment
+                ? (
+                <StyledLoadingContainer>
+                  <TailSpin color="navy" height={30} width={30} />
+                  <StyledLoadingTypography variant="body1">
+                    uploading attachment...
+                  </StyledLoadingTypography>
+                </StyledLoadingContainer>
+                  )
+                : (
+                    ''
+                  )}
               {attachments.length > 0
                 ? attachments.map((attachment) => (
                     <div key={attachment.id}>
