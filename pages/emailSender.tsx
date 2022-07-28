@@ -70,6 +70,8 @@ const EmailSender: NextPage = () => {
   const { data: session } = useSession({ required: true })
   const [checkedDeliveryBox, setCheckedDeliveryBox] = useState(false)
   const [attachments, setAttachments] = useState<FileObject[]>([])
+  const [uploadingAttachment, setUploadingAttachment] =
+    useState<boolean>(false)
   const [newAttachment, setNewAttachment] = useState<File>()
   const [open, setOpen] = useState(false)
   const [file, setFile] = useState()
@@ -255,10 +257,12 @@ const EmailSender: NextPage = () => {
   }
 
   const handleUploadAttachment = (e: any) => {
+    setUploadingAttachment(true)
     const filename = e.target.files[0].name
     if (filename) {
       setNewAttachment(e.target.files[0])
     }
+    setUploadingAttachment(false)
   }
 
   const headerKeys = Object.keys(Object.assign({}, ...csvRowsArray))
@@ -492,17 +496,18 @@ const EmailSender: NextPage = () => {
               </label>
               <br />
               <br />
+              {uploadingAttachment ? <p>uploading attachment....</p> : ''}
               {attachments.length > 0
                 ? attachments.map((attachment) => (
                     <div key={attachment.id}>
                       <Typography variant="body1">
                         {attachment.file.name} attached!
                         <StyledDeleteIcon
-                          onClick={() =>
+                          onClick={() => {
                             setAttachments((prev) =>
                               prev.filter((curr) => curr.id !== attachment.id)
                             )
-                          }
+                          }}
                         />
                       </Typography>
                       <br />
