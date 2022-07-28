@@ -14,7 +14,6 @@ export async function sendEmail (messages: Message[], from: string, date: string
   if (!process.env.MAILGUN_API_KEY || !process.env.MAILGUN_DOMAIN) {
     return [500, 'Server env variables undefined!']
   }
-  console.log(fileNames)
   const mailgun = new Mailgun(FormData)
   const client = mailgun.client({ username: 'api', key: process.env.MAILGUN_API_KEY })
 

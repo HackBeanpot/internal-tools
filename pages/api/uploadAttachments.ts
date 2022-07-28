@@ -69,7 +69,6 @@ const postHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 const deleteHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const status = 200
   const resultBody = { status: 'ok', message: 'Files were uploaded successfully' }
-  console.log(req.body)
   for (const fileName of req.body.fileNames) {
     const targetPath = path.join(process.cwd(), '/attachments/', fileName)
     await fs.unlink(targetPath)

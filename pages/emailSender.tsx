@@ -99,8 +99,6 @@ const EmailSender: NextPage = () => {
     }
   }, [newAttachment])
 
-  console.log(attachments)
-
   const editFinalMessages = (
     id: string,
     to: string,
@@ -399,26 +397,36 @@ const EmailSender: NextPage = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(dataToSend)
-    })
-      .then((res) => {
-        if (res.status === 500) {
-          setResultMessage({
-            isError: true,
-            message: res.statusText
-          })
-        }
-        return res.json()
-      })
-      .then((data) => {
+    }).then((res) => {
+      if (res.status === 500) {
         setResultMessage({
-          isError: false,
-          message: 'Success! Emails will be sent shortly.'
+          isError: true,
+          message: res.statusText
         })
+      }
+      return res.json()
+    })
+    setTimeout(async () => {
+      await fetch('/api/deleteAttachments', {
+        method: 'DELETE',
+        body: JSON.stringify(fileNamesArr)
       })
-    await fetch('/api/uploadAttachments', {
-      method: 'DELETE',
-      body: JSON.stringify(fileNamesArr)
-    }).then((res) => console.log(res))
+        .then((res) => {
+          if (res.status === 500) {
+            setResultMessage({
+              isError: true,
+              message: res.statusText
+            })
+          }
+          return res.json()
+        })
+        .then((data) => {
+          setResultMessage({
+            isError: false,
+            message: 'Success! Emails will be sent shortly.'
+          })
+        })
+    }, 1000)
   }
 
   const handleClickOpen = () => {
