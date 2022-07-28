@@ -24,7 +24,6 @@ import {
 import {
   StyledDivider,
   StyledErrorMessage,
-  StyledFinalMessagesContainer,
   StyledSubHeader,
   StyledTextField
 } from '../pageStyles/emailSender.styles'
@@ -39,6 +38,7 @@ import SubjectSection from '../components/subjectSection/subjectSection'
 import EmailContent from '../components/emailContentSection/emailContentSection'
 import SendEmails from '../components/sendEmails/sendEmails'
 import CSVTable from '../components/csvTable/CSVTable'
+import DisplayMessages from '../components/displayMessages/displayMessages'
 
 const EmailSender: NextPage = () => {
   const { data: session } = useSession({ required: true })
@@ -380,9 +380,9 @@ const EmailSender: NextPage = () => {
           resultMessage={resultMessage}
           open={open}
           />
-          <StyledFinalMessagesContainer>
-            {displayMessages()}
-          </StyledFinalMessagesContainer>
+          <DisplayMessages
+          displayMessages={displayMessages}
+          />
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
