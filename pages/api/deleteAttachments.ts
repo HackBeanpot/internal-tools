@@ -1,26 +1,20 @@
-import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 import path from 'path'
 import { readdirSync, rmSync } from 'fs'
 
-const deleteAttachmentsHandler: NextApiHandler = async (req, res) => {
-  switch (req.method) {
-    case 'DELETE':
-      await deleteHandler(req, res)
-      break
-    default:
-      return res.status(405).setHeader('Allow', 'DELETE').send(undefined)
-  }
-}
-
-const deleteHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log(`console logging req.body ${req.body}`)
-  const fileNames = JSON.parse(req.body).fileNames
-  console.log(`body ${fileNames}`)
-  const status = 200
-  const resultBody = { status: 'ok', message: 'Files were uploaded successfully' }
+const deleteAttachments = async (req: NextApiRequest, res: NextApiResponse) => {
+  let status = 200
+  let resultBody = { status: 'ok', message: 'Files were successfully deleted' }
   const targetPath = path.join(process.cwd(), '/attachments/')
-  await readdirSync(targetPath).forEach(f => rmSync(`${targetPath}/${f}`))
+  try {
+    await readdirSync(targetPath).forEach(f => rmSync(`${targetPath}/${f}`))
+  } catch (e) {
+    status = 500
+    resultBody = {
+      status: 'fail', message: 'Delete error'
+    }
+  }
   res.status(status).json(resultBody)
 }
 
-export default deleteAttachmentsHandler
+export default deleteAttachments

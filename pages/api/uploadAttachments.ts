@@ -1,4 +1,4 @@
-import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 import { promises as fs } from 'fs'
 import path from 'path'
 import formidable, { File } from 'formidable'
@@ -11,20 +11,7 @@ export const config = {
 
 type ProcessedFiles = Array<[string, File]>;
 
-const uploadAttachmentHandler: NextApiHandler = async (req, res) => {
-  switch (req.method) {
-    case 'POST':
-      await postHandler(req, res)
-      break
-    case 'DELETE':
-      await deleteHandler(req, res)
-      break
-    default:
-      return res.status(405).setHeader('Allow', 'GET, DELETE').send(undefined)
-  }
-}
-
-const postHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const uploadAttachments = async (req: NextApiRequest, res: NextApiResponse) => {
   let status = 200
   let resultBody = { status: 'ok', message: 'Files were uploaded successfully' }
 
@@ -66,14 +53,4 @@ const postHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(status).json(resultBody)
 }
 
-const deleteHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const status = 200
-  const resultBody = { status: 'ok', message: 'Files were uploaded successfully' }
-  for (const fileName of req.body.fileNames) {
-    const targetPath = path.join(process.cwd(), '/attachments/', fileName)
-    await fs.unlink(targetPath)
-  }
-  res.status(status).json(resultBody)
-}
-
-export default uploadAttachmentHandler
+export default uploadAttachments
