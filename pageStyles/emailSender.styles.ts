@@ -76,9 +76,20 @@ const StyledDeleteIcon = styled(DeleteIcon)({
   cursor: 'pointer'
 })
 
+const StyledLoadingContainer = styled('div')({
+  display: 'flex',
+  marginTop: 20,
+  marginBottom: 20
+})
+
+const StyledLoadingTypography = styled(Typography)({
+  color: theme.palette.HBPNavy.main,
+  marginLeft: 15
+})
+
 export {
   SectionContainer, StyledTextField, StyledCsvButton, StyledCsvButtonsContainer,
   StyledSubHeader, StyledFinalMessagesContainer, StyledTableContainer, StyledDivider,
   StyledTable, StyledTableRow, StyledFinalMessageContent, StyledErrorMessage, StyledResultMessage,
-  StyledDateTimeDiv, StyledDeleteIcon
+  StyledDateTimeDiv, StyledDeleteIcon, StyledLoadingTypography, StyledLoadingContainer
 }
