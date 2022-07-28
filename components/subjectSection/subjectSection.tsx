@@ -1,16 +1,18 @@
 import React from 'react'
 import { FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material'
-import { StyledSubHeader } from '../../pageStyles/emailSender.styles'
+import { StyledSubHeader, StyledTextField } from '../../pageStyles/emailSender.styles'
 import { SectionContainer } from '../../styles/common'
 
 type SubjectSectionProps = {
-  handleEmailStandard: any;
-  printStandardEmailSubject: any;
+  handleEmailStandard: any,
+  subjectCustomization: boolean,
+  handleEmailSubject: any
 };
 
 export default function SubjectSection ({
   handleEmailStandard,
-  printStandardEmailSubject
+  subjectCustomization,
+  handleEmailSubject
 }: SubjectSectionProps) {
   return (
     <>
@@ -38,8 +40,20 @@ export default function SubjectSection ({
         <br />
       </SectionContainer>
       <SectionContainer>
-        <div>{printStandardEmailSubject()}</div>
-      </SectionContainer>
+        {!subjectCustomization &&
+        <div>
+          <StyledSubHeader variant="h5">
+            1b) Enter standard email subject
+          </StyledSubHeader>
+          <StyledTextField
+            id="outlined-basic"
+            label="Email subject"
+            variant="outlined"
+            onChange={handleEmailSubject}
+          />
+        </div>
+    }
+     </SectionContainer>
     </>
   )
 }

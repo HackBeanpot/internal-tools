@@ -1,6 +1,5 @@
 import { Divider, Table, TableRow, TextField, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { StyledButton } from '../styles/common'
 import { theme } from '../styles/theme'
 
 const SectionContainer = styled('div')({
@@ -8,21 +7,7 @@ const SectionContainer = styled('div')({
   marginBottom: 30
 })
 
-const StyledCsvButton = styled(StyledButton)({
-  marginLeft: 5,
-  marginRight: 5
-})
-
-const StyledCsvButtonsContainer = styled('div')({
-  display: 'flex'
-})
-
 const StyledDivider = styled(Divider)({
-  marginTop: 50,
-  marginBottom: 50
-})
-
-const StyledFinalMessagesContainer = styled('div')({
   marginTop: 50,
   marginBottom: 50
 })
@@ -70,8 +55,7 @@ const StyledFinalMessageContent = styled('div')({
 })
 
 export {
-  SectionContainer, StyledTextField, StyledCsvButton, StyledCsvButtonsContainer,
-  StyledSubHeader, StyledFinalMessagesContainer, StyledTableContainer, StyledDivider,
+  SectionContainer, StyledTextField, StyledSubHeader, StyledTableContainer, StyledDivider,
   StyledTable, StyledTableRow, StyledFinalMessageContent, StyledErrorMessage, StyledResultMessage,
   StyledDateTimeDiv
 }

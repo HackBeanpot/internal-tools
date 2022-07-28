@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyledFinalMessagesContainer } from '../../pageStyles/emailSender.styles'
+import { StyledFinalMessagesContainer } from './displayMessages.styles'
 
 type DisplayMessagesProps = {
   displayMessages: any;

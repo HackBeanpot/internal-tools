@@ -20,9 +20,7 @@ import {
 } from '../lib/types'
 import {
   StyledDivider,
-  StyledErrorMessage,
-  StyledSubHeader,
-  StyledTextField
+  StyledErrorMessage
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 import FinalMessage from '../components/finalMessage/finalMessage'
@@ -81,24 +79,6 @@ const EmailSender: NextPage = () => {
       }
     }
     setFinalMessages(finalMessageArr)
-  }
-
-  const printStandardEmailSubject = () => {
-    if (!subjectCustomization) {
-      return (
-        <div>
-          <StyledSubHeader variant="h5">
-            1b) Enter standard email subject
-          </StyledSubHeader>
-          <StyledTextField
-            id="outlined-basic"
-            label="Email subject"
-            variant="outlined"
-            onChange={handleEmailSubject}
-          />
-        </div>
-      )
-    }
   }
 
   const handleEmailSubject = (e: ChangeEvent<HTMLInputElement>) => {
@@ -354,7 +334,8 @@ const EmailSender: NextPage = () => {
           <FormControl fullWidth>
             <SubjectSection
               handleEmailStandard={handleEmailStandard}
-              printStandardEmailSubject={printStandardEmailSubject}
+              subjectCustomization={subjectCustomization}
+              handleEmailSubject={handleEmailSubject}
             />
             <EmailContent setMessage={setMessage} />
             <ImportCSVSection
