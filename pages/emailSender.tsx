@@ -19,11 +19,9 @@ import {
   ResultMessage
 } from '../lib/types'
 import {
-  StyledDivider,
   StyledErrorMessage
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
-import FinalMessage from '../components/finalMessage/finalMessage'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 import { validEmail } from '../lib/validateEmail'
@@ -255,30 +253,6 @@ const EmailSender: NextPage = () => {
       ?.message
   }
 
-  const displayMessages = () => {
-    return (
-      <>
-        {finalMessages.map((msg) => (
-          <div key={nanoid()}>
-            <StyledDivider />
-            {getErrorMessage(msg.id) && (
-              <StyledErrorMessage>
-                Error: {getErrorMessage(msg.id)}
-              </StyledErrorMessage>
-            )}
-            <FinalMessage
-              id={msg.id}
-              to={msg.to}
-              subject={msg.subject}
-              parentCallback={editFinalMessages}
-              content={msg.content}
-            />
-          </div>
-        ))}
-      </>
-    )
-  }
-
   const sendEmails = () => {
     // format: 'FName LName <email@hackbeanpot.com>'
     const from = '' + session?.user?.name + ' <' + session?.user?.email + '>'
@@ -372,7 +346,11 @@ const EmailSender: NextPage = () => {
             resultMessage={resultMessage}
             open={open}
           />
-          <DisplayMessages displayMessages={displayMessages} />
+          <DisplayMessages
+          finalMessages={finalMessages}
+          editFinalMessages={editFinalMessages}
+          getErrorMessage={getErrorMessage}
+          />
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
