@@ -1,13 +1,17 @@
 import FormData from 'form-data'
 import Mailgun from 'mailgun.js'
 import { Message } from '../../../../lib/types'
+import * as fs from 'fs/promises'
+import * as path from 'path'
 
 /**
  * @param messages Array of data for each recipent - see interface definition above
  * @param from Who the email is from - ex. 'Dean Frame <dean@hackbeanpot.com>
  * @returns [HTTP status code, message]
  */
-export async function sendEmail (messages: Message[], from: string, date: string | undefined) {
+export async function sendEmail (
+  messages: Message[], from: string, date: string | undefined, signature: string
+) {
   if (!process.env.MAILGUN_API_KEY || !process.env.MAILGUN_DOMAIN) {
     return [500, 'Server env variables undefined!']
   }
@@ -21,14 +25,22 @@ export async function sendEmail (messages: Message[], from: string, date: string
     modifiedDate.pop()
     modifiedDate = modifiedDate.join(' ').concat(' -0000')
   }
+  let inline
+  if (signature) {
+    inline = {
+      filename: 'hbplogo.png',
+      data: await fs.readFile(path.join(process.cwd(), '/public/assets/hbplogo.png'))
+    }
+  }
   const messageData = {
     from,
     'h:sender': from,
     to: messages.map((message) => message.to),
     subject: '%recipient.subject%',
-    text: '%recipient.content%',
-    'recipient-variables': constructRecipientVariables(messages),
-    'o:deliverytime': modifiedDate
+    html: '%recipient.content%',
+    'recipient-variables': constructRecipientVariables(messages, signature),
+    'o:deliverytime': modifiedDate,
+    inline
   }
 
   const messagesSendResult = await client.messages.create(process.env.MAILGUN_DOMAIN, messageData)
@@ -36,10 +48,15 @@ export async function sendEmail (messages: Message[], from: string, date: string
   return [messagesSendResult.status, messagesSendResult.message]
 }
 
-function constructRecipientVariables (messages: Message[]) {
+function constructRecipientVariables (messages: Message[], signature: string) {
   const recipientVariables: { [email: string]: any } = {}
   messages.forEach((message) => {
-    recipientVariables[message.to] = { subject: message.subject, content: message.content }
+    recipientVariables[message.to] = {
+      subject: message.subject,
+      content: message.content +
+        '<br/><br/>' +
+        signature.replace('/assets/hbplogo.png', 'cid:hbplogo.png')
+    }
   })
 
   return JSON.stringify(recipientVariables)
