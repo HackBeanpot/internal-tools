@@ -9,10 +9,11 @@ import {
   TableRow
 } from '@mui/material'
 import { nanoid } from 'nanoid'
+import { CsvRow } from '../../lib/types'
 
 type CSVTableProps = {
   headers: String[];
-  rows: any;
+  rows: CsvRow[];
 };
 
 export default function CSVTable ({ headers, rows }: CSVTableProps) {
