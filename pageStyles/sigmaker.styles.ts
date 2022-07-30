@@ -23,10 +23,15 @@ const StyledTextValidator = styled(TextValidator)({
   width: 280
 })
 
+const StyledLogoImage = styled('img')({
+  height: 132
+})
+
 export {
   StyledGmailHeader,
   StyledInputField,
   StyledGrid,
   StyledFormControl,
-  StyledTextValidator
+  StyledTextValidator,
+  StyledLogoImage
 }
