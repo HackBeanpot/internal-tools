@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState } from 'react'
+import * as ReactDOMServer from 'react-dom/server'
 import {
   ThemeProvider,
   Button,
@@ -318,7 +319,10 @@ const EmailSender: NextPage = () => {
       from,
       date: checkedDeliveryBox
         ? dateTime?.toUTCString()
-        : undefined
+        : undefined,
+      signature: signatureData
+        ? ReactDOMServer.renderToStaticMarkup(<EmailSignature signatureData={signatureData} />)
+        : ''
     }
     fetch('/api/email/send', {
       method: 'POST',
