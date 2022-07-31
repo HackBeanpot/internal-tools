@@ -19,7 +19,7 @@ const StyledButton = styled(Button, {
   width: width === 'medium' ? 200 : 100
 }))
 
-const StyledBoldTypograhy = styled(Typography)({
+const StyledBoldTypography = styled(Typography)({
   fontWeight: 600
 })
 
@@ -62,8 +62,16 @@ const StyledHeaderLogoImage = styled('img')({
   margin: '0 15px 0 0'
 })
 
+const StyledSubHeader = styled(Typography)({
+  paddingBottom: 25
+})
+
+const StyledErrorMessage = styled(Typography)({
+  color: theme.palette.Red.main
+})
+
 export {
-  StyledPageContainer, StyledButton, StyledBoldTypograhy, SectionContainer, StyledTextArea,
+  StyledPageContainer, StyledButton, StyledBoldTypography, SectionContainer, StyledTextArea,
   StyledFinalMessageContent, StyledEditButton, StyledToolbar, StyledSignOutButton,
-  StyledHeaderLogoImage, StyledToolbarRightDiv
+  StyledHeaderLogoImage, StyledToolbarRightDiv, StyledSubHeader, StyledErrorMessage
 }
