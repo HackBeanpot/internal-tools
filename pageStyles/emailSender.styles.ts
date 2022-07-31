@@ -1,7 +1,5 @@
-import { Divider, Table, TableRow, TextField, Typography } from '@mui/material'
+import { Divider, Table, TableRow, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { StyledButton } from '../styles/common'
 import { theme } from '../styles/theme'
 
 const SectionContainer = styled('div')({
@@ -9,27 +7,9 @@ const SectionContainer = styled('div')({
   marginBottom: 30
 })
 
-const StyledCsvButton = styled(StyledButton)({
-  marginLeft: 5,
-  marginRight: 5
-})
-
-const StyledCsvButtonsContainer = styled('div')({
-  display: 'flex'
-})
-
 const StyledDivider = styled(Divider)({
   marginTop: 50,
   marginBottom: 50
-})
-
-const StyledFinalMessagesContainer = styled('div')({
-  marginTop: 50,
-  marginBottom: 50
-})
-
-const StyledSubHeader = styled(Typography)({
-  paddingBottom: 25
 })
 
 const StyledTable = styled(Table)({
@@ -42,10 +22,6 @@ const StyledTableRow = styled(TableRow)({
   }
 })
 
-const StyledTextField = styled(TextField)({
-  width: 280
-})
-
 const StyledTableContainer = styled('div')({
   marginBottom: 50
 })
@@ -54,42 +30,11 @@ const StyledErrorMessage = styled(Typography)({
   color: theme.palette.Red.main
 })
 
-const StyledResultMessage = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'isError'
-})<{ isError?: boolean; }>(({ isError }) => ({
-  color: isError ? theme.palette.Red.main : theme.palette.Mist.main,
-  paddingTop: 50
-}))
-
-const StyledDateTimeDiv = styled('div')({
-  marginTop: 15,
-  marginBottom: 50
-})
-
 const StyledFinalMessageContent = styled('div')({
   whiteSpace: 'pre-wrap'
 })
 
-const StyledDeleteIcon = styled(DeleteIcon)({
-  marginBottom: -5,
-  marginLeft: 5,
-  cursor: 'pointer'
-})
-
-const StyledLoadingContainer = styled('div')({
-  display: 'flex',
-  marginTop: 20,
-  marginBottom: 20
-})
-
-const StyledLoadingTypography = styled(Typography)({
-  color: theme.palette.HBPNavy.main,
-  marginLeft: 15
-})
-
 export {
-  SectionContainer, StyledTextField, StyledCsvButton, StyledCsvButtonsContainer,
-  StyledSubHeader, StyledFinalMessagesContainer, StyledTableContainer, StyledDivider,
-  StyledTable, StyledTableRow, StyledFinalMessageContent, StyledErrorMessage, StyledResultMessage,
-  StyledDateTimeDiv, StyledDeleteIcon, StyledLoadingTypography, StyledLoadingContainer
+  SectionContainer, StyledTableContainer, StyledDivider,
+  StyledTable, StyledTableRow, StyledFinalMessageContent, StyledErrorMessage
 }

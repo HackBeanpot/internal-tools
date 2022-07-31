@@ -62,8 +62,12 @@ const StyledHeaderLogoImage = styled('img')({
   margin: '0 15px 0 0'
 })
 
+const StyledSubHeader = styled(Typography)({
+  paddingBottom: 25
+})
+
 export {
   StyledPageContainer, StyledButton, StyledBoldTypography, SectionContainer, StyledTextArea,
   StyledFinalMessageContent, StyledEditButton, StyledToolbar, StyledSignOutButton,
-  StyledHeaderLogoImage, StyledToolbarRightDiv
+  StyledHeaderLogoImage, StyledToolbarRightDiv, StyledSubHeader
 }
