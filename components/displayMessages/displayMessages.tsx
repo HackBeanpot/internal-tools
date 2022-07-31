@@ -1,7 +1,7 @@
 import React from 'react'
 import { Message } from '../../lib/types'
-import { StyledErrorMessage } from '../../styles/common'
-import { StyledDivider, StyledFinalMessagesContainer } from './displayMessages.styles'
+import { StyledDivider, StyledErrorMessage } from '../../pageStyles/emailSender.styles'
+import { StyledFinalMessagesContainer } from './displayMessages.styles'
 import FinalMessage from '../../components/finalMessage/finalMessage'
 import { nanoid } from 'nanoid'
 
