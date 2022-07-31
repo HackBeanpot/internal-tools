@@ -25,18 +25,19 @@ const uploadAttachments = async (req: NextApiRequest, res: NextApiResponse) => {
     form.on('end', () => resolve(files))
     form.on('error', err => reject(err))
     form.parse(req, () => {
-      //
     })
-  }).catch(e => {
-    console.log(e)
+  }).catch(error => {
+    let errorMessage
+    if (error instanceof Error) errorMessage = error.message
+    else errorMessage = String(error)
     status = 500
     resultBody = {
-      status: 'fail', message: 'Upload error'
+      status: 'fail', message: errorMessage
     }
   })
 
   if (files?.length) {
-    /* Create directory for uploads */
+    // Create directory for uploads
     const targetPath = path.join(process.cwd(), '/attachments/')
     try {
       await fs.access(targetPath)

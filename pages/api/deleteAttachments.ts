@@ -8,10 +8,13 @@ const deleteAttachments = async (req: NextApiRequest, res: NextApiResponse) => {
   const targetPath = path.join(process.cwd(), '/attachments/')
   try {
     await readdirSync(targetPath).forEach(f => rmSync(`${targetPath}/${f}`))
-  } catch (e) {
+  } catch (error: any) {
+    let errorMessage
+    if (error instanceof Error) errorMessage = error.message
+    else errorMessage = String(error)
     status = 500
     resultBody = {
-      status: 'fail', message: 'Delete error'
+      status: 'fail', message: errorMessage
     }
   }
   res.status(status).json(resultBody)
