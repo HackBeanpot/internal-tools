@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material'
-import { StyledTextField } from './subjectSection.styles';
+import { StyledTextField } from './subjectSection.styles'
 import { SectionContainer, StyledSubHeader } from '../../styles/common'
 
 type SubjectSectionProps = {
