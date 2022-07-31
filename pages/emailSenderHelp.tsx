@@ -4,7 +4,7 @@ import Layout from '../components/layout/Layout'
 import CSVTable from '../components/csvTable/CSVTable'
 import { ThemeProvider, Typography, Divider } from '@mui/material'
 import { StyledPageContainer, SectionContainer } from '../styles/common'
-import { StyledHelpSubHeader } from '../pageStyles/help.styles'
+import { StyledSubHeader } from '../pageStyles/help.styles'
 import { TextContainer } from '../pageStyles/home.styles'
 import { theme } from '../styles/theme'
 
@@ -48,9 +48,9 @@ const Help: NextPage = () => {
             <SectionContainer>
               <Typography variant="h5">Steps: </Typography>
               <br />
-              <StyledHelpSubHeader variant="h6">
+              <StyledSubHeader variant="h6">
                 1) Email subject
-              </StyledHelpSubHeader>
+              </StyledSubHeader>
               <ul>
                 <li>
                   <Typography variant="body1">
@@ -74,9 +74,9 @@ const Help: NextPage = () => {
                   </Typography>
                 </li>
               </ul>
-              <StyledHelpSubHeader variant="h6">
+              <StyledSubHeader variant="h6">
                 2) Enter email content
-              </StyledHelpSubHeader>
+              </StyledSubHeader>
               <ul>
                 <li>
                   <Typography variant="body1">
@@ -90,9 +90,9 @@ const Help: NextPage = () => {
                   </Typography>
                 </li>
               </ul>
-              <StyledHelpSubHeader variant="h6">
+              <StyledSubHeader variant="h6">
                 3) Upload and import csv
-              </StyledHelpSubHeader>
+              </StyledSubHeader>
               <ul>
                 <li>
                   <Typography variant="body1">
@@ -106,9 +106,9 @@ const Help: NextPage = () => {
                   </Typography>
                 </li>
               </ul>
-              <StyledHelpSubHeader variant="h6">
+              <StyledSubHeader variant="h6">
                 4) Verify final messages
-              </StyledHelpSubHeader>
+              </StyledSubHeader>
               <ul>
                 <li>
                   <Typography variant="body1">
@@ -128,9 +128,9 @@ const Help: NextPage = () => {
                   </Typography>
                 </li>
               </ul>
-              <StyledHelpSubHeader variant="h6">
+              <StyledSubHeader variant="h6">
                 5) Send messages
-              </StyledHelpSubHeader>
+              </StyledSubHeader>
               <ul>
                 <li>
                   <Typography variant="body1">

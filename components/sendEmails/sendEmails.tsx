@@ -16,9 +16,10 @@ import React from 'react'
 import { ResultMessage } from '../../lib/types'
 import {
   StyledDateTimeDiv,
-  StyledResultMessage
-} from './sendEmails.styles'
-import { SectionContainer, StyledButton, StyledSubHeader } from '../../styles/common'
+  StyledResultMessage,
+  StyledSubHeader
+} from '../../pageStyles/emailSender.styles'
+import { SectionContainer, StyledButton } from '../../styles/common'
 
 type SendEmailsProps = {
   setCheckedDeliveryBox: any;
