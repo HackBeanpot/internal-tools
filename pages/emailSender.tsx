@@ -1,37 +1,16 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import {
   ThemeProvider,
-  Button,
   Divider,
   Link,
   FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  Paper,
-  TableBody,
-  TableContainer,
-  TableCell,
-  TableHead,
-  Typography,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  FormGroup,
-  Checkbox
+  Typography
 } from '@mui/material'
 import type { NextPage } from 'next'
 import { useSession } from 'next-auth/react'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
-import {
-  StyledButton,
-  StyledPageContainer,
-  StyledBoldTypography,
-  SectionContainer,
-  StyledTextArea
-} from '../styles/common'
+import { StyledPageContainer, SectionContainer } from '../styles/common'
 import {
   CsvRow,
   ReplaceObj,
@@ -40,34 +19,18 @@ import {
   ResultMessage,
   FileObject
 } from '../lib/types'
-import {
-  StyledCsvButton,
-  StyledCsvButtonsContainer,
-  StyledDivider,
-  StyledErrorMessage,
-  StyledFinalMessagesContainer,
-  StyledResultMessage,
-  StyledSubHeader,
-  StyledTable,
-  StyledTableContainer,
-  StyledTableRow,
-  StyledTextField,
-  StyledDateTimeDiv,
-  StyledDeleteIcon,
-  StyledLoadingTypography,
-  StyledLoadingContainer
-} from '../pageStyles/emailSender.styles'
+import { StyledErrorMessage } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
-import FinalMessage from '../components/finalMessage/finalMessage'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 import { validEmail } from '../lib/validateEmail'
-import TextField from '@mui/material/TextField'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import Stack from '@mui/material/Stack'
-import { TailSpin } from 'react-loader-spinner'
+import PrintMessage from '../components/printMessages/printMessages'
+import ImportCSVSection from '../components/importCSVSection/importCSVSection'
+import SubjectSection from '../components/subjectSection/subjectSection'
+import EmailContent from '../components/emailContentSection/emailContentSection'
+import SendEmails from '../components/sendEmails/sendEmails'
+import CSVTable from '../components/csvTable/CSVTable'
+import DisplayMessages from '../components/displayMessages/displayMessages'
 
 const EmailSender: NextPage = () => {
   const { data: session } = useSession({ required: true })
@@ -124,24 +87,6 @@ const EmailSender: NextPage = () => {
       }
     }
     setFinalMessages(finalMessageArr)
-  }
-
-  const printStandardEmailSubject = () => {
-    if (!subjectCustomization) {
-      return (
-        <div>
-          <StyledSubHeader variant="h5">
-            1b) Enter standard email subject
-          </StyledSubHeader>
-          <StyledTextField
-            id="outlined-basic"
-            label="Email subject"
-            variant="outlined"
-            onChange={handleEmailSubject}
-          />
-        </div>
-      )
-    }
   }
 
   const handleEmailSubject = (e: ChangeEvent<HTMLInputElement>) => {
@@ -327,30 +272,6 @@ const EmailSender: NextPage = () => {
       ?.message
   }
 
-  const displayMessages = () => {
-    return (
-      <>
-        {finalMessages.map((msg) => (
-          <div key={nanoid()}>
-            <StyledDivider />
-            {getErrorMessage(msg.id) && (
-              <StyledErrorMessage>
-                Error: {getErrorMessage(msg.id)}
-              </StyledErrorMessage>
-            )}
-            <FinalMessage
-              id={msg.id}
-              to={msg.to}
-              subject={msg.subject}
-              parentCallback={editFinalMessages}
-              content={msg.content}
-            />
-          </div>
-        ))}
-      </>
-    )
-  }
-
   const sendEmails = async () => {
     // format: 'FName LName <email@hackbeanpot.com>'
     const from = '' + session?.user?.name + ' <' + session?.user?.email + '>'
@@ -456,119 +377,24 @@ const EmailSender: NextPage = () => {
             </Link>
           </Typography>
           <FormControl fullWidth>
+            <SubjectSection
+              handleEmailStandard={handleEmailStandard}
+              subjectCustomization={subjectCustomization}
+              handleEmailSubject={handleEmailSubject}
+            />
+            <EmailContent
+              attachments={attachments}
+              handleUploadAttachment={handleUploadAttachment}
+              setAttachments={setAttachments}
+              setMessage={setMessage}
+              uploadingAttachment={uploadingAttachment}
+            />
+            <ImportCSVSection
+              file={file === undefined}
+              handleImportCsv={handleImportCsv}
+              handleUploadCsv={handleUploadCsv}
+            />
             <SectionContainer>
-              <StyledSubHeader variant="h5">1) Email subject</StyledSubHeader>
-              <FormLabel id="choose-email-subject">
-                Use customized or standard email subjects?
-              </FormLabel>
-              <RadioGroup
-                aria-labelledby="choose-email-subject"
-                name="email-subject"
-                onChange={handleEmailStandard}
-              >
-                <FormControlLabel
-                  value="customized"
-                  control={<Radio />}
-                  label="Customized (add subjects from CSV)"
-                />
-                <FormControlLabel
-                  value="standard"
-                  control={<Radio />}
-                  label="Standard (enter one subject for all emails)"
-                />
-              </RadioGroup>
-              <br />
-            </SectionContainer>
-            <SectionContainer>
-              <div>{printStandardEmailSubject()}</div>
-            </SectionContainer>
-            <SectionContainer>
-              <StyledSubHeader variant="h5">
-                2) Enter email content
-              </StyledSubHeader>
-              <input
-                style={{ display: 'none' }}
-                id="attachment-button"
-                type="file"
-                onChange={handleUploadAttachment}
-              />
-              <label htmlFor="attachment-button">
-                <Button variant="contained" component="span">
-                  Upload Attachment
-                </Button>
-              </label>
-              <br />
-              <br />
-
-              <div
-                data-tip="TailSpin"
-                data-for="happyFace"
-                className="loaderBox"
-              ></div>
-              {uploadingAttachment
-                ? (
-                <StyledLoadingContainer>
-                  <TailSpin color="navy" height={30} width={30} />
-                  <StyledLoadingTypography variant="body1">
-                    uploading attachment...
-                  </StyledLoadingTypography>
-                </StyledLoadingContainer>
-                  )
-                : (
-                    ''
-                  )}
-              {attachments.length > 0
-                ? attachments.map((attachment) => (
-                    <div key={attachment.id}>
-                      <Typography variant="body1">
-                        {attachment.file.name} attached!
-                        <StyledDeleteIcon
-                          onClick={() => {
-                            setAttachments((prev) =>
-                              prev.filter((curr) => curr.id !== attachment.id)
-                            )
-                          }}
-                        />
-                      </Typography>
-                      <br />
-                    </div>
-                ))
-                : ''}
-              <StyledTextArea
-                aria-label="message-text-area"
-                placeholder="Paste in message"
-                onChange={(e) => setMessage(e.target.value)}
-                minRows={20}
-              />
-            </SectionContainer>
-            <SectionContainer>
-              <StyledSubHeader variant="h5">
-                3) Upload and import csv
-              </StyledSubHeader>
-              <StyledCsvButtonsContainer>
-                <input
-                  style={{ display: 'none' }}
-                  id="contained-button-file"
-                  accept={'.csv'}
-                  type="file"
-                  onChange={handleUploadCsv}
-                />
-                <label htmlFor="contained-button-file">
-                  <Button variant="contained" component="span">
-                    Upload
-                  </Button>
-                </label>
-                <StyledCsvButton
-                  variant="contained"
-                  width="medium"
-                  disabled={file === undefined}
-                  onClick={(e) => {
-                    handleImportCsv(e)
-                  }}
-                >
-                  Import CSV!
-                </StyledCsvButton>
-              </StyledCsvButtonsContainer>
               {errorMessages.map((errorMessage) => (
                 <StyledErrorMessage key={errorMessage.id}>
                   <br />
@@ -577,121 +403,31 @@ const EmailSender: NextPage = () => {
               ))}
             </SectionContainer>
           </FormControl>
-          <StyledTableContainer>
-            <TableContainer component={Paper}>
-              <StyledTable aria-label="uploaded csv table">
-                <TableHead>
-                  {headerKeys.map((key) => (
-                    <TableCell key={nanoid()}>
-                      <StyledBoldTypography variant="body1">
-                        {key}
-                      </StyledBoldTypography>
-                    </TableCell>
-                  ))}
-                </TableHead>
-                <TableBody>
-                  {csvRowsArray.map((item) => (
-                    <StyledTableRow key={nanoid()}>
-                      {Object.values(item).map((val) => (
-                        <TableCell key={nanoid()} align="left">
-                          {val}
-                        </TableCell>
-                      ))}
-                    </StyledTableRow>
-                  ))}
-                </TableBody>
-              </StyledTable>
-            </TableContainer>
-          </StyledTableContainer>
-          <SectionContainer>
-            <StyledSubHeader variant="h5">
-              4) Verify final messages
-            </StyledSubHeader>
-            <StyledButton
-              color="info"
-              variant="contained"
-              onClick={createMessages}
-              disabled={csvRowsArray.length === 0}
-              width="medium"
-            >
-              Print final messages
-            </StyledButton>
-          </SectionContainer>
+          <CSVTable headers={headerKeys} rows={csvRowsArray} />
+          <PrintMessage
+            length={csvRowsArray.length}
+            createMessages={createMessages}
+          />
           <br />
           <br />
-          <SectionContainer>
-            <StyledSubHeader variant="h5">5) Send emails</StyledSubHeader>
-            <FormLabel id="choose-email-subject">
-              Use customized or standard email subjects?
-            </FormLabel>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    onChange={(e) => setCheckedDeliveryBox(e.target.checked)}
-                  />
-                }
-                label="Select custom delivery time"
-              />
-            </FormGroup>
-            {checkedDeliveryBox && (
-              <StyledDateTimeDiv>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <Stack spacing={3}>
-                    <DateTimePicker
-                      label="Select date and time"
-                      value={dateTime}
-                      onChange={(dateTime: Date | null) => {
-                        setDeliveryDateTime(dateTime)
-                      }}
-                      renderInput={(params: any) => <TextField {...params} />}
-                    />
-                  </Stack>
-                </LocalizationProvider>
-              </StyledDateTimeDiv>
-            )}
-            <StyledButton
-              color="info"
-              variant="contained"
-              onClick={() => {
-                handleClickOpen()
-              }}
-              width="medium"
-              disabled={finalMessages.length === 0 || errorMessages.length > 0}
-            >
-              Send!
-            </StyledButton>
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-            >
-              <DialogTitle id="alert-dialog-title">
-                Are you sure you want to send all emails?
-              </DialogTitle>
-              <DialogActions>
-                <Button variant="contained" onClick={handleClose}>
-                  No
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    handleClose()
-                    sendEmails()
-                  }}
-                  autoFocus
-                >
-                  Yes
-                </Button>
-              </DialogActions>
-            </Dialog>
-            <StyledResultMessage variant="h5" isError={resultMessage.isError}>
-              {resultMessage.message}
-            </StyledResultMessage>
-          </SectionContainer>
-          <StyledFinalMessagesContainer>
-            {displayMessages()}
-          </StyledFinalMessagesContainer>
+          <SendEmails
+            setCheckedDeliveryBox={setCheckedDeliveryBox}
+            checkedDeliveryBox={checkedDeliveryBox}
+            dateTime={dateTime}
+            handleClickOpen={handleClickOpen}
+            setDeliveryDateTime={setDeliveryDateTime}
+            finalMessagesLength={finalMessages.length === 0}
+            errorMessagesLength={errorMessages.length > 0}
+            handleClose={handleClose}
+            sendEmails={sendEmails}
+            resultMessage={resultMessage}
+            open={open}
+          />
+          <DisplayMessages
+            finalMessages={finalMessages}
+            editFinalMessages={editFinalMessages}
+            getErrorMessage={getErrorMessage}
+          />
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
