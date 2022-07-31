@@ -13,4 +13,9 @@ Notes:
 
 Tested:
 - Explain testing strategies here (remember to do all relevant testing, eg. unit, e2e, manual)
+- Remember to make changes and re-test when you put out any PR revisions
+  
+Screenshots & Screencasts:
 - Include screenshots and screencasts as relevant
+- Be liberal and provide all the user / developer flow context that you can
+- Remember to make changes and re-render when you put out any PR revisions
