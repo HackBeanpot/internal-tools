@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import {
   ThemeProvider,
   Divider,
@@ -10,15 +10,17 @@ import type { NextPage } from 'next'
 import { useSession } from 'next-auth/react'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
-import { StyledPageContainer, SectionContainer, StyledErrorMessage } from '../styles/common'
+import { StyledPageContainer, SectionContainer } from '../styles/common'
 import {
   CsvRow,
   ReplaceObj,
   Message,
   ErrorMessage,
-  ResultMessage,
-  FileObject
+  ResultMessage
 } from '../lib/types'
+import {
+  StyledErrorMessage
+} from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
@@ -34,10 +36,6 @@ import DisplayMessages from '../components/displayMessages/displayMessages'
 const EmailSender: NextPage = () => {
   const { data: session } = useSession({ required: true })
   const [checkedDeliveryBox, setCheckedDeliveryBox] = useState(false)
-  const [attachments, setAttachments] = useState<FileObject[]>([])
-  const [uploadingAttachment, setUploadingAttachment] =
-    useState<boolean>(false)
-  const [newAttachment, setNewAttachment] = useState<File>()
   const [open, setOpen] = useState(false)
   const [file, setFile] = useState()
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
@@ -58,13 +56,6 @@ const EmailSender: NextPage = () => {
       ? setSubjectCustomization(false)
       : setSubjectCustomization(true)
   }
-
-  useEffect(() => {
-    if (newAttachment) {
-      const fileObj: FileObject = { id: nanoid(), file: newAttachment }
-      setAttachments((prev) => [...prev, fileObj])
-    }
-  }, [newAttachment])
 
   const editFinalMessages = (
     id: string,
@@ -203,15 +194,6 @@ const EmailSender: NextPage = () => {
     }
   }
 
-  const handleUploadAttachment = (e: any) => {
-    setUploadingAttachment(true)
-    const filename = e.target.files[0].name
-    if (filename) {
-      setNewAttachment(e.target.files[0])
-    }
-    setUploadingAttachment(false)
-  }
-
   const headerKeys = Object.keys(Object.assign({}, ...csvRowsArray))
   const re = /\${(.*?)}/g
 
@@ -271,52 +253,14 @@ const EmailSender: NextPage = () => {
       ?.message
   }
 
-  const sendEmails = async () => {
+  const sendEmails = () => {
     // format: 'FName LName <email@hackbeanpot.com>'
     const from = '' + session?.user?.name + ' <' + session?.user?.email + '>'
-    const formData = new FormData()
-    if (attachments.length > 0) {
-      for (let i = 0; i < attachments.length; i++) {
-        formData.append('file', attachments[i].file)
-      }
-      const uploadAttachmentsResponse = await fetch('/api/uploadAttachments', {
-        method: 'POST',
-        body: formData
-      })
-
-      const uploadAttachmentsBody =
-        (await uploadAttachmentsResponse.json()) as {
-          status: 'ok' | 'fail';
-          message: string;
-        }
-
-      if (uploadAttachmentsBody.status === 'fail') {
-        setErrorMessages([
-          {
-            id: nanoid(),
-            message: uploadAttachmentsBody.message
-          }
-        ])
-      }
-    }
-
-    const fileNames = () => {
-      const fileNamesArr = []
-      for (let i = 0; i < attachments.length; i++) {
-        fileNamesArr.push(attachments[i].file.name)
-      }
-      return fileNamesArr
-    }
-
     const dataToSend = {
       emailData: finalMessages,
       from,
-      date: checkedDeliveryBox ? dateTime?.toUTCString() : undefined,
-      fileNames: fileNames()
+      date: checkedDeliveryBox ? dateTime?.toUTCString() : undefined
     }
-
-    const fileNamesArr = { fileNames: fileNames() }
-
     fetch('/api/email/send', {
       method: 'POST',
       cache: 'no-cache',
@@ -334,26 +278,11 @@ const EmailSender: NextPage = () => {
         }
         return res.json()
       })
-      .then(async (res) => {
-        await fetch('/api/deleteAttachments', {
-          method: 'DELETE',
-          body: JSON.stringify(fileNamesArr)
+      .then((data) => {
+        setResultMessage({
+          isError: false,
+          message: 'Success! Emails will be sent shortly.'
         })
-          .then((res) => {
-            if (res.status === 500) {
-              setResultMessage({
-                isError: true,
-                message: res.statusText
-              })
-            }
-            return res.json()
-          })
-          .then((data) => {
-            setResultMessage({
-              isError: false,
-              message: 'Success! Emails will be sent shortly.'
-            })
-          })
       })
   }
 
@@ -382,13 +311,7 @@ const EmailSender: NextPage = () => {
               subjectCustomization={subjectCustomization}
               handleEmailSubject={handleEmailSubject}
             />
-            <EmailContent
-              attachments={attachments}
-              handleUploadAttachment={handleUploadAttachment}
-              setAttachments={setAttachments}
-              setMessage={setMessage}
-              uploadingAttachment={uploadingAttachment}
-            />
+            <EmailContent setMessage={setMessage} />
             <ImportCSVSection
               file={file === undefined}
               handleImportCsv={handleImportCsv}
@@ -424,9 +347,9 @@ const EmailSender: NextPage = () => {
             open={open}
           />
           <DisplayMessages
-            finalMessages={finalMessages}
-            editFinalMessages={editFinalMessages}
-            getErrorMessage={getErrorMessage}
+          finalMessages={finalMessages}
+          editFinalMessages={editFinalMessages}
+          getErrorMessage={getErrorMessage}
           />
         </StyledPageContainer>
       </ThemeProvider>
