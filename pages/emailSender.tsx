@@ -10,7 +10,7 @@ import type { NextPage } from 'next'
 import { useSession } from 'next-auth/react'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
-import { StyledPageContainer, SectionContainer } from '../styles/common'
+import { StyledPageContainer, SectionContainer, StyledErrorMessage } from '../styles/common'
 import {
   CsvRow,
   ReplaceObj,
@@ -19,7 +19,6 @@ import {
   ResultMessage,
   FileObject
 } from '../lib/types'
-import { StyledErrorMessage } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
@@ -325,36 +324,37 @@ const EmailSender: NextPage = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(dataToSend)
-    }).then((res) => {
-      if (res.status === 500) {
-        setResultMessage({
-          isError: true,
-          message: res.statusText
-        })
-      }
-      return res.json()
     })
-    setTimeout(async () => {
-      await fetch('/api/deleteAttachments', {
-        method: 'DELETE',
-        body: JSON.stringify(fileNamesArr)
-      })
-        .then((res) => {
-          if (res.status === 500) {
-            setResultMessage({
-              isError: true,
-              message: res.statusText
-            })
-          }
-          return res.json()
-        })
-        .then((data) => {
+      .then((res) => {
+        if (res.status === 500) {
           setResultMessage({
-            isError: false,
-            message: 'Success! Emails will be sent shortly.'
+            isError: true,
+            message: res.statusText
           })
+        }
+        return res.json()
+      })
+      .then(async (res) => {
+        await fetch('/api/deleteAttachments', {
+          method: 'DELETE',
+          body: JSON.stringify(fileNamesArr)
         })
-    }, 1000)
+          .then((res) => {
+            if (res.status === 500) {
+              setResultMessage({
+                isError: true,
+                message: res.statusText
+              })
+            }
+            return res.json()
+          })
+          .then((data) => {
+            setResultMessage({
+              isError: false,
+              message: 'Success! Emails will be sent shortly.'
+            })
+          })
+      })
   }
 
   const handleClickOpen = () => {

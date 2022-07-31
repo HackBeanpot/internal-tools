@@ -66,8 +66,12 @@ const StyledSubHeader = styled(Typography)({
   paddingBottom: 25
 })
 
+const StyledErrorMessage = styled(Typography)({
+  color: theme.palette.Red.main
+})
+
 export {
   StyledPageContainer, StyledButton, StyledBoldTypography, SectionContainer, StyledTextArea,
   StyledFinalMessageContent, StyledEditButton, StyledToolbar, StyledSignOutButton,
-  StyledHeaderLogoImage, StyledToolbarRightDiv, StyledSubHeader
+  StyledHeaderLogoImage, StyledToolbarRightDiv, StyledSubHeader, StyledErrorMessage
 }
