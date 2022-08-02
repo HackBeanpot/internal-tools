@@ -89,6 +89,14 @@ const Help: NextPage = () => {
                     automatically according to the CSV file uploaded.
                   </Typography>
                 </li>
+                <li>
+                  <Typography variant="body1">
+                    You may also choose to use your HackBeanpot email signature. Clicking the
+                    checkbox allows you to fill in your name, title, phone number, and email.
+                    Only enter the first part of your email, as the
+                    {'"'}@hackbeanpot.com{'"'} will be filled in automatically.
+                  </Typography>
+                </li>
               </ul>
               <StyledSubHeader variant="h6">
                 3) Upload and import csv
@@ -198,11 +206,11 @@ const Help: NextPage = () => {
             <SectionContainer>
               <Typography variant="h6">Example CSV: </Typography>
               <br />
-            <CSVTable
-              headers={['email', 'subject', 'name', 'company']}
-              rows={rows}
-            />
-          </SectionContainer>
+              <CSVTable
+                headers={['email', 'subject', 'name', 'company']}
+                rows={rows}
+              />
+            </SectionContainer>
           </TextContainer>
         </StyledPageContainer>
       </ThemeProvider>

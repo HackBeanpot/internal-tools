@@ -305,6 +305,13 @@ const EmailSender: NextPage = () => {
               parentCallback={editFinalMessages}
               content={msg.content}
             />
+            {useSignature && (
+              <>
+                <br />
+                <br />
+                <EmailSignature signatureData={signatureData} />
+              </>
+            )}
           </div>
         ))}
       </>
@@ -570,13 +577,6 @@ const EmailSender: NextPage = () => {
             </StyledResultMessage>
           </SectionContainer>
           <StyledFinalMessagesContainer>
-            {useSignature && signatureData && (
-              <>
-                <StyledDivider />
-                <Typography>Email signature preview:</Typography>
-                <EmailSignature signatureData={signatureData} />
-              </>
-            )}
             {displayMessages()}
           </StyledFinalMessagesContainer>
         </StyledPageContainer>
