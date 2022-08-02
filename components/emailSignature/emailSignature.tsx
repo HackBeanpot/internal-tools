@@ -47,6 +47,7 @@ export default function EmailSignature ({ signatureData }: EmailSignatureProps) 
                       </tr>
                       <tr>
                         <td style={styles.phoneNumber}>
+                          {/* TODO: Style phone numbers as XXX-XXX-XXXX */}
                           {signatureData.phone}
                         </td>
                       </tr>
