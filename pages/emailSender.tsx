@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState } from 'react'
+import * as ReactDOMServer from 'react-dom/server'
 import {
   ThemeProvider,
   Divider,
@@ -16,7 +17,8 @@ import {
   ReplaceObj,
   Message,
   ErrorMessage,
-  ResultMessage
+  ResultMessage,
+  SignatureData
 } from '../lib/types'
 import {
   StyledErrorMessage
@@ -25,6 +27,7 @@ import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 import { validEmail } from '../lib/validateEmail'
+import EmailSignature from '../components/emailSignature/emailSignature'
 import PrintMessage from '../components/printMessages/printMessages'
 import ImportCSVSection from '../components/importCSVSection/importCSVSection'
 import SubjectSection from '../components/subjectSection/subjectSection'
@@ -50,6 +53,8 @@ const EmailSender: NextPage = () => {
   })
   const theme = useTheme()
   const [dateTime, setDeliveryDateTime] = useState<Date | null>(null)
+  const [useSignature, setUseSignature] = useState(false)
+  const [signatureData, setSignatureData] = useState<SignatureData | undefined>(undefined)
 
   const handleEmailStandard = (e: ChangeEvent<HTMLInputElement>) => {
     e.target.value === 'standard'
@@ -259,7 +264,10 @@ const EmailSender: NextPage = () => {
     const dataToSend = {
       emailData: finalMessages,
       from,
-      date: checkedDeliveryBox ? dateTime?.toUTCString() : undefined
+      date: checkedDeliveryBox ? dateTime?.toUTCString() : undefined,
+      signature: signatureData
+        ? ReactDOMServer.renderToStaticMarkup(<EmailSignature signatureData={signatureData} />)
+        : ''
     }
     fetch('/api/email/send', {
       method: 'POST',
@@ -311,7 +319,12 @@ const EmailSender: NextPage = () => {
               subjectCustomization={subjectCustomization}
               handleEmailSubject={handleEmailSubject}
             />
-            <EmailContent setMessage={setMessage} />
+            <EmailContent
+              setMessage={setMessage}
+              useSignature={useSignature}
+              setUseSignature={setUseSignature}
+              setSignatureData={setSignatureData}
+            />
             <ImportCSVSection
               file={file === undefined}
               handleImportCsv={handleImportCsv}
@@ -350,6 +363,8 @@ const EmailSender: NextPage = () => {
           finalMessages={finalMessages}
           editFinalMessages={editFinalMessages}
           getErrorMessage={getErrorMessage}
+          useSignature={useSignature}
+          signatureData={signatureData}
           />
         </StyledPageContainer>
       </ThemeProvider>

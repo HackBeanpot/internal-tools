@@ -1,12 +1,19 @@
 import React from 'react'
+import { FormGroup, FormControlLabel, Checkbox } from '@mui/material'
+import EmailSignatureForm from '../emailSignature/emailSignatureForm'
 import { StyledSubHeader } from '../../pageStyles/emailSender.styles'
 import { SectionContainer, StyledTextArea } from '../../styles/common'
 
 type EmailContentProps = {
   setMessage: any;
+  useSignature: boolean;
+  setUseSignature: any;
+  setSignatureData: any;
 };
 
-export default function EmailContent ({ setMessage }: EmailContentProps) {
+export default function EmailContent ({
+  setMessage, useSignature, setUseSignature, setSignatureData
+}: EmailContentProps) {
   return (
     <SectionContainer>
       <StyledSubHeader variant="h5">2) Enter email content</StyledSubHeader>
@@ -16,6 +23,20 @@ export default function EmailContent ({ setMessage }: EmailContentProps) {
         onChange={(e) => setMessage(e.target.value)}
         minRows={20}
       />
+      <br />
+      <FormGroup>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={useSignature}
+              onChange={(e) => setUseSignature(e.target.checked)}
+            />
+          }
+          label="Use HackBeanpot email signature?"
+        />
+      </FormGroup>
+      <br />
+      {useSignature && <EmailSignatureForm setSignatureData={setSignatureData} embedded />}
     </SectionContainer>
   )
 }
