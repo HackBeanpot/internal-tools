@@ -2,37 +2,16 @@ import React, { ChangeEvent, useState } from 'react'
 import * as ReactDOMServer from 'react-dom/server'
 import {
   ThemeProvider,
-  Button,
   Divider,
   Link,
   FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  Paper,
-  TableBody,
-  TableContainer,
-  TableCell,
-  TableHead,
-  Typography,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  FormGroup,
-  Checkbox
+  Typography
 } from '@mui/material'
 import type { NextPage } from 'next'
 import { useSession } from 'next-auth/react'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
-import {
-  StyledButton,
-  StyledPageContainer,
-  StyledBoldTypograhy,
-  SectionContainer,
-  StyledTextArea
-} from '../styles/common'
+import { StyledPageContainer, SectionContainer } from '../styles/common'
 import {
   CsvRow,
   ReplaceObj,
@@ -42,31 +21,20 @@ import {
   SignatureData
 } from '../lib/types'
 import {
-  StyledCsvButton,
-  StyledCsvButtonsContainer,
-  StyledDivider,
-  StyledErrorMessage,
-  StyledFinalMessagesContainer,
-  StyledResultMessage,
-  StyledSubHeader,
-  StyledTable,
-  StyledTableContainer,
-  StyledTableRow,
-  StyledTextField,
-  StyledDateTimeDiv
+  StyledErrorMessage
 } from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
-import FinalMessage from '../components/finalMessage/finalMessage'
-import EmailSignatureForm from '../components/emailSignature/emailSignatureForm'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 import { validEmail } from '../lib/validateEmail'
-import TextField from '@mui/material/TextField'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import Stack from '@mui/material/Stack'
 import EmailSignature from '../components/emailSignature/emailSignature'
+import PrintMessage from '../components/printMessages/printMessages'
+import ImportCSVSection from '../components/importCSVSection/importCSVSection'
+import SubjectSection from '../components/subjectSection/subjectSection'
+import EmailContent from '../components/emailContentSection/emailContentSection'
+import SendEmails from '../components/sendEmails/sendEmails'
+import CSVTable from '../components/csvTable/CSVTable'
+import DisplayMessages from '../components/displayMessages/displayMessages'
 
 const EmailSender: NextPage = () => {
   const { data: session } = useSession({ required: true })
@@ -79,7 +47,10 @@ const EmailSender: NextPage = () => {
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
   const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([])
-  const [resultMessage, setResultMessage] = useState<ResultMessage>({ isError: false, message: '' })
+  const [resultMessage, setResultMessage] = useState<ResultMessage>({
+    isError: false,
+    message: ''
+  })
   const theme = useTheme()
   const [dateTime, setDeliveryDateTime] = useState<Date | null>(null)
   const [useSignature, setUseSignature] = useState(false)
@@ -91,10 +62,15 @@ const EmailSender: NextPage = () => {
       : setSubjectCustomization(true)
   }
 
-  const editFinalMessages = (id: string, to: string, subject: string, messageContent: string) => {
+  const editFinalMessages = (
+    id: string,
+    to: string,
+    subject: string,
+    messageContent: string
+  ) => {
     const finalMessageArr = []
     const content = messageContent
-    const finalMessageIndex = finalMessages.findIndex(finalMessage => {
+    const finalMessageIndex = finalMessages.findIndex((finalMessage) => {
       return finalMessage.id === id
     })
     for (let i = 0; i < finalMessages.length; i++) {
@@ -108,24 +84,6 @@ const EmailSender: NextPage = () => {
     setFinalMessages(finalMessageArr)
   }
 
-  const printStandardEmailSubject = () => {
-    if (!subjectCustomization) {
-      return (
-        <div>
-          <StyledSubHeader variant="h5">
-            1b) Enter standard email subject
-          </StyledSubHeader>
-          <StyledTextField
-            id="outlined-basic"
-            label="Email subject"
-            variant="outlined"
-            onChange={handleEmailSubject}
-          />
-        </div>
-      )
-    }
-  }
-
   const handleEmailSubject = (e: ChangeEvent<HTMLInputElement>) => {
     setStandardSubject(e.target.value)
   }
@@ -137,10 +95,12 @@ const EmailSender: NextPage = () => {
   const handleUploadCsv = (e: any) => {
     const filename = e.target.files[0].name
     if (filename.substring(filename.length - 3) !== 'csv') {
-      setErrorMessages([{
-        id: nanoid(),
-        message: 'Uploaded file must be a .csv file'
-      }])
+      setErrorMessages([
+        {
+          id: nanoid(),
+          message: 'Uploaded file must be a .csv file'
+        }
+      ])
     } else {
       setFile(e.target.files[0])
       setErrorMessages([])
@@ -152,14 +112,18 @@ const EmailSender: NextPage = () => {
   const csvFileToArray = (str: string) => {
     const csvHeaders = str.slice(0, str.indexOf('\n')).trim().split(',')
     if (!csvHeaders.includes('email')) {
-      setErrorMessages([{ id: nanoid(), message: 'CSV must contain an email column' }])
+      setErrorMessages([
+        { id: nanoid(), message: 'CSV must contain an email column' }
+      ])
       return
     }
     if (!csvHeaders.includes('subject') && subjectCustomization) {
-      setErrorMessages([{
-        id: nanoid(),
-        message: 'CSV must contain a subject column if subject is customized'
-      }])
+      setErrorMessages([
+        {
+          id: nanoid(),
+          message: 'CSV must contain a subject column if subject is customized'
+        }
+      ])
       return
     }
     let allRowValues = str.slice(str.indexOf('\n') + 1).split('\n')
@@ -176,9 +140,12 @@ const EmailSender: NextPage = () => {
         },
         {}
       )
-      if (currRowObject.email && Object.values(currRowObject)
-        .map((value) => typeof value === 'string' ? value.trim() : value)
-        .includes('')) {
+      if (
+        currRowObject.email &&
+        Object.values(currRowObject)
+          .map((value) => (typeof value === 'string' ? value.trim() : value))
+          .includes('')
+      ) {
         errorList.push({
           id: nanoid(),
           message: 'CSV cannot contain empty cells'
@@ -203,11 +170,16 @@ const EmailSender: NextPage = () => {
       allRowObjects.pop()
     }
 
-    if (new Set(allRowObjects.map((rowObj) => rowObj.email)).size !== allRowObjects.length) {
-      setErrorMessages([{
-        id: nanoid(),
-        message: 'No email address should appear more than once'
-      }])
+    if (
+      new Set(allRowObjects.map((rowObj) => rowObj.email)).size !==
+      allRowObjects.length
+    ) {
+      setErrorMessages([
+        {
+          id: nanoid(),
+          message: 'No email address should appear more than once'
+        }
+      ])
       return
     }
 
@@ -282,40 +254,8 @@ const EmailSender: NextPage = () => {
   }
 
   const getErrorMessage = (id: string) => {
-    return errorMessages.find(
-      (currentMessage) => currentMessage.id === id
-    )?.message
-  }
-
-  const displayMessages = () => {
-    return (
-      <>
-        {finalMessages.map((msg) => (
-          <div key={nanoid()}>
-            <StyledDivider />
-            {getErrorMessage(msg.id) && (
-              <StyledErrorMessage>
-                Error: {getErrorMessage(msg.id)}
-              </StyledErrorMessage>
-            )}
-            <FinalMessage
-              id={msg.id}
-              to={msg.to}
-              subject={msg.subject}
-              parentCallback={editFinalMessages}
-              content={msg.content}
-            />
-            {useSignature && (
-              <>
-                <br />
-                <br />
-                <EmailSignature signatureData={signatureData} />
-              </>
-            )}
-          </div>
-        ))}
-      </>
-    )
+    return errorMessages.find((currentMessage) => currentMessage.id === id)
+      ?.message
   }
 
   const sendEmails = () => {
@@ -324,9 +264,7 @@ const EmailSender: NextPage = () => {
     const dataToSend = {
       emailData: finalMessages,
       from,
-      date: checkedDeliveryBox
-        ? dateTime?.toUTCString()
-        : undefined,
+      date: checkedDeliveryBox ? dateTime?.toUTCString() : undefined,
       signature: signatureData
         ? ReactDOMServer.renderToStaticMarkup(<EmailSignature signatureData={signatureData} />)
         : ''
@@ -376,87 +314,23 @@ const EmailSender: NextPage = () => {
             </Link>
           </Typography>
           <FormControl fullWidth>
+            <SubjectSection
+              handleEmailStandard={handleEmailStandard}
+              subjectCustomization={subjectCustomization}
+              handleEmailSubject={handleEmailSubject}
+            />
+            <EmailContent
+              setMessage={setMessage}
+              useSignature={useSignature}
+              setUseSignature={setUseSignature}
+              setSignatureData={setSignatureData}
+            />
+            <ImportCSVSection
+              file={file === undefined}
+              handleImportCsv={handleImportCsv}
+              handleUploadCsv={handleUploadCsv}
+            />
             <SectionContainer>
-              <StyledSubHeader variant="h5">
-                1) Email subject
-              </StyledSubHeader>
-              <FormLabel id="choose-email-subject">
-                Use customized or standard email subjects?
-              </FormLabel>
-              <RadioGroup
-                aria-labelledby="choose-email-subject"
-                name="email-subject"
-                onChange={handleEmailStandard}
-              >
-                <FormControlLabel
-                  value="customized"
-                  control={<Radio />}
-                  label="Customized (add subjects from CSV)"
-                />
-                <FormControlLabel
-                  value="standard"
-                  control={<Radio />}
-                  label="Standard (enter one subject for all emails)"
-                />
-              </RadioGroup>
-              <br />
-            </SectionContainer>
-            <SectionContainer>
-              <div>{printStandardEmailSubject()}</div>
-            </SectionContainer>
-            <SectionContainer>
-              <StyledSubHeader variant="h5">
-                2) Enter email content
-              </StyledSubHeader>
-              <StyledTextArea
-                aria-label="message-text-area"
-                placeholder="Paste in message"
-                onChange={(e) => setMessage(e.target.value)}
-                minRows={20}
-              />
-              <br />
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={useSignature}
-                      onChange={(e) => setUseSignature(e.target.checked)}
-                    />
-                  }
-                  label="Use HackBeanpot email signature?"
-                />
-              </FormGroup>
-              <br />
-              {useSignature && <EmailSignatureForm setSignatureData={setSignatureData} embedded />}
-            </SectionContainer>
-            <SectionContainer>
-              <StyledSubHeader variant="h5">
-                3) Upload and import csv
-              </StyledSubHeader>
-              <StyledCsvButtonsContainer>
-                <input
-                  style={{ display: 'none' }}
-                  id="contained-button-file"
-                  accept={'.csv'}
-                  type="file"
-                  onChange={handleUploadCsv}
-                />
-                <label htmlFor="contained-button-file">
-                  <Button variant="contained" component="span">
-                    Upload
-                  </Button>
-                </label>
-                <StyledCsvButton
-                  variant="contained"
-                  width="medium"
-                  disabled={file === undefined}
-                  onClick={(e) => {
-                    handleImportCsv(e)
-                  }}
-                >
-                  Import CSV!
-                </StyledCsvButton>
-              </StyledCsvButtonsContainer>
               {errorMessages.map((errorMessage) => (
                 <StyledErrorMessage key={errorMessage.id}>
                   <br />
@@ -465,120 +339,33 @@ const EmailSender: NextPage = () => {
               ))}
             </SectionContainer>
           </FormControl>
-          <StyledTableContainer>
-            <TableContainer component={Paper}>
-              <StyledTable aria-label="uploaded csv table">
-                <TableHead>
-                  {headerKeys.map((key) => (
-                    <TableCell key={nanoid()}>
-                      <StyledBoldTypograhy variant="body1">
-                        {key}
-                      </StyledBoldTypograhy>
-                    </TableCell>
-                  ))}
-                </TableHead>
-                <TableBody>
-                  {csvRowsArray.map((item) => (
-                    <StyledTableRow key={nanoid()}>
-                      {Object.values(item).map((val) => (
-                        <TableCell key={nanoid()} align="left">
-                          {val}
-                        </TableCell>
-                      ))}
-                    </StyledTableRow>
-                  ))}
-                </TableBody>
-              </StyledTable>
-            </TableContainer>
-          </StyledTableContainer>
-          <SectionContainer>
-            <StyledSubHeader variant="h5">
-              4) Verify final messages
-            </StyledSubHeader>
-            <StyledButton
-              color="info"
-              variant="contained"
-              onClick={createMessages}
-              disabled={csvRowsArray.length === 0}
-              width="medium"
-            >
-              Print final messages
-            </StyledButton>
-          </SectionContainer>
+          <CSVTable headers={headerKeys} rows={csvRowsArray} />
+          <PrintMessage
+            length={csvRowsArray.length}
+            createMessages={createMessages}
+          />
           <br />
           <br />
-          <SectionContainer>
-            <StyledSubHeader variant="h5">5) Send emails</StyledSubHeader>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    onChange={(e) => setCheckedDeliveryBox(e.target.checked)}
-                  />
-                }
-                label="Select custom delivery time"
-              />
-            </FormGroup>
-            {checkedDeliveryBox &&
-              <StyledDateTimeDiv>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <Stack spacing={3}>
-                    <DateTimePicker
-                      label="Select date and time"
-                      value={dateTime}
-                      onChange={(dateTime: Date | null) => {
-                        setDeliveryDateTime(dateTime)
-                      }}
-                      renderInput={(params: any) => <TextField {...params} />}
-                    />
-                  </Stack>
-                </LocalizationProvider>
-              </StyledDateTimeDiv>}
-            <StyledButton
-              color="info"
-              variant="contained"
-              onClick={() => {
-                handleClickOpen()
-              }}
-              width="medium"
-              disabled={finalMessages.length === 0 || errorMessages.length > 0}
-            >
-              Send!
-            </StyledButton>
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-            >
-              <DialogTitle id="alert-dialog-title">
-                Are you sure you want to send all emails?
-              </DialogTitle>
-              <DialogActions>
-                <Button variant="contained" onClick={handleClose}>
-                  No
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    handleClose()
-                    sendEmails()
-                  }}
-                  autoFocus
-                >
-                  Yes
-                </Button>
-              </DialogActions>
-            </Dialog>
-            <StyledResultMessage
-              variant="h5"
-              isError={resultMessage.isError}
-            >
-              {resultMessage.message}
-            </StyledResultMessage>
-          </SectionContainer>
-          <StyledFinalMessagesContainer>
-            {displayMessages()}
-          </StyledFinalMessagesContainer>
+          <SendEmails
+            setCheckedDeliveryBox={setCheckedDeliveryBox}
+            checkedDeliveryBox={checkedDeliveryBox}
+            dateTime={dateTime}
+            handleClickOpen={handleClickOpen}
+            setDeliveryDateTime={setDeliveryDateTime}
+            finalMessagesLength={finalMessages.length === 0}
+            errorMessagesLength={errorMessages.length > 0}
+            handleClose={handleClose}
+            sendEmails={sendEmails}
+            resultMessage={resultMessage}
+            open={open}
+          />
+          <DisplayMessages
+          finalMessages={finalMessages}
+          editFinalMessages={editFinalMessages}
+          getErrorMessage={getErrorMessage}
+          useSignature={useSignature}
+          signatureData={signatureData}
+          />
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
