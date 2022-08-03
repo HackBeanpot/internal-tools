@@ -7,6 +7,8 @@ import { StyledPageContainer, SectionContainer } from '../styles/common'
 import { StyledSubHeader } from '../pageStyles/help.styles'
 import { TextContainer } from '../pageStyles/home.styles'
 import { theme } from '../styles/theme'
+import { GetServerSideProps } from 'next'
+import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 
 function createData (
   email: string,
@@ -217,4 +219,6 @@ const Help: NextPage = () => {
     </Layout>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect
 export default Help
