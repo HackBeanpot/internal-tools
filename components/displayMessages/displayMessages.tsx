@@ -1,18 +1,21 @@
 import React from 'react'
-import { Message } from '../../lib/types'
+import { Message, SignatureData } from '../../lib/types'
 import { StyledDivider, StyledErrorMessage } from '../../pageStyles/emailSender.styles'
 import { StyledFinalMessagesContainer } from './displayMessages.styles'
 import FinalMessage from '../../components/finalMessage/finalMessage'
+import EmailSignature from '../emailSignature/emailSignature'
 import { nanoid } from 'nanoid'
 
 type DisplayMessagesProps = {
   finalMessages: Message[],
   editFinalMessages: any,
-  getErrorMessage: any
+  getErrorMessage: any,
+  useSignature: boolean,
+  signatureData: SignatureData | undefined
 };
 
 export default function DisplayMessages ({
-  finalMessages, editFinalMessages, getErrorMessage
+  finalMessages, editFinalMessages, getErrorMessage, useSignature, signatureData
 }: DisplayMessagesProps) {
   return (
     <StyledFinalMessagesContainer>
@@ -31,6 +34,13 @@ export default function DisplayMessages ({
               parentCallback={editFinalMessages}
               content={msg.content}
             />
+            {useSignature && (
+              <>
+                <br />
+                <br />
+                <EmailSignature signatureData={signatureData} />
+              </>
+            )}
           </div>
 ))}    </StyledFinalMessagesContainer>
   )
