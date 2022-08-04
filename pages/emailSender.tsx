@@ -18,7 +18,8 @@ import {
   Message,
   ErrorMessage,
   ResultMessage,
-  SignatureData
+  SignatureData,
+  EmailHeader
 } from '../lib/types'
 import {
   StyledErrorMessage
@@ -30,7 +31,7 @@ import { validEmail } from '../lib/validateEmail'
 import EmailSignature from '../components/emailSignature/emailSignature'
 import PrintMessage from '../components/printMessages/printMessages'
 import ImportCSVSection from '../components/importCSVSection/importCSVSection'
-import SubjectSection from '../components/subjectSection/subjectSection'
+import MessageHeaderSection from '../components/emailHeaderSection/emailHeaderSection'
 import EmailContent from '../components/emailContentSection/emailContentSection'
 import SendEmails from '../components/sendEmails/sendEmails'
 import CSVTable from '../components/csvTable/CSVTable'
@@ -44,6 +45,7 @@ const EmailSender: NextPage = () => {
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
   const [subjectCustomization, setSubjectCustomization] = useState(true)
   const [standardSubject, setStandardSubject] = useState('')
+  const [emailHeader, setEmailHeader] = useState<EmailHeader>()
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
   const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([])
@@ -60,6 +62,15 @@ const EmailSender: NextPage = () => {
     e.target.value === 'standard'
       ? setSubjectCustomization(false)
       : setSubjectCustomization(true)
+  }
+
+  const handleEmailHeader = (ccRecipents: string, bccRecipents: string) => {
+    const emailRegex = /([a-zA-Z0-9._+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi
+    const ccRecipentsArray = ccRecipents.match(emailRegex)
+    const bccRecipentsArray = bccRecipents.match(emailRegex)
+    const emailHeaderCreated: EmailHeader = { cc: ccRecipentsArray, bcc: bccRecipentsArray }
+    setEmailHeader(emailHeaderCreated)
+    console.log(emailHeader)
   }
 
   const editFinalMessages = (
@@ -314,10 +325,11 @@ const EmailSender: NextPage = () => {
             </Link>
           </Typography>
           <FormControl fullWidth>
-            <SubjectSection
+            <MessageHeaderSection
               handleEmailStandard={handleEmailStandard}
               subjectCustomization={subjectCustomization}
               handleEmailSubject={handleEmailSubject}
+              handleEmailHeader={handleEmailHeader}
             />
             <EmailContent
               setMessage={setMessage}
