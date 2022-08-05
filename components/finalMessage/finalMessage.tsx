@@ -9,6 +9,8 @@ import {
 type FinalMessageProps = {
   id: string;
   to: string;
+  cc: string[];
+  bcc: string[];
   subject: string;
   content: string;
   parentCallback: Function;
@@ -17,6 +19,8 @@ type FinalMessageProps = {
 export default function FinalMessage ({
   id,
   to,
+  cc,
+  bcc,
   subject,
   content,
   parentCallback
@@ -41,6 +45,10 @@ export default function FinalMessage ({
     parentCallback(idMail, to, subject, messageContent)
   }
 
+  const formatRecipents = (receipents : string[]) => {
+    return receipents.join(', ')
+  }
+
   return (
     <>
       <StyledEditButton
@@ -52,6 +60,10 @@ export default function FinalMessage ({
       </StyledEditButton>
       <Typography variant="body1">To: {toMessage}</Typography>
       <Typography variant="body1">Subject: {subjectMessage}</Typography>
+      <br/>
+      <Typography variant="body1">cc: {formatRecipents(cc)}</Typography>
+      <Typography variant="body1">bcc: {formatRecipents(bcc)}</Typography>
+
       <br />
       <Typography variant="body1">Content:</Typography>
       <br />

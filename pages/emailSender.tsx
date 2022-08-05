@@ -76,6 +76,8 @@ const EmailSender: NextPage = () => {
   const editFinalMessages = (
     id: string,
     to: string,
+    cc: string[],
+    bcc: string[],
     subject: string,
     messageContent: string
   ) => {
@@ -86,7 +88,7 @@ const EmailSender: NextPage = () => {
     })
     for (let i = 0; i < finalMessages.length; i++) {
       if (i === finalMessageIndex) {
-        const msg: Message = { id, to, subject, content }
+        const msg: Message = { id, to, cc, bcc, subject, content }
         finalMessageArr.push(msg)
       } else {
         finalMessageArr.push(finalMessages[i])
@@ -254,7 +256,14 @@ const EmailSender: NextPage = () => {
         }
         content = content.replaceAll(toReplace, replaceVal)
       }
-      const msg: Message = { id: nanoid(), to, subject, content }
+      const msg: Message = {
+        cc: emailHeader.cc,
+        bcc: emailHeader.bcc,
+        id: nanoid(),
+        to,
+        subject,
+        content
+      }
       finalMessageArr.push(msg)
     }
     if (error) {
