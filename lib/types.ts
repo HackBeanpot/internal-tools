@@ -24,8 +24,8 @@ export interface ReplaceObj {
 export interface Message {
     id: string;
     to: string;
-    cc: string;
-    bcc: string;
+    cc: string[];
+    bcc: string[];
     subject: string;
     content: string;
 }
