@@ -42,7 +42,7 @@ export default function FinalMessage ({
 
   const handleSubmitButton = () => {
     setIsEditing(false)
-    parentCallback(idMail, to, subject, messageContent)
+    parentCallback(idMail, to, cc, bcc, subject, messageContent)
   }
 
   const formatRecipents = (receipents : string[]) => {
