@@ -7,9 +7,10 @@ export default async function handler (req: any, res: any) {
 function getMockTemplate (id: number) {
   const template1: Message = {
     messageID: id,
-    title: 'new message title',
-    message: 'new message',
-    timestamp: new Date('December 17, 1995 03:24:00')
+    title: 'message title',
+    message: 'message',
+    timestamp: new Date('December 17, 1995 03:24:00'),
+    createdBy: 'mike'
   }
   return template1
 }

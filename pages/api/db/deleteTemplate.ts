@@ -7,15 +7,17 @@ export default async function handler (req: any, res: any) {
 function deleteTemplate (id : number) {
   const template1: Message = {
     messageID: 1,
-    title: 'new message title',
-    message: 'new message',
-    timestamp: new Date('December 17, 1995 03:24:00')
+    title: 'title 1',
+    message: 'message 2',
+    timestamp: new Date('December 17, 1995 03:24:00'),
+    createdBy: 'dean'
   }
   const template2: Message = {
     messageID: 2,
     title: 'title 2',
     message: 'message 2',
-    timestamp: new Date('December 17, 1995 03:24:00')
+    timestamp: new Date('December 17, 1995 03:24:00'),
+    createdBy: 'karyna'
   }
 
   const messageArray: Message[] = [template1, template2]

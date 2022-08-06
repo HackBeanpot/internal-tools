@@ -10,7 +10,8 @@ function mockUpdate (id: number, title: string, message: string, createdBy: stri
     messageID: id,
     title,
     message,
-    timestamp: new Date()
+    timestamp: new Date(),
+    createdBy
   }
 
   return template1

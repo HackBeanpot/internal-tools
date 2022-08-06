@@ -12,7 +12,8 @@ function createTemplate (title : string, message: string, createdBy: string) {
     messageID: parseInt(nanoid()),
     title,
     message,
-    timestamp: new Date()
+    timestamp: new Date(),
+    createdBy
   }
 
   return template1

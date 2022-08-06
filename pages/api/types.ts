@@ -3,4 +3,5 @@ export interface Message {
     title: string
     message: string
     timestamp: Date
+    createdBy: string
 }
