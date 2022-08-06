@@ -8,7 +8,7 @@ export default async function handler (req: any, res: any) {
   }
 }
 
-function getMockTemplate (id: number) {
+export function getMockTemplate (id: number) {
   const template1: Message = {
     messageID: id,
     title: 'message title',

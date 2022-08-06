@@ -2,13 +2,13 @@ import { Message } from '../types'
 
 export default async function handler (req: any, res: any) {
   if (!req.body.id) {
-    res.status(400).json(JSON.stringify(deleteTemplate(req.body.id)))
+    res.status(400).json(JSON.stringify(deleteMockTemplate(req.body.id)))
   } else {
-    res.status(200).json(JSON.stringify(deleteTemplate(req.body.id)))
+    res.status(200).json(JSON.stringify(deleteMockTemplate(req.body.id)))
   }
 }
 
-function deleteTemplate (id : number) {
+export function deleteMockTemplate (id : number) {
   const template1: Message = {
     messageID: 1,
     title: 'title 1',

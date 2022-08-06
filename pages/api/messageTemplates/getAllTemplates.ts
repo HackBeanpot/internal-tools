@@ -4,7 +4,7 @@ export default async function handler (req: any, res: any) {
   res.status(200).json(JSON.stringify(getMockTemplates()))
 }
 
-function getMockTemplates () {
+export function getMockTemplates () {
   const template1: Message = {
     messageID: 1,
     title: 'title 1',
