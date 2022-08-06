@@ -23,6 +23,11 @@ export default function SubjectSection ({
     e.target.id === 'cc' ? setCcRecipents(e.target.value) : setBccRecipents(e.target.value)
   }
 
+  const formatNumbering = () => {
+    return subjectCustomization ? ['1b)', '1c)'] : ['1c)', '1d)']
+  }
+  const numberingCc = formatNumbering()
+
   return (
     <>
       <SectionContainer>
@@ -63,38 +68,44 @@ export default function SubjectSection ({
       </SectionContainer>
 
       <SectionContainer>
-      <FormLabel id="choose-email-subject">
-        Enter cc and bcc recipents below
-      </FormLabel>
-      <StyledSubHeader variant="h5">
-        1c) Enter cc recipents
-      </StyledSubHeader>
-      <StyledTextField
-              id="cc"
-              label="Email cc recipents"
-              variant="outlined"
-              onChange={HandleRecipents}
-      />
-            <StyledSubHeader variant="h5">
-        1c) Enter bcc recipents
-      </StyledSubHeader>
-      <StyledTextField
-              id="bcc"
-              label="Email bcc recipents"
-              variant="outlined"
-              onChange={HandleRecipents}
+        <FormLabel id="choose-email-subject">
+          Enter cc and bcc recipents. If not leave blank.
+        </FormLabel>
+        <SectionContainer>
+          <StyledSubHeader variant="h5">
+            {numberingCc[0]} Enter cc recipents
+          </StyledSubHeader>
+          <StyledTextField
+            id="cc"
+            label="Email cc recipents"
+            variant="outlined"
+            onChange={HandleRecipents}
+          />
+        </SectionContainer>
+        <SectionContainer>
+          <StyledSubHeader variant="h5">
+            {numberingCc[1]} Enter bcc recipents
+          </StyledSubHeader>
+          <StyledTextField
+            id="bcc"
+            label="Email bcc recipents"
+            variant="outlined"
+            onChange={HandleRecipents}
 
-      />
-                <Button
-                variant="contained"
-                component="span"
-                onClick={ () => {
-                  handleEmailHeader(ccRecipents, bccRecipents)
-                }
-                }>
-            Add
-          </Button>
+          />
+        </SectionContainer>
       </SectionContainer>
+      <div>
+        <Button
+          variant="contained"
+          component="span"
+          onClick={() => {
+            handleEmailHeader(ccRecipents, bccRecipents)
+          }
+          }>
+          Add
+        </Button>
+      </div>
     </>
   )
 }
