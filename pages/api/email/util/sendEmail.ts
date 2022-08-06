@@ -48,7 +48,6 @@ export async function sendEmail (
     'o:deliverytime': modifiedDate,
     inline
   }
-  console.log(messageData.cc)
 
   const messagesSendResult = await client.messages.create(process.env.MAILGUN_DOMAIN, messageData)
 

@@ -45,7 +45,7 @@ const EmailSender: NextPage = () => {
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
   const [subjectCustomization, setSubjectCustomization] = useState(true)
   const [standardSubject, setStandardSubject] = useState('')
-  const [emailHeader, setEmailHeader] = useState<EmailHeader>()
+  const [emailHeader, setEmailHeader] = useState<EmailHeader>({})
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
   const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([])
@@ -68,9 +68,11 @@ const EmailSender: NextPage = () => {
     const emailRegex = /([a-zA-Z0-9._+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi
     const ccRecipentsArray = ccRecipents.match(emailRegex)
     const bccRecipentsArray = bccRecipents.match(emailRegex)
-    const emailHeaderCreated: EmailHeader = { cc: ccRecipentsArray, bcc: bccRecipentsArray }
+    const emailHeaderCreated: EmailHeader = {
+      cc: ccRecipentsArray || [],
+      bcc: bccRecipentsArray || []
+    }
     setEmailHeader(emailHeaderCreated)
-    console.log(emailHeader)
   }
 
   const editFinalMessages = (
@@ -256,6 +258,7 @@ const EmailSender: NextPage = () => {
         }
         content = content.replaceAll(toReplace, replaceVal)
       }
+
       const msg: Message = {
         cc: emailHeader.cc,
         bcc: emailHeader.bcc,
@@ -281,7 +284,6 @@ const EmailSender: NextPage = () => {
   const sendEmails = () => {
     // format: 'FName LName <email@hackbeanpot.com>'
     const from = '' + session?.user?.name + ' <' + session?.user?.email + '>'
-    console.log(finalMessages[0].cc)
     const dataToSend = {
       emailData: finalMessages,
       from,
