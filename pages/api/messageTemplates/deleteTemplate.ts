@@ -1,6 +1,7 @@
+import { NextApiRequest, NextApiResponse } from 'next'
 import { Message } from '../types'
 
-export default async function handler (req: any, res: any) {
+export default async function handler (req: NextApiRequest, res: NextApiResponse) {
   if (!req.body.id) {
     res.status(400).json(JSON.stringify(deleteMockTemplate(req.body.id)))
   } else {

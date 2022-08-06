@@ -1,6 +1,7 @@
+import { NextApiRequest, NextApiResponse } from 'next'
 import { Message } from '../types'
 
-export default async function handler (req: any, res: any) {
+export default async function handler (req: NextApiRequest, res: NextApiResponse) {
   res.status(200).json(JSON.stringify(getMockTemplates()))
 }
 
