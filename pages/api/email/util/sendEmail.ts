@@ -32,23 +32,54 @@ export async function sendEmail (
       data: await fs.readFile(path.join(process.cwd(), '/public/assets/hbplogo.png'))
     }
   }
+  // const ccRecipents = messages[0].cc
+  // const bccRecipents = messages[0].bcc
   const messageData = {
     from,
     'h:sender': from,
-    to: messages.map((message) => message.to),
+    to: formatRecipents(messages),
+    cc: messages.map((message) => message.cc).flat(1),
+    bcc: messages.map((message) => message.bcc).flat(1),
     subject: '%recipient.subject%',
     html: '%recipient.content%',
-    'recipient-variables': constructRecipientVariables(messages, signature),
+    'recipient-variables': constructRecipientVariables(
+      messages,
+      signature),
     'o:deliverytime': modifiedDate,
     inline
   }
+  console.log(messageData.cc)
 
   const messagesSendResult = await client.messages.create(process.env.MAILGUN_DOMAIN, messageData)
 
   return [messagesSendResult.status, messagesSendResult.message]
 }
 
-function constructRecipientVariables (messages: Message[], signature: string) {
+// function handleAllRecipents (to: string, cc: string[]) {
+//   return [to].concat(cc)
+// }
+
+function formatRecipents (messages: Message[]) {
+  const allRecipents: string[][] = []
+  messages.forEach((msg) => {
+    const ccRecipents = msg.cc
+    const bccRecipents = msg.bcc
+    const recipentMessage: string[] = []
+    recipentMessage.push(msg.to)
+    ccRecipents.forEach((recipient) => {
+      recipentMessage.push(recipient)
+    })
+    bccRecipents.forEach((recipient) => {
+      recipentMessage.push(recipient)
+    })
+    allRecipents.push(recipentMessage)
+  })
+  return allRecipents.flat(1)
+}
+
+function constructRecipientVariables (
+  messages: Message[],
+  signature: string) {
   const recipientVariables: { [email: string]: any } = {}
   messages.forEach((message) => {
     recipientVariables[message.to] = {
