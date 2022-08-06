@@ -37,7 +37,7 @@ export async function sendEmail (
   const messageData = {
     from,
     'h:sender': from,
-    to: formatRecipents(messages),
+    to: formatAllRecipents(messages),
     cc: messages.map((message) => message.cc).flat(1),
     bcc: messages.map((message) => message.bcc).flat(1),
     subject: '%recipient.subject%',
@@ -55,11 +55,7 @@ export async function sendEmail (
   return [messagesSendResult.status, messagesSendResult.message]
 }
 
-// function handleAllRecipents (to: string, cc: string[]) {
-//   return [to].concat(cc)
-// }
-
-function formatRecipents (messages: Message[]) {
+function formatAllRecipents (messages: Message[]) {
   const allRecipents: string[][] = []
   messages.forEach((msg) => {
     const ccRecipents = msg.cc
@@ -82,11 +78,33 @@ function constructRecipientVariables (
   signature: string) {
   const recipientVariables: { [email: string]: any } = {}
   messages.forEach((message) => {
+    const ccRecipents = message.cc
+    const bccRecipents = message.bcc
     recipientVariables[message.to] = {
       subject: message.subject,
       content: message.content +
         '<br/><br/>' +
         signature.replace('/assets/hbplogo.png', 'cid:hbplogo.png')
+    }
+    if (ccRecipents) {
+      ccRecipents.forEach((recipient) => {
+        recipientVariables[recipient] = {
+          subject: message.subject,
+          content: message.content +
+        '<br/><br/>' +
+        signature.replace('/assets/hbplogo.png', 'cid:hbplogo.png')
+        }
+      })
+    }
+    if (bccRecipents) {
+      bccRecipents.forEach((recipient) => {
+        recipientVariables[recipient] = {
+          subject: message.subject,
+          content: message.content +
+        '<br/><br/>' +
+        signature.replace('/assets/hbplogo.png', 'cid:hbplogo.png')
+        }
+      })
     }
   })
 
