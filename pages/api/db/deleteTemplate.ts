@@ -1,7 +1,11 @@
 import { Message } from '../types'
 
 export default async function handler (req: any, res: any) {
-  res.status(200).json(JSON.stringify(deleteTemplate(req.body.id)))
+  if (!req.body.id) {
+    res.status(400).json(JSON.stringify(deleteTemplate(req.body.id)))
+  } else {
+    res.status(200).json(JSON.stringify(deleteTemplate(req.body.id)))
+  }
 }
 
 function deleteTemplate (id : number) {
