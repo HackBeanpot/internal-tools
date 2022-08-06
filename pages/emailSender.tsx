@@ -281,6 +281,7 @@ const EmailSender: NextPage = () => {
   const sendEmails = () => {
     // format: 'FName LName <email@hackbeanpot.com>'
     const from = '' + session?.user?.name + ' <' + session?.user?.email + '>'
+    console.log(finalMessages[0].cc)
     const dataToSend = {
       emailData: finalMessages,
       from,
