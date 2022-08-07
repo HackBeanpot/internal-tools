@@ -5,3 +5,8 @@ export interface Message {
     timestamp: Date
     createdBy: string
 }
+
+export interface Response {
+    status: number
+    message: any
+}
