@@ -93,7 +93,12 @@ const EmailSender: NextPage = () => {
     reader = new window.FileReader()
   }
   const handleUploadCsv = (e: any) => {
-    const filename = e.target.files[0].name
+    let filename = ''
+    while (filename === '') {
+      if (e.target.files.length > 0) {
+        filename = e.target.files[0].name
+      }
+    }
     if (filename.substring(filename.length - 3) !== 'csv') {
       setErrorMessages([
         {
