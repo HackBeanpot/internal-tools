@@ -25,6 +25,7 @@ export default function SubjectSection ({
           aria-labelledby="choose-email-subject"
           name="email-subject"
           onChange={handleEmailStandard}
+          defaultValue="customized"
         >
           <FormControlLabel
             value="customized"
