@@ -37,7 +37,7 @@ export async function sendEmail (
   const messageData = {
     from,
     'h:sender': from,
-    to: formatAllRecipents(messages),
+    to: formatAllRecipients(messages),
     cc: messages.map((message) => message.cc).flat(1),
     bcc: messages.map((message) => message.bcc).flat(1),
     subject: '%recipient.subject%',
@@ -54,7 +54,7 @@ export async function sendEmail (
   return [messagesSendResult.status, messagesSendResult.message]
 }
 
-function formatAllRecipents (messages: Message[]) {
+function formatAllRecipients (messages: Message[]) {
   const allRecipents: string[][] = []
   messages.forEach((msg) => {
     const ccRecipents = msg.cc
