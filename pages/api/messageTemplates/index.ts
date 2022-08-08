@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getMockTemplates, createMockTemplate } from './mockData'
+import { Response } from '../types'
 
 export default async function handler (
   req: NextApiRequest,
@@ -7,31 +8,45 @@ export default async function handler (
 ) {
   const method = req.method
 
-  let status: number
-  let message: any
+  let output: Response
+
   switch (method) {
     case undefined:
-      status = 400
-      message = 'HTTP method must be explicitly defined'
+      output = { status: 400, message: 'HTTP method must be explicitly defined' }
       break
     case 'GET':
-      status = 200
-      message = getMockTemplates()
+      output = handleGet()
       break
     case 'POST':
-      if (!(req.body.title && req.body.message && req.body.createdBy)) {
-        status = 400
-        message = 'New templates must have a title, ' +
-                    'message, and createdBy in HTTP request body json'
-      } else {
-        status = 200
-        message = createMockTemplate(req.body.title, req.body.message, req.body.createdBy)
-      }
+      output = handlePost(req.body)
       break
     default:
-      status = 400
-      message = 'HTTP method must be GET or POST if no id is given'
+      output = { status: 400, message: 'HTTP method must be GET or POST if no id is given' }
   }
 
+  const status: number = output.status
+  const message: any = output.message
   res.status(status).json(JSON.stringify(message))
+}
+
+function handleGet () {
+  const status: number = 200
+  const message = getMockTemplates()
+  return { status, message }
+}
+
+function handlePost (body: any) {
+  let status: number
+  let message: any
+  if (!(body.title && body.message && body.createdBy)) {
+    status = 400
+    message = 'New templates must have a title, ' +
+      'message, and createdBy in HTTP request body json'
+  } else {
+    status = 200
+    message = createMockTemplate(
+      body.title, body.message, body.createdBy
+    )
+  }
+  return { status, message }
 }
