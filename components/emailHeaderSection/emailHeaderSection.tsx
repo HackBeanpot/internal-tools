@@ -69,7 +69,7 @@ export default function SubjectSection ({
 
       <SectionContainer>
         <FormLabel id="choose-email-subject">
-          Enter cc and bcc recipents. If not leave blank.
+          Enter cc and bcc recipients, separated by commas or spaces. If not leave blank.
         </FormLabel>
         <SectionContainer>
           <StyledSubHeader variant="h5">
