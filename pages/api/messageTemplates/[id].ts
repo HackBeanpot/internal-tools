@@ -5,9 +5,8 @@ import {
   createMockTemplateWithId,
   updateMockTemplate,
   deleteMockTemplate
-} from './mockData'
-import { Response } from '../types'
-
+} from '../../../lib/mockData'
+import { Response } from '../../../lib/types'
 export default async function handler (
   req: NextApiRequest,
   res: NextApiResponse

@@ -1,5 +1,5 @@
 import { customAlphabet } from 'nanoid'
-import { Message } from '../types'
+import { MessageTemplate } from './types'
 
 export function createMockTemplate (title: string, message: string, createdBy: string) {
   const nanoid = customAlphabet('1234567890')
@@ -9,7 +9,7 @@ export function createMockTemplate (title: string, message: string, createdBy: s
 export function createMockTemplateWithId (
   id: number, title: string, message: string, createdBy: string
 ) {
-  const template1: Message = {
+  const template1: MessageTemplate = {
     messageID: id,
     title,
     message,
@@ -20,14 +20,14 @@ export function createMockTemplateWithId (
 }
 
 export function deleteMockTemplate (id : number) {
-  const template1: Message = {
+  const template1: MessageTemplate = {
     messageID: 1,
     title: 'title 1',
     message: 'message 2',
     timestamp: new Date('December 17, 1995 03:24:00'),
     createdBy: 'dean'
   }
-  const template2: Message = {
+  const template2: MessageTemplate = {
     messageID: 2,
     title: 'title 2',
     message: 'message 2',
@@ -35,7 +35,7 @@ export function deleteMockTemplate (id : number) {
     createdBy: 'karyna'
   }
 
-  const messageArray: Message[] = [template1, template2]
+  const messageArray: MessageTemplate[] = [template1, template2]
 
   const found = messageArray.find(function (temp) {
     return temp.messageID === id
@@ -50,14 +50,14 @@ export function deleteMockTemplate (id : number) {
 }
 
 export function getMockTemplates () {
-  const template1: Message = {
+  const template1: MessageTemplate = {
     messageID: 1,
     title: 'title 1',
     message: 'message 1',
     timestamp: new Date('December 17, 1995 03:24:00'),
     createdBy: 'mike'
   }
-  const template2: Message = {
+  const template2: MessageTemplate = {
     messageID: 2,
     title: 'title 2',
     message: 'message 2',
@@ -65,7 +65,7 @@ export function getMockTemplates () {
     createdBy: 'karyna'
   }
 
-  const template3: Message = {
+  const template3: MessageTemplate = {
     messageID: 3,
     title: 'title 3',
     message: 'message 3',
@@ -73,12 +73,12 @@ export function getMockTemplates () {
     createdBy: 'dean'
   }
 
-  const messageArray: Message[] = [template1, template2, template3]
+  const messageArray: MessageTemplate[] = [template1, template2, template3]
   return messageArray
 }
 
 export function getMockTemplate (id: number) {
-  const template1: Message = {
+  const template1: MessageTemplate = {
     messageID: id,
     title: 'message title',
     message: 'message',
@@ -89,7 +89,7 @@ export function getMockTemplate (id: number) {
 }
 
 export function updateMockTemplate (id: number, title: string, message: string, createdBy: string) {
-  const template1: Message = {
+  const template1: MessageTemplate = {
     messageID: id,
     title,
     message,

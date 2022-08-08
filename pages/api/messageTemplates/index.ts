@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getMockTemplates, createMockTemplate } from './mockData'
-import { Response } from '../types'
+import { getMockTemplates, createMockTemplate } from '../../../lib/mockData'
+import { Response } from '../../../lib/types'
 
 export default async function handler (
   req: NextApiRequest,
