@@ -17,6 +17,7 @@ import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 import EmailSignature from '../components/emailSignature/emailSignature'
+import { icons } from '../styles/icons'
 import EmailSignatureForm from '../components/emailSignature/emailSignatureForm'
 
 const Sigmaker: NextPage = () => {
@@ -38,6 +39,11 @@ const Sigmaker: NextPage = () => {
             <Grid item xs={12} md={6}>
               <StyledGmailHeader variant="h4">
                 Paste this into Gmail!
+                <img
+                  id="preview-image-url"
+                  src={icons.Salute.image}
+                  alt={icons.Salute.altText}
+                />
               </StyledGmailHeader>
               <EmailSignature signatureData={signatureData} />
             </Grid>
