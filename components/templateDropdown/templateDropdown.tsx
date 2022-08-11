@@ -1,10 +1,14 @@
 import * as React from 'react'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
+import {
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+  SelectChangeEvent,
+  Typography,
+  Stack
+} from '@mui/material'
 import { MessageTemplate } from '../../lib/types'
-import { Typography, Stack } from '@mui/material'
 
 type TemplateDropdownProps = {
   templates: MessageTemplate[]
@@ -34,11 +38,11 @@ export default function TemplateDropdown ({ templates }: TemplateDropdownProps) 
           {templates.map((item: MessageTemplate) => (
             <MenuItem key={item.messageID}>
               <Stack direction="row" spacing={2}>
-              <Typography variant="body1">
-                {item.title}
+                <Typography variant="body1">
+                  {item.title}
                 </Typography>
                 <Typography variant="body1">
-                {item.timestamp.toLocaleString()}
+                  {item.timestamp.toLocaleString()}
                 </Typography>
 
               </Stack>

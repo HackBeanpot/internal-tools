@@ -1,6 +1,6 @@
 import React from 'react'
 import type { NextPage } from 'next'
-import { Typography, ThemeProvider, Divider, Stack, Link, Button } from '@mui/material'
+import { Typography, ThemeProvider, Divider, Stack, Link, Button, Grid } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import Layout from '../components/layout/Layout'
 import { StyledPageContainer, SectionContainer, StyledTextArea } from '../styles/common'
@@ -10,6 +10,8 @@ import { StyledTextField } from '../pageStyles/emailSender.styles'
 
 const ManageTemplates: NextPage = () => {
   const theme = useTheme()
+
+  // HARD CODED VALUES
   const template1: MessageTemplate = {
     messageID: 1,
     title: 'title 1',
@@ -39,17 +41,16 @@ const ManageTemplates: NextPage = () => {
             <Layout>
                 <ThemeProvider theme={theme}>
                     <StyledPageContainer>
-                        <Stack direction="row" spacing={'50%'}
-                            sx={{
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'center'
-                            }}>
-                            <Typography variant="h4">Manage Templates</Typography>
-                            <Link href="/emailSenderHelp" underline="hover">
-                                {'←'} Email Sender
-                            </Link>
-                        </Stack>
+                        <Grid container spacing={2}>
+                            <Grid item xs={10}>
+                                <Typography variant="h4">Manage Templates</Typography>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <Link href="/emailSender" underline="hover">
+                                    {'←'} Email Sender
+                                </Link>
+                            </Grid>
+                        </Grid>
                         <Divider />
                         <br />
                         <SectionContainer>
@@ -60,9 +61,11 @@ const ManageTemplates: NextPage = () => {
                                 <Typography variant="body1">Template Name</Typography>
                                 <Typography color="red">*</Typography>
                             </Stack>
+                            <br></br>
                             <StyledTextField
                                 id="outlined-basic"
                                 variant="outlined"
+                                placeholder="Template Name"
                             // onChange={handleEmailSubject}
                             />
                         </SectionContainer>
@@ -71,6 +74,7 @@ const ManageTemplates: NextPage = () => {
                                 <Typography variant="body1">Template Message</Typography>
                                 <Typography color="red">*</Typography>
                             </Stack>
+                            <br></br>
                             <StyledTextArea
                                 aria-label="message-text-area"
                                 placeholder="Paste in message"
