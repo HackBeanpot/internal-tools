@@ -1,10 +1,14 @@
 import { styled } from '@mui/system'
-import { Button, Container, TextareaAutosize, Toolbar, Typography } from '@mui/material'
+import { Button, Container, TextareaAutosize, Toolbar, Typography, TextField } from '@mui/material'
 import { theme } from './theme'
 
 const StyledPageContainer = styled(Container)({
   marginTop: 40,
   marginBottom: 40
+})
+
+const StyledSubHeader = styled(Typography)({
+  paddingBottom: 25
 })
 
 const StyledButton = styled(Button, {
@@ -61,9 +65,16 @@ const StyledHeaderLogoImage = styled('img')({
   float: 'left',
   margin: '0 15px 0 0'
 })
+const StyledTextField = styled(TextField)({
+  width: 280
+})
+
+const StyledErrorMessage = styled(Typography)({
+  color: theme.palette.Red.main
+})
 
 export {
   StyledPageContainer, StyledButton, StyledBoldTypograhy, SectionContainer, StyledTextArea,
   StyledFinalMessageContent, StyledEditButton, StyledToolbar, StyledSignOutButton,
-  StyledHeaderLogoImage, StyledToolbarRightDiv
+  StyledHeaderLogoImage, StyledToolbarRightDiv, StyledSubHeader, StyledTextField, StyledErrorMessage
 }

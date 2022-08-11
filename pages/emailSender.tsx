@@ -11,7 +11,7 @@ import type { NextPage } from 'next'
 import { useSession } from 'next-auth/react'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
-import { StyledPageContainer, SectionContainer } from '../styles/common'
+import { StyledPageContainer, SectionContainer, StyledErrorMessage } from '../styles/common'
 import {
   CsvRow,
   ReplaceObj,
@@ -20,9 +20,6 @@ import {
   ResultMessage,
   SignatureData
 } from '../lib/types'
-import {
-  StyledErrorMessage
-} from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
