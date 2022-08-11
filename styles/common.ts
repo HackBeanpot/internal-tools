@@ -69,8 +69,12 @@ const StyledTextField = styled(TextField)({
   width: 280
 })
 
+const StyledErrorMessage = styled(Typography)({
+  color: theme.palette.Red.main
+})
+
 export {
   StyledPageContainer, StyledButton, StyledBoldTypograhy, SectionContainer, StyledTextArea,
   StyledFinalMessageContent, StyledEditButton, StyledToolbar, StyledSignOutButton,
-  StyledHeaderLogoImage, StyledToolbarRightDiv, StyledSubHeader, StyledTextField
+  StyledHeaderLogoImage, StyledToolbarRightDiv, StyledSubHeader, StyledTextField, StyledErrorMessage
 }

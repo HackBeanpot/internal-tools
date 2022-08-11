@@ -1,10 +1,10 @@
 import React from 'react'
 import { Message, SignatureData } from '../../lib/types'
-import { StyledErrorMessage } from '../../pageStyles/emailSender.styles'
 import { StyledFinalMessagesContainer, StyledDivider } from './displayMessages.styles'
 import FinalMessage from '../../components/finalMessage/finalMessage'
 import EmailSignature from '../emailSignature/emailSignature'
 import { nanoid } from 'nanoid'
+import { StyledErrorMessage } from '../../styles/common'
 
 type DisplayMessagesProps = {
   finalMessages: Message[],
