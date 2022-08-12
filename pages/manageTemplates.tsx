@@ -45,10 +45,11 @@ const ManageTemplates: NextPage = () => {
   const [templateName, setTemplateName] = useState('')
   const [templateMessage, setTemplateMessage] = useState('')
   const [disabledButton, setDisabledButton] = useState(true)
+  // React.ChangeEvent<HTMLInputElement>
   const handleTemplateNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTemplateName(event.target.value)
   }
-  const handleTemplateMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTemplateMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTemplateMessage(event.target.value)
   }
   React.useEffect(() => {
