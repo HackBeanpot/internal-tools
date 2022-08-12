@@ -89,7 +89,7 @@ const ManageTemplates: NextPage = () => {
                                 id="outlined-basic"
                                 variant="outlined"
                                 placeholder="Template Name"
-                                onChange={(e) => handleTemplateNameChange}
+                                onChange={handleTemplateNameChange}
                             />
                         </SectionContainer>
                         <SectionContainer>
@@ -101,7 +101,7 @@ const ManageTemplates: NextPage = () => {
                             <StyledTextArea
                                 aria-label="message-text-area"
                                 placeholder="Paste in message"
-                                onChange={(e) => handleTemplateMessageChange}
+                                onChange={handleTemplateMessageChange}
                                 minRows={5}
                             />
                         </SectionContainer>
