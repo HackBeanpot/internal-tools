@@ -1,8 +1,7 @@
 import React from 'react'
 import { FormGroup, FormControlLabel, Checkbox } from '@mui/material'
 import EmailSignatureForm from '../emailSignature/emailSignatureForm'
-import { StyledSubHeader } from '../../pageStyles/emailSender.styles'
-import { SectionContainer, StyledTextArea } from '../../styles/common'
+import { SectionContainer, StyledTextArea, StyledSubHeader } from '../../styles/common'
 
 type EmailContentProps = {
   setMessage: any;

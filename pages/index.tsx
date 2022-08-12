@@ -6,6 +6,7 @@ import { theme } from '../styles/theme'
 import { TextContainer } from '../pageStyles/home.styles'
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
+import { icons } from '../styles/icons'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 
 const Home: NextPage = () => {
@@ -18,6 +19,11 @@ const Home: NextPage = () => {
         <TextContainer>
           <Typography variant="body1">
             🛠 Internal tools + useful things for core members like…
+              <img
+                id="preview-image-url"
+                src={icons.Salute.image}
+                alt={icons.Salute.altText}
+              />
           </Typography>
           <ul>
             <li>

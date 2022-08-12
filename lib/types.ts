@@ -40,4 +40,8 @@ export interface MessageTemplate {
     timestamp: Date
     createdBy: string
 }
-// delete later
+
+export interface Response {
+    status: number
+    message: any
+}

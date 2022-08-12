@@ -10,6 +10,11 @@ const StyledCsvButtonsContainer = styled('div')({
   display: 'flex'
 })
 
+const SectionContainer = styled('div')({
+  marginTop: 30,
+  marginBottom: 30
+})
+
 export {
-  StyledCsvButton, StyledCsvButtonsContainer
+  StyledCsvButton, StyledCsvButtonsContainer, SectionContainer
 }
