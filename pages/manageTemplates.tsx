@@ -1,6 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import type { NextPage } from 'next'
-import { Typography, ThemeProvider, Divider, Stack, Link, Button, Grid } from '@mui/material'
+import {
+  Typography,
+  ThemeProvider,
+  Divider,
+  Stack,
+  Link,
+  Button,
+  Grid,
+  SelectChangeEvent
+} from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import Layout from '../components/layout/Layout'
 import { StyledPageContainer, SectionContainer, StyledTextArea } from '../styles/common'
@@ -33,8 +42,25 @@ const ManageTemplates: NextPage = () => {
     timestamp: new Date('October 9, 2003 03:24:00'),
     createdBy: 'dean'
   }
-
   const messageArray: MessageTemplate[] = [template1, template2, template3]
+  const [templateName, setTemplateName] = useState('')
+  const [disabledButton, setDisabledButton] = useState(true)
+  const handleTemplateNameChange = (event: SelectChangeEvent) => {
+    console.log('---- NEW EVENT SENSES ---- ')
+    setTemplateName(event.target.value)
+    handleButton()
+    console.log('CHANGE MADE ' + templateName)
+  }
+  const handleButton = () => {
+    if (templateName === '') {
+      console.log('DISABLING BUTTON: ' + templateName)
+      setDisabledButton(true)
+    } else {
+      console.log('ENABLING BUTTON: ' + templateName)
+      setDisabledButton(false)
+    }
+  }
+
   return (
         <>
             <Layout>
@@ -65,7 +91,7 @@ const ManageTemplates: NextPage = () => {
                                 id="outlined-basic"
                                 variant="outlined"
                                 placeholder="Template Name"
-                            // onChange={handleEmailSubject}
+                                onChange={handleTemplateNameChange}
                             />
                         </SectionContainer>
                         <SectionContainer>
@@ -81,7 +107,8 @@ const ManageTemplates: NextPage = () => {
                                 minRows={5}
                             />
                         </SectionContainer>
-                        <Button variant="contained" component="span">
+                        <Button disabled={disabledButton}
+                            variant="contained" component="span">
                             Create New Message
                         </Button>
                     </StyledPageContainer>
