@@ -4,7 +4,7 @@ import Layout from '../components/layout/Layout'
 import CSVTable from '../components/csvTable/CSVTable'
 import { ThemeProvider, Typography, Divider } from '@mui/material'
 import { StyledPageContainer, SectionContainer } from '../styles/common'
-import { StyledSubHeader } from '../pageStyles/help.styles'
+import { StyledSubHeader, StyledLink } from '../pageStyles/help.styles'
 import { TextContainer } from '../pageStyles/home.styles'
 import { theme } from '../styles/theme'
 import { GetServerSideProps } from 'next'
@@ -115,6 +115,12 @@ const Help: NextPage = () => {
                     company). Scroll down to see the full CSV file example.
                   </Typography>
                 </li>
+                <li>
+                  <Typography variant="body1">
+                    You can export a Google Sheet as a CSV file by going to File --{'>'}{' '}
+                    Download --{'>'} Comma Separated Values (.csv)
+                  </Typography>
+                </li>
               </ul>
               <StyledSubHeader variant="h6">
                 4) Verify final messages
@@ -152,7 +158,10 @@ const Help: NextPage = () => {
                 <li>
                   <Typography variant="body1">
                     If you would like to schedule your email to be sent at a later date and time
-                    then you may specify this up to 3 days ahead of the current time. Ignore this
+                    then you may specify this up to 3 days ahead of the current time.
+                    Scheduled emails can be deleted in the Mailgun dashboard - see instructions{' '}
+                    <StyledLink href="https://help.mailgun.com/hc/en-us/articles/360012487654
+                    -How-Can-I-Delete-Messages-From-the-Queue-">here</StyledLink>. Ignore this
                     step if you would like to send out the emails immediately.
                   </Typography>
                 </li>
