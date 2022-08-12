@@ -7,8 +7,7 @@ import {
   Stack,
   Link,
   Button,
-  Grid,
-  SelectChangeEvent
+  Grid
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import Layout from '../components/layout/Layout'
@@ -44,22 +43,21 @@ const ManageTemplates: NextPage = () => {
   }
   const messageArray: MessageTemplate[] = [template1, template2, template3]
   const [templateName, setTemplateName] = useState('')
+  const [templateMessage, setTemplateMessage] = useState('')
   const [disabledButton, setDisabledButton] = useState(true)
-  const handleTemplateNameChange = (event: SelectChangeEvent) => {
-    console.log('---- NEW EVENT SENSES ---- ')
+  const handleTemplateNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTemplateName(event.target.value)
-    handleButton()
-    console.log('CHANGE MADE ' + templateName)
   }
-  const handleButton = () => {
-    if (templateName === '') {
-      console.log('DISABLING BUTTON: ' + templateName)
+  const handleTemplateMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTemplateMessage(event.target.value)
+  }
+  React.useEffect(() => {
+    if (templateName === '' || templateMessage === '') {
       setDisabledButton(true)
     } else {
-      console.log('ENABLING BUTTON: ' + templateName)
       setDisabledButton(false)
     }
-  }
+  }, [templateName, templateMessage])
 
   return (
         <>
@@ -91,7 +89,7 @@ const ManageTemplates: NextPage = () => {
                                 id="outlined-basic"
                                 variant="outlined"
                                 placeholder="Template Name"
-                                onChange={handleTemplateNameChange}
+                                onChange={(e) => handleTemplateNameChange}
                             />
                         </SectionContainer>
                         <SectionContainer>
@@ -103,7 +101,7 @@ const ManageTemplates: NextPage = () => {
                             <StyledTextArea
                                 aria-label="message-text-area"
                                 placeholder="Paste in message"
-                                // onChange={(e) => setMessage(e.target.value)}
+                                onChange={(e) => handleTemplateMessageChange}
                                 minRows={5}
                             />
                         </SectionContainer>
