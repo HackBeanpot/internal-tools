@@ -10,7 +10,6 @@ import { StyledTextField } from '../pageStyles/emailSender.styles'
 
 const ManageTemplates: NextPage = () => {
   const theme = useTheme()
-
   // HARD CODED VALUES
   const template1: MessageTemplate = {
     messageID: 1,
@@ -47,7 +46,7 @@ const ManageTemplates: NextPage = () => {
                             </Grid>
                             <Grid item xs={2}>
                                 <Link href="/emailSender" underline="hover">
-                                    {'←'} Email Sender
+                                    <Typography variant="body1"> {'←'} Email Sender</Typography>
                                 </Link>
                             </Grid>
                         </Grid>
@@ -61,7 +60,7 @@ const ManageTemplates: NextPage = () => {
                                 <Typography variant="body1">Template Name</Typography>
                                 <Typography color="red">*</Typography>
                             </Stack>
-                            <br></br>
+                            <br />
                             <StyledTextField
                                 id="outlined-basic"
                                 variant="outlined"
@@ -74,7 +73,7 @@ const ManageTemplates: NextPage = () => {
                                 <Typography variant="body1">Template Message</Typography>
                                 <Typography color="red">*</Typography>
                             </Stack>
-                            <br></br>
+                            <br />
                             <StyledTextArea
                                 aria-label="message-text-area"
                                 placeholder="Paste in message"

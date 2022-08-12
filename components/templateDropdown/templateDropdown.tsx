@@ -1,14 +1,13 @@
 import * as React from 'react'
 import {
-  InputLabel,
   MenuItem,
-  FormControl,
   Select,
   SelectChangeEvent,
   Typography,
   Stack
 } from '@mui/material'
 import { MessageTemplate } from '../../lib/types'
+import { StyledFormControl } from './templateDropdown.styles'
 
 type TemplateDropdownProps = {
   templates: MessageTemplate[]
@@ -22,17 +21,15 @@ export default function TemplateDropdown ({ templates }: TemplateDropdownProps) 
   }
 
   return (
-    <div>
-      <FormControl variant="standard" sx={{ m: 1, minWidth: 400 }}>
-        <InputLabel id="demo-simple-select-standard-label">Select Template</InputLabel>
+    <>
+      <StyledFormControl>
         <Select
-          labelId="demo-simple-select-standard-label"
-          id="demo-simple-select-standard"
           value={template}
           onChange={handleChange}
-          label="Select Template"
+          displayEmpty
+          inputProps={{ 'aria-label': 'Without label' }}
         >
-          <MenuItem value="">
+          <MenuItem >
             <em>Select Template</em>
           </MenuItem>
           {templates.map((item: MessageTemplate) => (
@@ -44,12 +41,11 @@ export default function TemplateDropdown ({ templates }: TemplateDropdownProps) 
                 <Typography variant="body1">
                   {item.timestamp.toLocaleString()}
                 </Typography>
-
               </Stack>
             </MenuItem>
           ))}
         </Select>
-      </FormControl>
-    </div>
+      </StyledFormControl>
+    </>
   )
 }
