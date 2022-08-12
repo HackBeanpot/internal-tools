@@ -1,7 +1,6 @@
 import React from 'react'
 import { FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material'
-import { StyledSubHeader, StyledTextField } from '../../pageStyles/emailSender.styles'
-import { SectionContainer } from '../../styles/common'
+import { SectionContainer, StyledSubHeader, StyledTextField } from '../../styles/common'
 
 type SubjectSectionProps = {
   handleEmailStandard: any,
