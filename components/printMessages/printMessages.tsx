@@ -1,6 +1,5 @@
 import React from 'react'
-import { StyledSubHeader } from '../../pageStyles/emailSender.styles'
-import { SectionContainer, StyledButton } from '../../styles/common'
+import { SectionContainer, StyledButton, StyledSubHeader } from '../../styles/common'
 
 type PrintMessagesProps = {
   length: number;
