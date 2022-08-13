@@ -5,7 +5,7 @@ import {
   Typography
 } from '@mui/material'
 import { ValidatorForm } from 'react-material-ui-form-validator'
-import { StyledTextValidator } from '../../styles/emailSignatureForm'
+import { StyledTextValidator } from './emailSignatureForm.styles'
 import { StyledButton } from '../../styles/common'
 
 /**

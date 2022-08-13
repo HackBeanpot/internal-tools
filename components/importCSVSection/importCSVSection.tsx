@@ -1,13 +1,11 @@
 import { Button } from '@mui/material'
 import React from 'react'
-import {
-  SectionContainer,
-  StyledSubHeader
-} from '../../pageStyles/emailSender.styles'
+import { StyledSubHeader } from '../../styles/common'
 
 import {
   StyledCsvButton,
-  StyledCsvButtonsContainer
+  StyledCsvButtonsContainer,
+  SectionContainer
 } from './importCsvSection.styles'
 
 type ImportCSVSectionProps = {
