@@ -167,10 +167,24 @@ const Help: NextPage = () => {
                 </li>
                 <li>
                   <Typography variant="body1">
+                   Across time zones, you can send emails to your recipients at the proper times.
+                   You can schedule your email to be delivered at a later time,
+                   such as their respective 7 PM,
+                   rather than sending it to everyone at your 7 PM.
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="body1">
                     Click &quot;send&quot; to send the emails to the specified
                     recipients. NOTE: The emails will be sent from the account of the logged in user
                     logged in to this site, so prior to sending you should ensure that you are
                     logged in with the correct account.
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="body1">
+                   You have an allowance of 5,000 emails per month and
+                   a limit of 300 emails per day.
                   </Typography>
                 </li>
               </ul>
