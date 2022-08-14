@@ -29,7 +29,7 @@ export default function TemplateDropdown ({ templates }: TemplateDropdownProps) 
           displayEmpty
           inputProps={{ 'aria-label': 'Without label' }}
         >
-          <MenuItem >
+          <MenuItem value="">
             <em>Select Template</em>
           </MenuItem>
           {templates.map((item: MessageTemplate) => (

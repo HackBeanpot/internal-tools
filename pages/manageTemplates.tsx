@@ -11,10 +11,14 @@ import {
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import Layout from '../components/layout/Layout'
-import { StyledPageContainer, SectionContainer, StyledTextArea } from '../styles/common'
+import {
+  StyledPageContainer,
+  SectionContainer,
+  StyledTextArea,
+  StyledTextField
+} from '../styles/common'
 import TemplateDropdown from '../components/templateDropdown/templateDropdown'
 import { MessageTemplate } from '../lib/types'
-import { StyledTextField } from '../pageStyles/emailSender.styles'
 
 const ManageTemplates: NextPage = () => {
   const theme = useTheme()
