@@ -107,7 +107,7 @@ const Help: NextPage = () => {
                 <li>
                   <Typography variant="body1">
                     Import a CSV file that includes a table that fills at least
-                    2 columns titled -- email, subject -- where email is each
+                     2 columns titled -- email, subject -- where email is each
                     recipient&apos;s email and subject is the subject of the
                     email. You can add more columns with any title that you
                     want. These titles should be what you hope to include in the
@@ -167,10 +167,8 @@ const Help: NextPage = () => {
                 </li>
                 <li>
                   <Typography variant="body1">
-                   Across time zones, you can send emails to your recipients at the proper times.
-                   You can schedule your email to be delivered at a later time,
-                   such as their respective 7 PM,
-                   rather than sending it to everyone at your 7 PM.
+                   When scheduleing across timezones, emails will be sent at EST
+                   and will not adjust to timezone differences.
                   </Typography>
                 </li>
                 <li>
