@@ -167,7 +167,7 @@ const Help: NextPage = () => {
                 </li>
                 <li>
                   <Typography variant="body1">
-                   When scheduleing across timezones, emails will be sent at EST
+                   When scheduling across timezones, emails will be sent at EST time
                    and will not adjust to timezone differences.
                   </Typography>
                 </li>
