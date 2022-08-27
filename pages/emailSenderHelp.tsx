@@ -224,7 +224,7 @@ const Help: NextPage = () => {
                 <br />
                 <br />
                 Best, <br /> Cindy
-                { /* eslint-enable */ }
+                { /* eslint-enable no-template-curly-in-string */ }
               </Typography>
             </SectionContainer>
             <Divider light />
