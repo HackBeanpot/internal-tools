@@ -194,17 +194,18 @@ const Help: NextPage = () => {
             <SectionContainer>
               <Typography variant="h6">Example Message: </Typography>
               <Typography variant="body1">
+                { /* eslint-disable no-template-curly-in-string */ }
                 <br />
-                Hi {'$ {name}'}!<br />
+                Hi {'${name}'}!<br />
                 <br />
                 My name is Cindy Luo, and I’m on HackBeanpot’s sponsorship team
                 this year. I’m reaching out because we’ve started planning for
                 HackBeanpot in February 2022, and we would love for{' '}
-                {'$ {company}'} to partner with us again! This past event was a
+                {'${company}'} to partner with us again! This past event was a
                 success, with 200 students from 33 schools, creating 39
                 different projects, and it would not have been possible without
-                you. Thanks to {'$ {company}'} sponsorship, we were able to
-                expose both new and returning hackers to the {'$ {company}'}{' '}
+                you. Thanks to {'${company}'} sponsorship, we were able to
+                expose both new and returning hackers to the {'${company}'}{' '}
                 core values and mission statement!
                 <br />
                 <br /> We plan to hold an in-person Hackathon but are open to
@@ -214,7 +215,7 @@ const Help: NextPage = () => {
                 as possible in light of COVID-19. I’ve attached our sponsorship
                 packet to this email for you to look over, and would love to
                 schedule a call to chat about it some more, and see what package
-                might work best for {'$ {company}'}. If you’re interested,
+                might work best for {'${company}'}. If you’re interested,
                 please let me know when would be a good time. In the meantime,
                 feel free to check out our website or Instagram to see what
                 we’ve been up to! Thanks again for your continued support! We
@@ -223,6 +224,7 @@ const Help: NextPage = () => {
                 <br />
                 <br />
                 Best, <br /> Cindy
+                { /* eslint-enable */ }
               </Typography>
             </SectionContainer>
             <Divider light />
