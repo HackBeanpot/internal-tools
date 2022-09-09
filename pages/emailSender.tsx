@@ -45,7 +45,10 @@ const EmailSender: NextPage = () => {
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
   const [subjectCustomization, setSubjectCustomization] = useState(true)
   const [standardSubject, setStandardSubject] = useState('')
-  const [emailHeader, setEmailHeader] = useState<EmailHeader>({})
+  const [emailHeader, setEmailHeader] = useState<EmailHeader>({
+    cc: '',
+    bcc: ''
+  })
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
   const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([])
