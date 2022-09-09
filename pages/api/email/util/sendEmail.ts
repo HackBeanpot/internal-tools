@@ -32,14 +32,13 @@ export async function sendEmail (
       data: await fs.readFile(path.join(process.cwd(), '/public/assets/hbplogo.png'))
     }
   }
-  // const ccRecipents = messages[0].cc
-  // const bccRecipents = messages[0].bcc
+
   const messageData = {
     from,
     'h:sender': from,
     to: formatAllRecipients(messages),
-    cc: messages.map((message) => message.cc).flat(1),
-    bcc: messages.map((message) => message.bcc).flat(1),
+    cc: messages[0].cc,
+    bcc: messages[0].cc,
     subject: '%recipient.subject%',
     html: '%recipient.content%',
     'recipient-variables': constructRecipientVariables(
@@ -57,17 +56,10 @@ export async function sendEmail (
 function formatAllRecipients (messages: Message[]) {
   const allRecipents: string[][] = []
   messages.forEach((msg) => {
-    const ccRecipents = msg.cc
-    const bccRecipents = msg.bcc
     const recipentMessage: string[] = []
     recipentMessage.push(msg.to)
-    ccRecipents.forEach((recipient) => {
-      recipentMessage.push(recipient)
-    })
-    bccRecipents.forEach((recipient) => {
-      recipentMessage.push(recipient)
-    })
-    allRecipents.push(recipentMessage)
+    recipentMessage.push(msg.cc)
+    recipentMessage.push(msg.bcc)
   })
   return allRecipents.flat(1)
 }
@@ -78,7 +70,7 @@ function constructRecipientVariables (
   const recipientVariables: { [email: string]: any } = {}
   messages.forEach((message) => {
     const ccRecipents = message.cc
-    const bccRecipents = message.bcc
+    const bccRecipent = message.bcc
     recipientVariables[message.to] = {
       subject: message.subject,
       content: message.content +
@@ -86,24 +78,21 @@ function constructRecipientVariables (
         signature.replace('/assets/hbplogo.png', 'cid:hbplogo.png')
     }
     if (ccRecipents) {
-      ccRecipents.forEach((recipient) => {
-        recipientVariables[recipient] = {
-          subject: message.subject,
-          content: message.content +
+      recipientVariables[ccRecipents] = {
+        subject: message.subject,
+        content: message.content +
         '<br/><br/>' +
         signature.replace('/assets/hbplogo.png', 'cid:hbplogo.png')
-        }
-      })
+
+      }
     }
-    if (bccRecipents) {
-      bccRecipents.forEach((recipient) => {
-        recipientVariables[recipient] = {
-          subject: message.subject,
-          content: message.content +
+    if (bccRecipent) {
+      recipientVariables[bccRecipent] = {
+        subject: message.subject,
+        content: message.content +
         '<br/><br/>' +
         signature.replace('/assets/hbplogo.png', 'cid:hbplogo.png')
-        }
-      })
+      }
     }
   })
 

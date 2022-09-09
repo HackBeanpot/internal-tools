@@ -7,8 +7,8 @@ export interface SignatureData {
 }
 
 export interface EmailHeader {
-    cc: string[]
-    bcc: string[]
+    cc: string
+    bcc: string
 }
 
 export interface CsvRow {
@@ -24,8 +24,8 @@ export interface ReplaceObj {
 export interface Message {
     id: string;
     to: string;
-    cc: string[];
-    bcc: string[];
+    cc: string;
+    bcc: string;
     subject: string;
     content: string;
 }
