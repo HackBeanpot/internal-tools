@@ -69,8 +69,8 @@ const EmailSender: NextPage = () => {
     const ccRecipentsArray = ccRecipents.match(emailRegex)
     const bccRecipentsArray = bccRecipents.match(emailRegex)
     const emailHeaderCreated: EmailHeader = {
-      cc: ccRecipentsArray[0] || '',
-      bcc: bccRecipentsArray[0] || ''
+      cc: ccRecipentsArray ? ccRecipentsArray[0] : '',
+      bcc: bccRecipentsArray ? bccRecipentsArray[0] : ''
     }
     setEmailHeader(emailHeaderCreated)
   }

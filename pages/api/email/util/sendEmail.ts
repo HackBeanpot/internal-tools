@@ -60,6 +60,7 @@ function formatAllRecipients (messages: Message[]) {
     recipentMessage.push(msg.to)
     recipentMessage.push(msg.cc)
     recipentMessage.push(msg.bcc)
+    allRecipents.push(recipentMessage)
   })
   return allRecipents.flat(1)
 }
