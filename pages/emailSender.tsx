@@ -90,7 +90,12 @@ const EmailSender: NextPage = () => {
     reader = new window.FileReader()
   }
   const handleUploadCsv = (e: any) => {
-    const filename = e.target.files[0].name
+    let filename = ''
+    while (filename === '') {
+      if (e.target.files.length > 0) {
+        filename = e.target.files[0].name
+      }
+    }
     if (filename.substring(filename.length - 3) !== 'csv') {
       setErrorMessages([
         {
@@ -258,6 +263,32 @@ const EmailSender: NextPage = () => {
   const sendEmails = () => {
     // format: 'FName LName <email@hackbeanpot.com>'
     const from = '' + session?.user?.name + ' <' + session?.user?.email + '>'
+    if (checkedDeliveryBox) {
+      if (dateTime === undefined || dateTime === null) {
+        setResultMessage({
+          isError: true,
+          message: 'No delivery time is provided'
+        })
+        return
+      }
+      if (dateTime !== undefined && dateTime !== null) {
+        const curDate = new Date()
+        const latestAllowedDate = new Date(new Date().setHours(curDate.getHours() + 72))
+        if (dateTime! < curDate) {
+          setResultMessage({
+            isError: true,
+            message: 'Cannot select an email send time that has already passed'
+          })
+          return
+        } else if (dateTime! > latestAllowedDate) {
+          setResultMessage({
+            isError: true,
+            message: 'Cannot schedule email over 72 hours in advance'
+          })
+          return
+        }
+      }
+    }
     const dataToSend = {
       emailData: finalMessages,
       from,
