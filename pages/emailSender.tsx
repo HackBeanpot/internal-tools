@@ -268,32 +268,26 @@ const EmailSender: NextPage = () => {
     const from = '' + session?.user?.name + ' <' + session?.user?.email + '>'
     if (checkedDeliveryBox) {
       if (dateTime === undefined || dateTime === null) {
-        setErrorMessages([
-          {
-            id: nanoid(),
-            message: 'No delivery time is provided'
-          }
-        ])
+        setResultMessage({
+          isError: true,
+          message: 'No delivery time is provided'
+        })
         return
       }
       if (dateTime !== undefined && dateTime !== null) {
         const curDate = new Date()
         const latestAllowedDate = new Date(new Date().setHours(curDate.getHours() + 72))
         if (dateTime! < curDate) {
-          setErrorMessages([
-            {
-              id: nanoid(),
-              message: 'Cannot select an email send time that has already passed'
-            }
-          ])
+          setResultMessage({
+            isError: true,
+            message: 'Cannot select an email send time that has already passed'
+          })
           return
         } else if (dateTime! > latestAllowedDate) {
-          setErrorMessages([
-            {
-              id: nanoid(),
-              message: 'Cannot schedule email over 72 hours in advance'
-            }
-          ])
+          setResultMessage({
+            isError: true,
+            message: 'Cannot schedule email over 72 hours in advance'
+          })
           return
         }
       }
