@@ -11,7 +11,7 @@ import type { NextPage } from 'next'
 import { useSession } from 'next-auth/react'
 import { nanoid } from 'nanoid'
 import { useTheme } from '@mui/material/styles'
-import { StyledPageContainer, SectionContainer } from '../styles/common'
+import { StyledPageContainer, SectionContainer, StyledErrorMessage } from '../styles/common'
 import {
   CsvRow,
   ReplaceObj,
@@ -21,9 +21,6 @@ import {
   SignatureData,
   EmailHeader
 } from '../lib/types'
-import {
-  StyledErrorMessage
-} from '../pageStyles/emailSender.styles'
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
 import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
@@ -31,11 +28,11 @@ import { validEmail } from '../lib/validateEmail'
 import EmailSignature from '../components/emailSignature/emailSignature'
 import PrintMessage from '../components/printMessages/printMessages'
 import ImportCSVSection from '../components/importCSVSection/importCSVSection'
-import MessageHeaderSection from '../components/emailHeaderSection/emailHeaderSection'
 import EmailContent from '../components/emailContentSection/emailContentSection'
 import SendEmails from '../components/sendEmails/sendEmails'
 import CSVTable from '../components/csvTable/CSVTable'
 import DisplayMessages from '../components/displayMessages/displayMessages'
+import EmailSenderHeader from '../components/emailHeaderSection/emailHeaderSection'
 
 const EmailSender: NextPage = () => {
   const { data: session } = useSession({ required: true })
@@ -111,7 +108,12 @@ const EmailSender: NextPage = () => {
     reader = new window.FileReader()
   }
   const handleUploadCsv = (e: any) => {
-    const filename = e.target.files[0].name
+    let filename = ''
+    while (filename === '') {
+      if (e.target.files.length > 0) {
+        filename = e.target.files[0].name
+      }
+    }
     if (filename.substring(filename.length - 3) !== 'csv') {
       setErrorMessages([
         {
@@ -287,6 +289,32 @@ const EmailSender: NextPage = () => {
   const sendEmails = () => {
     // format: 'FName LName <email@hackbeanpot.com>'
     const from = '' + session?.user?.name + ' <' + session?.user?.email + '>'
+    if (checkedDeliveryBox) {
+      if (dateTime === undefined || dateTime === null) {
+        setResultMessage({
+          isError: true,
+          message: 'No delivery time is provided'
+        })
+        return
+      }
+      if (dateTime !== undefined && dateTime !== null) {
+        const curDate = new Date()
+        const latestAllowedDate = new Date(new Date().setHours(curDate.getHours() + 72))
+        if (dateTime! < curDate) {
+          setResultMessage({
+            isError: true,
+            message: 'Cannot select an email send time that has already passed'
+          })
+          return
+        } else if (dateTime! > latestAllowedDate) {
+          setResultMessage({
+            isError: true,
+            message: 'Cannot schedule email over 72 hours in advance'
+          })
+          return
+        }
+      }
+    }
     const dataToSend = {
       emailData: finalMessages,
       from,
@@ -340,7 +368,7 @@ const EmailSender: NextPage = () => {
             </Link>
           </Typography>
           <FormControl fullWidth>
-            <MessageHeaderSection
+            <EmailSenderHeader
               handleEmailStandard={handleEmailStandard}
               subjectCustomization={subjectCustomization}
               handleEmailSubject={handleEmailSubject}

@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useState } from 'react'
 import { FormControlLabel, FormLabel, Radio, RadioGroup, Button } from '@mui/material'
-import { StyledSubHeader, StyledTextField } from '../../pageStyles/emailSender.styles'
-import { SectionContainer } from '../../styles/common'
+import { SectionContainer, StyledTextField, StyledSubHeader } from '../../styles/common'
 
 type EmailHeadeSectionProps = {
   handleEmailStandard: any,
@@ -10,7 +9,7 @@ type EmailHeadeSectionProps = {
   handleEmailHeader: any
 };
 
-export default function SubjectSection ({
+export default function EmailSenderHeader ({
   handleEmailStandard,
   subjectCustomization,
   handleEmailSubject,
