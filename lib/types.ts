@@ -6,6 +6,11 @@ export interface SignatureData {
     email: string
 }
 
+export interface EmailHeader {
+    cc: string
+    bcc: string
+}
+
 export interface CsvRow {
     email: string;
     subject: string
@@ -19,6 +24,8 @@ export interface ReplaceObj {
 export interface Message {
     id: string;
     to: string;
+    cc: string;
+    bcc: string;
     subject: string;
     content: string;
 }

@@ -18,7 +18,8 @@ import {
   Message,
   ErrorMessage,
   ResultMessage,
-  SignatureData
+  SignatureData,
+  EmailHeader
 } from '../lib/types'
 import Layout from '../components/layout/Layout'
 import { GetServerSideProps } from 'next'
@@ -27,11 +28,11 @@ import { validEmail } from '../lib/validateEmail'
 import EmailSignature from '../components/emailSignature/emailSignature'
 import PrintMessage from '../components/printMessages/printMessages'
 import ImportCSVSection from '../components/importCSVSection/importCSVSection'
-import SubjectSection from '../components/subjectSection/subjectSection'
 import EmailContent from '../components/emailContentSection/emailContentSection'
 import SendEmails from '../components/sendEmails/sendEmails'
 import CSVTable from '../components/csvTable/CSVTable'
 import DisplayMessages from '../components/displayMessages/displayMessages'
+import EmailSenderHeader from '../components/emailHeaderSection/emailHeaderSection'
 
 const EmailSender: NextPage = () => {
   const { data: session } = useSession({ required: true })
@@ -41,6 +42,10 @@ const EmailSender: NextPage = () => {
   const [csvRowsArray, setCsvRowsArray] = useState<CsvRow[]>([])
   const [subjectCustomization, setSubjectCustomization] = useState(true)
   const [standardSubject, setStandardSubject] = useState('')
+  const [emailHeader, setEmailHeader] = useState<EmailHeader>({
+    cc: '',
+    bcc: ''
+  })
   const [message, setMessage] = useState('')
   const [finalMessages, setFinalMessages] = useState<Message[]>([])
   const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([])
@@ -59,9 +64,22 @@ const EmailSender: NextPage = () => {
       : setSubjectCustomization(true)
   }
 
+  const handleEmailHeader = (ccRecipents: string, bccRecipents: string) => {
+    const emailRegex = /([a-zA-Z0-9._+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi
+    const ccRecipentsArray = ccRecipents.match(emailRegex)
+    const bccRecipentsArray = bccRecipents.match(emailRegex)
+    const emailHeaderCreated: EmailHeader = {
+      cc: ccRecipentsArray ? ccRecipentsArray[0] : '',
+      bcc: bccRecipentsArray ? bccRecipentsArray[0] : ''
+    }
+    setEmailHeader(emailHeaderCreated)
+  }
+
   const editFinalMessages = (
     id: string,
     to: string,
+    cc: string,
+    bcc: string,
     subject: string,
     messageContent: string
   ) => {
@@ -72,7 +90,7 @@ const EmailSender: NextPage = () => {
     })
     for (let i = 0; i < finalMessages.length; i++) {
       if (i === finalMessageIndex) {
-        const msg: Message = { id, to, subject, content }
+        const msg: Message = { id, to, cc, bcc, subject, content }
         finalMessageArr.push(msg)
       } else {
         finalMessageArr.push(finalMessages[i])
@@ -245,7 +263,15 @@ const EmailSender: NextPage = () => {
         }
         content = content.replaceAll(toReplace, replaceVal)
       }
-      const msg: Message = { id: nanoid(), to, subject, content }
+
+      const msg: Message = {
+        cc: emailHeader.cc,
+        bcc: emailHeader.bcc,
+        id: nanoid(),
+        to,
+        subject,
+        content
+      }
       finalMessageArr.push(msg)
     }
     if (error) {
@@ -342,10 +368,11 @@ const EmailSender: NextPage = () => {
             </Link>
           </Typography>
           <FormControl fullWidth>
-            <SubjectSection
+            <EmailSenderHeader
               handleEmailStandard={handleEmailStandard}
               subjectCustomization={subjectCustomization}
               handleEmailSubject={handleEmailSubject}
+              handleEmailHeader={handleEmailHeader}
             />
             <EmailContent
               setMessage={setMessage}
