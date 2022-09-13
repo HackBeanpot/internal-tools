@@ -32,13 +32,18 @@ export async function sendEmail (
       data: await fs.readFile(path.join(process.cwd(), '/public/assets/hbplogo.png'))
     }
   }
+
   const messageData = {
     from,
     'h:sender': from,
-    to: messages.map((message) => message.to),
+    to: formatAllRecipients(messages),
+    cc: messages[0].cc,
+    bcc: messages[0].cc,
     subject: '%recipient.subject%',
     html: '%recipient.content%',
-    'recipient-variables': constructRecipientVariables(messages, signature),
+    'recipient-variables': constructRecipientVariables(
+      messages,
+      signature),
     'o:deliverytime': modifiedDate,
     inline
   }
@@ -48,14 +53,47 @@ export async function sendEmail (
   return [messagesSendResult.status, messagesSendResult.message]
 }
 
-function constructRecipientVariables (messages: Message[], signature: string) {
+function formatAllRecipients (messages: Message[]) {
+  const allRecipents: string[][] = []
+  messages.forEach((msg) => {
+    const recipentMessage: string[] = []
+    recipentMessage.push(msg.to)
+    recipentMessage.push(msg.cc)
+    recipentMessage.push(msg.bcc)
+    allRecipents.push(recipentMessage)
+  })
+  return allRecipents.flat(1)
+}
+
+function constructRecipientVariables (
+  messages: Message[],
+  signature: string) {
   const recipientVariables: { [email: string]: any } = {}
   messages.forEach((message) => {
+    const ccRecipents = message.cc
+    const bccRecipent = message.bcc
     recipientVariables[message.to] = {
       subject: message.subject,
       content: message.content +
         '<br/><br/>' +
         signature.replace('/assets/hbplogo.png', 'cid:hbplogo.png')
+    }
+    if (ccRecipents) {
+      recipientVariables[ccRecipents] = {
+        subject: message.subject,
+        content: message.content +
+        '<br/><br/>' +
+        signature.replace('/assets/hbplogo.png', 'cid:hbplogo.png')
+
+      }
+    }
+    if (bccRecipent) {
+      recipientVariables[bccRecipent] = {
+        subject: message.subject,
+        content: message.content +
+        '<br/><br/>' +
+        signature.replace('/assets/hbplogo.png', 'cid:hbplogo.png')
+      }
     }
   })
 

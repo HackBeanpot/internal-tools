@@ -30,6 +30,8 @@ export default function DisplayMessages ({
             <FinalMessage
               id={msg.id}
               to={msg.to}
+              cc={msg.cc}
+              bcc={msg.bcc}
               subject={msg.subject}
               parentCallback={editFinalMessages}
               content={msg.content}
