@@ -4,7 +4,7 @@ import Layout from '../components/layout/Layout'
 import CSVTable from '../components/csvTable/CSVTable'
 import { ThemeProvider, Typography, Divider } from '@mui/material'
 import { StyledPageContainer, SectionContainer } from '../styles/common'
-import { StyledSubHeader } from '../pageStyles/help.styles'
+import { StyledSubHeader, StyledLink } from '../pageStyles/help.styles'
 import { TextContainer } from '../pageStyles/home.styles'
 import { theme } from '../styles/theme'
 import { GetServerSideProps } from 'next'
@@ -107,12 +107,18 @@ const Help: NextPage = () => {
                 <li>
                   <Typography variant="body1">
                     Import a CSV file that includes a table that fills at least
-                    2 columns titled -- email, subject -- where email is each
+                     2 columns titled -- email, subject -- where email is each
                     recipient&apos;s email and subject is the subject of the
                     email. You can add more columns with any title that you
                     want. These titles should be what you hope to include in the
                     brackets in the above step(in our example it was name and
                     company). Scroll down to see the full CSV file example.
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="body1">
+                    You can export a Google Sheet as a CSV file by going to File --{'>'}{' '}
+                    Download --{'>'} Comma Separated Values (.csv)
                   </Typography>
                 </li>
               </ul>
@@ -152,8 +158,17 @@ const Help: NextPage = () => {
                 <li>
                   <Typography variant="body1">
                     If you would like to schedule your email to be sent at a later date and time
-                    then you may specify this up to 3 days ahead of the current time. Ignore this
+                    then you may specify this up to 3 days ahead of the current time.
+                    Scheduled emails can be deleted in the Mailgun dashboard - see instructions{' '}
+                    <StyledLink href="https://help.mailgun.com/hc/en-us/articles/360012487654
+                    -How-Can-I-Delete-Messages-From-the-Queue-">here</StyledLink>. Ignore this
                     step if you would like to send out the emails immediately.
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="body1">
+                   When scheduling across timezones, emails will be sent at EST time
+                   and will not adjust to timezone differences.
                   </Typography>
                 </li>
                 <li>
@@ -162,6 +177,12 @@ const Help: NextPage = () => {
                     recipients. NOTE: The emails will be sent from the account of the logged in user
                     logged in to this site, so prior to sending you should ensure that you are
                     logged in with the correct account.
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="body1">
+                   You have an allowance of 5,000 emails per month and
+                   a limit of 300 emails per day.
                   </Typography>
                 </li>
               </ul>
@@ -173,17 +194,18 @@ const Help: NextPage = () => {
             <SectionContainer>
               <Typography variant="h6">Example Message: </Typography>
               <Typography variant="body1">
+                { /* eslint-disable no-template-curly-in-string */ }
                 <br />
-                Hi {'$ {name}'}!<br />
+                Hi {'${name}'}!<br />
                 <br />
                 My name is Cindy Luo, and I’m on HackBeanpot’s sponsorship team
                 this year. I’m reaching out because we’ve started planning for
                 HackBeanpot in February 2022, and we would love for{' '}
-                {'$ {company}'} to partner with us again! This past event was a
+                {'${company}'} to partner with us again! This past event was a
                 success, with 200 students from 33 schools, creating 39
                 different projects, and it would not have been possible without
-                you. Thanks to {'$ {company}'} sponsorship, we were able to
-                expose both new and returning hackers to the {'$ {company}'}{' '}
+                you. Thanks to {'${company}'} sponsorship, we were able to
+                expose both new and returning hackers to the {'${company}'}{' '}
                 core values and mission statement!
                 <br />
                 <br /> We plan to hold an in-person Hackathon but are open to
@@ -193,7 +215,7 @@ const Help: NextPage = () => {
                 as possible in light of COVID-19. I’ve attached our sponsorship
                 packet to this email for you to look over, and would love to
                 schedule a call to chat about it some more, and see what package
-                might work best for {'$ {company}'}. If you’re interested,
+                might work best for {'${company}'}. If you’re interested,
                 please let me know when would be a good time. In the meantime,
                 feel free to check out our website or Instagram to see what
                 we’ve been up to! Thanks again for your continued support! We
@@ -202,6 +224,7 @@ const Help: NextPage = () => {
                 <br />
                 <br />
                 Best, <br /> Cindy
+                { /* eslint-enable no-template-curly-in-string */ }
               </Typography>
             </SectionContainer>
             <Divider light />

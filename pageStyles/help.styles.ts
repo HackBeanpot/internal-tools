@@ -5,6 +5,11 @@ const StyledSubHeader = styled(Typography)({
   paddingBottom: 5
 })
 
+const StyledLink = styled('a')(({ theme }) => ({
+  color: theme.palette.Mist.main
+}))
+
 export {
-  StyledSubHeader
+  StyledSubHeader,
+  StyledLink
 }

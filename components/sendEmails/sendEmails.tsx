@@ -16,10 +16,10 @@ import React from 'react'
 import { ResultMessage } from '../../lib/types'
 import {
   StyledDateTimeDiv,
-  StyledResultMessage,
-  StyledSubHeader
-} from '../../pageStyles/emailSender.styles'
-import { SectionContainer, StyledButton } from '../../styles/common'
+  StyledResultMessage
+} from './sendEmail.styles'
+import { SectionContainer, StyledButton, StyledSubHeader } from '../../styles/common'
+import { icons } from '../../styles/icons'
 
 type SendEmailsProps = {
   setCheckedDeliveryBox: any;
@@ -98,6 +98,11 @@ export default function SendEmails ({
       >
         <DialogTitle id="alert-dialog-title">
           Are you sure you want to send all emails?
+          <img
+            id="preview-image-url"
+            src={icons.Salute.image}
+            alt={icons.Salute.altText}
+          />
         </DialogTitle>
         <DialogActions>
           <Button variant="contained" onClick={handleClose}>

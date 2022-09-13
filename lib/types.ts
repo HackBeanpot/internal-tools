@@ -39,3 +39,16 @@ export interface ResultMessage {
    isError: boolean;
    message: string;
 }
+
+export interface MessageTemplate {
+    messageID: number
+    title: string
+    message: string
+    timestamp: Date
+    createdBy: string
+}
+
+export interface Response {
+    status: number
+    message: any
+}
