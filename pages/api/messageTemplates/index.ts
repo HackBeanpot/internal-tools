@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getMockTemplates, createMockTemplate } from '../../../lib/mockData'
+import { createMockTemplate } from '../../../lib/mockData'
 import { Response } from '../../../lib/types'
+import middleware from '../../../lib/mongodb'
+import nextConnect from 'next-connect'
 
 export default async function handler (
   req: NextApiRequest,
@@ -29,10 +31,16 @@ export default async function handler (
   res.status(status).json(JSON.stringify(message))
 }
 
-function handleGet () {
-  const status: number = 200
-  const message = getMockTemplates()
-  return { status, message }
+function handleGet (): object {
+  const handler = nextConnect()
+
+  handler.use(middleware)
+  let getResult = {}
+  handler.get(async (req, res) => {
+    const allTemplates = await req.db.collection('templates').find({}).toArray()
+    getResult = res.json({ status: 200, message: allTemplates })
+  })
+  return getResult
 }
 
 function handlePost (body: any) {
@@ -48,5 +56,16 @@ function handlePost (body: any) {
       body.title, body.message, body.createdBy
     )
   }
+
   return { status, message }
+}
+
+export async function getStaticProps () {
+  const res = await fetch('http://localhost:3000/pages/api/messageTemplates/[id].ts')
+  const json = await res.json()
+  return {
+    props: {
+      data: json
+    }
+  }
 }
