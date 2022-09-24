@@ -10,13 +10,3 @@ handler.get(async (req, res) => {
 })
 
 export default handler
-
-// export async function getStaticProps () {
-//   const res = await fetch('http://localhost:3000/pages/api/messageTemplates/[id].ts')
-//   const json = await res.json()
-//   return {
-//     props: {
-//       data: json
-//     }
-//   }
-// }
