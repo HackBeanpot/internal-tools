@@ -50,14 +50,4 @@ const Home: NextPage = () => {
 
 export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect
 
-// export async function getStaticProps (context) {
-//   const res = await fetch('http://localhost:3000/api/daily')
-//   const json = await res.json()
-//   return {
-//     props: {
-//       data: json
-//     }
-//   }
-// }
-
 export default Home
