@@ -60,7 +60,7 @@ export default function EmailSenderHeader ({
               id="outlined-basic"
               label="Email subject"
               variant="outlined"
-              onSubmit={handleEmailSubject}
+              onChange={handleEmailSubject}
             />
           </div>
         }
