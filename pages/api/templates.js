@@ -16,7 +16,7 @@ export default async function handler (req, res) {
 }
 
 export async function getServerSideProps (context) {
-  const res = await fetch('http://localhost:3000/api/templates', {
+  const res = await fetch('/api/templates', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
