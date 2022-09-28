@@ -8,6 +8,5 @@ handler.get(async (req, res) => {
   const doc = await req.db.collection('templates').findOne()
   res.json(doc)
 })
-
 export const getServerSideProps = getServerSideSessionOrRedirect()
 export default handler
