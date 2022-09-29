@@ -1,12 +1,16 @@
 import middleware from '../../../lib/mongodb'
 import nextConnect from 'next-connect'
-import { getServerSideSessionOrRedirect } from '../../../server/getServerSideSessionOrRedirect'
+import { getSession } from 'next-auth/react'
 
 const handler = nextConnect()
 handler.use(middleware)
 handler.get(async (req, res) => {
-  const doc = await req.db.collection('templates').findOne()
-  res.json(doc)
+  const session = await getSession({ req })
+  if (session) {
+    const doc = await req.db.collection('templates').findOne()
+    res.json(doc)
+  } else {
+    res.status(401).redirect('/auth/signin')
+  }
 })
-export const getServerSideProps = getServerSideSessionOrRedirect()
 export default handler
