@@ -75,7 +75,7 @@ export default function EmailSignatureForm (
         {createValidatedInputField('fullName', formData.fullName, 'Full name')}
         {createValidatedInputField('title', formData.title, 'Title')}
         {createValidatedInputField('phone', formData.phone, 'Phone')}
-        {createValidatedInputField('email', formData.email, 'Email (@hackbeanpot.com)')}
+        {createValidatedInputField('email', formData.email, 'Email (exclude @hackbeanpot.com)')}
         {!embedded && (
           <StyledButton
             size="large"
