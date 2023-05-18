@@ -26,7 +26,8 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-material-ui-form": "^1.1.7",
-    "react-material-ui-form-validator": "^3.0.1"
+    "react-material-ui-form-validator": "^3.0.1",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@types/node": "17.0.35",
