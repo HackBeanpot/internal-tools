@@ -1,3 +1,72 @@
+import path, { dirname } from 'path'
+import fs from 'fs'
+import { parse } from 'csv-parse/lib/sync'
+
+// const fs = require('fs')
+// const {parse} = require('csv-parse/sync')
+// import { fileURLToPath } from 'url'
+
+
+interface Hacker {
+  id: number,
+  email: string,
+  question0: string,
+  question1: string,
+  question2: string,
+  question3: string,
+  question4: string,
+  question5: string,
+  question6: string,
+  question7: string,
+  question8: string,
+  question9: string
+}
+
+// desired answers for each cabin
+// e.g  question: ["answer1", "answer2", "answer3", "answer4", "answer5"]
+interface AnswerOptions {
+  question : string[]
+}
+
+// const __filename = fileURLToPath(import.meta.url)
+// const __dirname = dirname(__filename)
+
+// parse csv file into an array
+function loadCSV<T> (filepath: string) : T[] {
+  // const csvFileAbsolutePath = path.resolve(__dirname, filepath)
+
+  // const fileContent = fs.readFileSync('hackerData.csv', { encoding: 'utf-8' })
+  // const options = {
+  //   delimiter: ',',
+  //   columns: true
+  // }
+  // return parse(fileContent, options)
+  console.log("Finishing loading");
+  return [];
+}
+
+function convertHackerToData (hackerList : Hacker[]) : any[] {
+  const allHackerData : any[] = []
+  hackerList.forEach(hacker => {
+    const hackerData = {
+      id: hacker.id,
+      email: hacker.email,
+      question0: hacker.question0,
+      question1: hacker.question1,
+      question2: hacker.question2,
+      question3: hacker.question3,
+      question4: hacker.question4,
+      question5: hacker.question5,
+      question6: hacker.question6,
+      question7: hacker.question7,
+      question8: hacker.question8,
+      question9: hacker.question9
+    }
+    allHackerData.push(hackerData)
+  })
+  return allHackerData
+}
+
 // All of the assignable cabins
 const Cabins = {
   Cabin1: 'Cabin1',
@@ -8,66 +77,72 @@ const Cabins = {
 }
 
 // An object of all of the questions with their respective answers
-const Questions = {
+const question0 : AnswerOptions =
+ { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+const question1 : AnswerOptions =
+ { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+const question2 : AnswerOptions =
+ { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+const question3 : AnswerOptions =
+ { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+const question4 : AnswerOptions =
+ { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+const question5 : AnswerOptions =
+ { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+const question6 : AnswerOptions =
+ { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+const question7 : AnswerOptions =
+ { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+const question8 : AnswerOptions =
+ { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+const question9 : AnswerOptions =
+ { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+
+const allAnswers : AnswerOptions[] = [
   // questionID : Cabin1, Cabin2, Cabin3, Cabin4, Cabin5
-  Question0: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'],
-  Question1: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'],
-  Question2: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'],
-  Question3: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'],
-  Question4: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'],
-  Question5: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'],
-  Question6: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'],
-  Question7: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'],
-  Question8: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'],
-  Question9: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'],
-  Question10: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'],
-  Question11: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'],
-  Question12: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'],
-  Question13: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'],
-  Question14: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'],
-  Question15: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5']
-}
+  question0,
+  question1,
+  question2,
+  question3,
+  question4,
+  question5,
+  question6,
+  question7,
+  question8,
+  question9
+]
+
+// array of array of answers (array of each cabin containing answers)
+// const allAnswers = loadCSV<AnswerOptions>('post-acceptance.csv')
 
 // constants for cabin size and number of questions
 const CABIN_SIZE = Object.keys(Cabins).length
 
-// NUM_QUESTIONS isnt used because we are going to use
-//  a forloop on the actual questionObject itself
-
-// const NUM_QUESTIONS = Object.keys(Questions).length
-
 // loops through each user row in the given array
 // -> for each question: increment count for corresponding cabin
 function matchAnswers (data: any[]) {
-  const questionObjects = Object.values(Questions) // answers to questions
+  // allAnswers => [AnswerObject, AnswerObject, AnswerObject]
+  // const questionObjects = Object.values(allAnswers) // answers to questions
 
-  data.forEach((member, memberIndex) => {
+  data.forEach((hacker : any, hackerIndex : number) => {
     // each element = a different cabin, all initialized to 0
     const counter = Array<number>(CABIN_SIZE).fill(0)
 
-    questionObjects.forEach((answers, answersIndex) => {
-      answers.forEach((cabinType, cabinTypeIndex) => {
-        if (cabinType === member['question' + answersIndex.toString()]) {
+    // loops through each cabin Answer
+    allAnswers.forEach((questionAnswers : AnswerOptions, answersIndex : number) => {
+      const answerList : string[] = questionAnswers.question
+      answerList.forEach((cabinType : string, cabinTypeIndex : number) => {
+        if (cabinType === hacker['question' + answersIndex.toString()]) {
           counter[cabinTypeIndex]++
         }
       })
     })
 
-    // for (let i = 0; i < NUM_QUESTIONS; i++) {
-    //   const answers = questionObjects[i]; // answer options
-    //   for (let j = 0; j < answers.length; j++) {
-    //     // finds which answer correlates to the user's answer
-    //     if (answers[j] === member["question" + i.toString()]) {
-    //       counter[j]++;
-    //     }
-    //   }
-    // }
-
-    // create extra column for member that determines the cabin they should
+    // create extra column for hacker that determines the cabin they should
     // join (the one with the most points)
     const cabinOptions = Object.values(Cabins)
-    member.assignedCabin = cabinOptions[counter.indexOf(Math.max(...counter))]
-    console.log(`${memberIndex}'s cabin counter : ${counter}`)
+    hacker.assignedCabin = cabinOptions[counter.indexOf(Math.max(...counter))]
+    console.log(`${hacker}'s cabin counter : ${counter}`)
   })
 }
 
@@ -85,52 +160,11 @@ function writeDataToFile (data: any[]) {
 
 // sorts hacker into suitable cabin
 function hackerSortingAlgo () {
-  // example data until we can load the data
-  const data: any[] = [
-    {
-      id: 0,
-      email: 'test1@northeastern.edu',
-      isAdmin: NaN,
-      question0: 'answer1',
-      question1: 'answer1',
-      question2: 'answer1',
-      question3: 'answer1',
-      question4: 'answer1',
-      question5: 'answer2',
-      question6: 'answer2',
-      question7: 'answer2',
-      question8: 'answer2',
-      question9: 'answer2',
-      question10: 'answer2',
-      question11: 'answer2',
-      question12: 'answer2',
-      question13: 'answer2',
-      question14: 'answer2',
-      question15: 'answer2'
-    },
-    {
-      id: 1,
-      email: 'test2@northeastern.edu',
-      isAdmin: NaN,
-      question1: 'answer2'
-    },
-    {
-      id: 2,
-      email: 'test3@northeastern.edu',
-      isAdmin: NaN,
-      question2: 'answer3'
-    },
-    {
-      id: 3,
-      email: 'test4@northeastern.edu',
-      isAdmin: NaN,
-      question3: 'answer4'
-    }
-  ]
-
-  matchAnswers(data)
-  printMembers(data)
-  writeDataToFile(data)
+  const hackerList = loadCSV<Hacker>('hackerData.csv')
+  const hackerData = convertHackerToData(hackerList)
+  matchAnswers(hackerData)
+  printMembers(hackerData)
+  writeDataToFile(hackerData)
   // Cabin4
   // TODO:
   // export cabin data csv -> convert to object
@@ -141,4 +175,4 @@ function hackerSortingAlgo () {
 
 hackerSortingAlgo()
 
-// export default hackerSortingAlgo
+//export default hackerSortingAlgo
