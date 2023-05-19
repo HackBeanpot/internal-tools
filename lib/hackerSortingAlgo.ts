@@ -1,11 +1,15 @@
-import path, { dirname } from 'path'
-import fs from 'fs'
-import { parse } from 'csv-parse/lib/sync'
+// import fs from 'fs'
+// import { parse } from 'csv-parse/lib/sync'
 
-// const fs = require('fs')
-// const {parse} = require('csv-parse/sync')
+const fs = require('fs')
+const path = require('path')
+const { dirname } = require('path')
+const { fileURLToPath } = require('url')
+const { parse } = require('csv-parse/sync')
+
 // import { fileURLToPath } from 'url'
-
+// import path, { dirname } from 'path'
+// const {parse} = require('csv-parse/sync')
 
 interface Hacker {
   id: number,
@@ -33,16 +37,14 @@ interface AnswerOptions {
 
 // parse csv file into an array
 function loadCSV<T> (filepath: string) : T[] {
-  // const csvFileAbsolutePath = path.resolve(__dirname, filepath)
+  const csvFileAbsolutePath = path.resolve(__dirname, 'hackerData.csv')
 
-  // const fileContent = fs.readFileSync('hackerData.csv', { encoding: 'utf-8' })
-  // const options = {
-  //   delimiter: ',',
-  //   columns: true
-  // }
-  // return parse(fileContent, options)
-  console.log("Finishing loading");
-  return [];
+  const fileContent = fs.readFileSync(csvFileAbsolutePath, { encoding: 'utf-8' })
+  const options = {
+    delimiter: ',',
+    columns: true
+  }
+  return parse(fileContent, options)
 }
 
 function convertHackerToData (hackerList : Hacker[]) : any[] {
@@ -142,7 +144,7 @@ function matchAnswers (data: any[]) {
     // join (the one with the most points)
     const cabinOptions = Object.values(Cabins)
     hacker.assignedCabin = cabinOptions[counter.indexOf(Math.max(...counter))]
-    console.log(`${hacker}'s cabin counter : ${counter}`)
+    console.log(`${hacker.email}'s cabin counter : ${counter}`)
   })
 }
 

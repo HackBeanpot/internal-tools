@@ -16,6 +16,13 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/api/messageTemplates/mongo.js", "pages/api/messageTemplates/index.js", "lib/hackerSortingAlgo.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/api/messageTemplates/mongo.js",
+    "pages/api/messageTemplates/index.js",
+    "lib/hackerSortingAlgo.ts"
+  ],
   "exclude": ["node_modules"]
 }
