@@ -32,7 +32,7 @@ interface AnswerOptions {
 
 // parse csv file into an array
 function loadCSV (filepath: string) {
-  const csvFileAbsolutePath = path.resolve(__dirname, filepath)
+  const csvFileAbsolutePath = path.resolve(__dirname, 'data', filepath)
 
   const fileContent = fs.readFileSync(csvFileAbsolutePath, { encoding: 'utf-8' })
   const options = {
@@ -131,9 +131,8 @@ function printMembers (data: any[]) {
 
 function writeDataToFile (data: any[]) {
   const hackerTables = JSON.stringify(data)
-  const currentPath = path.resolve('sortedHackers.json')
-  console.log(currentPath)
-  fs.writeFileSync('lib/data/sortedHackers.json', hackerTables)
+  const pathToWrite = path.resolve(__dirname, 'data', 'sortedHackers.json')
+  fs.writeFileSync(pathToWrite, hackerTables)
 }
 
 // sorts hacker into suitable cabin
@@ -142,12 +141,6 @@ function hackerSortingAlgo () {
   matchAnswers(hackerList)
   printMembers(hackerList)
   writeDataToFile(hackerList)
-  // Cabin4
-  // TODO:
-  // export cabin data csv -> convert to object
-  // export hacker data csv -> convert to object
-  // export answer data csv -> convert to object
-  // need to make sure cabin capacity is not exceeded
 }
 
 hackerSortingAlgo()
