@@ -1,30 +1,25 @@
-// import fs from 'fs'
-// import { parse } from 'csv-parse/lib/sync'
-
 const fs = require('fs')
 const path = require('path')
-const { dirname } = require('path')
-const { fileURLToPath } = require('url')
 const { parse } = require('csv-parse/sync')
 
-// import { fileURLToPath } from 'url'
-// import path, { dirname } from 'path'
-// const {parse} = require('csv-parse/sync')
+// import fs from 'fs'
+// import { parse } from 'csv-parse/lib/sync'
+// import path from 'path'
 
-interface Hacker {
-  id: number,
-  email: string,
-  question0: string,
-  question1: string,
-  question2: string,
-  question3: string,
-  question4: string,
-  question5: string,
-  question6: string,
-  question7: string,
-  question8: string,
-  question9: string
-}
+// interface Hacker {
+//   id: number,
+//   email: string,
+//   question0: string,
+//   question1: string,
+//   question2: string,
+//   question3: string,
+//   question4: string,
+//   question5: string,
+//   question6: string,
+//   question7: string,
+//   question8: string,
+//   question9: string
+// }
 
 // desired answers for each cabin
 // e.g  question: ["answer1", "answer2", "answer3", "answer4", "answer5"]
@@ -36,8 +31,8 @@ interface AnswerOptions {
 // const __dirname = dirname(__filename)
 
 // parse csv file into an array
-function loadCSV<T> (filepath: string) : T[] {
-  const csvFileAbsolutePath = path.resolve(__dirname, 'hackerData.csv')
+function loadCSV (filepath: string) {
+  const csvFileAbsolutePath = path.resolve(__dirname, filepath)
 
   const fileContent = fs.readFileSync(csvFileAbsolutePath, { encoding: 'utf-8' })
   const options = {
@@ -45,28 +40,6 @@ function loadCSV<T> (filepath: string) : T[] {
     columns: true
   }
   return parse(fileContent, options)
-}
-
-function convertHackerToData (hackerList : Hacker[]) : any[] {
-  const allHackerData : any[] = []
-  hackerList.forEach(hacker => {
-    const hackerData = {
-      id: hacker.id,
-      email: hacker.email,
-      question0: hacker.question0,
-      question1: hacker.question1,
-      question2: hacker.question2,
-      question3: hacker.question3,
-      question4: hacker.question4,
-      question5: hacker.question5,
-      question6: hacker.question6,
-      question7: hacker.question7,
-      question8: hacker.question8,
-      question9: hacker.question9
-    }
-    allHackerData.push(hackerData)
-  })
-  return allHackerData
 }
 
 // All of the assignable cabins
@@ -157,16 +130,18 @@ function printMembers (data: any[]) {
 }
 
 function writeDataToFile (data: any[]) {
-  console.log('attempting to write to file')
+  const hackerTables = JSON.stringify(data)
+  const currentPath = path.resolve('sortedHackers.json')
+  console.log(currentPath)
+  fs.writeFileSync('lib/data/sortedHackers.json', hackerTables)
 }
 
 // sorts hacker into suitable cabin
 function hackerSortingAlgo () {
-  const hackerList = loadCSV<Hacker>('hackerData.csv')
-  const hackerData = convertHackerToData(hackerList)
-  matchAnswers(hackerData)
-  printMembers(hackerData)
-  writeDataToFile(hackerData)
+  const hackerList = loadCSV('hackerData.csv')
+  matchAnswers(hackerList)
+  printMembers(hackerList)
+  writeDataToFile(hackerList)
   // Cabin4
   // TODO:
   // export cabin data csv -> convert to object
@@ -177,4 +152,4 @@ function hackerSortingAlgo () {
 
 hackerSortingAlgo()
 
-//export default hackerSortingAlgo
+// export default hackerSortingAlgo
