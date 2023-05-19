@@ -42,6 +42,7 @@ function loadCSV (filepath: string) {
   return parse(fileContent, options)
 }
 
+
 // All of the assignable cabins
 const Cabins = {
   Cabin1: 'Cabin1',
@@ -52,26 +53,58 @@ const Cabins = {
 }
 
 // An object of all of the questions with their respective answers
+// const question0 : AnswerOptions =
+//  { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+// const question1 : AnswerOptions =
+//  { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+// const question2 : AnswerOptions =
+//  { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+// const question3 : AnswerOptions =
+//  { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+// const question4 : AnswerOptions =
+//  { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+// const question5 : AnswerOptions =
+//  { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+// const question6 : AnswerOptions =
+//  { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+// const question7 : AnswerOptions =
+//  { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+// const question8 : AnswerOptions =
+//  { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+// const question9 : AnswerOptions =
+//  { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+
+// NEW
 const question0 : AnswerOptions =
- { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+ { question: getAnswerOptions(0) }
 const question1 : AnswerOptions =
- { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+ { question: getAnswerOptions(1) }
 const question2 : AnswerOptions =
- { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+ { question: getAnswerOptions(2) }
 const question3 : AnswerOptions =
- { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+ { question: getAnswerOptions(3) }
 const question4 : AnswerOptions =
- { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+ { question: getAnswerOptions(4) }
 const question5 : AnswerOptions =
- { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+ { question: getAnswerOptions(5) }
 const question6 : AnswerOptions =
- { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+ { question: getAnswerOptions(6) }
 const question7 : AnswerOptions =
- { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+ { question: getAnswerOptions(7) }
 const question8 : AnswerOptions =
- { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+ { question: getAnswerOptions(8)}
 const question9 : AnswerOptions =
- { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
+ { question: getAnswerOptions(9) }
+
+// NEW: retrieves cabin answers for each question from answer.csv
+ function getAnswerOptions(questionIndex : number) {
+  const answers : any[] = loadCSV('answer.csv')
+  var list : string[] = []
+  answers.forEach((cabin : any, cabinIndex : number) => {
+    list.push(cabin["question" + questionIndex.toString()])
+    })
+    return list
+ }
 
 const allAnswers : AnswerOptions[] = [
   // questionID : Cabin1, Cabin2, Cabin3, Cabin4, Cabin5
@@ -112,6 +145,7 @@ function matchAnswers (data: any[]) {
         }
       })
     })
+
 
     // create extra column for hacker that determines the cabin they should
     // join (the one with the most points)
