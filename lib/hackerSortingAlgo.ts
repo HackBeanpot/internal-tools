@@ -23,9 +23,9 @@ const { parse } = require('csv-parse/sync')
 
 // desired answers for each cabin
 // e.g  question: ["answer1", "answer2", "answer3", "answer4", "answer5"]
-interface AnswerOptions {
-  question : string[]
-}
+// interface AnswerOptions {
+//   question : string[]
+// }
 
 // const __filename = fileURLToPath(import.meta.url)
 // const __dirname = dirname(__filename)
@@ -74,51 +74,36 @@ const Cabins = {
 // const question9 : AnswerOptions =
 //  { question: ['answer1', 'answer2', 'answer3', 'answer4', 'answer5'] }
 
-// NEW
-const question0 : AnswerOptions =
- { question: getAnswerOptions(0) }
-const question1 : AnswerOptions =
- { question: getAnswerOptions(1) }
-const question2 : AnswerOptions =
- { question: getAnswerOptions(2) }
-const question3 : AnswerOptions =
- { question: getAnswerOptions(3) }
-const question4 : AnswerOptions =
- { question: getAnswerOptions(4) }
-const question5 : AnswerOptions =
- { question: getAnswerOptions(5) }
-const question6 : AnswerOptions =
- { question: getAnswerOptions(6) }
-const question7 : AnswerOptions =
- { question: getAnswerOptions(7) }
-const question8 : AnswerOptions =
- { question: getAnswerOptions(8)}
-const question9 : AnswerOptions =
- { question: getAnswerOptions(9) }
-
 // NEW: retrieves cabin answers for each question from answer.csv
- function getAnswerOptions(questionIndex : number) {
-  const answers : any[] = loadCSV('answer.csv')
-  var list : string[] = []
-  answers.forEach((cabin : any, cabinIndex : number) => {
-    list.push(cabin["question" + questionIndex.toString()])
+// ex: question0: answer1,answer2,answer3,answer4,answer5
+//     question1: answer1,answer2,answer3,answer4,answer5
+ function getAnswerOptions() : any[] {
+  const answersData : any[] = loadCSV('answer.csv')
+  const allAnswers : any[] = []
+  for (let questionIndex = 0; questionIndex< 10; questionIndex++ ){
+    var questionList : string[] = []
+    answersData.forEach((cabin : any, cabinIndex : number) => {
+      questionList.push(cabin["question" + questionIndex.toString()])
     })
-    return list
+    allAnswers.push(questionList)
+  }
+  return allAnswers
  }
 
-const allAnswers : AnswerOptions[] = [
-  // questionID : Cabin1, Cabin2, Cabin3, Cabin4, Cabin5
-  question0,
-  question1,
-  question2,
-  question3,
-  question4,
-  question5,
-  question6,
-  question7,
-  question8,
-  question9
-]
+
+// const allAnswers : AnswerOptions[] = [
+//   // questionID : Cabin1, Cabin2, Cabin3, Cabin4, Cabin5
+//   question0,
+//   question1,
+//   question2,
+//   question3,
+//   question4,
+//   question5,
+//   question6,
+//   question7,
+//   question8,
+//   question9
+// ]
 
 // array of array of answers (array of each cabin containing answers)
 // const allAnswers = loadCSV<AnswerOptions>('post-acceptance.csv')
@@ -126,27 +111,56 @@ const allAnswers : AnswerOptions[] = [
 // constants for cabin size and number of questions
 const CABIN_SIZE = Object.keys(Cabins).length
 
+// // loops through each user row in the given array
+// // -> for each question: increment count for corresponding cabin
+// function matchAnswers (data: any[]) {
+//   // allAnswers => [AnswerObject, AnswerObject, AnswerObject]
+//   // const questionObjects = Object.values(allAnswers) // answers to questions
+
+//   data.forEach((hacker : any, hackerIndex : number) => {
+//     // each element = a different cabin, all initialized to 0
+//     const counter = Array<number>(CABIN_SIZE).fill(0)
+
+//     // loops through each cabin Answer
+//     allAnswers.forEach((questionAnswers : AnswerOptions, answersIndex : number) => {
+//       const answerList : string[] = questionAnswers.question
+//       answerList.forEach((cabinType : string, cabinTypeIndex : number) => {
+//         if (cabinType === hacker['question' + answersIndex.toString()]) {
+//           counter[cabinTypeIndex]++
+//         }
+//       })
+//     })
+
+//     // create extra column for hacker that determines the cabin they should
+//     // join (the one with the most points)
+//     const cabinOptions = Object.values(Cabins)
+//     hacker.assignedCabin = cabinOptions[counter.indexOf(Math.max(...counter))]
+//     console.log(`${hacker.email}'s cabin counter : ${counter}`)
+//   })
+// }
+
+
 // loops through each user row in the given array
 // -> for each question: increment count for corresponding cabin
 function matchAnswers (data: any[]) {
   // allAnswers => [AnswerObject, AnswerObject, AnswerObject]
   // const questionObjects = Object.values(allAnswers) // answers to questions
+  const allAnswers : any[] = getAnswerOptions()
 
   data.forEach((hacker : any, hackerIndex : number) => {
     // each element = a different cabin, all initialized to 0
     const counter = Array<number>(CABIN_SIZE).fill(0)
+    // const allAnswers : any[] = getAnswerOptions()
 
     // loops through each cabin Answer
-    allAnswers.forEach((questionAnswers : AnswerOptions, answersIndex : number) => {
-      const answerList : string[] = questionAnswers.question
+    allAnswers.forEach((questionAnswers : string[], answersIndex : number) => {
+      const answerList : string[] = questionAnswers
       answerList.forEach((cabinType : string, cabinTypeIndex : number) => {
         if (cabinType === hacker['question' + answersIndex.toString()]) {
           counter[cabinTypeIndex]++
         }
       })
     })
-
-
     // create extra column for hacker that determines the cabin they should
     // join (the one with the most points)
     const cabinOptions = Object.values(Cabins)
@@ -178,5 +192,6 @@ function hackerSortingAlgo () {
 }
 
 hackerSortingAlgo()
+
 
 // export default hackerSortingAlgo
