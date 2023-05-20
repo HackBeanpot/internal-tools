@@ -26,40 +26,21 @@ const Cabins = {
 // constants for cabin size and number of questions
 const CABIN_SIZE = Object.keys(Cabins).length
 
-// NEW: retrieves cabin answers for each question from answer.csv
-// ex: question0: answer1,answer2,answer3,answer4,answer5
-//     question1: answer1,answer2,answer3,answer4,answer5
- function getAnswerOptions() : any[] {
-  const answersData : any[] = loadCSV('answer.csv')
-  const allAnswers : any[] = []
-  for (let questionIndex = 0; questionIndex< 10; questionIndex++ ){
-    var questionList : string[] = []
-    answersData.forEach((cabin : any, cabinIndex : number) => {
-      questionList.push(cabin["question" + questionIndex.toString()])
-    })
-    allAnswers.push(questionList)
-  }
-  return allAnswers
- }
-
 // loops through each user row in the given array
-// -> for each question: increment count for corresponding cabin
+// -> for each question: increment count for corresponding cabin if answers match
 function matchAnswers (data: any[]) {
-  const allAnswers : any[] = getAnswerOptions()
 
   data.forEach((hacker : any, hackerIndex : number) => {
     // each element = a different cabin, all initialized to 0
     const counter = Array<number>(CABIN_SIZE).fill(0)
 
-
-    // loops through each cabin Answer
-    allAnswers.forEach((questionAnswers : string[], answersIndex : number) => {
-      const answerList : string[] = questionAnswers
-      answerList.forEach((cabinType : string, cabinTypeIndex : number) => {
-        if (cabinType === hacker['question' + answersIndex.toString()]) {
-          counter[cabinTypeIndex]++
+      const answersData : any[] = loadCSV('answer.csv')
+      answersData.forEach((cabin : any, cabinIndex : number) => {
+        for (let questionIndex = 0; questionIndex < 10; questionIndex++) {
+          if (cabin['question' + questionIndex.toString()] === hacker['question' + questionIndex.toString()]) {
+            counter[cabinIndex]++
+          }
         }
-      })
     })
     // create extra column for hacker that determines the cabin they should
     // join (the one with the most points)
