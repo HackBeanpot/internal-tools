@@ -3,7 +3,7 @@ const path = require('path')
 const { parse } = require('csv-parse/sync')
 
 // parse csv file into an array
-function loadCSV (filepath: string) {
+function loadCSV (filepath: string) : any[] {
   const csvFileAbsolutePath = path.resolve(__dirname, 'data', filepath)
 
   const fileContent = fs.readFileSync(csvFileAbsolutePath, { encoding: 'utf-8' })
