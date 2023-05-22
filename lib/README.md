@@ -30,8 +30,7 @@ npm install -g ts-node typescript '@types/node'
 `
 ### **Run ts-node on the script**
 
-ts-node ./lib/hackerSortingAlgo.ts
-
+npx ts-node --experimental-specifier-resolution=node hackerSortingAlgo.ts
 
 ## ** How to extend **
 

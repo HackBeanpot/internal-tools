@@ -1,14 +1,15 @@
-const fs = require('fs')
-const path = require('path')
-const { parse } = require('csv-parse/sync')
+import * as fs from 'fs'
+import * as path from 'path'
+import { parse } from 'csv-parse/sync'
 
 let hackerList: any[]
 let answerList: any[]
 let cabinList: any[]
-let CABIN_SIZE : number
-let QUESTIONS_SIZE : number
+let CABIN_SIZE: number
+let QUESTIONS_SIZE: number
+
 // parse csv file into an array
-function loadCSV (filepath: string, headers : boolean): any[] {
+function loadCSV (filepath: string, headers: boolean): any[] {
   const csvFileAbsolutePath = path.resolve(__dirname, 'data', 'csv_inputs', filepath)
 
   // error handling in case file is missing
@@ -18,7 +19,7 @@ function loadCSV (filepath: string, headers : boolean): any[] {
       encoding: 'utf-8'
     })
   } catch (err) {
-    console.log(`File cannot be found : "${filepath}"`)
+    console.log(`File cannot be found: "${filepath}"`)
     return []
   }
 
@@ -47,20 +48,15 @@ function matchAnswers () {
     // find backup cabin for hacker (in case the first choice fills up)
     const counterCopy = cabinScore.slice()
     counterCopy[maxIndex] = -1
-    hacker.secondAssignedCabin =
-      cabinOptions[counterCopy.indexOf(Math.max(...counterCopy))]
+    hacker.secondAssignedCabin = cabinOptions[counterCopy.indexOf(Math.max(...counterCopy))]
 
-    console.log(`${hacker.email}'s cabin counter : ${cabinScore}`)
+    console.log(`${hacker.email}'s cabin counter: ${cabinScore}`)
   })
 }
 
-function hydrateCabinScore (hacker : any, cabinScore : number[]) {
+function hydrateCabinScore (hacker: any, cabinScore: number[]) {
   answerList.forEach((cabin: any, cabinIndex: number) => {
-    for (
-      let questionIndex = 0;
-      questionIndex < QUESTIONS_SIZE;
-      questionIndex++
-    ) {
+    for (let questionIndex = 0; questionIndex < QUESTIONS_SIZE; questionIndex++) {
       if (
         cabin['question' + questionIndex.toString()] ===
         hacker['question' + questionIndex.toString()]
@@ -74,9 +70,9 @@ function hydrateCabinScore (hacker : any, cabinScore : number[]) {
 function printMembers () {
   hackerList.forEach((member) => {
     console.log(
-      `ID: ${member.id} 
-      | EMAIL: ${member.email} 
-      | assignedCabin: ${member.assignedCabin} 
+      `ID: ${member.id}
+      | EMAIL: ${member.email}
+      | assignedCabin: ${member.assignedCabin}
       | secondAssignedCabin: ${member.secondAssignedCabin}`
     )
   })
@@ -100,7 +96,7 @@ function hackerSortingAlgo () {
 
   if (hackerList.length === 0 || answerList.length === 0 || cabinList.length === 0) {
     console.log(
-      'Please add the respective csv file(s) to the folder to run the sorting algortihm'
+      'Please add the respective csv file(s) to the folder to run the sorting algorithm'
     )
   } else {
     matchAnswers()
