@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { parse } from 'csv-parse/sync'
+import { parse } from 'csv-parse/lib/sync'
 import { HackerTeam, Judge, Room } from './types'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
