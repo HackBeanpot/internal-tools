@@ -2,9 +2,14 @@ const fs = require('fs')
 const path = require('path')
 const { parse } = require('csv-parse/sync')
 
+let hackerList: any[]
+let answerList: any[]
+let cabinList: any[]
+let CABIN_SIZE : number
+let QUESTIONS_SIZE : number
 // parse csv file into an array
-function loadCSV (filepath: string): any[] {
-  const csvFileAbsolutePath = path.resolve(__dirname, 'data', filepath)
+function loadCSV (filepath: string, headers : boolean): any[] {
+  const csvFileAbsolutePath = path.resolve(__dirname, 'data', 'csv_inputs', filepath)
 
   // error handling in case file is missing
   let fileContent
@@ -19,53 +24,55 @@ function loadCSV (filepath: string): any[] {
 
   const options = {
     delimiter: ',',
-    columns: true
+    columns: headers
   }
   return parse(fileContent, options)
 }
 
 // loops through each user row in the given array
 // -> for each question: increment count for corresponding cabin if answers match
-function matchAnswers (hackerList: any[], answerList: any[], cabinList: any[]) {
+function matchAnswers () {
   // constants for cabin size and number of questions
-  const CABIN_SIZE = Object.keys(cabinList).length
-  const QUESTIONS_SIZE = Object.keys(answerList[0]).length
-  hackerList.forEach((hacker: any, hackerIndex: number) => {
+  hackerList.forEach((hacker: any) => {
     // each element = a different cabin, all initialized to 0
-    const counter = Array<number>(CABIN_SIZE).fill(0)
+    const cabinScore = Array<number>(CABIN_SIZE).fill(0)
 
-    answerList.forEach((cabin: any, cabinIndex: number) => {
-      for (
-        let questionIndex = 0;
-        questionIndex < QUESTIONS_SIZE;
-        questionIndex++
-      ) {
-        if (
-          cabin['question' + questionIndex.toString()] ===
-          hacker['question' + questionIndex.toString()]
-        ) {
-          counter[cabinIndex]++
-        }
-      }
-    })
+    hydrateCabinScore(hacker, cabinScore)
     // create extra column for hacker that determines the cabin they should
     // join (the one with the most points)
     const cabinOptions: string[] = Object.values(cabinList)
-    const maxIndex: number = counter.indexOf(Math.max(...counter))
+    const maxIndex: number = cabinScore.indexOf(Math.max(...cabinScore))
     hacker.assignedCabin = cabinOptions[maxIndex]
 
     // find backup cabin for hacker (in case the first choice fills up)
-    const counterCopy = Array<number>(CABIN_SIZE).fill(0)
+    const counterCopy = cabinScore.slice()
     counterCopy[maxIndex] = -1
     hacker.secondAssignedCabin =
       cabinOptions[counterCopy.indexOf(Math.max(...counterCopy))]
 
-    console.log(`${hacker.email}'s cabin counter : ${counter}`)
+    console.log(`${hacker.email}'s cabin counter : ${cabinScore}`)
   })
 }
 
-function printMembers (data: any[]) {
-  data.forEach((member) => {
+function hydrateCabinScore (hacker : any, cabinScore : number[]) {
+  answerList.forEach((cabin: any, cabinIndex: number) => {
+    for (
+      let questionIndex = 0;
+      questionIndex < QUESTIONS_SIZE;
+      questionIndex++
+    ) {
+      if (
+        cabin['question' + questionIndex.toString()] ===
+        hacker['question' + questionIndex.toString()]
+      ) {
+        cabinScore[cabinIndex]++
+      }
+    }
+  })
+}
+
+function printMembers () {
+  hackerList.forEach((member) => {
     console.log(
       `ID: ${member.id} 
       | EMAIL: ${member.email} 
@@ -75,29 +82,31 @@ function printMembers (data: any[]) {
   })
 }
 
-function writeDataToFile (data: any[]) {
-  const hackerTables = JSON.stringify(data)
-  const pathToWrite = path.resolve(__dirname, 'data', 'sortedHackers.json')
+function writeDataToFile () {
+  const hackerTables = JSON.stringify(hackerList)
+  const pathToWrite = path.resolve(__dirname, 'data', 'json_outputs', 'sortedHackers.json')
   fs.writeFileSync(pathToWrite, hackerTables)
 }
 
 // sorts hacker into suitable cabin
 function hackerSortingAlgo () {
-  const hackerList: any[] = loadCSV('hackerData.csv')
-  const answerList: any[] = loadCSV('answer.csv')
-  const cabinList: any[] = loadCSV('cabinTypes.csv')
+  // variable values first declared globally within the file and initialized on runtime
+  hackerList = loadCSV('hackerData.csv', true)
+  answerList = loadCSV('answer.csv', true)
+  cabinList = loadCSV('cabinTypes.csv', false)[0]
+
+  CABIN_SIZE = Object.keys(cabinList).length
+  QUESTIONS_SIZE = Object.keys(answerList[0]).length
 
   if (hackerList.length === 0 || answerList.length === 0 || cabinList.length === 0) {
     console.log(
       'Please add the respective csv file(s) to the folder to run the sorting algortihm'
     )
   } else {
-    matchAnswers(hackerList, answerList, cabinList[0])
-    printMembers(hackerList)
-    writeDataToFile(hackerList)
+    matchAnswers()
+    printMembers()
+    writeDataToFile()
   }
 }
 
 hackerSortingAlgo()
-
-// export default hackerSortingAlgo
