@@ -1160,6 +1160,31 @@ csstype@^3.0.2, csstype@^3.1.0:
   resolved "https://registry.npmjs.org/csstype/-/csstype-3.1.0.tgz"
   integrity sha512-uX1KG+x9h5hIJsaKR9xHUeUraxf8IODOwq9JLNPq6BwB04a/xgpq3rcx47l5BZu5zBPlgD342tdke3Hom/nJRA==
 
+csv-generate@^4.2.6:
+  version "4.2.6"
+  resolved "https://registry.yarnpkg.com/csv-generate/-/csv-generate-4.2.6.tgz#7146b41313d7c91d19d99891ef400d7f0931e908"
+  integrity sha512-VtnYqhWLcsUocA346ewFOk+rrqcoT663j11vXzD2uelXq9WguQ3QzDeVD8ISso7hhVtkDSHcWl9psdemeiEHDA==
+
+csv-parse@^5.3.10:
+  version "5.3.10"
+  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-5.3.10.tgz#23a83cf1abe09a73210f2d35961f870005a03e87"
+  integrity sha512-cTXY6iy0gN5Ha/cGILeDgQE+nKiKDU2m0DjSRdJhr86BN3cM7oefBsTk2aH0LQeaYtL7Z7HvW+jYoadmdhzeDA==
+
+csv-stringify@^6.4.0:
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-6.4.0.tgz#6d006dca9194700e44f9fbc541bee8bbbd4f459c"
+  integrity sha512-HQsw0QXiN5fdlO+R8/JzCZnR3Fqp8E87YVnhHlaPtNGJjt6ffbV0LpOkieIb1x6V1+xt878IYq77SpXHWAqKkA==
+
+csv@^6.3.0:
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/csv/-/csv-6.3.0.tgz#0c315db2bc62e97b1902519fdfcf2e8cbd037e7b"
+  integrity sha512-wXakaMNIz6qe/a15AXQ6JA9urN2lEx08J/3xpxv7Ke3GOrio300Ikbqzrlg1ML0fuEOULHhswvSxtN5h/72sHg==
+  dependencies:
+    csv-generate "^4.2.6"
+    csv-parse "^5.3.10"
+    csv-stringify "^6.4.0"
+    stream-transform "^3.2.6"
+
 damerau-levenshtein@^1.0.7:
   version "1.0.8"
   resolved "https://registry.npmjs.org/damerau-levenshtein/-/damerau-levenshtein-1.0.8.tgz"
@@ -3395,6 +3420,11 @@ sparse-bitfield@^3.0.3:
   integrity sha512-kvzhi7vqKTfkh0PZU+2D2PIllw2ymqJKujUcyPMd9Y75Nv4nPbGJZXNhxsgdQab2BmlDct1YnfQCguEvHr7VsQ==
   dependencies:
     memory-pager "^1.0.2"
+
+stream-transform@^3.2.6:
+  version "3.2.6"
+  resolved "https://registry.yarnpkg.com/stream-transform/-/stream-transform-3.2.6.tgz#7caeaaf68d2bf94fc412a520f2deb3c49b3bc0ab"
+  integrity sha512-/pyOvaCQFqYTmrFhmMbnAEVo3SsTx1H39eUVPOtYeAgbEUc+rDo7GoP8LbHJgU83mKtzJe/7Nq/ipaAnUOHgJQ==
 
 string-convert@^0.2.0:
   version "0.2.1"
