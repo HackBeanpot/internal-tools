@@ -10,10 +10,12 @@ Run `yarn install` so that you can run the script.
 
 a. Download Devpost hackers CSV
 b. Delete all columns except for `Project Title` and `Will you Demo` questions
-c. Rename these columns to `name` and `
+c. Rename these columns to `name` and `liveDemo`
 c. Download and save as `hackers.csv` within `/judging-algorithm/data/csv_inputs` folder
 
 3) KICK OFF THE SORTING SCRIPT
+
+use `node 16`
 
 Run our script that splits our judges and hackers in to the inputted rooms
 by executing the following command:
