@@ -14,16 +14,10 @@ export type Room = {
 }
 
 export type JudgeOutput = {
-  judge: string, 
+  judge: string,
   time: string,
-  project: string, 
+  project: string,
   room: string
-}
-
-export type JudgeOutputLiveSite = {
-  judge: string, 
-  room: string,
-  projects: JudgeOutputProjectsLiveSite[]
 }
 
 export type JudgeOutputProjectsLiveSite = {
@@ -31,14 +25,20 @@ export type JudgeOutputProjectsLiveSite = {
   time: string
 }
 
-export type FinalOutputTables = {
-  judgeOutput: JudgeOutput[];
-  hackerOutput: HackerOutput[];
+export type JudgeOutputLiveSite = {
+  judge: string,
+  room: string,
+  projects: JudgeOutputProjectsLiveSite[]
 }
 
 export type HackerOutput = {
-  project: string, 
-  time: string, 
-  judges: string[], 
+  project: string,
+  time: string,
+  judges: string[],
   room: string
+}
+
+export type FinalOutputTables = {
+  judgeOutput: JudgeOutput[];
+  hackerOutput: HackerOutput[];
 }
