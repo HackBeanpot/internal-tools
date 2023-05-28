@@ -7,7 +7,8 @@ import {
 } from './types'
 
 // driver code, takes parsed values and creates room and time assignments
-// the judges and hacker teams it take in have already been filtered, and rooms have been filtered for capacity
+// the judges and hacker teams it take in have already been filtered, and
+// rooms have been filtered for capacity
 export function sortJudgesAndPeople (
   allTimes: string[],
   allJudgingRooms: Room[],
