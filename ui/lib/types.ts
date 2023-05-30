@@ -1,4 +1,3 @@
-
 export interface SignatureData {
     fullName: string
     title: string
