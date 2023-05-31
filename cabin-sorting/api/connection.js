@@ -9,15 +9,14 @@ const client = new MongoClient(process.env.MONGODB_URI, {
 
 // Accesses a specific database within the cluster's collection of databases
 // - accesses "HackbeanpotCluster" database
-async function database (req, res, next) {
+async function connectDatabase (req, req) {
   await client.connect()
   req.dbClient = client
   req.db = client.db('HackbeanpotCluster')
   return next()
 }
-
-// yo what does this do... :)
 const middleware = nextConnect()
+
 middleware.use(database)
 
-export default middleware
+export default connectDatabase

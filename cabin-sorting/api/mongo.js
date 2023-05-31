@@ -1,5 +1,5 @@
 import nextConnect from 'next-connect'
-import middleware from '../../../lib/mongodb'
+import middleware from './connection.js'
 
 // queries through HackBeanpotCluster database for submitted applicant data
 // req = request    |   res = response
