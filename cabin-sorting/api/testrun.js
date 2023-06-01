@@ -1,9 +1,12 @@
 const { MongoClient } = require('mongodb')
+const path = require('path')
+const fs = require('fs')
+
 // Replace the uri string with your connection string.
 const uri = process.env.MONGO_PROD_CONNECTION_STRING
 
 // DONT PUSH THIS AT ALL EVER
-const client = new MongoClient('REDACTEDDDDDD look for the string in env', {
+const client = new MongoClient('mongodb+srv://dbadmin:ijTyfvOMOVOirZXR@hackbeanpotcluster.unazpk3.mongodb.net', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
@@ -25,18 +28,22 @@ async function run () {
     const query = {
       applicationStatus: 'Submitted',
       postAcceptanceResponses: { $exists: true },
-      isAdmin: false
+      isAdmin: false,
+      rsvpStatus: 'Confirmed'
     }
 
     // Find all valid hackers that have answers to the cabin questions
-    const hackerData = await applicantData.find(query)
+    const hackerDataCursor = await applicantData.find(query)
     const validHackers = []
-    for await (const doc of hackerData) {
-      validHackers.push(doc)
+    while (await hackerDataCursor.hasNext()) {
+      const item = await hackerDataCursor.next()
+      validHackers.push(item)
     }
-    const validatedHackers = validateHackers(hackerData)
+    const validatedHackers = validateHackers(validHackers)
 
-    console.log(validatedHackers)
+    const hackerTables = JSON.stringify(validatedHackers)
+    const pathToWrite = path.resolve('data', 'json_outputs', 'fromMongoDB.json')
+    fs.writeFileSync(pathToWrite, hackerTables)
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close()
