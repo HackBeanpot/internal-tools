@@ -1,7 +1,9 @@
 const { MongoClient } = require('mongodb')
 // Replace the uri string with your connection string.
 const uri = process.env.MONGO_PROD_CONNECTION_STRING
-const client = new MongoClient('mongodb+srv://admin:password@hackbeanpotcluster.unazpk3.mongodb.net/?retryWrites=true&w=majority', {
+
+// DONT PUSH THIS AT ALL EVER
+const client = new MongoClient('REDACTEDDDDDD look for the string in env', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
@@ -27,16 +29,14 @@ async function run () {
     }
 
     // Find all valid hackers that have answers to the cabin questions
-    const hackerData = await applicantData.findOne()
-    // const hackerDataArray = []
-    // for await (const doc of hackerData) {
-    //   console.log(doc)
-    // }
-    // const validHackers = validateHackers(hackerData);
-    // const validHackers2 = validateHackers(hackerDataArray)
+    const hackerData = await applicantData.find(query)
+    const validHackers = []
+    for await (const doc of hackerData) {
+      validHackers.push(doc)
+    }
+    const validatedHackers = validateHackers(hackerData)
 
-    console.log('CHECKING TEST')
-    console.log(hackerData)
+    console.log(validatedHackers)
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close()
