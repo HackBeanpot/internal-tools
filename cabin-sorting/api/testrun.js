@@ -6,7 +6,7 @@ const fs = require('fs')
 const uri = process.env.MONGO_PROD_CONNECTION_STRING
 
 // DONT PUSH THIS AT ALL EVER
-const client = new MongoClient('mongodb+srv://dbadmin:ijTyfvOMOVOirZXR@hackbeanpotcluster.unazpk3.mongodb.net', {
+const client = new MongoClient('REDACted', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
