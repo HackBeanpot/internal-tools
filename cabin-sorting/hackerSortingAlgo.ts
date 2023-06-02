@@ -1,6 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { parse } from 'csv-parse/sync'
+const grabFromDatabase = require('./api/testrun.js')
 
 let hackerList: any[]
 let answerList: any[]
@@ -29,6 +30,10 @@ function loadCSV (filepath: string, headers: boolean): any[] {
   }
   return parse(fileContent, options)
 }
+
+// function grabAPIData () {
+//   const hackerData = grabFromDatabase()
+// }
 
 // loops through each user row in the given array
 // -> for each question: increment count for corresponding cabin if answers match
