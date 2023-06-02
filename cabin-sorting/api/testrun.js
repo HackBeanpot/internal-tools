@@ -4,6 +4,7 @@ const fs = require('fs')
 
 // Replace the uri string with your connection string.
 const uri = process.env.MONGO_PROD_CONNECTION_STRING
+let validatedHackers
 
 // DONT PUSH THIS AT ALL EVER
 const client = new MongoClient('REDACTED', {
@@ -11,7 +12,7 @@ const client = new MongoClient('REDACTED', {
   useUnifiedTopology: true
 })
 // Get all valid hacker data from the applicant_data database
-async function run () {
+async function grabFromDatabase () {
   let database
   let applicantData
   try {
@@ -33,21 +34,34 @@ async function run () {
     }
 
     // Find all valid hackers that have answers to the cabin questions
-    const hackerDataCursor = await applicantData.find(query)
+    const hackerDataCursor = await applicantData.find(query).project({ email: 1, postAcceptanceResponses: 1 })
     const validHackers = []
     while (await hackerDataCursor.hasNext()) {
-      const item = await hackerDataCursor.next()
+      let item = await hackerDataCursor.next()
+      const postAcceptanceResponses = item.postAcceptanceResponses
+      delete item.postAcceptanceResponses
+      item = { ...item, ...postAcceptanceResponses }
+
+      const attributes = Object.keys(item)
+      for (let i = 0; i <= 9; i++) {
+        const j = attributes.length - i
+        const attributevalue = item[attributes[j]]
+        delete attributes[j]
+        item[`question${i}`] = attributevalue
+      }
       validHackers.push(item)
     }
-    const validatedHackers = validateHackers(validHackers)
+
+    validatedHackers = validateHackers(validHackers)
 
     const hackerJson = JSON.stringify(validatedHackers)
-    const pathToWrite = path.resolve('data', 'json_outputs', 'fromMongoDB.json')
+    const pathToWrite = path.resolve(__dirname, '../', 'data', 'json_outputs', 'fromMongoDB.json')
     fs.writeFileSync(pathToWrite, hackerJson)
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close()
   }
+  return validateHackers
 }
 
 // returns valid hacker list and handles errors if data doesn't exist or is empty
@@ -66,4 +80,6 @@ function validateHackers (hackers) {
   return hackers
 }
 
-run()
+grabFromDatabase()
+
+// export default grabFromDatabase
