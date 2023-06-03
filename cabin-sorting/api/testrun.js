@@ -37,18 +37,21 @@ async function grabFromDatabase () {
     const hackerDataCursor = await applicantData.find(query).project({ email: 1, postAcceptanceResponses: 1 })
     const validHackers = []
     while (await hackerDataCursor.hasNext()) {
-      let item = await hackerDataCursor.next()
-      const postAcceptanceResponses = item.postAcceptanceResponses
-      delete item.postAcceptanceResponses
-      item = { ...item, ...postAcceptanceResponses }
+      const item = await hackerDataCursor.next()
 
-      const attributes = Object.keys(item)
-      for (let i = 0; i <= 9; i++) {
-        const j = attributes.length - i
-        const attributevalue = item[attributes[j]]
-        delete attributes[j]
-        item[`question${i}`] = attributevalue
-      }
+      // THE FOLLOWING CODE MAY BE USED LATER FOR PARSING DATA INTO PROPER FORM
+      // const postAcceptanceResponses = item.postAcceptanceResponses
+      // delete item.postAcceptanceResponses
+      // item = { ...item, ...postAcceptanceResponses }
+
+      // const attributes = Object.keys(item)
+      // for (let i = 0; i <= 8; i++) {
+      //   const j = attributes.length - 8 + i
+      //   const attributevalue = item[attributes[j]]
+      //   // delete item[attributes[j]]
+      //   item[`question${i}`] = attributevalue
+      //   if (Array.isArray(item[`question${i}`])) item[`question${i}`] = item[`question${i}`][0].trim()
+      // }
       validHackers.push(item)
     }
 
@@ -61,7 +64,7 @@ async function grabFromDatabase () {
     // Ensures that the client will close when you finish/error
     await client.close()
   }
-  return validateHackers
+  return validatedHackers
 }
 
 // returns valid hacker list and handles errors if data doesn't exist or is empty
@@ -82,4 +85,4 @@ function validateHackers (hackers) {
 
 grabFromDatabase()
 
-// export default grabFromDatabase
+module.exports = { grabFromDatabase }
