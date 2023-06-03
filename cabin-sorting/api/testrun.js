@@ -1,27 +1,13 @@
-const { MongoClient } = require('mongodb')
 const path = require('path')
 const fs = require('fs')
+const { client, connectToDatabase } = require('./mongodb')
 
-// Replace the uri string with your connection string.
-const uri = process.env.MONGO_PROD_CONNECTION_STRING
 let validatedHackers
 
-// DONT PUSH THIS AT ALL EVER
-const client = new MongoClient('REDACTED', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
 // Get all valid hacker data from the applicant_data database
 async function grabFromDatabase () {
-  let database
-  let applicantData
-  try {
-    database = client.db('HackbeanpotCluster') // collection of databases in cluster
-    applicantData = database.collection('applicant_data') // single database
-  } catch (err) {
-    console.log('Cannot connect to database')
-    return
-  }
+  const database = connectToDatabase()
+  const applicantData = await database.collection('applicant_data')
 
   try {
     // Query for hackers whose application status is submitted and who has a
@@ -30,28 +16,29 @@ async function grabFromDatabase () {
       applicationStatus: 'Submitted',
       postAcceptanceResponses: { $exists: true },
       isAdmin: false,
-      rsvpStatus: 'Confirmed'
+      rsvpStatus: 'Confirmed',
+      'postAcceptanceResponses.swag': { $exists: false },
+      'postAcceptanceResponses.club': { $exists: true }
     }
 
     // Find all valid hackers that have answers to the cabin questions
     const hackerDataCursor = await applicantData.find(query).project({ email: 1, postAcceptanceResponses: 1 })
     const validHackers = []
     while (await hackerDataCursor.hasNext()) {
-      const item = await hackerDataCursor.next()
+      let item = await hackerDataCursor.next()
 
       // THE FOLLOWING CODE MAY BE USED LATER FOR PARSING DATA INTO PROPER FORM
-      // const postAcceptanceResponses = item.postAcceptanceResponses
-      // delete item.postAcceptanceResponses
-      // item = { ...item, ...postAcceptanceResponses }
+      const postAcceptanceResponses = item.postAcceptanceResponses
+      delete item.postAcceptanceResponses
+      item = { ...item, ...postAcceptanceResponses }
 
-      // const attributes = Object.keys(item)
-      // for (let i = 0; i <= 8; i++) {
-      //   const j = attributes.length - 8 + i
-      //   const attributevalue = item[attributes[j]]
-      //   // delete item[attributes[j]]
-      //   item[`question${i}`] = attributevalue
-      //   if (Array.isArray(item[`question${i}`])) item[`question${i}`] = item[`question${i}`][0].trim()
-      // }
+      const attributes = Object.keys(item)
+      for (let i = 0; i <= 9; i++) {
+        const j = attributes.length - 9 + i
+        const attributevalue = item[attributes[j]]
+        // delete item[attributes[j]]
+        item[`question${i}`] = attributevalue
+      }
       validHackers.push(item)
     }
 
