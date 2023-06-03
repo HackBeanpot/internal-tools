@@ -1,12 +1,12 @@
 const { MongoClient } = require('mongodb')
 
 const uri = process.env.MONGO_PROD_CONNECTION_STRING
-// DONT PUSH THIS AT ALL EVER
+// DONT PUSH THIS AT ALL EVER (password and username must be private)
 const client = new MongoClient('REDACTED', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-// Get all valid hacker data from the applicant_data database
+// establish connection to HackbeanpotCluster db collection
 function connectToDatabase () {
   let database
   try {
