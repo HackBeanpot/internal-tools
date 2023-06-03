@@ -4,7 +4,7 @@ const { client, connectToDatabase } = require('./mongodb')
 
 let validatedHackers
 
-// Get all valid hacker data from the applicant_data database
+// Get all valid hacker data from the applicant_data database and convert to json contents
 async function grabFromDatabase () {
   const database = connectToDatabase()
   const applicantData = await database.collection('applicant_data')
@@ -13,40 +13,55 @@ async function grabFromDatabase () {
     // Query for hackers whose application status is submitted and who has a
     // 'Post Acceptance Response' section
     const query = {
-      applicationStatus: 'Submitted',
+      applicationStatus: "Submitted",
       postAcceptanceResponses: { $exists: true },
       isAdmin: false,
-      rsvpStatus: 'Confirmed',
-      'postAcceptanceResponses.swag': { $exists: false },
-      'postAcceptanceResponses.club': { $exists: true }
-    }
+      rsvpStatus: "Confirmed",
+      "postAcceptanceResponses.swag": { $exists: false },
+      "postAcceptanceResponses.club": { $exists: true },
+    };
 
     // Find all valid hackers that have answers to the cabin questions
-    const hackerDataCursor = await applicantData.find(query).project({ email: 1, postAcceptanceResponses: 1 })
-    const validHackers = []
+    const hackerDataCursor = await applicantData
+      .find(query)
+      .project({ email: 1, postAcceptanceResponses: 1 });
+    const validHackers = [];
+    // create list of hackers with their information/questions
     while (await hackerDataCursor.hasNext()) {
-      let item = await hackerDataCursor.next()
+      let item = await hackerDataCursor.next();
 
       // THE FOLLOWING CODE MAY BE USED LATER FOR PARSING DATA INTO PROPER FORM
-      const postAcceptanceResponses = item.postAcceptanceResponses
-      delete item.postAcceptanceResponses
-      item = { ...item, ...postAcceptanceResponses }
+      // We are taking out the postAcceptanceResponses fields and putting them on same level as other fields (for easier access)
+      const postAcceptanceResponses = item.postAcceptanceResponses;
+      delete item.postAcceptanceResponses;
+      item = { ...item, ...postAcceptanceResponses };
 
-      const attributes = Object.keys(item)
+      // duplicate postAcceptanceResponse fields and rename fields to question<> : value
+      // so we can map these question answers to cabin answers (for cabin sorting in hackerSortingAlgo.ts)
+      const attributes = Object.keys(item);
       for (let i = 0; i <= 9; i++) {
-        const j = attributes.length - 9 + i
-        const attributevalue = item[attributes[j]]
+        const j = attributes.length - 9 + i;
+        const attributevalue = item[attributes[j]];
         // delete item[attributes[j]]
-        item[`question${i}`] = attributevalue
+        item[`question${i}`] = attributevalue;
       }
-      validHackers.push(item)
+      // adding all hackers to list
+      validHackers.push(item);
     }
 
-    validatedHackers = validateHackers(validHackers)
+    // get final filtered list of valid hackers
+    validatedHackers = validateHackers(validHackers);
 
-    const hackerJson = JSON.stringify(validatedHackers)
-    const pathToWrite = path.resolve(__dirname, '../', 'data', 'json_outputs', 'fromMongoDB.json')
-    fs.writeFileSync(pathToWrite, hackerJson)
+    // convert hacker list to json and output data to fromMongoDB.json
+    const hackerJson = JSON.stringify(validatedHackers);
+    const pathToWrite = path.resolve(
+      __dirname,
+      "../",
+      "data",
+      "json_outputs",
+      "fromMongoDB.json"
+    );
+    fs.writeFileSync(pathToWrite, hackerJson);
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close()
@@ -65,6 +80,7 @@ function validateHackers (hackers) {
     console.log('Oopsie daisy, no such hackers were found!')
   }
 
+  // ensures that hackers have non-empty email field
   // !! checks if value is null or empty string
   hackers.filter(hacker => !!hacker.email)
   return hackers
