@@ -65,14 +65,25 @@ function matchAnswers () {
 // Increment the given hacker's given cabinScore each time their answer
 // matches the Cabin's answer
 function hydrateCabinScore (hacker: any, cabinScore: number[]) {
+  let total = 0
+  let flag = false
   for (let questionIndex = 0; questionIndex < QUESTIONS_SIZE; questionIndex++) {
+    flag = false
     answerList.forEach((cabin: any, cabinIndex: number) => {
       if (
-        cabin['question' + questionIndex] === hacker['question' + questionIndex]
+        cabin['question' + questionIndex].toLowerCase().trim() === hacker['question' + questionIndex].toLowerCase().trim()
       ) {
         cabinScore[cabinIndex]++
+        total++
+        flag = true
       }
     })
+    if (!flag) {
+      console.log('THIS PERSON IS WRONG FOR SOME REASON?!?!?!')
+      console.log('\n' + hacker.email)
+      console.log(hacker['question' + questionIndex])
+      console.log(questionIndex)
+    }
   }
   return 0
 }
@@ -82,7 +93,7 @@ function hydrateCabinScore (hacker: any, cabinScore: number[]) {
 function printMembers () {
   hackerList.forEach((member) => {
     console.log(
-      `ID: ${member.id}
+      `ID: ${member.id || member._id}
       | EMAIL: ${member.email}
       | assignedCabin: ${member.assignedCabin}
       | secondAssignedCabin: ${member.secondAssignedCabin}`
