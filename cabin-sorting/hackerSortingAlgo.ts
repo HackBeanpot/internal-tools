@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { parse } from 'csv-parse/sync'
-const { grabFromDatabase } = require('./api/testrun.js')
+const { grabFromDatabase } = require('./api/sortingData.js')
 
 let hackerList: any[]
 let answerList: any[]
