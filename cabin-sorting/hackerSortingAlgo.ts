@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { parse } from 'csv-parse/sync'
-const { grabFromDatabase } = require('./api/sortingData.js')
+import grabFromDatabase from './api/sortingData.js'
 
 let hackerList: any[]
 let answerList: any[]
@@ -65,16 +65,15 @@ function matchAnswers () {
 // Increment the given hacker's given cabinScore each time their answer
 // matches the Cabin's answer
 function hydrateCabinScore (hacker: any, cabinScore: number[]) {
-  let total = 0
   let flag = false
   for (let questionIndex = 0; questionIndex < QUESTIONS_SIZE; questionIndex++) {
     flag = false
     answerList.forEach((cabin: any, cabinIndex: number) => {
       if (
-        cabin['question' + questionIndex].toLowerCase().trim() === hacker['question' + questionIndex].toLowerCase().trim()
+        cabin['question' + questionIndex].toLowerCase().trim() ===
+        hacker['question' + questionIndex].toLowerCase().trim()
       ) {
         cabinScore[cabinIndex]++
-        total++
         flag = true
       }
     })

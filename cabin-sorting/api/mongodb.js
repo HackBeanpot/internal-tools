@@ -1,8 +1,8 @@
-const { MongoClient } = require('mongodb')
+import { MongoClient } from 'mongodb'
 
 const uri = process.env.MONGO_PROD_CONNECTION_STRING
 // DONT PUSH THIS AT ALL EVER (password and username must be private)
-const client = new MongoClient(uri, {
+const client = new MongoClient('***REMOVED***', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
@@ -18,4 +18,4 @@ function connectToDatabase () {
   return database
 }
 
-module.exports = { client, connectToDatabase }
+export { client, connectToDatabase }
