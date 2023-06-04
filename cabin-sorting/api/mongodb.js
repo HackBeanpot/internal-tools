@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb'
 
 const uri = process.env.MONGO_PROD_CONNECTION_STRING
 // DONT PUSH THIS AT ALL EVER (password and username must be private)
-const client = new MongoClient('***REMOVED***', {
+const client = new MongoClient('REDACTED', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
