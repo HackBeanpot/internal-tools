@@ -6,8 +6,7 @@ let validatedHackers
 
 // Get all valid hacker data from the applicant_data database and convert to json contents
 async function grabFromDatabase () {
-  const database = connectToDatabase()
-  const applicantData = await database.collection('applicant_data')
+  const applicantData = await connectToDatabase('applicant_data')
 
   try {
     // Query for hackers whose application status is submitted and who has a
@@ -22,22 +21,25 @@ async function grabFromDatabase () {
     }
 
     // Find all valid hackers that have answers to the cabin questions
-    const hackerDataCursor = await applicantData
+    const hackerDataCursor = applicantData
       .find(query)
       .project({ email: 1, postAcceptanceResponses: 1 })
     const validHackers = []
     // create list of hackers with their information/questions
+
     while (await hackerDataCursor.hasNext()) {
       let item = await hackerDataCursor.next()
 
       // THE FOLLOWING CODE MAY BE USED LATER FOR PARSING DATA INTO PROPER FORM
-      // We are taking out the postAcceptanceResponses fields and putting them on same level as other fields (for easier access)
+      // We are taking out the postAcceptanceResponses fields and putting them on
+      // same level as other fields (for easier access)
       const postAcceptanceResponses = item.postAcceptanceResponses
       delete item.postAcceptanceResponses
       item = { ...item, ...postAcceptanceResponses }
 
       // duplicate postAcceptanceResponse fields and rename fields to question<> : value
-      // so we can map these question answers to cabin answers (for cabin sorting in hackerSortingAlgo.ts)
+      // so we can map these question answers to cabin answers
+      // (for cabin sorting in hackerSortingAlgo.ts)
       const attributes = Object.keys(item)
       for (let i = 0; i <= 9; i++) {
         const j = attributes.length - 9 + i
@@ -72,14 +74,12 @@ async function grabFromDatabase () {
 // returns valid hacker list and handles errors if data doesn't exist or is empty
 function validateHackers (hackers) {
   if (hackers === null) {
-    console.log(
+    console.error(
       'Oopsie daisy, something went wrong when querying for valid hackers!'
     )
-    throw new Error(
-      'Oopsie daisy, something went wrong when querying for valid hacker'
-    )
+    return []
   } else if (hackers.length === 0) {
-    console.log('Oopsie daisy, no such hackers were found!')
+    console.warn('Oopsie daisy, no such hackers were found!')
   }
 
   // ensures that hackers have non-empty email field

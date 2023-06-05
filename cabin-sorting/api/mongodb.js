@@ -8,15 +8,10 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true
 })
 // establish connection to HackbeanpotCluster db collection
-function connectToDatabase () {
-  let database
-  try {
-    database = client.db('HackbeanpotCluster') // collection of databases in cluster
-  } catch (err) {
-    console.log('Cannot connect to database')
-    return
-  }
-  return database
+async function connectToDatabase (collectionName) {
+  const database = client.db('HackbeanpotCluster') // collection of databases in cluster
+  const collection = database.collection(collectionName)
+  return collection
 }
 
 export { client, connectToDatabase }
