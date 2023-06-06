@@ -61,7 +61,7 @@ function matchAnswers () {
     console.log(`${hacker.email}'s cabin counter: ${cabinScore}`)
   })
 }
-
+// test
 // Increment the given hacker's given cabinScore each time their answer
 // matches the Cabin's answer
 function hydrateCabinScore (hacker: any, cabinScore: number[]) {
