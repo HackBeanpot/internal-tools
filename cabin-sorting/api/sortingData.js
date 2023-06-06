@@ -3,7 +3,7 @@ import fs from 'fs'
 import { client, connectToDatabase } from './mongodb'
 
 let validatedHackers
-let validHackers = []
+const validHackers = []
 
 // Get all valid hacker data from the applicant_data database and convert to json contents
 async function grabFromDatabase () {
@@ -26,16 +26,11 @@ async function grabFromDatabase () {
       .find(query)
       .project({ email: 1, postAcceptanceResponses: 1 })
 
-    // create list of hackers with their information/questions
-    // gather all hacker documents and convert them each into hacker data
-    let hackerDocuments = []
-    while (await hackerDataCursor.hasNext()) {
-      let item = await hackerDataCursor.next()
-      hackerDocuments.push(item);
-    }
+    // create list of hackers with their information/questions from the cursor
+    const hackerDocuments = await hackerDataCursor.toArray()
 
     // parse and format each hacker in the list of hackers
-    hackerDocuments.map((item) => parseAndFormatHacker(item));
+    hackerDocuments.map((item) => parseAndFormatHacker(item))
 
     // get final filtered list of valid hackers
     validatedHackers = validateHackers(validHackers)
@@ -58,25 +53,25 @@ async function grabFromDatabase () {
 }
 
 // used for parsing hacker data into a uniform, correct, format
-function parseAndFormatHacker(item) {
-    // We are taking out the postAcceptanceResponses fields and putting them on
-    // same level as other fields (for easier access)
-    const postAcceptanceResponses = item.postAcceptanceResponses
-    delete item.postAcceptanceResponses
-    item = { ...item, ...postAcceptanceResponses }
+function parseAndFormatHacker (item) {
+  // We are taking out the postAcceptanceResponses fields and putting them on
+  // same level as other fields (for easier access)
+  const postAcceptanceResponses = item.postAcceptanceResponses
+  delete item.postAcceptanceResponses
+  item = { ...item, ...postAcceptanceResponses }
 
-    // duplicate postAcceptanceResponse fields and rename fields to question<> : value
-    // so we can map these question answers to cabin answers
-    // (for cabin sorting in hackerSortingAlgo.ts)
-    const attributes = Object.keys(item)
-    for (let i = 0; i <= 9; i++) {
-      const j = attributes.length - 9 + i
-      const attributevalue = item[attributes[j]]
-      // delete item[attributes[j]]
-      item[`question${i}`] = attributevalue
-    }
-    // adding all hackers to list
-    validHackers.push(item)
+  // duplicate postAcceptanceResponse fields and rename fields to question<> : value
+  // so we can map these question answers to cabin answers
+  // (for cabin sorting in hackerSortingAlgo.ts)
+  const attributes = Object.keys(item)
+  for (let i = 0; i <= 9; i++) {
+    const j = attributes.length - 9 + i
+    const attributevalue = item[attributes[j]]
+    // delete item[attributes[j]]
+    item[`question${i}`] = attributevalue
+  }
+  // adding all hackers to list
+  validHackers.push(item)
 }
 
 // returns valid hacker list and handles errors if data doesn't exist or is empty
