@@ -1,4 +1,5 @@
-const { MongoClient } = require('mongodb')
+import { MongoClient } from 'mongodb'
+import 'dotenv/config'
 
 const uri = process.env.MONGO_PROD_CONNECTION_STRING
 // DONT PUSH THIS AT ALL EVER (password and username must be private)
@@ -7,15 +8,10 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true
 })
 // establish connection to HackbeanpotCluster db collection
-function connectToDatabase () {
-  let database
-  try {
-    database = client.db('HackbeanpotCluster') // collection of databases in cluster
-  } catch (err) {
-    console.log('Cannot connect to database')
-    return
-  }
-  return database
+async function connectToDatabase (collectionName) {
+  const database = client.db('HackbeanpotCluster') // collection of databases in cluster
+  const collection = database.collection(collectionName)
+  return collection
 }
 
-module.exports = { client, connectToDatabase }
+export { client, connectToDatabase }
