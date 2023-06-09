@@ -1,16 +1,17 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { parse } from 'csv-parse/sync'
-import grabFromDatabase from './api/sortingData.js'
+import grabFromDatabase from './api/sortingData'
 
 let hackerList: any[]
 let answerList: any[]
 let cabinList: any[]
+let questionHeaders: any[]
 let CABIN_SIZE: number
 let QUESTIONS_SIZE: number
 
 // Go to the given csv filepath and parse its contents into an array
-function loadCSV (filepath: string, headers: boolean, delimter: string): any[] {
+function loadCSV (filepath: string, headers: boolean, delimiter: string): any[] {
   const csvFileAbsolutePath = path.resolve(
     __dirname,
     'data',
@@ -30,7 +31,7 @@ function loadCSV (filepath: string, headers: boolean, delimter: string): any[] {
   }
 
   const options = {
-    delimiter: delimter,
+    delimiter: delimiter,
     columns: headers
   }
   return parse(fileContent, options)
@@ -61,30 +62,18 @@ function matchAnswers () {
     console.log(`${hacker.email}'s cabin counter: ${cabinScore}`)
   })
 }
-// test
+
 // Increment the given hacker's given cabinScore each time their answer
 // matches the Cabin's answer
 function hydrateCabinScore (hacker: any, cabinScore: number[]) {
-  let flag = false
-  for (let questionIndex = 0; questionIndex < QUESTIONS_SIZE; questionIndex++) {
-    flag = false
+  questionHeaders.forEach((questionTitle, questionTitleIndex) => {
+    const hackersAnswer: string = hacker[questionTitle].toLowerCase().trim();
     answerList.forEach((cabin: any, cabinIndex: number) => {
-      if (
-        cabin['question' + questionIndex].toLowerCase().trim() ===
-        hacker['question' + questionIndex].toLowerCase().trim()
-      ) {
+      if (cabin[questionTitleIndex].toLowerCase().trim() === hackersAnswer.toLowerCase().trim()) {
         cabinScore[cabinIndex]++
-        flag = true
       }
     })
-    if (!flag) {
-      console.log('THIS PERSON IS WRONG FOR SOME REASON?!?!?!')
-      console.log('\n' + hacker.email)
-      console.log(hacker['question' + questionIndex])
-      console.log(questionIndex)
-    }
-  }
-  return 0
+  })
 }
 
 // Print to the console each hacker's information including their top
@@ -92,7 +81,7 @@ function hydrateCabinScore (hacker: any, cabinScore: number[]) {
 function printMembers () {
   hackerList.forEach((member) => {
     console.log(
-      `ID: ${member.id || member._id}
+      `ID: ${member._id}
       | EMAIL: ${member.email}
       | assignedCabin: ${member.assignedCabin}
       | secondAssignedCabin: ${member.secondAssignedCabin}`
@@ -117,10 +106,10 @@ function writeDataToFile () {
 // secondAssignedCabin = their next best cabin option
 async function hackerSortingAlgo () {
   // variable values first declared globally within the file and initialized on runtime
-  // hackerList = loadCSV('hackerData.csv', true)
   hackerList = await grabFromDatabase()
-  answerList = loadCSV('answer.csv', true, '|')
+  answerList = loadCSV('answer.csv', false, ',')
   cabinList = loadCSV('cabinTypes.csv', false, ',')[0]
+  questionHeaders = loadCSV('questionHeaders.csv', false, ",")[0]
 
   CABIN_SIZE = Object.keys(cabinList).length
   QUESTIONS_SIZE = Object.keys(answerList[0]).length

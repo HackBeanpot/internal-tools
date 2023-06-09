@@ -1,9 +1,10 @@
 import path from "path";
 import fs from "fs";
-import { client, connectToDatabase } from "./mongodb";
+import { client, connectToDatabase } from "./connectMongo";
+
 
 let validatedHackers;
-const validHackers = [];
+const validHackers : any[] = [];
 
 // Get all valid hacker data from the applicant_data database and convert to json contents
 async function grabFromDatabase() {
@@ -26,16 +27,12 @@ async function grabFromDatabase() {
       .find(query)
       .project({ email: 1, postAcceptanceResponses: 1 });
 
-    // create list of hackers with their information/questions from the cursor
+    // gather, format, and filter list of hackers from cursor
     const hackerDocuments = await hackerDataCursor.toArray();
-
-    // parse and format each hacker in the list of hackers
     hackerDocuments.map((item) => parseAndFormatHacker(item));
-
-    // get final filtered list of valid hackers
     validatedHackers = validateHackers(validHackers);
 
-    // convert hacker list to json and output data to fromMongoDB.json
+    // convert hacker list to json
     const hackerJson = JSON.stringify(validatedHackers);
     const pathToWrite = path.resolve(
       __dirname,
@@ -53,31 +50,26 @@ async function grabFromDatabase() {
 }
 
 // used for parsing hacker data into a uniform, correct, format
-function parseAndFormatHacker(item) {
-  // We are taking out the postAcceptanceResponses fields and putting them on
-  // same level as other fields (for easier access)
-  const postAcceptanceResponses = item.postAcceptanceResponses;
+function parseAndFormatHacker(item : any) {
+  // reformatting postAcceptanceResponses fields
+  item = { ...item, ...item.postAcceptanceResponses };
   delete item.postAcceptanceResponses;
-  item = { ...item, ...postAcceptanceResponses };
 
-  // duplicate postAcceptanceResponse fields and rename fields to question<> : value
-  // so we can map these question answers to cabin answers
-  // (for cabin sorting in hackerSortingAlgo.ts)
+  // duplicate postAcceptanceResponse fields and rename to question<> : value
   const attributes = Object.keys(item);
-  for (let i = 0; i <= 9; i++) {
-    const j = attributes.length - 9 + i;
-    const attributevalue = item[attributes[j]];
-    // delete item[attributes[j]]
-    item[`question${i}`] = attributevalue;
+  for (let i = 0; i <= 8; i++) {
+    const j = attributes.length - 8 + i;
+    const attributeValue = item[attributes[j]];
+    // item[`question${i}`] = attributeValue;
   }
   // adding all hackers to list
   validHackers.push(item);
 }
 
-// returns valid hacker list and handles errors if data doesn't exist or is empty
-function validateHackers(hackers) {
+// returns valid hacker list
+function validateHackers(hackers : any[]) {
   if (hackers === null) {
-    console.error(
+    console.warn(
       "Oopsie daisy, something went wrong when querying for valid hackers!"
     );
     return [];
@@ -91,6 +83,5 @@ function validateHackers(hackers) {
   return hackers;
 }
 
-grabFromDatabase();
 
 export default grabFromDatabase;
