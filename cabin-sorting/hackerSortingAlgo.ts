@@ -3,12 +3,36 @@ import * as path from 'path'
 import { parse } from 'csv-parse/sync'
 import grabFromDatabase from './api/sortingData'
 
-let hackerList: any[]
+let hackerList: Hacker[]
 let answerList: any[]
 let cabinList: any[]
 let questionHeaders: any[]
 let CABIN_SIZE: number
 let QUESTIONS_SIZE: number
+
+export type Hacker = {
+   _id: string,
+    email: string,
+    firstName: string,
+    lastName: string,
+    adult: string,
+    adultSignature: string,
+    minorSignature: string,
+    guardianSignature: string,
+    proofOfVaccination: string[],
+    hangingWithFriends: string,
+    zombieApocalypse: string,
+    takeOverNation: string,
+    aspirations: string,
+    study: string,
+    stuckInElevator: string,
+    club: string,
+    socialMedia: string,
+    duringClass: string,
+    assignedCabin: string,
+    secondAssignedCabin: string,
+    postAcceptanceResponses: any
+}
 
 // Go to the given csv filepath and parse its contents into an array
 function loadCSV (filepath: string, headers: boolean, delimiter: string): any[] {
@@ -40,7 +64,7 @@ function loadCSV (filepath: string, headers: boolean, delimiter: string): any[] 
 // loops through each user row in the given array
 // -> for each question: increment count for corresponding cabin if answers match
 function matchAnswers () {
-  hackerList.forEach((hacker: any) => {
+  hackerList.forEach((hacker: Hacker) => {
     // each element = a different cabin, all initialized to 0
     const cabinScore = Array<number>(CABIN_SIZE).fill(0)
 
@@ -65,9 +89,11 @@ function matchAnswers () {
 
 // Increment the given hacker's given cabinScore each time their answer
 // matches the Cabin's answer
-function hydrateCabinScore (hacker: any, cabinScore: number[]) {
+function hydrateCabinScore (hacker: Hacker, cabinScore: number[]) {
   questionHeaders.forEach((questionTitle, questionTitleIndex) => {
-    const hackersAnswer: string = hacker[questionTitle].toLowerCase().trim();
+    type HackerProperty = keyof typeof hacker
+    const questionTitleProperty = questionTitle as HackerProperty
+    const hackersAnswer: string = hacker[questionTitleProperty].toLowerCase().trim();
     answerList.forEach((cabin: any, cabinIndex: number) => {
       if (cabin[questionTitleIndex].toLowerCase().trim() === hackersAnswer.toLowerCase().trim()) {
         cabinScore[cabinIndex]++

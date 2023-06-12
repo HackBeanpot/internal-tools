@@ -1,10 +1,10 @@
 import path from "path";
 import fs from "fs";
 import { client, connectToDatabase } from "./connectMongo";
+import { Hacker } from "../hackerSortingAlgo";
 
-
-let validatedHackers;
-const validHackers : any[] = [];
+let validatedHackers : Hacker[] = [];
+const validHackers : Hacker[] = [];
 
 // Get all valid hacker data from the applicant_data database and convert to json contents
 async function grabFromDatabase() {
@@ -54,20 +54,12 @@ function parseAndFormatHacker(item : any) {
   // reformatting postAcceptanceResponses fields
   item = { ...item, ...item.postAcceptanceResponses };
   delete item.postAcceptanceResponses;
-
-  // duplicate postAcceptanceResponse fields and rename to question<> : value
-  const attributes = Object.keys(item);
-  for (let i = 0; i <= 8; i++) {
-    const j = attributes.length - 8 + i;
-    const attributeValue = item[attributes[j]];
-    // item[`question${i}`] = attributeValue;
-  }
   // adding all hackers to list
   validHackers.push(item);
 }
 
 // returns valid hacker list
-function validateHackers(hackers : any[]) {
+function validateHackers(hackers : Hacker[]) : Hacker[]{
   if (hackers === null) {
     console.warn(
       "Oopsie daisy, something went wrong when querying for valid hackers!"
