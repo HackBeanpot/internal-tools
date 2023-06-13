@@ -1,7 +1,5 @@
-import * as fs from 'fs'
-import * as path from 'path'
-import { parse } from 'csv-parse/sync'
 import grabFromDatabase from './api/sortingData'
+import { loadCSV, writeDataToFile, printMembers } from './lib/util'
 
 let hackerList: Hacker[]
 let answerList: any[]
@@ -34,33 +32,6 @@ export type Hacker = {
     postAcceptanceResponses: any
 }
 
-// Go to the given csv filepath and parse its contents into an array
-function loadCSV (filepath: string, headers: boolean, delimiter: string): any[] {
-  const csvFileAbsolutePath = path.resolve(
-    __dirname,
-    'data',
-    'csv_inputs',
-    filepath
-  )
-
-  // error handling in case file is missing
-  let fileContent
-  try {
-    fileContent = fs.readFileSync(csvFileAbsolutePath, {
-      encoding: 'utf-8'
-    })
-  } catch (err) {
-    console.log(`File cannot be found: "${filepath}"`)
-    return []
-  }
-
-  const options = {
-    delimiter: delimiter,
-    columns: headers
-  }
-  return parse(fileContent, options)
-}
-
 // loops through each user row in the given array
 // -> for each question: increment count for corresponding cabin if answers match
 function matchAnswers () {
@@ -82,7 +53,7 @@ function matchAnswers () {
     hacker.secondAssignedCabin =
       cabinOptions[counterCopy.indexOf(Math.max(...counterCopy))]
 
-    // show their score for each cabin (for testing purposes)
+    // show their score for each cabin (useful for testing purposes)
     console.log(`${hacker.email}'s cabin counter: ${cabinScore}`)
   })
 }
@@ -102,31 +73,6 @@ function hydrateCabinScore (hacker: Hacker, cabinScore: number[]) {
   })
 }
 
-// Print to the console each hacker's information including their top
-// two cabin assignments
-function printMembers () {
-  hackerList.forEach((member) => {
-    console.log(
-      `ID: ${member._id}
-      | EMAIL: ${member.email}
-      | assignedCabin: ${member.assignedCabin}
-      | secondAssignedCabin: ${member.secondAssignedCabin}`
-    )
-  })
-}
-
-// Output the hacker data in JSON format to sortedHackers.json
-function writeDataToFile () {
-  const hackerTables = JSON.stringify(hackerList)
-  const pathToWrite = path.resolve(
-    __dirname,
-    'data',
-    'json_outputs',
-    'sortedHackers.json'
-  )
-  fs.writeFileSync(pathToWrite, hackerTables)
-}
-
 // Assigns two cabins to each Hacker.
 // assignedCabin = the cabin a Hacker is best suited to
 // secondAssignedCabin = their next best cabin option
@@ -138,7 +84,6 @@ async function hackerSortingAlgo () {
   questionHeaders = loadCSV('questionHeaders.csv', false, ",")[0]
 
   CABIN_SIZE = Object.keys(cabinList).length
-  QUESTIONS_SIZE = Object.keys(answerList[0]).length
 
   // ensuring the CSV files exists before continuing
   if (
@@ -151,8 +96,8 @@ async function hackerSortingAlgo () {
     )
   } else {
     matchAnswers()
-    printMembers()
-    writeDataToFile()
+    printMembers(hackerList)
+    writeDataToFile(hackerList)
   }
 }
 
