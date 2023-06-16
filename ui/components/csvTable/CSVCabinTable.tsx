@@ -9,6 +9,7 @@ import {
     TableRow
 } from '@mui/material'
 import { nanoid } from 'nanoid';
+import { StyledTableHeader } from '../../styles/common';
 
 // interface CsvCol {
 //     email: string;
@@ -18,6 +19,18 @@ type CSVCabinTableProps = {
     headers: String[];
     cols: String[];
 }
+
+// const useStyles : any = makeStyles({
+//     header : { 
+//         align:'left',
+//         border:'1px solid grey',
+//         backgroundColor: 'grey'
+//     },
+//     row : {
+//         align:"left",
+//         border: "1px solid grey"
+//     }  
+// });
 
 export default function CSVCabinTable({ headers, cols }: CSVCabinTableProps) {
     const headerNames = headers
@@ -36,14 +49,11 @@ export default function CSVCabinTable({ headers, cols }: CSVCabinTableProps) {
     Object.values(cabinValues).forEach((value, index) => {
         value.forEach((entry, entryIndex) => {
             if(rows.length < entryIndex + 1) rows.push({})
-            rows[entryIndex]
+            rows[entryIndex][index] = entry
         })
     })
 
-    console.log(rows)
-
-
-
+    // const classes = useStyles();
 
     return (
 
@@ -51,18 +61,24 @@ export default function CSVCabinTable({ headers, cols }: CSVCabinTableProps) {
             <TableContainer component={Paper}>
                 <Table aria-label="simple table">
                     <TableHead>
-                        <TableRow>
+                        <StyledTableHeader>
                             {headerNames.map((header: any) => (
-                                <TableCell align="left" key={nanoid()}>
+                                <TableCell sx={{border: '1px solid grey'}}>
                                     {header}
                                 </TableCell>
                             ))}
-                        </TableRow>
+                        </StyledTableHeader>
                     </TableHead>
                     <TableBody>
-                        <TableRow>
-                            
-                        </TableRow>
+                        {rows.map(row => (
+                            <TableRow key={nanoid()}>
+                                {Object.keys(cabinValues).map((cabin, cabinIndex) => (
+                                <TableCell align='left' sx={{border: '1px solid grey'}}>
+                                    {(row[cabinIndex]) || ''}
+                                </TableCell>
+                            ))}
+                            </TableRow>
+                        ))}
                     </TableBody>
                 </Table>
 
