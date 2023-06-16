@@ -40,6 +40,13 @@ const Home: NextPage = () => {
                 </Link>
               </Typography>
             </li>
+            <li>
+              <Typography variant="body1">
+                <Link href="/cabinSorting" underline="hover">
+                  A cabin sorting link
+                </Link>
+              </Typography>
+            </li>
           </ul>
         </TextContainer>
       </StyledPageContainer>

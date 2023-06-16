@@ -13,7 +13,7 @@ import { CsvRow } from '../../lib/types'
 
 type CSVTableProps = {
   headers: String[];
-  rows: CsvRow[];
+  rows: CsvRow[]; 
 };
 
 export default function CSVTable ({ headers, rows }: CSVTableProps) {
