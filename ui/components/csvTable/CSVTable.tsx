@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from "react";
 import {
   Table,
   TableBody,
@@ -6,19 +6,19 @@ import {
   Paper,
   TableContainer,
   TableHead,
-  TableRow
-} from '@mui/material'
-import { nanoid } from 'nanoid'
-import { CsvRow } from '../../lib/types'
+  TableRow,
+} from "@mui/material";
+import { nanoid } from "nanoid";
+import { CsvRow } from "../../lib/types";
 
 type CSVTableProps = {
   headers: String[];
   rows: CsvRow[];
 };
 
-export default function CSVTable ({ headers, rows }: CSVTableProps) {
-  const headerNames = headers
-  const rowValues = rows
+export default function CSVTable({ headers, rows }: CSVTableProps) {
+  const headerNames = headers;
+  const rowValues = rows;
   return (
     <>
       <TableContainer component={Paper}>
@@ -46,5 +46,5 @@ export default function CSVTable ({ headers, rows }: CSVTableProps) {
         </Table>
       </TableContainer>
     </>
-  )
+  );
 }

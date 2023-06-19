@@ -11,6 +11,7 @@ declare module '@mui/material/styles' {
     Red: Palette ['primary'];
     HBPCTA: Palette ['primary'];
     Teal: Palette ['primary'];
+    Grey: Palette ['primary'];
   }
   interface PaletteOptions {
     HBPNavy: PaletteOptions['primary'];
@@ -23,6 +24,7 @@ declare module '@mui/material/styles' {
     Red: PaletteOptions ['primary'];
     HBPCTA: PaletteOptions ['primary'];
     Teal: PaletteOptions ['primary'];
+    Grey: PaletteOptions ['primary'];
   }
 }
 
@@ -60,6 +62,9 @@ export const theme = createTheme({
     },
     Teal: {
       main: '#25C9D0'
+    },
+    Grey: {
+      main: 'rgba(0, 0, 0, 0.06)'
     }
   }
 })
