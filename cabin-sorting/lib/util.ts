@@ -3,7 +3,6 @@ import * as path from 'path'
 import { parse } from 'csv-parse/sync'
 import { Hacker } from '../hackerSortingAlgo'
 
-// Go to the given csv filepath and parse its contents into an array
 export function loadCSV (filepath: string, headers: boolean, delimiter: string): any[] {
   const csvFileAbsolutePath = path.resolve(
     'data',
@@ -11,7 +10,6 @@ export function loadCSV (filepath: string, headers: boolean, delimiter: string):
     filepath
   )
 
-  // error handling in case file is missing
   let fileContent
   try {
     fileContent = fs.readFileSync(csvFileAbsolutePath, {
@@ -29,7 +27,6 @@ export function loadCSV (filepath: string, headers: boolean, delimiter: string):
   return parse(fileContent, options)
 }
 
-// Output the hacker data in JSON format to sortedHackers.json
 export function writeDataToFile (hackerList : Hacker[]) {
   const hackerTables = JSON.stringify(hackerList)
   const pathToWrite = path.resolve(

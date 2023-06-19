@@ -1,4 +1,4 @@
-import grabFromDatabase from './api/sortingData'
+import applicantDataAsJson from './api/sortingData'
 import { loadCSV, writeDataToFile, printMembers } from './lib/util'
 
 let hackerList: Hacker[]
@@ -29,7 +29,7 @@ export type Hacker = {
     duringClass: string,
     assignedCabin: string,
     secondAssignedCabin: string,
-    postAcceptanceResponses: any
+    postAcceptanceResponses?: any
 }
 
 // loops through each user row in the given array
@@ -78,7 +78,7 @@ function hydrateCabinScore (hacker: Hacker, cabinScore: number[]) {
 // secondAssignedCabin = their next best cabin option
 async function hackerSortingAlgo () {
   // variable values first declared globally within the file and initialized on runtime
-  hackerList = await grabFromDatabase()
+  hackerList = await applicantDataAsJson()
   answerList = loadCSV('answer.csv', false, ',')
   cabinList = loadCSV('cabinTypes.csv', false, ',')[0]
   questionHeaders = loadCSV('questionHeaders.csv', false, ",")[0]
