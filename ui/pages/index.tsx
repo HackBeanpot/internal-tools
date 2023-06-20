@@ -1,13 +1,13 @@
-import React from "react";
-import { ThemeProvider, Divider, Typography, Link } from "@mui/material";
-import type { NextPage } from "next";
-import { StyledPageContainer } from "../styles/common";
-import { theme } from "../styles/theme";
-import { TextContainer } from "../pageStyles/home.styles";
-import Layout from "../components/layout/Layout";
-import { GetServerSideProps } from "next";
-import { icons } from "../styles/icons";
-import { getServerSideSessionOrRedirect } from "../server/getServerSideSessionOrRedirect";
+import React from 'react'
+import { ThemeProvider, Divider, Typography, Link } from '@mui/material'
+import type { NextPage } from 'next'
+import { StyledPageContainer } from '../styles/common'
+import { theme } from '../styles/theme'
+import { TextContainer } from '../pageStyles/home.styles'
+import Layout from '../components/layout/Layout'
+import { GetServerSideProps } from 'next'
+import { icons } from '../styles/icons'
+import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOrRedirect'
 
 const Home: NextPage = () => {
   return (
@@ -52,10 +52,10 @@ const Home: NextPage = () => {
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
-  );
-};
+  )
+}
 
 export const getServerSideProps: GetServerSideProps =
-  getServerSideSessionOrRedirect;
+  getServerSideSessionOrRedirect
 
-export default Home;
+export default Home

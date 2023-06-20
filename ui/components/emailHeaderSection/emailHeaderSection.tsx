@@ -8,7 +8,6 @@ type EmailHeadeSectionProps = {
   handleEmailSubject: any
   handleEmailHeader: any
 };
-//hi
 
 export default function EmailSenderHeader ({
   handleEmailStandard,
