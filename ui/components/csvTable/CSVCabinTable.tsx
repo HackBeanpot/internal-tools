@@ -43,7 +43,7 @@ export default function CSVCabinTable ({ headers }: CSVCabinTableProps) {
           <TableHead>
             <StyledTableHeader>
               {headerNames.map((header: any) => (
-                <TableCell sx={{ border: '1px solid #B9B9B9' }}>
+                <TableCell key="key" sx={{ border: '1px solid #B9B9B9' }}>
                   {header}
                 </TableCell>
               ))}
@@ -53,7 +53,7 @@ export default function CSVCabinTable ({ headers }: CSVCabinTableProps) {
             {rows.map((row) => (
               <TableRow key={nanoid()}>
                 {Object.keys(cabinValues).map((cabin, cabinIndex) => (
-                  <TableCell align="left" sx={{ border: '1px solid #B9B9B9' }}>
+                  <TableCell key="key" align="left" sx={{ border: '1px solid #B9B9B9' }}>
                     {row[cabinIndex] || ''}
                   </TableCell>
                 ))}
