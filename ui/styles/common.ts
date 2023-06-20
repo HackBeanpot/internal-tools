@@ -74,7 +74,7 @@ const StyledErrorMessage = styled(Typography)({
   color: theme.palette.Red.main
 })
 
-const StyledTableHeader = styled(TableRow) ({
+const StyledTableHeader = styled(TableRow)({
   backgroundColor: theme.palette.Grey.main
 })
 
