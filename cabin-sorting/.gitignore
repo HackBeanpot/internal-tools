@@ -36,3 +36,5 @@ package-lock.json
 
 # typescript
 *.tsbuildinfo
+*.fromMongoDB.json
+*.sortedHackers.json
