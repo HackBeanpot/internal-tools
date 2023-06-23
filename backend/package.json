@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.ts",
-  "type" : "module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.ts",
@@ -25,6 +25,7 @@
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-react": "^7.32.2",
     "nodemon": "^2.0.22",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "ts-node": "^10.9.1"
   }
 }
