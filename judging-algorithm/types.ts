@@ -13,6 +13,10 @@ export type Room = {
   name: string
 }
 
+export type RotationTimes = {
+  startTime: string
+}
+
 export type JudgeOutput = {
   judge: string,
   time: string,
