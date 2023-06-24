@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { parse } from 'csv-parse/sync'
-import { HackerTeam, Judge, Room } from './types'
+import { HackerTeam, Judge, Room, RotationTime } from './types'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 
@@ -33,4 +33,8 @@ export function parseHackerTeamCSV (
 
 export function parseRoomsCSV (roomCsvFilePath: string): Room[] {
   return parseCsv<Room>(roomCsvFilePath, true)
+}
+
+export function parseRotationTimeCSV (rotationTimesCsvFilePath: string): RotationTime[] {
+  return parseCsv<RotationTime>(rotationTimesCsvFilePath, true)
 }

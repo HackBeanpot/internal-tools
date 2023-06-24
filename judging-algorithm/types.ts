@@ -13,7 +13,7 @@ export type Room = {
   name: string
 }
 
-export type RotationTimes = {
+export type RotationTime = {
   startTime: string
 }
 

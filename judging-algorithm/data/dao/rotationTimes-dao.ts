@@ -1,4 +1,4 @@
-import { RotationTimes } from "../../types";
+import { RotationTime } from "../../types";
 import rotationTimesModel from "../models/rotationTimes-models";
 
 export const getRotationTime = async () => 
@@ -10,10 +10,10 @@ export const getRotationTimeById = async (rotationTimeID: string) =>
 export const getRotationTimeByName =async (rotationTimeName: string) =>
   await rotationTimesModel.findOne({name: rotationTimeName});  
 
-export const createRotationTime = async (rotationTime: RotationTimes) => 
+export const createRotationTime = async (rotationTime: RotationTime) => 
   await rotationTimesModel.create(rotationTime); 
 
-export const updateRotationTime = async (rotationTime: RotationTimes, rotationTimesID: string) => 
+export const updateRotationTime = async (rotationTime: RotationTime, rotationTimesID: string) => 
   await rotationTimesModel.updateOne({_id: rotationTimesID}, rotationTime); 
 
 export const deleteRotationTime = async (rotationTimesID: string) => 
