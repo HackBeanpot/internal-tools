@@ -17,7 +17,6 @@ type CSVCabinTableProps = {
 
 export default function CSVCabinTable ({ headers }: CSVCabinTableProps) {
   const headerNames = headers
-  // sample data
   const cabinValues = {
     Cabin1: ['email1-1', 'email1-2'],
     Cabin2: ['email2-1', 'email2-2', 'email2-3'],
@@ -27,7 +26,6 @@ export default function CSVCabinTable ({ headers }: CSVCabinTableProps) {
     Cabin6: ['email6-1', 'email6-2']
   }
 
-  // making rows of data
   const rows: any[] = [{}]
   Object.values(cabinValues).forEach((value, index) => {
     value.forEach((entry, entryIndex) => {
@@ -38,12 +36,21 @@ export default function CSVCabinTable ({ headers }: CSVCabinTableProps) {
 
   return (
     <>
-      <TableContainer component={Paper} elevation={0}>
+      <TableContainer
+        component={Paper}
+        elevation={0}
+      >
         <Table aria-label="simple table">
           <TableHead>
             <StyledTableHeader>
               {headerNames.map((header: any) => (
-                <TableCell key="key" sx={{ border: '1px solid #B9B9B9' }}>
+                <TableCell
+                  key={nanoid()}
+                  style={{
+                    padding: "9px",
+                    border: "1px solid #B9B9B9",
+                  }}
+                >
                   {header}
                 </TableCell>
               ))}
@@ -53,8 +60,12 @@ export default function CSVCabinTable ({ headers }: CSVCabinTableProps) {
             {rows.map((row) => (
               <TableRow key={nanoid()}>
                 {Object.keys(cabinValues).map((cabin, cabinIndex) => (
-                  <TableCell key="key" align="left" sx={{ border: '1px solid #B9B9B9' }}>
-                    {row[cabinIndex] || ''}
+                  <TableCell
+                    style={{ border: "1px solid #B9B9B9", padding: "9px" }}
+                    key={nanoid()}
+                    align="left"
+                  >
+                    {row[cabinIndex] || ""}
                   </TableCell>
                 ))}
               </TableRow>
@@ -63,5 +74,5 @@ export default function CSVCabinTable ({ headers }: CSVCabinTableProps) {
         </Table>
       </TableContainer>
     </>
-  )
+  );
 }

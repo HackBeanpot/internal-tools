@@ -43,7 +43,7 @@ const Home: NextPage = () => {
               <li>
                 <Typography variant="body1">
                   <Link href="/cabinSorting" underline="hover">
-                    A cabin sorting link
+                    A cabin sorting tool
                   </Link>
                 </Typography>
               </li>
