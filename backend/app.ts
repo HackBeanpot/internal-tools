@@ -1,16 +1,17 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv/config'
-import mongoose from "mongoose"
-import judgesRoutes from "/judging-algorithm/data/controllers/judges-controller"
-const mongoString: string = "mongodb+srv://dbadmin:ijTyfvOMOVOirZXR@hackbeanpotcluster.unazpk3.mongodb.net"
+import 'dotenv/config';
+import mongoose from 'mongoose';
+import router from "./judging-algorithm/routes/judges-routes.js"
+
+const mongoString: string = process.env.DATABASE_URL || ""
 console.log(mongoString)
-mongoose.connect(mongoString);
+mongoose.connect(mongoString, {
+  dbName: 'Judging',
+});
 const database = mongoose.connection
 
 const app = express();
-
-app.use(judgesRoutes)
 
 app.use(express.json());
 
@@ -20,6 +21,8 @@ app.use(
     credentials: true
   })
 );
+
+app.use('/', router);
 
 const PORT = process.env.PORT || 4000;
 

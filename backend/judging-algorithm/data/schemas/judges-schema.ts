@@ -5,6 +5,9 @@ export const judgesSchema = new mongoose.Schema(
     name: { type: String, required: true },
     inperson: { type: Boolean, required: true}
   },
-  { collection: "judges" }
+  { 
+    collection: "Judges",
+    versionKey: false
+  },
 );
 export default judgesSchema;
