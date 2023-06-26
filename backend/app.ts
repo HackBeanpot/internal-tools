@@ -2,11 +2,13 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import mongoose from 'mongoose';
-import router from "./judging-algorithm/routes/judges-routes.js"
+import judgesRouter from "./judging-algorithm/routes/judges-routes.js"
+import roomsRouter from "./judging-algorithm/routes/rooms-routes.js"
+import rotationTimesRouter from "./judging-algorithm/routes/rotationTimes-routes.js"
+import teamsRouter from "./judging-algorithm/routes/teams-routes.js"
 
 const mongoString: string = process.env.DATABASE_URL || ""
-console.log(mongoString)
-mongoose.connect(mongoString, {
+await mongoose.connect(mongoString, {
   dbName: 'Judging',
 });
 const database = mongoose.connection
@@ -22,7 +24,10 @@ app.use(
   })
 );
 
-app.use('/', router);
+app.use('/', judgesRouter);
+app.use('/', roomsRouter);
+app.use('/', rotationTimesRouter);
+app.use('/', teamsRouter);
 
 const PORT = process.env.PORT || 4000;
 
@@ -33,6 +38,7 @@ database.on('error', (error) => {
 database.once('connected', () => {
   console.log('Database Connected');
 })
+
 
 app.listen(PORT, () => {
   console.log(`Server is running in http://localhost:${PORT}`);

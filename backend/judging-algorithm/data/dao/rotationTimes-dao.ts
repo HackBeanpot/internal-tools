@@ -1,5 +1,5 @@
-import { RotationTime } from "../../types";
-import rotationTimesModel from "../models/rotationTimes-models";
+import { RotationTime } from "../../types.js";
+import rotationTimesModel from "../models/rotationTimes-models.js";
 
 export const getRotationTime = async () => 
   await rotationTimesModel.find();

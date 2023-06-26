@@ -4,6 +4,9 @@ export const roomsSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
   },
-  { collection: "rooms" }
+  { 
+    collection: "Rooms",
+    versionKey: false 
+  }
 );
 export default roomsSchema;

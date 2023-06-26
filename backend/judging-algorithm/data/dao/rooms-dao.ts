@@ -1,5 +1,5 @@
-import { Room } from "../../types";
-import roomsModel from "../models/rooms-models";
+import { Room } from "../../types.js";
+import roomsModel from "../models/rooms-models.js";
 
 export const getRoom = async () => 
   await roomsModel.find();

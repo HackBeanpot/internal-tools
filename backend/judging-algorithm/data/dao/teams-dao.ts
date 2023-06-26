@@ -1,5 +1,5 @@
-import { HackerTeam } from "../../types";
-import teamsModel from "../models/teams-models";
+import { HackerTeam } from "../../types.js";
+import teamsModel from "../models/teams-models.js";
 
 export const getTeam = async () => 
   await teamsModel.find();
