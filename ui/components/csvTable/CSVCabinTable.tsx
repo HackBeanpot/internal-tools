@@ -39,17 +39,30 @@ export default function CSVCabinTable ({ headers }: CSVCabinTableProps) {
       <TableContainer
         component={Paper}
         elevation={0}
+        style={{
+          borderTop: "1px solid #B9B9B9",
+          borderRight: "1px solid #B9B9B9",
+          borderLeft: "1px solid #B9B9B9",
+        }}
       >
         <Table aria-label="simple table">
           <TableHead>
             <StyledTableHeader>
-              {headerNames.map((header: any) => (
+              {headerNames.map((header: any, headerIndex: number) => (
                 <TableCell
                   key={nanoid()}
-                  style={{
-                    padding: "9px",
-                    border: "1px solid #B9B9B9",
-                  }}
+                  style={
+                    headerIndex < headerNames.length - 1
+                      ? {
+                          padding: "9px",
+                          borderRight: "1px solid #B9B9B9",
+                          borderBottom: "1px solid #B9B9B9",
+                        }
+                      : {
+                          padding: "9px",
+                          borderBottom: "1px solid #B9B9B9",
+                        }
+                  }
                 >
                   {header}
                 </TableCell>
@@ -61,9 +74,19 @@ export default function CSVCabinTable ({ headers }: CSVCabinTableProps) {
               <TableRow key={nanoid()}>
                 {Object.keys(cabinValues).map((cabin, cabinIndex) => (
                   <TableCell
-                    style={{ border: "1px solid #B9B9B9", padding: "9px" }}
                     key={nanoid()}
-                    align="left"
+                    style={
+                      cabinIndex < Object.keys(cabinValues).length - 1
+                        ? {
+                            padding: "9px",
+                            borderRight: "1px solid #B9B9B9",
+                            borderBottom: "1px solid #B9B9B9",
+                          }
+                        : {
+                            padding: "9px",
+                            borderBottom: "1px solid #B9B9B9",
+                          }
+                    }
                   >
                     {row[cabinIndex] || ""}
                   </TableCell>
