@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { parse } from 'csv-parse/sync'
+import {parse} from 'csv-parse/sync'
 
 export function loadCSV (filepath: string, headers: boolean, delimiter: string): any[] {
   const csvFileAbsolutePath = path.resolve(
