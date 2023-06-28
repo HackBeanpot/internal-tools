@@ -12,42 +12,50 @@ import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOr
 const Home: NextPage = () => {
   return (
     <Layout>
-    <ThemeProvider theme={theme}>
-      <StyledPageContainer>
-        <Typography variant="h3">Tools</Typography>
-        <Divider light />
-        <TextContainer>
-          <Typography variant="body1">
-            🛠 Internal tools + useful things for core members like…
+      <ThemeProvider theme={theme}>
+        <StyledPageContainer>
+          <Typography variant="h3">Tools</Typography>
+          <Divider light />
+          <TextContainer>
+            <Typography variant="body1">
+              🛠 Internal tools + useful things for core members like…
               <img
                 id="preview-image-url"
                 src={icons.Salute.image}
                 alt={icons.Salute.altText}
               />
-          </Typography>
-          <ul>
-            <li>
-              <Typography variant="body1">
-                <Link href="/sigmaker" underline="hover">
-                  An email signature generator
-                </Link>
-              </Typography>
-            </li>
-            <li>
-              <Typography variant="body1">
-                <Link href="/emailSender" underline="hover">
-                  An email sender
-                </Link>
-              </Typography>
-            </li>
-          </ul>
-        </TextContainer>
-      </StyledPageContainer>
-    </ThemeProvider>
+            </Typography>
+            <ul>
+              <li>
+                <Typography variant="body1">
+                  <Link href="/sigmaker" underline="hover">
+                    An email signature generator
+                  </Link>
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body1">
+                  <Link href="/emailSender" underline="hover">
+                    An email sender
+                  </Link>
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body1">
+                  <Link href="/cabinSorting" underline="hover">
+                    A cabin sorting tool
+                  </Link>
+                </Typography>
+              </li>
+            </ul>
+          </TextContainer>
+        </StyledPageContainer>
+      </ThemeProvider>
     </Layout>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect
+export const getServerSideProps: GetServerSideProps =
+  getServerSideSessionOrRedirect
 
 export default Home
