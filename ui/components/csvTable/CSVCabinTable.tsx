@@ -40,9 +40,9 @@ export default function CSVCabinTable ({ headers }: CSVCabinTableProps) {
         component={Paper}
         elevation={0}
         style={{
-          borderTop: "1px solid #B9B9B9",
-          borderRight: "1px solid #B9B9B9",
-          borderLeft: "1px solid #B9B9B9",
+          borderTop: '1px solid #B9B9B9',
+          borderRight: '1px solid #B9B9B9',
+          borderLeft: '1px solid #B9B9B9'
         }}
       >
         <Table aria-label="simple table">
@@ -54,13 +54,13 @@ export default function CSVCabinTable ({ headers }: CSVCabinTableProps) {
                   style={
                     headerIndex < headerNames.length - 1
                       ? {
-                          padding: "9px",
-                          borderRight: "1px solid #B9B9B9",
-                          borderBottom: "1px solid #B9B9B9",
+                          padding: '9px',
+                          borderRight: '1px solid #B9B9B9',
+                          borderBottom: '1px solid #B9B9B9'
                         }
                       : {
-                          padding: "9px",
-                          borderBottom: "1px solid #B9B9B9",
+                          padding: '9px',
+                          borderBottom: '1px solid #B9B9B9'
                         }
                   }
                 >
@@ -78,17 +78,17 @@ export default function CSVCabinTable ({ headers }: CSVCabinTableProps) {
                     style={
                       cabinIndex < Object.keys(cabinValues).length - 1
                         ? {
-                            padding: "9px",
-                            borderRight: "1px solid #B9B9B9",
-                            borderBottom: "1px solid #B9B9B9",
+                            padding: '9px',
+                            borderRight: '1px solid #B9B9B9',
+                            borderBottom: '1px solid #B9B9B9'
                           }
                         : {
-                            padding: "9px",
-                            borderBottom: "1px solid #B9B9B9",
+                            padding: '9px',
+                            borderBottom: '1px solid #B9B9B9'
                           }
                     }
                   >
-                    {row[cabinIndex] || ""}
+                    {row[cabinIndex] || ''}
                   </TableCell>
                 ))}
               </TableRow>
@@ -97,5 +97,5 @@ export default function CSVCabinTable ({ headers }: CSVCabinTableProps) {
         </Table>
       </TableContainer>
     </>
-  );
+  )
 }
