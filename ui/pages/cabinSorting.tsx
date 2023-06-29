@@ -4,8 +4,12 @@ import { Button, Divider, ThemeProvider, Typography } from '@mui/material'
 import { theme } from '../styles/theme'
 import { StyledButton, StyledPageContainer } from '../styles/common'
 import CSVCabinTable from '../components/csvTable/CSVCabinTable'
+import TemplateDropdown from '../components/templateDropdown/templateDropdown'
+import StringTemplateDropdown from '../components/templateDropdown/stringTemplateDropdown'
 
 export default function CabinSorting () {
+
+  const messageArray: string[] = ['Cabin 1', 'Cabin 2', 'Cabin 3', 'Cabin 4', 'Cabin 5', 'Cabin 6']
   return (
     <Layout>
       <ThemeProvider theme={theme}>
@@ -40,7 +44,7 @@ export default function CabinSorting () {
               </Button>
             </span>
           </div>
-          <br />
+          <br/>
           <CSVCabinTable
             headers={[
               'Cabin 1',
@@ -51,6 +55,11 @@ export default function CabinSorting () {
               'Cabin 6'
             ]}
           />
+          {/* EMAIL SHIT change later <3 */}
+          <br/>
+          <Typography variant="h5">Copy email list</Typography>
+          <br />
+          <StringTemplateDropdown templates={messageArray}></StringTemplateDropdown>
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
