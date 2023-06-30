@@ -4,8 +4,7 @@ import { Button, Divider, ThemeProvider, Typography } from '@mui/material'
 import { theme } from '../styles/theme'
 import { StyledButton, StyledPageContainer } from '../styles/common'
 import CSVCabinTable from '../components/csvTable/CSVCabinTable'
-import TemplateDropdown from '../components/templateDropdown/templateDropdown'
-import StringTemplateDropdown from '../components/templateDropdown/stringTemplateDropdown'
+import CabinDropdown from '../components/templateDropdown/cabinDropdown'
 
 export default function CabinSorting () {
 
@@ -23,45 +22,44 @@ export default function CabinSorting () {
             ad minim description of the tool.
           </Typography>
           <br />
-          <div style={{ justifyContent: 'space-between' }}>
+          <div style={{ justifyContent: "space-between" }}>
             <StyledButton
               size="large"
               color="info"
               variant="contained"
               type="submit"
-              sx={{ width: '16em' }}
+              sx={{ width: "16em" }}
             >
               Regenerate Sorted Hackers
             </StyledButton>
-            <span style={{ float: 'right' }}>
+            <span style={{ float: "right" }}>
               <Button
                 variant="contained"
                 component="span"
                 size="large"
-                style={{ textTransform: 'none', width: '10em' }}
+                style={{ textTransform: "none", width: "10em" }}
               >
                 Export CSV
               </Button>
             </span>
           </div>
-          <br/>
+          <br />
           <CSVCabinTable
             headers={[
-              'Cabin 1',
-              'Cabin 2',
-              'Cabin 3',
-              'Cabin 4',
-              'Cabin 5',
-              'Cabin 6'
+              "Cabin 1",
+              "Cabin 2",
+              "Cabin 3",
+              "Cabin 4",
+              "Cabin 5",
+              "Cabin 6",
             ]}
           />
-          {/* EMAIL SHIT change later <3 */}
-          <br/>
+          <br />
           <Typography variant="h5">Copy email list</Typography>
           <br />
-          <StringTemplateDropdown templates={messageArray}></StringTemplateDropdown>
+          <CabinDropdown items={messageArray}></CabinDropdown>
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
-  )
+  );
 }
