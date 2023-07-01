@@ -1,5 +1,6 @@
 import db from './db.js'
 import controller from '../controllers/rooms-controller.js'
+import { getRoom } from '../dao/rooms-dao.js';
 
 beforeAll(async () => await db.connectDatabase())
 afterAll(async () => {
@@ -19,6 +20,8 @@ it("Test create room", async () => {
         json: jest.fn()
     };
 
+    console.log("req body name: "+ req.body.name);
+    console.log("res: " + res);
     const { id } = await controller.createRoom(req, res);
 
     const req2 = {
@@ -31,7 +34,10 @@ it("Test create room", async () => {
         json: jest.fn()
     };
 
+    console.log("req params: "+ req2.params.id);
+
     const room  = await controller.getRoomById(req2, res2);
+    console.log(room)
     expect(room[0].name).toEqual("test room");
 })
 
@@ -52,7 +58,8 @@ it("Test update room", async () => {
     };
 
     const { id } = await controller.createRoom(req, res);
-
+    const allRooms = await getRoom();
+    console.log("allRooms", allRooms)
     const req2 = {
         params: {
             id: id
