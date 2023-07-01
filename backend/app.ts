@@ -8,10 +8,11 @@ import rotationTimesRouter from "./judging-algorithm/routes/rotationTimes-routes
 import teamsRouter from "./judging-algorithm/routes/teams-routes.js"
 
 const mongoString: string = process.env.DATABASE_URL || ""
+
 await mongoose.connect(mongoString, {
   dbName: 'Judging',
 });
-const database = await mongoose.connection
+const database = mongoose.connection
 
 const app = express();
 

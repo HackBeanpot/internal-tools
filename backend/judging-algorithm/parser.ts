@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { parse } from 'csv-parse/sync'
-import { HackerTeam, Judge, Room, RotationTime } from './types'
+import { HackerTeam, Judge, Room, RotationTime } from './types.js'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 
