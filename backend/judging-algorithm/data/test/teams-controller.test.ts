@@ -1,5 +1,5 @@
 import db from './db.js'
-import controller from '../controllers/judges-controller.js'
+import controller from '../controllers/teams-controller.js'
 
 beforeAll(async () => await db.connectDatabase())
 afterAll(async () => {
@@ -7,12 +7,12 @@ afterAll(async () => {
     await db.closeDatabase();
 })
 
-// create judge
-it("Test create judge", async () => {
+// create team
+it("Test create team", async () => {
     const req = {
         body: {
-            name: "test judge",
-            inPerson: true
+            name: "test team",
+            liveDemo: "yes"
         }
     }
     let res = {
@@ -20,7 +20,7 @@ it("Test create judge", async () => {
         json: jest.fn()
     };
 
-    const { id } = await controller.createJudge(req, res);
+    const { id } = await controller.createTeam(req, res);
 
     const req2 = {
         params: {
@@ -32,16 +32,16 @@ it("Test create judge", async () => {
         json: jest.fn()
     };
 
-    const judge  = await controller.getJudgeById(req2, res2);
-    expect(judge[0].name).toEqual("test judge");
+    const team  = await controller.getTeamById(req2, res2);
+    expect(team[0].name).toEqual("test team");
 })
 
-// update judge
-it("Test update judge", async () => {
+// update team
+it("Test update team", async () => {
     const req = {
         body: {
-            name: "test judge",
-            inPerson: true
+            name: "test team",
+            liveDemo: "yes"
         }
     }
     let res = {
@@ -53,19 +53,19 @@ it("Test update judge", async () => {
         json: jest.fn()
     };
 
-    const { id } = await controller.createJudge(req, res);
+    const { id } = await controller.createTeam(req, res);
 
     const req2 = {
         params: {
             id: id
         },
         body: {
-            name: "updated judge",
+            name: "updated team",
             inPerson: true
         }
     }
 
-    await controller.updateJudge(req2, res2);
+    await controller.updateTeam(req2, res2);
 
     const req3 = {
         params: {
@@ -78,16 +78,16 @@ it("Test update judge", async () => {
         json: jest.fn()
     };
 
-    const updatedJudge  = await controller.getJudgeById(req3, res3);
-    expect(updatedJudge[0].name).toEqual("updated judge");
+    const updatedTeam  = await controller.getTeamById(req3, res3);
+    expect(updatedTeam[0].name).toEqual("updated team");
 })
 
-// delete judge
-it("Test delete judge", async () => {
+// delete team
+it("Test delete team", async () => {
     const req = {
         body: {
-            name: "test judge",
-            inPerson: true
+            name: "test team",
+            liveDemo: "yes"
         }
     }
     let res = {
@@ -95,7 +95,7 @@ it("Test delete judge", async () => {
         json: jest.fn()
     };
 
-    const { id } = await controller.createJudge(req, res);
+    const { id } = await controller.createTeam(req, res);
 
     const req2 = {
         params: {
@@ -108,13 +108,13 @@ it("Test delete judge", async () => {
         json: jest.fn()
     };
 
-    await controller.deleteJudge(req2, res2);
+    await controller.deleteTeam(req2, res2);
 
     let res3 = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn()
     };
 
-    const deletedJudge = await controller.getJudgeById(req2, res3);
-    expect(deletedJudge).toEqual([]);
+    const deletedTeam = await controller.getTeamById(req2, res3);
+    expect(deletedTeam).toEqual([]);
 })
