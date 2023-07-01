@@ -1,5 +1,5 @@
 import { Judge } from "../../types.js";
-import judgesModel from "../models/judges-models.js";
+import judgesModel from "../models/judges-models";
 
 export const getJudge = async () => 
   await judgesModel.find();

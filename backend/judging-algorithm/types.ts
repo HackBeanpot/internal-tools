@@ -1,7 +1,7 @@
 export type Judge = {
   name: string,
   inPerson: boolean,
-  company: string
+  company?: string
 }
 
 export type HackerTeam = {
