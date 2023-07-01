@@ -11,7 +11,7 @@ const mongoString: string = process.env.DATABASE_URL || ""
 await mongoose.connect(mongoString, {
   dbName: 'Judging',
 });
-const database = mongoose.connection
+const database = await mongoose.connection
 
 const app = express();
 

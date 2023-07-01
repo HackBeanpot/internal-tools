@@ -1,13 +1,10 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["dom", "ESnext"],
-    "jsx": "react",
+    "target": "esnext",
+    "lib": ["dom", "esnext"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
-    "types": ["node"],
-    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
@@ -22,21 +19,17 @@
     "exactOptionalPropertyTypes": false,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
-    "strictPropertyInitialization": true, 
-    "resolveJsonModule": true,
+    "strictPropertyInitialization": true,
+    "isolatedModules": true
   },
-  "include": [
-    "main-site", 
-    "live-site", 
-    "shared-ui", 
-    "judging-algorithm", 
-    "*.json"
-  ],
+  "parserOptions": {
+    "project": "tsconfig.json",
+    "tsconfigRootDir": "__dirname",
+    "sourceType": "module",
+  },
+  "include": ["cabin-sorting", "judging-algorithm"],
   "exclude": [
     "node_modules",
-    "public",
-    "gatsby-node.ts",
-    "gatsby-config.ts",
     "plugins/**/*"
   ],
   "ts-node": {

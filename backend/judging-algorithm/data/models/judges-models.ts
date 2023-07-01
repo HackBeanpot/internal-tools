@@ -1,5 +1,5 @@
 import monogoose from "mongoose";
-import judgesSchema from "../schemas/judges-schema";
+import judgesSchema from "../schemas/judges-schema.js";
 
 const judgesModel = monogoose.model("Judge", judgesSchema);
 

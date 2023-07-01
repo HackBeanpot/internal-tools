@@ -1,4 +1,4 @@
-import * as judgesDao from "../dao/judges-dao";
+import * as judgesDao from "../dao/judges-dao.js";
 
 
 const getJudge = async (_req: any, res: any) => {
