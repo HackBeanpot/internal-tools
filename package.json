@@ -7,11 +7,13 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@types/react-icons": "^3.0.0",
     "csv-parse": "^5.4.0",
     "dotenv": "^16.3.1",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "mongodb": "^5.6.0",
+    "react-icon": "^1.0.0",
     "react-icons": "^4.10.1"
   },
   "devDependencies": {
