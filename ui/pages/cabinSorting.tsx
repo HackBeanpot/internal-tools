@@ -7,13 +7,19 @@ import CSVCabinTable from '../components/csvTable/CSVCabinTable'
 import CabinDropdown from '../components/templateDropdown/cabinDropdown'
 
 export default function CabinSorting () {
-
-  const messageArray: string[] = ['Cabin 1', 'Cabin 2', 'Cabin 3', 'Cabin 4', 'Cabin 5', 'Cabin 6']
+  const messageArray: string[] = [
+    'Cabin 1',
+    'Cabin 2',
+    'Cabin 3',
+    'Cabin 4',
+    'Cabin 5',
+    'Cabin 6'
+  ]
   return (
     <Layout>
       <ThemeProvider theme={theme}>
         <StyledPageContainer>
-          <Typography variant="h3"> Cabin Sorting Tool </Typography>
+          <Typography variant="h3">Cabin Sorting Tool</Typography>
           <Divider />
           <br />
           <Typography variant="h6">
@@ -22,22 +28,22 @@ export default function CabinSorting () {
             ad minim description of the tool.
           </Typography>
           <br />
-          <div style={{ justifyContent: "space-between" }}>
+          <div style={{ justifyContent: 'space-between' }}>
             <StyledButton
               size="large"
               color="info"
               variant="contained"
               type="submit"
-              sx={{ width: "16em" }}
+              sx={{ width: '16em' }}
             >
               Regenerate Sorted Hackers
             </StyledButton>
-            <span style={{ float: "right" }}>
+            <span style={{ float: 'right' }}>
               <Button
                 variant="contained"
                 component="span"
                 size="large"
-                style={{ textTransform: "none", width: "10em" }}
+                style={{ textTransform: 'none', width: '10em' }}
               >
                 Export CSV
               </Button>
@@ -46,20 +52,20 @@ export default function CabinSorting () {
           <br />
           <CSVCabinTable
             headers={[
-              "Cabin 1",
-              "Cabin 2",
-              "Cabin 3",
-              "Cabin 4",
-              "Cabin 5",
-              "Cabin 6",
+              'Cabin 1',
+              'Cabin 2',
+              'Cabin 3',
+              'Cabin 4',
+              'Cabin 5',
+              'Cabin 6'
             ]}
           />
           <br />
           <Typography variant="h5">Copy email list</Typography>
           <br />
-          <CabinDropdown items={messageArray}></CabinDropdown>
+          <CabinDropdown items={messageArray} />
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
-  );
+  )
 }

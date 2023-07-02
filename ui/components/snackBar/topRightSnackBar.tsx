@@ -1,25 +1,25 @@
-import * as React from "react";
-import Snackbar from "@mui/material/Snackbar";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import * as React from 'react'
+import Snackbar from '@mui/material/Snackbar'
+import IconButton from '@mui/material/IconButton'
+import CloseIcon from '@mui/icons-material/Close'
 
 interface TopRightSnackBarProps {
   message: string;
 }
 
-export default function TopRightSnackBar({ message }: TopRightSnackBarProps) {
-  const [open, setOpen] = React.useState(true);
+export default function TopRightSnackBar ({ message }: TopRightSnackBarProps) {
+  const [open, setOpen] = React.useState(true)
 
   const handleClose = (
     event: React.SyntheticEvent | Event,
     reason?: string
   ) => {
-    if (reason === "clickaway") {
-      return;
+    if (reason === 'clickaway') {
+      return
     }
 
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const action = (
     <React.Fragment>
@@ -32,14 +32,14 @@ export default function TopRightSnackBar({ message }: TopRightSnackBarProps) {
         <CloseIcon fontSize="small" />
       </IconButton>
     </React.Fragment>
-  );
+  )
 
   return (
     <div>
       <Snackbar
         anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
+          vertical: 'top',
+          horizontal: 'right'
         }}
         open={open}
         autoHideDuration={6000}
@@ -48,5 +48,5 @@ export default function TopRightSnackBar({ message }: TopRightSnackBarProps) {
         action={action}
       />
     </div>
-  );
+  )
 }
