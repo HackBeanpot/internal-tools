@@ -3,7 +3,11 @@ import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
-export default function TopRightSnackBar( {message} : String) {
+interface TopRightSnackBarProps {
+  message: string;
+}
+
+export default function TopRightSnackBar({ message }: TopRightSnackBarProps) {
   const [open, setOpen] = React.useState(true);
 
   const handleClose = (
