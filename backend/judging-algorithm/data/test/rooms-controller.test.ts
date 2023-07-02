@@ -1,6 +1,6 @@
 import db from './db.js'
 import controller from '../controllers/rooms-controller.js'
-import { getRoom } from '../dao/rooms-dao.js';
+import { mockResponse, testCreateRoomRequest } from './test-constants.js';
 
 beforeAll(async () => await db.connectDatabase())
 afterAll(async () => {
@@ -10,57 +10,32 @@ afterAll(async () => {
 
 // create room
 it("Test create room", async () => {
-    const req = {
-        body: {
-            name: "test room"
-        }
-    }
-    let res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn()
-    };
+    const { id } = await controller.createRoom(testCreateRoomRequest, mockResponse);
 
-    console.log("req body name: "+ req.body.name);
-    console.log("res: " + res);
-    const { id } = await controller.createRoom(req, res);
-
-    const req2 = {
+    const createdRoomIdRequest = {
         params: {
             id: id
         }
     }
-    let res2 = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn()
-    };
 
-    console.log("req params: "+ req2.params.id);
-
-    const room  = await controller.getRoomById(req2, res2);
-    console.log(room)
+    const room = await controller.getRoomById(createdRoomIdRequest, mockResponse);
     expect(room[0].name).toEqual("test room");
+})
+
+// create multiple rooms
+it("Test create and get multiple rooms", async () => {
+    await controller.createRoom(testCreateRoomRequest, mockResponse);
+    await controller.createRoom(testCreateRoomRequest, mockResponse);
+
+    const rooms = await controller.getRoom(undefined, mockResponse);
+    expect(rooms.length).toEqual(3);
 })
 
 // update room
 it("Test update room", async () => {
-    const req = {
-        body: {
-            name: "test room",
-        }
-    }
-    let res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn()
-    };
-    let res2 = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn()
-    };
+    const { id } = (await controller.getRoom(undefined, mockResponse))[0]
 
-    const { id } = await controller.createRoom(req, res);
-    const allRooms = await getRoom();
-    console.log("allRooms", allRooms)
-    const req2 = {
+    const updatedRoomRequest = {
         params: {
             id: id
         },
@@ -69,55 +44,30 @@ it("Test update room", async () => {
         }
     }
 
-    await controller.updateRoom(req2, res2);
+    await controller.updateRoom(updatedRoomRequest, mockResponse);
 
-    const req3 = {
+    const updatedRoomIdRequest = {
         params: {
             id: id
         }
     }
 
-    let res3 = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn()
-    };
-
-    const updatedRoom  = await controller.getRoomById(req3, res3);
+    const updatedRoom  = await controller.getRoomById(updatedRoomIdRequest, mockResponse);
     expect(updatedRoom[0].name).toEqual("updated room");
 })
 
 // delete room
 it("Test delete room", async () => {
-    const req = {
-        body: {
-            name: "test room",
-        }
-    }
-    let res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn()
-    };
+    const { id } = await controller.createRoom(testCreateRoomRequest, mockResponse);
 
-    const { id } = await controller.createRoom(req, res);
-
-    const req2 = {
+    const createdRoomIdRequest = {
         params: {
             id: id
         }
     }
 
-    let res2 = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn()
-    };
+    await controller.deleteRoom(createdRoomIdRequest, mockResponse);
 
-    await controller.deleteRoom(req2, res2);
-
-    let res3 = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn()
-    };
-
-    const deletedRoom = await controller.getRoomById(req2, res3);
+    const deletedRoom = await controller.getRoomById(createdRoomIdRequest, mockResponse);
     expect(deletedRoom).toEqual([]);
 })

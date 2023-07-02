@@ -1,116 +1,73 @@
-// import db from './db.js'
-// import controller from '../controllers/rotationTimes-controller.js'
+import db from './db.js'
+import controller from '../controllers/rotationTimes-controller.js'
+import { mockResponse, testCreateRotationTimeRequest } from './test-constants.js';
 
-// beforeAll(async () => await db.connectDatabase())
-// afterAll(async () => {
-//     await db.clearDatabase();
-//     await db.closeDatabase();
-// })
+beforeAll(async () => await db.connectDatabase())
+afterAll(async () => {
+    await db.clearDatabase();
+    await db.closeDatabase();
+})
 
-// // create rotationTimes
-// it("Test create rotationTimes", async () => {
-//     const req = {
-//         body: {
-//             startTime: "12:00",
-//         }
-//     }
-//     let res = {
-//         status: jest.fn().mockReturnThis(),
-//         json: jest.fn()
-//     };
+// create rotation time
+it("Test create rotation time", async () => {
+    const { id } = await controller.createRotationTime(testCreateRotationTimeRequest, mockResponse);
 
-//     const { id } = await controller.createRotationTime(req, res);
+    const createdRotationTimeIdRequest = {
+        params: {
+            id: id
+        }
+    }
 
-//     const req2 = {
-//         params: {
-//             id: id
-//         }
-//     }
-//     let res2 = {
-//         status: jest.fn().mockReturnThis(),
-//         json: jest.fn()
-//     };
+    const rotationTime = await controller.getRotationTimeById(createdRotationTimeIdRequest, mockResponse);
+    expect(rotationTime[0].startTime).toEqual("1:00");
+})
 
-//     const rotationTime  = await controller.getRotationTimeById(req2, res2);
-//     expect(rotationTime[0].startTime).toEqual("12:00");
-// })
+// create multiple rotation times
+it("Test create rotation times", async () => {
+    await controller.createRotationTime(testCreateRotationTimeRequest, mockResponse);
+    await controller.createRotationTime(testCreateRotationTimeRequest, mockResponse);
 
-// // update rotationTime
-// it("Test update rotationTime", async () => {
-//     const req = {
-//         body: {
-//             startTime: "12:00",
-//         }
-//     }
-//     let res = {
-//         status: jest.fn().mockReturnThis(),
-//         json: jest.fn()
-//     };
-//     let res2 = {
-//         status: jest.fn().mockReturnThis(),
-//         json: jest.fn()
-//     };
+    const rotationTimes = await controller.getRotationTime(undefined, mockResponse);
+    expect(rotationTimes.length).toEqual(3);
+})
 
-//     const { id } = await controller.createRotationTime(req, res);
+// update rotation times
+it("Test update rotation times", async () => {
+    const { id } = (await controller.getRotationTime(undefined, mockResponse))[0]
 
-//     const req2 = {
-//         params: {
-//             id: id
-//         },
-//         body: {
-//             startTime: "12:20",
-//         }
-//     }
+    const updatedRotationTimeRequest = {
+        params: {
+            id: id
+        },
+        body: {
+            startTime: "7:00",
+        }
+    }
 
-//     await controller.updateRotationTime(req2, res2);
+    await controller.updateRotationTime(updatedRotationTimeRequest, mockResponse);
 
-//     const req3 = {
-//         params: {
-//             id: id
-//         }
-//     }
+    const updatedRotationTimeIdRequest = {
+        params: {
+            id: id
+        }
+    }
 
-//     let res3 = {
-//         status: jest.fn().mockReturnThis(),
-//         json: jest.fn()
-//     };
+    const updatedRotationTime  = await controller.getRotationTimeById(updatedRotationTimeIdRequest, mockResponse);
+    expect(updatedRotationTime[0].startTime).toEqual("7:00");
+})
 
-//     const updatedRotationTime  = await controller.getRotationTimeById(req3, res3);
-//     expect(updatedRotationTime[0].startTime).toEqual("12:20");
-// })
+// delete rotation time
+it("Test delete rotation time", async () => {
+    const { id } = await controller.createRotationTime(testCreateRotationTimeRequest, mockResponse);
 
-// // delete judge
-// it("Test delete rotationTime", async () => {
-//     const req = {
-//         body: {
-//             startTime: "12:00",
-//         }
-//     }
-//     let res = {
-//         status: jest.fn().mockReturnThis(),
-//         json: jest.fn()
-//     };
+    const createdRotationTimeIdRequest = {
+        params: {
+            id: id
+        }
+    }
 
-//     const { id } = await controller.createRotationTime(req, res);
+    await controller.deleteRotationTime(createdRotationTimeIdRequest, mockResponse);
 
-//     const req2 = {
-//         params: {
-//             id: id
-//         }
-//     }
-
-//     let res2 = {
-//         status: jest.fn().mockReturnThis(),
-//         json: jest.fn()
-//     };
-
-//     await controller.deleteRotationTime(req2, res2);
-
-//     let res3 = {
-//         status: jest.fn().mockReturnThis(),
-//         json: jest.fn()
-//     };
-
-//     const deletedRotationTime = await controller.getRotationTimeById(req2, res3);
-//     expect(deletedRotationTime).toEqual([]);
-// })
+    const deletedRotationTime = await controller.getRotationTimeById(createdRotationTimeIdRequest, mockResponse);
+    expect(deletedRotationTime).toEqual([]);
+})

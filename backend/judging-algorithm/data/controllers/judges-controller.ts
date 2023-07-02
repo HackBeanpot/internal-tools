@@ -1,6 +1,5 @@
 import * as judgesDao from "../dao/judges-dao.js";
 
-
 const getJudge = async (_req: any, res: any) => {
   const judges = await judgesDao.getJudge();
   res.json(judges)

@@ -1,120 +1,74 @@
-// import db from './db.js'
-// import controller from '../controllers/teams-controller.js'
+import db from './db.js'
+import controller from '../controllers/teams-controller.js'
+import { mockResponse, testCreateTeamRequest } from './test-constants.js';
 
-// beforeAll(async () => await db.connectDatabase())
-// afterAll(async () => {
-//     await db.clearDatabase();
-//     await db.closeDatabase();
-// })
+beforeAll(async () => await db.connectDatabase())
+afterAll(async () => {
+    await db.clearDatabase();
+    await db.closeDatabase();
+})
 
-// // create team
-// it("Test create team", async () => {
-//     const req = {
-//         body: {
-//             name: "test team",
-//             liveDemo: "yes"
-//         }
-//     }
-//     let res = {
-//         status: jest.fn().mockReturnThis(),
-//         json: jest.fn()
-//     };
+// create team
+it("Test create team", async () => {
+    const { id } = await controller.createTeam(testCreateTeamRequest, mockResponse);
 
-//     const { id } = await controller.createTeam(req, res);
+    const createdTeamIdRequest = {
+        params: {
+            id: id
+        }
+    }
 
-//     const req2 = {
-//         params: {
-//             id: id
-//         }
-//     }
-//     let res2 = {
-//         status: jest.fn().mockReturnThis(),
-//         json: jest.fn()
-//     };
+    const team  = await controller.getTeamById(createdTeamIdRequest, mockResponse);
+    expect(team[0].name).toEqual("test team");
+})
 
-//     const team  = await controller.getTeamById(req2, res2);
-//     expect(team[0].name).toEqual("test team");
-// })
+// create multiple teams
+it("Test create and get multiple teams", async () => {
+    await controller.createTeam(testCreateTeamRequest, mockResponse);
+    await controller.createTeam(testCreateTeamRequest, mockResponse);
 
-// // update team
-// it("Test update team", async () => {
-//     const req = {
-//         body: {
-//             name: "test team",
-//             liveDemo: "yes"
-//         }
-//     }
-//     let res = {
-//         status: jest.fn().mockReturnThis(),
-//         json: jest.fn()
-//     };
-//     let res2 = {
-//         status: jest.fn().mockReturnThis(),
-//         json: jest.fn()
-//     };
+    const teams = await controller.getTeam(undefined, mockResponse);
+    expect(teams.length).toEqual(3);
+})
 
-//     const { id } = await controller.createTeam(req, res);
+// update team
+it("Test update team", async () => {
+    const { id } = (await controller.getTeam(undefined, mockResponse))[0];
 
-//     const req2 = {
-//         params: {
-//             id: id
-//         },
-//         body: {
-//             name: "updated team",
-//             inPerson: true
-//         }
-//     }
+    const updatedTeamRequest = {
+        params: {
+            id: id
+        },
+        body: {
+            name: "updated team",
+            inPerson: true
+        }
+    }
 
-//     await controller.updateTeam(req2, res2);
+    await controller.updateTeam(updatedTeamRequest, mockResponse);
 
-//     const req3 = {
-//         params: {
-//             id: id
-//         }
-//     }
+    const updatedTeamIdRequest = {
+        params: {
+            id: id
+        }
+    }
 
-//     let res3 = {
-//         status: jest.fn().mockReturnThis(),
-//         json: jest.fn()
-//     };
+    const updatedTeam  = await controller.getTeamById(updatedTeamIdRequest, mockResponse);
+    expect(updatedTeam[0].name).toEqual("updated team");
+})
 
-//     const updatedTeam  = await controller.getTeamById(req3, res3);
-//     expect(updatedTeam[0].name).toEqual("updated team");
-// })
+// delete team
+it("Test delete team", async () => {
+    const { id } = await controller.createTeam(testCreateTeamRequest, mockResponse);
 
-// // delete team
-// it("Test delete team", async () => {
-//     const req = {
-//         body: {
-//             name: "test team",
-//             liveDemo: "yes"
-//         }
-//     }
-//     let res = {
-//         status: jest.fn().mockReturnThis(),
-//         json: jest.fn()
-//     };
+    const testDeletedTeamIdRequest = {
+        params: {
+            id: id
+        }
+    }
 
-//     const { id } = await controller.createTeam(req, res);
+    await controller.deleteTeam(testDeletedTeamIdRequest, mockResponse);
 
-//     const req2 = {
-//         params: {
-//             id: id
-//         }
-//     }
-
-//     let res2 = {
-//         status: jest.fn().mockReturnThis(),
-//         json: jest.fn()
-//     };
-
-//     await controller.deleteTeam(req2, res2);
-
-//     let res3 = {
-//         status: jest.fn().mockReturnThis(),
-//         json: jest.fn()
-//     };
-
-//     const deletedTeam = await controller.getTeamById(req2, res3);
-//     expect(deletedTeam).toEqual([]);
-// })
+    const deletedTeam = await controller.getTeamById(testDeletedTeamIdRequest, mockResponse);
+    expect(deletedTeam).toEqual([]);
+})

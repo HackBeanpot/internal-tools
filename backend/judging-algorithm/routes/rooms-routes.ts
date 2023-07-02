@@ -4,10 +4,9 @@ import controller from '../data/controllers/rooms-controller.js';
 const router = express.Router();
 
 router.get("/rooms", controller.getRoom);
-router.get("/rooms/:roomID", controller.getRoomById);
-router.get("rooms/:roomName", controller.getRoomByName);
+router.get("/rooms/:id", controller.getRoomById);
 router.put("/rooms", controller.updateRoom);
 router.post("/rooms", controller.createRoom)
-router.delete("/rooms", controller.deleteRoom);
+router.delete("/rooms/:id", controller.deleteRoom);
 
 export default router;

@@ -7,15 +7,8 @@ import * as rotationTimesDao from "../dao/rotationTimes-dao.js";
   };
 
   const getRotationTimeById = async (req: any, res: any) => {
-    const rotationTimeId = req.params.rotationTimeID;
+    const rotationTimeId = req.params.id;
     const rotationTime = await rotationTimesDao.getRotationTimeById(rotationTimeId);
-    res.json(rotationTime);
-    return rotationTime;
-  };
-
-  const getRotationTimeByName = async (req: any, res: any) => {
-    const rotationTimeName = req.params.rotationTimeName;
-    const rotationTime = await rotationTimesDao.getRotationTimeByName(rotationTimeName);
     res.json(rotationTime);
     return rotationTime;
   };
@@ -29,17 +22,18 @@ import * as rotationTimesDao from "../dao/rotationTimes-dao.js";
 
   const updateRotationTime = async (req: any, res: any) => {
     const rotationTime = req.body;
-    const update = await rotationTimesDao.updateRotationTime(rotationTime._id, rotationTime);
+    const rotationTimeId = req.params.id;
+    const update = await rotationTimesDao.updateRotationTime(rotationTime, rotationTimeId);
     res.json(update);
     return update;
   };
 
   const deleteRotationTime = async (req: any, res: any) => {
-    const rotationTime = req.body;
-    const deleted = await rotationTimesDao.deleteRotationTime(rotationTime._id);
+    const rotationTimeId = req.params.id;
+    const deleted = await rotationTimesDao.deleteRotationTime(rotationTimeId);
     res.json(deleted);
     return deleted;
   };
 
 
-export default {getRotationTime, getRotationTimeById, getRotationTimeByName, createRotationTime, updateRotationTime, deleteRotationTime};
+export default {getRotationTime, getRotationTimeById, createRotationTime, updateRotationTime, deleteRotationTime};
