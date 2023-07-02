@@ -1,5 +1,5 @@
 // import db from './db.js'
-// import controller from '../controllers/judges-controller.js'
+// import controller from '../controllers/rotationTimes-controller.js'
 
 // beforeAll(async () => await db.connectDatabase())
 // afterAll(async () => {
@@ -7,12 +7,11 @@
 //     await db.closeDatabase();
 // })
 
-// // create judge
-// it("Test create judge", async () => {
+// // create rotationTimes
+// it("Test create rotationTimes", async () => {
 //     const req = {
 //         body: {
-//             name: "test judge",
-//             inPerson: true
+//             startTime: "12:00",
 //         }
 //     }
 //     let res = {
@@ -20,10 +19,7 @@
 //         json: jest.fn()
 //     };
 
-//     console.log("req judge: "+ req.body.name);
-//     console.log("res: " + res);
-
-//     const { id } = await controller.createJudge(req, res);
+//     const { id } = await controller.createRotationTime(req, res);
 
 //     const req2 = {
 //         params: {
@@ -35,17 +31,15 @@
 //         json: jest.fn()
 //     };
 
-//     const judge  = await controller.getJudgeById(req2, res2);
-//     console.log(judge)
-//     expect(judge[0].name).toEqual("test judge");
+//     const rotationTime  = await controller.getRotationTimeById(req2, res2);
+//     expect(rotationTime[0].startTime).toEqual("12:00");
 // })
 
-// // update judge
-// it("Test update judge", async () => {
+// // update rotationTime
+// it("Test update rotationTime", async () => {
 //     const req = {
 //         body: {
-//             name: "test judge",
-//             inPerson: true
+//             startTime: "12:00",
 //         }
 //     }
 //     let res = {
@@ -57,19 +51,18 @@
 //         json: jest.fn()
 //     };
 
-//     const { id } = await controller.createJudge(req, res);
+//     const { id } = await controller.createRotationTime(req, res);
 
 //     const req2 = {
 //         params: {
 //             id: id
 //         },
 //         body: {
-//             name: "updated judge",
-//             inPerson: true
+//             startTime: "12:20",
 //         }
 //     }
 
-//     await controller.updateJudge(req2, res2);
+//     await controller.updateRotationTime(req2, res2);
 
 //     const req3 = {
 //         params: {
@@ -82,16 +75,15 @@
 //         json: jest.fn()
 //     };
 
-//     const updatedJudge  = await controller.getJudgeById(req3, res3);
-//     expect(updatedJudge[0].name).toEqual("updated judge");
+//     const updatedRotationTime  = await controller.getRotationTimeById(req3, res3);
+//     expect(updatedRotationTime[0].startTime).toEqual("12:20");
 // })
 
 // // delete judge
-// it("Test delete judge", async () => {
+// it("Test delete rotationTime", async () => {
 //     const req = {
 //         body: {
-//             name: "test judge",
-//             inPerson: true
+//             startTime: "12:00",
 //         }
 //     }
 //     let res = {
@@ -99,7 +91,7 @@
 //         json: jest.fn()
 //     };
 
-//     const { id } = await controller.createJudge(req, res);
+//     const { id } = await controller.createRotationTime(req, res);
 
 //     const req2 = {
 //         params: {
@@ -112,13 +104,13 @@
 //         json: jest.fn()
 //     };
 
-//     await controller.deleteJudge(req2, res2);
+//     await controller.deleteRotationTime(req2, res2);
 
 //     let res3 = {
 //         status: jest.fn().mockReturnThis(),
 //         json: jest.fn()
 //     };
 
-//     const deletedJudge = await controller.getJudgeById(req2, res3);
-//     expect(deletedJudge).toEqual([]);
+//     const deletedRotationTime = await controller.getRotationTimeById(req2, res3);
+//     expect(deletedRotationTime).toEqual([]);
 // })

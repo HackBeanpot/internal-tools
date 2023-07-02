@@ -22,6 +22,7 @@ import * as roomsDao from "../dao/rooms-dao.js";
   };
 
   const createRoom = async (req: any, res: any) => {
+    console.log("createRoom params:", req)
     const room = req.body;
     const create = await roomsDao.createRoom(room);
     res.json(create);
@@ -36,6 +37,7 @@ import * as roomsDao from "../dao/rooms-dao.js";
   };
 
   const deleteRoom = async (req: any, res: any) => {
+    console.log("delete params:", req)
     const room = req.body;
     const deleted = await roomsDao.deleteRoom(room._id);
     res.json(deleted);
