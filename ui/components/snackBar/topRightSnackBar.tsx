@@ -22,7 +22,6 @@ export default function TopRightSnackBar ({ message }: TopRightSnackBarProps) {
   }
 
   const action = (
-    <React.Fragment>
       <IconButton
         size="small"
         aria-label="close"
@@ -31,7 +30,6 @@ export default function TopRightSnackBar ({ message }: TopRightSnackBarProps) {
       >
         <CloseIcon fontSize="small" />
       </IconButton>
-    </React.Fragment>
   )
 
   return (
