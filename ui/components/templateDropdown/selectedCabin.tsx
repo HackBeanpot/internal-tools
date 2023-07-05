@@ -4,22 +4,22 @@ import {
   Select,
   SelectChangeEvent,
   Typography,
-  Stack
+  Stack,
+  InputLabel
 } from '@mui/material'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import CheckIcon from '@mui/icons-material/Check'
 import { StyledFormControl } from './templateDropdown.styles'
 import { theme } from '../../styles/theme'
-import { MdContentCopy } from 'react-icons/md'
-import { IoMdCheckmark } from 'react-icons/io'
-import TopRightSnackBar from '../snackBar/topRightSnackBar'
+import SimpleSnackBar from '../snackBar/simpleSnackBar'
 
-type CabinDropdownProps = {
-  items: string[];
+type SelectedCabinProps = {
+  cabinNames: string[];
+  cabinValues: any;
 };
 
-export default function CabinDropdown ({ items }: CabinDropdownProps) {
+export default function SelectedCabin ({ cabinNames, cabinValues }: SelectedCabinProps) {
   const [selectedItem, setSelectedItem] = React.useState('')
-  // if false, the copy icon will appear
-  // if true, the checkmark will appear
   const [copied, setCopied] = React.useState(false)
 
   const [openSnackBar, setOpenSnackBar] = React.useState(false)
@@ -33,9 +33,11 @@ export default function CabinDropdown ({ items }: CabinDropdownProps) {
   return (
     <>
       <StyledFormControl style={{ width: '9em', display: 'inline-block' }}>
+        <InputLabel>Cabin</InputLabel>
         <Select
           value={selectedItem}
           onChange={handleChange}
+          label="Cabin"
           displayEmpty
           inputProps={{ 'aria-label': 'Without label' }}
           style={{
@@ -44,10 +46,7 @@ export default function CabinDropdown ({ items }: CabinDropdownProps) {
             fontSize: '0.9em'
           }}
         >
-          <MenuItem value="" style={{ fontSize: '0.9em' }}>
-            <Typography style={{ fontSize: '0.9em' }}>Cabin</Typography>
-          </MenuItem>
-          {items.map((item: string, index) => (
+          {cabinNames.map((item: string, index) => (
             <MenuItem key={index} value={item} style={{ fontSize: '0.9em' }}>
               <Stack direction="row" spacing={2}>
                 <Typography style={{ fontSize: '0.9em' }}>{item}</Typography>
@@ -65,8 +64,9 @@ export default function CabinDropdown ({ items }: CabinDropdownProps) {
               top: '21%'
             }}
           >
-            <IoMdCheckmark size={30} />
-          </span>)
+            <CheckIcon fontSize="medium" />
+          </span>
+            )
           : (
           <span
             style={{
@@ -75,16 +75,26 @@ export default function CabinDropdown ({ items }: CabinDropdownProps) {
               top: '21%'
             }}
             onClick={() => {
-              navigator.clipboard.writeText(selectedItem)
+              navigator.clipboard.writeText(
+                cabinValues[selectedItem].toString()
+              )
               setCopied(true)
               setOpenSnackBar(true)
             }}
           >
-            <MdContentCopy size={30} color="#5e5d5d" />
+            <span color="#5e5d5d">
+              <ContentCopyIcon fontSize='medium'/>
+            </span>
           </span>
             )}
 
-        {openSnackBar && <TopRightSnackBar message={'Copied to Clipboard'} />}
+        {openSnackBar && (
+          <SimpleSnackBar
+            message={'Copied to Clipboard'}
+            verticalPos="bottom"
+            horizontalPos="left"
+          />
+        )}
       </StyledFormControl>
     </>
   )

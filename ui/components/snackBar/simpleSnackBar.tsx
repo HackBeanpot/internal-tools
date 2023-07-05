@@ -1,13 +1,16 @@
 import * as React from 'react'
-import Snackbar from '@mui/material/Snackbar'
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 
-interface TopRightSnackBarProps {
+interface SimpleSnackBarProps {
   message: string;
+  verticalPos: SnackbarOrigin['vertical'];
+  horizontalPos: SnackbarOrigin['horizontal'];
 }
 
-export default function TopRightSnackBar ({ message }: TopRightSnackBarProps) {
+export default function SimpleSnackBar ({ message, verticalPos, horizontalPos }
+  : SimpleSnackBarProps) {
   const [open, setOpen] = React.useState(true)
 
   const handleClose = (
@@ -36,8 +39,8 @@ export default function TopRightSnackBar ({ message }: TopRightSnackBarProps) {
     <div>
       <Snackbar
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
+          vertical: verticalPos,
+          horizontal: horizontalPos
         }}
         open={open}
         autoHideDuration={6000}
