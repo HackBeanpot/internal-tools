@@ -4,7 +4,6 @@ import { mockResponse, testCreateRotationTimeRequest } from './test-constants.js
 
 beforeAll(async () => await db.connectDatabase())
 afterAll(async () => {
-    await db.clearDatabase();
     await db.closeDatabase();
 })
 
