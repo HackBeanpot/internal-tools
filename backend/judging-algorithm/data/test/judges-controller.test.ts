@@ -7,68 +7,69 @@ afterAll(async () => {
     await db.closeDatabase();
 })
 
-// create judge
-it("Test create judge", async () => {
-    const { id } = await controller.createJudge(testCreateJudgeRequest, mockResponse);
+describe("Judge Tests", () => {
+    it("Test create judge", async () => {
+        const { id } = await controller.createJudge(testCreateJudgeRequest, mockResponse);
 
-    const createdJudgeIdRequest = {
-        params: {
-            id: id
+        const createdJudgeIdRequest = {
+            params: {
+                id: id
+            }
         }
-    }
 
-    const judge  = await controller.getJudgeById(createdJudgeIdRequest, mockResponse);
-    expect(judge[0].name).toEqual("test judge");
-})
+        const judge  = await controller.getJudgeById(createdJudgeIdRequest, mockResponse);
+        expect(judge[0].name).toEqual("test judge");
+    })
 
-// create multiple judge
-it("Test create judge", async () => {
-    await controller.createJudge(testCreateJudgeRequest, mockResponse);
-    await controller.createJudge(testCreateJudgeRequest, mockResponse);
+    // create multiple judge
+    it("Test create judge", async () => {
+        await controller.createJudge(testCreateJudgeRequest, mockResponse);
+        await controller.createJudge(testCreateJudgeRequest, mockResponse);
 
-    const judges = await controller.getJudge(undefined, mockResponse);
-    expect(judges.length).toEqual(3);
-})
+        const judges = await controller.getJudge(undefined, mockResponse);
+        expect(judges.length).toEqual(3);
+    })
 
-// update judge
-it("Test update judge", async () => {
+    // update judge
+    it("Test update judge", async () => {
 
-    const { id } = (await controller.getJudge(undefined, mockResponse))[0]
+        const { id } = (await controller.getJudge(undefined, mockResponse))[0]
 
-    const updatedJudgeRequest = {
-        params: {
-            id: id
-        },
-        body: {
-            name: "updated judge",
-            inPerson: true
+        const updatedJudgeRequest = {
+            params: {
+                id: id
+            },
+            body: {
+                name: "updated judge",
+                inPerson: true
+            }
         }
-    }
 
-    await controller.updateJudge(updatedJudgeRequest, mockResponse);
+        await controller.updateJudge(updatedJudgeRequest, mockResponse);
 
-    const updatedJudgeId = {
-        params: {
-            id: id
+        const updatedJudgeId = {
+            params: {
+                id: id
+            }
         }
-    }
 
-    const updatedJudge  = await controller.getJudgeById(updatedJudgeId, mockResponse);
-    expect(updatedJudge[0].name).toEqual("updated judge");
-})
+        const updatedJudge  = await controller.getJudgeById(updatedJudgeId, mockResponse);
+        expect(updatedJudge[0].name).toEqual("updated judge");
+    })
 
-// delete judge
-it("Test delete judge", async () => {
-    const { id } = await controller.createJudge(testDeleteJudgeRequest, mockResponse);
+    // delete judge
+    it("Test delete judge", async () => {
+        const { id } = await controller.createJudge(testDeleteJudgeRequest, mockResponse);
 
-    const testDeleteJudgeId = {
-        params: {
-            id: id
+        const testDeleteJudgeId = {
+            params: {
+                id: id
+            }
         }
-    }
 
-    await controller.deleteJudge(testDeleteJudgeId, mockResponse);
-    
-    const deletedJudge = await controller.getJudgeById(testDeleteJudgeId, mockResponse);
-    expect(deletedJudge).toEqual([]);
+        await controller.deleteJudge(testDeleteJudgeId, mockResponse);
+        
+        const deletedJudge = await controller.getJudgeById(testDeleteJudgeId, mockResponse);
+        expect(deletedJudge).toEqual([]);
+    })
 })
