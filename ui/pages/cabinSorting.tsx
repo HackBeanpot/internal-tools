@@ -1,15 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Layout from '../components/layout/Layout'
-import { Button, Divider, ThemeProvider, Typography } from '@mui/material'
+import { Button, Divider, Link, ThemeProvider, Typography } from '@mui/material'
 import { theme } from '../styles/theme'
 import { StyledButton, StyledPageContainer } from '../styles/common'
 import CSVCabinTable from '../components/csvTable/CSVCabinTable'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 export default function CabinSorting () {
+  const [isHover, setIsHover] = useState(false)
+
+  const backBtnStyle = {
+    color: isHover ? 'darkblue' : 'green'
+  }
+
   return (
     <Layout>
       <ThemeProvider theme={theme}>
         <StyledPageContainer>
+          <Link href="/">
+            <span
+              style={backBtnStyle}
+              onMouseEnter={() => setIsHover(true)}
+              onMouseLeave={() => setIsHover(false)}
+            >
+              <ArrowBackIcon fontSize="large" />
+            </span>
+          </Link>
           <Typography variant="h3"> Cabin Sorting Tool </Typography>
           <Divider />
           <br />
