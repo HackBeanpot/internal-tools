@@ -1,6 +1,6 @@
-import { FinalOutputTables, HackerTeam, Judge, Room } from './types'
+import { FinalOutputTables, HackerTeam, Judge, Room, RotationTime } from './types'
 import { sortJudgesAndPeople } from './formSchedule'
-import { parseHackerTeamCSV, parseJudgeCSV, parseRoomsCSV } from './parser'
+import { parseHackerTeamCSV, parseJudgeCSV, parseRoomsCSV, parseRotationTimeCSV } from './parser'
 import { convertHackersTablesToJson, convertJudgesTablesToJson } from './formJsonOutput'
 
 // hardcode based on hackathon needs
@@ -12,11 +12,14 @@ function main (): FinalOutputTables {
   const judgeCsvFilePath = '../judging-algorithm/data/csv_inputs/judges.csv'
   const roomsCsvFilePath = '../judging-algorithm//data/csv_inputs/rooms.csv'
   const teamsCsvFilePath = '../judging-algorithm/data/csv_inputs/hackers.csv'
+  const rotationTimesCsvFilePath = '../judging-algorithm/data/csv_inputs/rotationTimes.csv'
+
 
   // parse the hacker CSV in to TS objects
   const allJudges: Judge[] = parseJudgeCSV(judgeCsvFilePath)
   const allRooms: Room[] = parseRoomsCSV(roomsCsvFilePath)
   const allHackers: HackerTeam[] = parseHackerTeamCSV(teamsCsvFilePath)
+  const allRotationTimes: RotationTime[] = parseRotationTimeCSV(rotationTimesCsvFilePath)
 
   // apply constraints to parsed data
   const allAwardEligibleHackers = allHackers.filter(team => team.liveDemo === 'yes')
