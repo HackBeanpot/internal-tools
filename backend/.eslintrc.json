@@ -35,5 +35,6 @@
         "@typescript-eslint/prefer-for-of": ["error"]
       }
     }
-  ]
+  ],
+  "extends": "next/core-web-vitals",
 }

@@ -1,21 +1,25 @@
 {
-  "name": "internal-tools",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/HackBeanpot/internal-tools.git",
-  "author": "NelsonDong41 <nelsondong41@gmail.com>",
-  "license": "MIT",
-  "private": true,
-  "dependencies": {
-    "lint-staged": "^13.0.3",
-    "mongoose": "^7.3.1"
-  },
-  "devDependencies": {
-    "husky": "^8.0.3"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
+    "name": "internal-tools",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/HackBeanpot/internal-tools.git",
+    "license": "MIT",
+    "private": true,
+    "dependencies": {
+        "csv-parse": "^5.4.0",
+        "dotenv": "^16.3.1",
+        "husky": "^8.0.3",
+        "lint-staged": "^13.0.3",
+        "mongodb": "^5.6.0",
+        "react": "^18.2.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.3.1",
+        "husky": "^8.0.3"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
     }
-  }
 }
