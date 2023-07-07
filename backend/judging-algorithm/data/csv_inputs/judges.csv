@@ -1,8 +1,8 @@
-name
-Allison Alder
-Devan Gross
-William Guo
-Cari Liu
-Nupur Neogi
-Anika Rabenhorst
-Alex Takayama
+name, inPerson
+Allison Alder, true
+Devan Gross, false
+William Guo, false
+Cari Liu, true
+Nupur Neogi, true
+Anika Rabenhorst, false
+Alex Takayama, true

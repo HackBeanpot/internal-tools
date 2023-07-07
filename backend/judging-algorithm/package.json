@@ -21,5 +21,8 @@
     "ts-node": "^10.9.1",
     "write-json-file": "^5.0.0"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
 }
