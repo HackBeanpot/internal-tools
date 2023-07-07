@@ -4,13 +4,32 @@ import { Button, Divider, ThemeProvider, Typography } from '@mui/material'
 import { theme } from '../styles/theme'
 import { StyledButton, StyledPageContainer } from '../styles/common'
 import CSVCabinTable from '../components/csvTable/CSVCabinTable'
+import SelectedCabin from '../components/templateDropdown/selectedCabin'
 
 export default function CabinSorting () {
+  const cabinHeaders: string[] = [
+    'Cabin 1',
+    'Cabin 2',
+    'Cabin 3',
+    'Cabin 4',
+    'Cabin 5',
+    'Cabin 6'
+  ]
+
+  const cabinValues: any = {
+    'Cabin 1': ['email1-1', 'email1-2'],
+    'Cabin 2': ['email2-1', 'email2-2', 'email2-3'],
+    'Cabin 3': ['email3-1', 'email3-2'],
+    'Cabin 4': ['email4-1', 'email4-2'],
+    'Cabin 5': [],
+    'Cabin 6': ['email6-1', 'email6-2']
+  }
+
   return (
     <Layout>
       <ThemeProvider theme={theme}>
         <StyledPageContainer>
-          <Typography variant="h3"> Cabin Sorting Tool </Typography>
+          <Typography variant="h3">Cabin Sorting Tool</Typography>
           <Divider />
           <br />
           <Typography variant="h6">
@@ -41,16 +60,11 @@ export default function CabinSorting () {
             </span>
           </div>
           <br />
-          <CSVCabinTable
-            headers={[
-              'Cabin 1',
-              'Cabin 2',
-              'Cabin 3',
-              'Cabin 4',
-              'Cabin 5',
-              'Cabin 6'
-            ]}
-          />
+          <CSVCabinTable headers={cabinHeaders} cabinValues={cabinValues} />
+          <br />
+          <Typography variant="h5">Copy email list</Typography>
+          <br />
+          <SelectedCabin cabinNames={cabinHeaders} cabinValues={cabinValues}/>
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
