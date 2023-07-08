@@ -426,7 +426,7 @@ const EmailSender: NextPage = () => {
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
-  );
+  )
 }
 
 export const getServerSideProps: GetServerSideProps =
