@@ -68,7 +68,7 @@ export default function SelectedCabin ({ cabinNames, cabinValues }: SelectedCabi
           </span>
             )
           : (
-          <span
+              selectedItem && <span
             style={{
               marginLeft: '1em',
               position: 'absolute',
@@ -76,7 +76,7 @@ export default function SelectedCabin ({ cabinNames, cabinValues }: SelectedCabi
             }}
             onClick={() => {
               navigator.clipboard.writeText(
-                cabinValues[selectedItem].toString()
+                cabinValues[selectedItem]
               )
               setCopied(true)
               setOpenSnackBar(true)
@@ -90,7 +90,7 @@ export default function SelectedCabin ({ cabinNames, cabinValues }: SelectedCabi
 
         {openSnackBar && (
           <SimpleSnackBar
-            message={'Copied to Clipboard'}
+            message='Copied to Clipboard'
             verticalPos="bottom"
             horizontalPos="left"
           />
