@@ -18,4 +18,7 @@ export const updateTeam = async (team: HackerTeam, teamID: string) =>
 
 export const deleteTeam = async (teamID: string) =>
     await teamsModel.deleteOne({_id: teamID});
+
+export const deleteAllTeams = async () =>
+    await teamsModel.deleteMany({});
   

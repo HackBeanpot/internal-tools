@@ -36,4 +36,10 @@ const deleteTeam = async (req: any, res: any) => {
   return deleted;
 };
 
-export default {getTeam, getTeamById, createTeam, updateTeam, deleteTeam};
+const deleteAllTeams = async (_req: any, res: any) => {
+  const deleted = await teamsDao.deleteAllTeams();
+  res.json(deleted);
+  return deleted;
+};
+
+export default {getTeam, getTeamById, createTeam, updateTeam, deleteTeam, deleteAllTeams};

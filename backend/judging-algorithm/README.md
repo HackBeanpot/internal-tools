@@ -29,6 +29,8 @@ This outputs our results in to JSON files `hackerResults.json` and `judgeResults
 
 --
 
+NOTE: With the addition of the judging-algorithm backend implementation, you must start up the backend server before running the above script. This can be done by running `ts-node .\app.ts` in the backend folder. Using `yarn dev` will cause `ECONNRESET` error from axios.
+
 IMPLEMENTATION STRATEGY:
 
 1. Parse CSV files using `parser.ts`
