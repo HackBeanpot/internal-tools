@@ -33,7 +33,7 @@ import SendEmails from '../components/sendEmails/sendEmails'
 import CSVTable from '../components/csvTable/CSVTable'
 import DisplayMessages from '../components/displayMessages/displayMessages'
 import EmailSenderHeader from '../components/emailHeaderSection/emailHeaderSection'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import BackArrow from '../components/backArrow/backArrow'
 
 const EmailSender: NextPage = () => {
   const { data: session } = useSession({ required: true })
@@ -356,25 +356,11 @@ const EmailSender: NextPage = () => {
     setOpen(false)
   }
 
-  const [isHover, setIsHover] = useState(false)
-
-  const backBtnStyle = {
-    color: isHover ? 'darkblue' : 'green'
-  }
-
   return (
     <Layout>
       <ThemeProvider theme={theme}>
         <StyledPageContainer>
-          <Link href="/">
-            <span
-              style={backBtnStyle}
-              onMouseEnter={() => setIsHover(true)}
-              onMouseLeave={() => setIsHover(false)}
-            >
-              <ArrowBackIcon fontSize="large" />
-            </span>
-          </Link>
+          <BackArrow />
           <Typography variant="h3"> Email Sender </Typography>
           <Divider />
           <br />
@@ -440,7 +426,7 @@ const EmailSender: NextPage = () => {
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
-  )
+  );
 }
 
 export const getServerSideProps: GetServerSideProps =

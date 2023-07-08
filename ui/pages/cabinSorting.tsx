@@ -1,31 +1,17 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Layout from '../components/layout/Layout'
-import { Button, Divider, Link, ThemeProvider, Typography } from '@mui/material'
+import { Button, Divider, ThemeProvider, Typography } from '@mui/material'
 import { theme } from '../styles/theme'
 import { StyledButton, StyledPageContainer } from '../styles/common'
 import CSVCabinTable from '../components/csvTable/CSVCabinTable'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import BackArrow from '../components/backArrow/backArrow'
 
 export default function CabinSorting () {
-  const [isHover, setIsHover] = useState(false)
-
-  const backBtnStyle = {
-    color: isHover ? 'darkblue' : 'green'
-  }
-
   return (
     <Layout>
       <ThemeProvider theme={theme}>
         <StyledPageContainer>
-          <Link href="/">
-            <span
-              style={backBtnStyle}
-              onMouseEnter={() => setIsHover(true)}
-              onMouseLeave={() => setIsHover(false)}
-            >
-              <ArrowBackIcon fontSize="large" />
-            </span>
-          </Link>
+          <BackArrow />
           <Typography variant="h3"> Cabin Sorting Tool </Typography>
           <Divider />
           <br />
@@ -38,7 +24,6 @@ export default function CabinSorting () {
           <div style={{ justifyContent: 'space-between' }}>
             <StyledButton
               size="large"
-              color="info"
               variant="contained"
               type="submit"
               sx={{ width: '16em' }}
