@@ -52,7 +52,7 @@ const Home: NextPage = () => {
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
-  );
+  )
 }
 
 export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect
