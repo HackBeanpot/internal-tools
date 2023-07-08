@@ -15,8 +15,14 @@ import * as roomsDao from "../dao/rooms-dao.js";
 
   const createRoom = async (req: any, res: any) => {
     const room = req.body;
-    const create = await roomsDao.createRoom(room);
-    res.json(create);
+    let create;
+    try {
+      create = await roomsDao.createRoom(room);
+      res.json(create);
+    }
+    catch (e) {
+      console.log(e)
+    }
     return create;
   };
 
@@ -35,5 +41,11 @@ import * as roomsDao from "../dao/rooms-dao.js";
     return deleted;
   };
 
+  const deleteAllRooms = async (_req: any, res: any) => {
+    const deleted = await roomsDao.deleteAllRooms();
+    res.json(deleted);
+    return deleted;
+  };
 
-export default {getRoom, getRoomById, createRoom, updateRoom, deleteRoom};
+
+export default {getRoom, getRoomById, createRoom, updateRoom, deleteRoom, deleteAllRooms};

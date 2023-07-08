@@ -22,8 +22,14 @@ const getJudgeByName = async (req: any, res: any) => {
 
 const createJudge = async (req: any, res: any) => {
   const judge = req.body;
-  const create = await judgesDao.createJudge(judge);
-  res.json(create);
+  let create;
+  try {
+    create = await judgesDao.createJudge(judge);
+    res.json(create);
+  }
+  catch (e) {
+    console.log(e)
+  }
   return create;
 };
 
@@ -44,5 +50,12 @@ const deleteJudge = async (req: any, res: any) => {
   return deleted;
 };
 
+const deleteAllJudges = async (_req: any, res: any) => {
+  const deleted = await judgesDao.deleteAllJudges()
+  res.json(deleted);
+  return deleted;
+};
 
-export default {getJudge,getJudgeById, getJudgeByName, createJudge, updateJudge, deleteJudge};
+
+
+export default {getJudge,getJudgeById, getJudgeByName, createJudge, updateJudge, deleteJudge, deleteAllJudges};
