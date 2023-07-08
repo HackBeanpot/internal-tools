@@ -6,6 +6,7 @@ import judgesRouter from "./judging-algorithm/routes/judges-routes.js"
 import roomsRouter from "./judging-algorithm/routes/rooms-routes.js"
 import rotationTimesRouter from "./judging-algorithm/routes/rotationTimes-routes.js"
 import teamsRouter from "./judging-algorithm/routes/teams-routes.js"
+import cabinsRouter from "./cabin-sorting/routes/sortedHackers-routes.js"
 
 const mongoString: string = process.env.DATABASE_URL || ""
 
@@ -29,6 +30,7 @@ app.use('/', judgesRouter);
 app.use('/', roomsRouter);
 app.use('/', rotationTimesRouter);
 app.use('/', teamsRouter);
+app.use('/', cabinsRouter);
 
 const PORT = process.env.PORT || 4000;
 
