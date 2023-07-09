@@ -8,7 +8,7 @@ export default function BackArrow () {
 
   const backBtnStyle = {
     transition: '0.3s',
-    color: isHover ? '#1976d2' : theme.palette.DarkGreen.main
+    color: isHover ? theme.palette.Blue.main : theme.palette.DarkGreen.main
   }
 
   return (

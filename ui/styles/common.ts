@@ -1,7 +1,9 @@
 import { styled } from '@mui/system'
-import { Button, Container, TextareaAutosize, Toolbar, Typography, TextField, TableRow, colors } from '@mui/material'
+import {
+  Button, Container, TextareaAutosize, Toolbar,
+  Typography, TextField, TableRow
+} from '@mui/material'
 import { theme } from './theme'
-import { grey } from '@mui/material/colors'
 
 const StyledPageContainer = styled(Container)({
   marginTop: 40,
@@ -81,5 +83,6 @@ const StyledTableHeader = styled(TableRow)({
 export {
   StyledPageContainer, StyledButton, StyledBoldTypograhy, SectionContainer, StyledTextArea,
   StyledFinalMessageContent, StyledEditButton, StyledToolbar, StyledSignOutButton,
-  StyledHeaderLogoImage, StyledToolbarRightDiv, StyledSubHeader, StyledTextField, StyledErrorMessage, StyledTableHeader
+  StyledHeaderLogoImage, StyledToolbarRightDiv, StyledSubHeader, StyledTextField,
+  StyledErrorMessage, StyledTableHeader
 }
