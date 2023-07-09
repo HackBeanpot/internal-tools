@@ -8,9 +8,9 @@ declare module '@mui/material/styles' {
     YellowGreen: Palette['primary'];
     SproutGreen: Palette['primary'];
     White: Palette['primary'];
-    Red: Palette['primary'];
-    HBPCTA: Palette['primary'];
-    Teal: Palette['primary'];
+    Red: Palette ['primary'];
+    HBPCTA: Palette ['primary'];
+    Teal: Palette ['primary'];
     Grey: Palette['primary'];
     Blue: Palette['primary'];
   }

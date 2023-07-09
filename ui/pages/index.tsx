@@ -55,7 +55,6 @@ const Home: NextPage = () => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps =
-  getServerSideSessionOrRedirect
+export const getServerSideProps: GetServerSideProps = getServerSideSessionOrRedirect
 
 export default Home

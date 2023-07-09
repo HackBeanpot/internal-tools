@@ -4,6 +4,9 @@ export const rotationTimesSchema = new mongoose.Schema(
   {
     startTime: { type: String, required: true },
   },
-  { collection: "rotationTimes" }
+  { 
+    collection: "rotationTimes",
+    versionKey: false 
+  }
 );
 export default rotationTimesSchema;
