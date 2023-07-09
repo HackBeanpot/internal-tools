@@ -6,7 +6,6 @@ export async function updateJudgeData() {
     try {
         await axios.delete('http://localhost:4000/judges');
 
-
         const newJudges = parseJudgeCSV('./data/csv_inputs/judges.csv');
 
         for (const judge of newJudges) {

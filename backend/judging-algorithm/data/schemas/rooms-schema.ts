@@ -5,7 +5,7 @@ export const roomsSchema = new mongoose.Schema(
     name: { type: String, required: true },
   },
   { 
-    collection: "Rooms",
+    collection: "rooms",
     versionKey: false 
   }
 );

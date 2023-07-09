@@ -6,7 +6,7 @@ export const judgesSchema = new mongoose.Schema(
     inPerson: { type: Boolean, required: true}
   },
   { 
-    collection: "Judges",
+    collection: "judges",
     versionKey: false
   },
 );
