@@ -58,4 +58,4 @@ const deleteAllJudges = async (_req: any, res: any) => {
 
 
 
-export default {getJudge,getJudgeById, getJudgeByName, createJudge, updateJudge, deleteJudge, deleteAllJudges};
+export default {getJudge, getJudgeById, getJudgeByName, createJudge, updateJudge, deleteJudge, deleteAllJudges};
