@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Application } from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import mongoose from 'mongoose';
@@ -9,11 +9,18 @@ import teamsRouter from "./judging-algorithm/routes/teams-routes.js"
 import cabinsRouter from "./cabin-sorting/routes/sortedHackers-routes.js"
 
 const mongoString: string = process.env.DATABASE_URL || ""
+const mongoStringCabins: string = process.env.DATABASE_CABINS_URL || ""
 
 await mongoose.connect(mongoString, {
   dbName: 'Judging',
 });
 const database = mongoose.connection
+
+await mongoose.connect(mongoString, {
+  dbName: 'HackbeanpotCluster',
+});
+const databaseCabins = mongoose.connection
+
 
 const app = express();
 
@@ -41,7 +48,13 @@ database.on('error', (error) => {
 database.once('connected', () => {
   console.log('Database Connected');
 })
+// databaseCabins.on('error', (error) => {
+//   console.log(error)
+// })
 
+// databaseCabins.once('connected', () => {
+//   console.log('Database Connected');
+// })
 
 app.listen(PORT, () => {
   console.log(`Server is running in http://localhost:${PORT}`);

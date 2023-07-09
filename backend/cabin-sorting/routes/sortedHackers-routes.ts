@@ -4,12 +4,12 @@ import controller from '../controllers/sortedHackers-controller.js';
 const router = express.Router();
 
 router.get('/sortedHackers', controller.getSortedHackers);
+router.post('/sortedHackers', controller.createSortedHacker);
 
 
 // router.get('/judges/:id', controller.getJudgeById);
 // router.get('/judges/:name', controller.getJudgeByName)
-// router.put('/judges/:id', controller.updateJudge);
-// router.delete('/judges/:id', controller.deleteJudge);
-// router.post('/judges', controller.createJudge);
+// router.put('/sortedHackers/:id', () => {});
+// router.delete('/sortedHackers/:id',  () => {});
 
 export default router;
