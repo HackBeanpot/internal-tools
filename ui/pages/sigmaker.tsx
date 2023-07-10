@@ -19,6 +19,7 @@ import { getServerSideSessionOrRedirect } from '../server/getServerSideSessionOr
 import EmailSignature from '../components/emailSignature/emailSignature'
 import { icons } from '../styles/icons'
 import EmailSignatureForm from '../components/emailSignature/emailSignatureForm'
+import BackArrow from '../components/backArrow/backArrow'
 
 const Sigmaker: NextPage = () => {
   const [signatureData, setSignatureData] = useState<undefined | SignatureData>(
@@ -29,12 +30,16 @@ const Sigmaker: NextPage = () => {
     <Layout>
       <ThemeProvider theme={theme}>
         <StyledPageContainer>
+          <BackArrow />
           <Typography variant="h3"> Signature Maker </Typography>
           <Divider />
           <br />
           <StyledGrid container spacing={2}>
             <Grid item xs={12} md={6}>
-              <EmailSignatureForm setSignatureData={setSignatureData} embedded={false} />
+              <EmailSignatureForm
+                setSignatureData={setSignatureData}
+                embedded={false}
+              />
             </Grid>
             <Grid item xs={12} md={6}>
               <StyledGmailHeader variant="h4">
