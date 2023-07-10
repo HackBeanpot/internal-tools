@@ -14,6 +14,7 @@
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript",
+    "next/core-web-vitals"
   ],
   "rules": {
     // disable the rule for all files
@@ -35,6 +36,5 @@
         "@typescript-eslint/prefer-for-of": ["error"]
       }
     }
-  ],
-  "extends": "next/core-web-vitals",
+  ]
 }
