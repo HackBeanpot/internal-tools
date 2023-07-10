@@ -5,6 +5,7 @@ import { theme } from '../styles/theme'
 import { StyledButton, StyledPageContainer } from '../styles/common'
 import CSVCabinTable from '../components/csvTable/CSVCabinTable'
 import SelectedCabin from '../components/templateDropdown/selectedCabin'
+import BackArrow from '../components/backArrow/backArrow'
 
 export default function CabinSorting () {
   const cabinHeaders: string[] = [
@@ -29,6 +30,7 @@ export default function CabinSorting () {
     <Layout>
       <ThemeProvider theme={theme}>
         <StyledPageContainer>
+          <BackArrow />
           <Typography variant="h3">Cabin Sorting Tool</Typography>
           <Divider />
           <br />

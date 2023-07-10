@@ -16,7 +16,10 @@ type CSVCabinTableProps = {
   cabinValues: any;
 };
 
-export default function CSVCabinTable ({ headers, cabinValues }: CSVCabinTableProps) {
+export default function CSVCabinTable ({
+  headers,
+  cabinValues
+}: CSVCabinTableProps) {
   const headerNames = headers
   const cabinEmails = cabinValues
 

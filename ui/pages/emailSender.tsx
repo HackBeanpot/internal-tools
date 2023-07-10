@@ -33,6 +33,7 @@ import SendEmails from '../components/sendEmails/sendEmails'
 import CSVTable from '../components/csvTable/CSVTable'
 import DisplayMessages from '../components/displayMessages/displayMessages'
 import EmailSenderHeader from '../components/emailHeaderSection/emailHeaderSection'
+import BackArrow from '../components/backArrow/backArrow'
 
 const EmailSender: NextPage = () => {
   const { data: session } = useSession({ required: true })
@@ -359,6 +360,7 @@ const EmailSender: NextPage = () => {
     <Layout>
       <ThemeProvider theme={theme}>
         <StyledPageContainer>
+          <BackArrow />
           <Typography variant="h3"> Email Sender </Typography>
           <Divider />
           <br />
@@ -415,11 +417,11 @@ const EmailSender: NextPage = () => {
             open={open}
           />
           <DisplayMessages
-          finalMessages={finalMessages}
-          editFinalMessages={editFinalMessages}
-          getErrorMessage={getErrorMessage}
-          useSignature={useSignature}
-          signatureData={signatureData}
+            finalMessages={finalMessages}
+            editFinalMessages={editFinalMessages}
+            getErrorMessage={getErrorMessage}
+            useSignature={useSignature}
+            signatureData={signatureData}
           />
         </StyledPageContainer>
       </ThemeProvider>
