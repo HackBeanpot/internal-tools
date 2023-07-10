@@ -69,11 +69,11 @@ export const sortedHackersSchema = new mongoose.Schema(
     isAdmin: {type: Boolean, required: true},
     rsvpStatus: {type: String, required: true},
     decisionStatus: {type: String, required: false},
-    appSubmissionTime: {type: Date, required: false},
+    appSubmissionTime: {type: String, required: false},
     applicationResponses: {type: Object, required: false}
   },
   { 
-    collection: "applicant_data",
+    collection: "applicant_data_test",
     versionKey: false
   },
 );

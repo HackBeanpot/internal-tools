@@ -1,6 +1,6 @@
-import monogoose from "mongoose";
+import mongoose from "mongoose";
 import sortedHackerSchema from "../schemas/sortedHackers-schema.js";
 
-const sortedHackersModel = monogoose.model("Sorted Hackers", sortedHackerSchema);
+const sortedHackersModel = mongoose.model("Sorted Hacker", sortedHackerSchema);
 
 export default sortedHackersModel;
