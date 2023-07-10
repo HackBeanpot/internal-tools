@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": ["dom", "esnext"],
+    "lib": ["esnext"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
@@ -27,7 +27,7 @@
     "tsconfigRootDir": "__dirname",
     "sourceType": "module",
   },
-  "include": ["cabin-sorting", "judging-algorithm"],
+  "include": ["cabin-sorting", "judging-algorithm", "./*"],
   "exclude": [
     "node_modules",
     "plugins/**/*"

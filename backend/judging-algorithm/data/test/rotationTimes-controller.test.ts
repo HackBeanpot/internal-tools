@@ -1,11 +1,20 @@
 import db from './db.js'
 import controller from '../controllers/rotationTimes-controller.js'
 import { mockResponse, testCreateRotationTimeRequest } from './test-constants.js';
+import rotationTimesSchema from '../schemas/rotationTimes-schema.js';
+import mongoose from 'mongoose';
 
 beforeAll(async () => await db.connectDatabase())
 afterAll(async () => {
     await db.closeDatabase();
 })
+
+jest.mock('../models/rotationTimes-models.js', () => ({
+    __esModule: true,
+    default: function () {
+        return mongoose.model("RotationTime", rotationTimesSchema)
+    } 
+}))
 
 describe("Rotation Time Tests", () => {
     it("Test create rotation time", async () => {

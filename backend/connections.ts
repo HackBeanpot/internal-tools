@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const mongoString: string = process.env.DATABASE_URL || ""
 
-export async function connectJudgingDatabase() {
+async function connectJudgingDatabase() {
     await mongoose.connect(mongoString, {
         dbName: 'Judging',
     });
@@ -10,10 +10,12 @@ export async function connectJudgingDatabase() {
     return database
 }
 
-export async function connectCabinDatabase() {
+async function connectCabinDatabase() {
     await mongoose.connect(mongoString, {
         dbName: 'HackbeanpotCluster',
     });
     const databaseCabins = mongoose.connection
     return databaseCabins
 }
+
+export default { connectJudgingDatabase, connectCabinDatabase }
