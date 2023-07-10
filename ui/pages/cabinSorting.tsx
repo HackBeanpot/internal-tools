@@ -58,7 +58,7 @@ export default function CabinSorting () {
               Regenerate Sorted Hackers
             </StyledButton>
             <span style={{ float: 'right' }}>
-              <CSVLink data={Object.values(rows)} headers={cabinHeaders}>
+              <CSVLink data={rows} headers={cabinHeaders}>
                 <Button
                   variant="contained"
                   component="span"
