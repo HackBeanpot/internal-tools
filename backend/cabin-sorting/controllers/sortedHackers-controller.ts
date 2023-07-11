@@ -2,18 +2,7 @@ import sortedHackersService from "../service/sortedHackers-service.js";
 
 
 const getSortedHackers = async (_req: any, res: any) => {
-  const rawHackerData = await sortedHackersService.getSortedHackers();
-  const sortedHackers = rawHackerData.map(hackerData => {
-    const applicationResponses = hackerData.applicationResponses;
-    Object.keys(applicationResponses).forEach((key, keyIndex) => {
-      applicationResponses["question" + keyIndex] = applicationResponses[key]
-      delete applicationResponses[key]
-    })
-    return { ...applicationResponses,
-      id: hackerData._id,
-      email: hackerData.email
-    }
-  })
+  const sortedHackers = await sortedHackersService.getSortedHackers();
   res.json(sortedHackers)
   return sortedHackers;
 };
