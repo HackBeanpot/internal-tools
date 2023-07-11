@@ -18,11 +18,11 @@ app.use(
   })
 );
 
+app.use('/', cabinsRouter);
 app.use('/', judgesRouter);
 app.use('/', roomsRouter);
 app.use('/', rotationTimesRouter);
 app.use('/', teamsRouter);
-app.use('/', cabinsRouter);
 
 const PORT = process.env.PORT || 4000;
 

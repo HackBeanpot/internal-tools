@@ -4,6 +4,7 @@
   "main": "hackerSortingAlgo.js",
   "license": "MIT",
   "dependencies": {
+    "axios": "^1.4.0",
     "csv-parse": "^5.3.10"
   },
   "devDependencies": {

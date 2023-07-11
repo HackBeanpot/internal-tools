@@ -62,6 +62,7 @@ export enum DecisionStatusOptions {
 //   lgbtq: string
 // }
 
+
 export const sortedHackersSchema = new mongoose.Schema(
   {
     email: {type: String, required: true},
