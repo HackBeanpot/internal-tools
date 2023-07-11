@@ -13,22 +13,19 @@ import { StyledTableHeader } from '../../styles/common'
 
 type CSVCabinTableProps = {
   headers: String[];
+  cabinValues: any;
 };
 
-export default function CSVCabinTable ({ headers }: CSVCabinTableProps) {
+export default function CSVCabinTable ({
+  headers,
+  cabinValues
+}: CSVCabinTableProps) {
   const headerNames = headers
-  const cabinValues = {
-    Cabin1: ['email1-1', 'email1-2'],
-    Cabin2: ['email2-1', 'email2-2', 'email2-3'],
-    Cabin3: ['email3-1', 'email3-2'],
-    Cabin4: ['email4-1', 'email4-2'],
-    Cabin5: [],
-    Cabin6: ['email6-1', 'email6-2']
-  }
+  const cabinEmails = cabinValues
 
   const rows: any[] = [{}]
-  Object.values(cabinValues).forEach((value, index) => {
-    value.forEach((entry, entryIndex) => {
+  Object.values(cabinEmails).forEach((value: any, index: number) => {
+    value.forEach((entry: string, entryIndex: number) => {
       if (rows.length < entryIndex + 1) rows.push({})
       rows[entryIndex][index] = entry
     })
@@ -72,11 +69,11 @@ export default function CSVCabinTable ({ headers }: CSVCabinTableProps) {
           <TableBody>
             {rows.map((row) => (
               <TableRow key={nanoid()}>
-                {Object.keys(cabinValues).map((cabin, cabinIndex) => (
+                {Object.keys(cabinEmails).map((cabin, cabinIndex) => (
                   <TableCell
                     key={nanoid()}
                     style={
-                      cabinIndex < Object.keys(cabinValues).length - 1
+                      cabinIndex < Object.keys(cabinEmails).length - 1
                         ? {
                             padding: '9px',
                             borderRight: '1px solid #B9B9B9',

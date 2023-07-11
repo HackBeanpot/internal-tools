@@ -1,8 +1,6 @@
 import { styled } from '@mui/system'
-import {
-  Button, Container, TextareaAutosize, Toolbar,
-  Typography, TextField, TableRow
-} from '@mui/material'
+import { Button, Container, TextareaAutosize, Toolbar, Typography, TextField, TableRow }
+  from '@mui/material'
 import { theme } from './theme'
 
 const StyledPageContainer = styled(Container)({
