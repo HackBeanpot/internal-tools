@@ -3,59 +3,37 @@ import https from 'https';
 import { parseJudgeCSV, parseHackerTeamCSV, parseRoomsCSV, parseRotationTimeCSV } from  "./parser";
 import 'dotenv/config';
 
-export async function updateJudgeData() {
+async function deleteAndPostData(resource: string, data: any[]) {
     try {
-        await axios.delete(`${process.env.SERVER_URL}/judges`);
+        await axios.delete(`${process.env.SERVER_URL}/${resource}`);
 
-        const newJudges = parseJudgeCSV('./data/csv_inputs/judges.csv');
-
-        for (const judge of newJudges) {
-            await axios.post(`${process.env.SERVER_URL}/judges`, judge, {httpsAgent: new https.Agent({ keepAlive: true })})
+        for (const item of data) {
+            await axios.post(`${process.env.SERVER_URL}/${resource}`, item, {
+                httpsAgent: new https.Agent({ keepAlive: true })
+            });
         }
+        console.log(`Successfully updated ${resource}`);
     } catch (error) {
-        console.error(error);
+        console.error(`Failed to update ${resource} with error ${error}`);
     }
+}
+
+export async function updateJudgeData() {
+    const newJudges = parseJudgeCSV('./data/csv_inputs/judges.csv');
+    await deleteAndPostData('judges', newJudges);
 }
 
 export async function updatesTeamData() {
-    try {
-        await axios.delete(`${process.env.SERVER_URL}/teams`);
-
-        const newTeams = parseHackerTeamCSV('./data/csv_inputs/hackers.csv');
-
-        for (const team of newTeams) {
-            await axios.post(`${process.env.SERVER_URL}/teams`, team)
-        }
-    } catch (error) {
-        console.error(error);
-    }
+    const newTeams = parseHackerTeamCSV('./data/csv_inputs/hackers.csv');
+    await deleteAndPostData('teams', newTeams);
 }
 
 export async function updateRoomsData() {
-    try {
-        await axios.delete(`${process.env.SERVER_URL}/rooms`);
-
-        const newRooms = parseRoomsCSV('./data/csv_inputs/rooms.csv');
-
-        for (const room of newRooms) {
-            await axios.post(`${process.env.SERVER_URL}/rooms`, room)
-        }
-
-    } catch (error) {
-        console.error(error);
-    }
+    const newRooms = parseRoomsCSV('./data/csv_inputs/rooms.csv');
+    await deleteAndPostData('rooms', newRooms);
 }
 
 export async function updateRotationTimes() {
-    try {
-        await axios.delete(`${process.env.SERVER_URL}/rotationTimes`);
-
-        const newRotationTimes = parseRotationTimeCSV('./data/csv_inputs/rotationTimes.csv');
-
-        for (const rotationTime of newRotationTimes) {
-            await axios.post(`${process.env.SERVER_URL}/rotationTimes`, rotationTime)
-        }
-    } catch (error) {
-        console.error(error);
-    }
+    const newRotationTimes = parseRotationTimeCSV('./data/csv_inputs/rotationTimes.csv');
+    await deleteAndPostData('rotationTimes', newRotationTimes);
 }
