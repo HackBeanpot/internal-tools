@@ -1,6 +1,6 @@
 import axios from "axios";
 import https from 'https';
-import { parseJudgeCSV, parseHackerTeamCSV, parseRoomsCSV, parseRotationTimeCSV } from  "./parser";
+import { parseJudgeCSV, parseHackerTeamCSV, parseRoomsCSV, parseRotationTimeCSV } from  "./parser.js";
 import 'dotenv/config';
 
 async function deleteAndPostData(resource: string, data: any[]) {
