@@ -40,11 +40,9 @@ export function parseRotationTimeCSV (rotationTimesCsvFilePath: string): Rotatio
   return parseCsv<RotationTime>(rotationTimesCsvFilePath, true)
 }
 
-async function updateAllData() {
+export async function updateAllData() {
   await updateJudgeData();
   await updateRoomsData();
   await updateRotationTimes();
   await updatesTeamData();
 }
-
-updateAllData();

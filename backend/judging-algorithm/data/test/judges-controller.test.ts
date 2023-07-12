@@ -1,6 +1,7 @@
 import db from './db.js'
 import controller from '../controllers/judges-controller.js'
 import { mockResponse, testCreateJudgeRequest, testDeleteJudgeRequest } from './test-constants.js';
+import { Judge } from '../../types.js';
 
 beforeAll(async () => await db.connectDatabase())
 afterAll(async () => {
@@ -9,7 +10,7 @@ afterAll(async () => {
 
 describe("Judge Tests", () => {
     it("Test create judge", async () => {
-        const { id } = await controller.createJudge(testCreateJudgeRequest, mockResponse);
+        const { id } = (await controller.createJudge(testCreateJudgeRequest, mockResponse)) as Judge;
 
         const createdJudgeIdRequest = {
             params: {
@@ -59,7 +60,7 @@ describe("Judge Tests", () => {
 
     // delete judge
     it("Test delete judge", async () => {
-        const { id } = await controller.createJudge(testDeleteJudgeRequest, mockResponse);
+        const { id } = (await controller.createJudge(testDeleteJudgeRequest, mockResponse)) as Judge;
 
         const testDeleteJudgeId = {
             params: {
