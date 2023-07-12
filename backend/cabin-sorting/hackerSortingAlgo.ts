@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { parse } from 'csv-parse/sync'
 import axios from 'axios'
+import 'dotenv/config';
 
 let hackerList: any[]
 let answerList: any[]
@@ -32,9 +33,8 @@ function loadCSV (filepath: string, headers: boolean): any[] {
 }
 
 async function loadFromDatabase (): Promise<any[]> {
-    const response = await axios.get("http://localhost:4000/sortedHackers")
+    const response = await axios.get(process.env.SORTED_HACKER_PATH || "")
     const data = response.data;
-    console.log(data);
     return data;
 }
 

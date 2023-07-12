@@ -1,19 +1,5 @@
 import mongoose from "mongoose";
 
-export enum ApplicationStatusOptions {
-  "Submitted",
-  "Incomplete",
-}
-export enum RsvpStatusOptions {
-  "Confirmed",
-  "Unconfirmed",
-  "Not Attending",
-}
-export enum DecisionStatusOptions {
-  "Admitted",
-  "Waitlisted",
-}
-
 export const sortedHackersSchema = new mongoose.Schema(
   {
     email: {type: String, required: true},
