@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "main": "index.js",
     "repository": "https://github.com/HackBeanpot/internal-tools.git",
+    "author": "NelsonDong41 <nelsondong41@gmail.com>",
     "license": "MIT",
     "private": true,
     "dependencies": {

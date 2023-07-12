@@ -1,5 +1,6 @@
 import { styled } from '@mui/system'
-import { Button, Container, TextareaAutosize, Toolbar, Typography, TextField, TableRow } from '@mui/material'
+import { Button, Container, TextareaAutosize, Toolbar, Typography, TextField, TableRow }
+  from '@mui/material'
 import { theme } from './theme'
 
 const StyledPageContainer = styled(Container)({
@@ -80,5 +81,6 @@ const StyledTableHeader = styled(TableRow)({
 export {
   StyledPageContainer, StyledButton, StyledBoldTypograhy, SectionContainer, StyledTextArea,
   StyledFinalMessageContent, StyledEditButton, StyledToolbar, StyledSignOutButton,
-  StyledHeaderLogoImage, StyledToolbarRightDiv, StyledSubHeader, StyledTextField, StyledErrorMessage, StyledTableHeader
+  StyledHeaderLogoImage, StyledToolbarRightDiv, StyledSubHeader, StyledTextField,
+  StyledErrorMessage, StyledTableHeader
 }

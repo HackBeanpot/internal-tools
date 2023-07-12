@@ -31,6 +31,8 @@ export default function SelectedCabin ({ cabinNames, cabinValues }: SelectedCabi
     setOpenSnackBar(false)
   }
 
+  const [hoverCopy, setHoverCopy] = React.useState(false)
+
   return (
     <>
       <StyledFormControl style={{ width: '9em', display: 'inline-block' }}>
@@ -69,29 +71,32 @@ export default function SelectedCabin ({ cabinNames, cabinValues }: SelectedCabi
           </span>
             )
           : (
-          <span
-            style={{
-              marginLeft: '1em',
-              position: 'absolute',
-              top: '21%'
-            }}
-            onClick={() => {
-              navigator.clipboard.writeText(
-                cabinValues[selectedItem - 1].toString()
-              )
-              setCopied(true)
-              setOpenSnackBar(true)
-            }}
-          >
-            <span color="#5e5d5d">
-              <ContentCopyIcon fontSize='medium'/>
+              selectedItem && (
+            <span
+              style={{
+                marginLeft: '1em',
+                position: 'absolute',
+                top: '21%',
+                cursor: hoverCopy ? 'pointer' : 'none'
+              }}
+              onClick={() => {
+                navigator.clipboard.writeText(cabinValues[selectedItem].toString())
+                setCopied(true)
+                setOpenSnackBar(true)
+              }}
+              onMouseEnter={() => setHoverCopy(true)}
+              onMouseLeave={() => setHoverCopy(false)}
+            >
+              <span color="#5e5d5d">
+                <ContentCopyIcon fontSize="medium" />
+              </span>
             </span>
-          </span>
+              )
             )}
 
         {openSnackBar && (
           <SimpleSnackBar
-            message={'Copied to Clipboard'}
+            message="Copied to Clipboard"
             verticalPos="bottom"
             horizontalPos="left"
           />
