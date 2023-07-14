@@ -8,8 +8,8 @@ const getSortedHackers = async (_req: any, res: any) => {
 };
 
 const createSortedHacker = async (req: any, res: any) => {
-  const sortedHacker = req.body;
-  const createResponse = await sortedHackersService.createSortedHacker(sortedHacker)
+  const hackerInformation = req.body;
+  const createResponse = await sortedHackersService.createSortedHacker(hackerInformation)
   res.json(createResponse)
   return createResponse;
 };

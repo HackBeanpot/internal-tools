@@ -3,6 +3,7 @@ import * as path from 'path'
 import { parse } from 'csv-parse/sync'
 import axios from 'axios'
 import 'dotenv/config';
+import { FormattedHacker, Hacker } from './types.js';
 
 let hackerList: any[]
 let answerList: any[]
@@ -32,7 +33,7 @@ function loadCSV (filepath: string, headers: boolean): any[] {
   return parse(fileContent, options)
 }
 
-async function loadFromDatabase (): Promise<any[]> {
+async function loadFromDatabase (): Promise<FormattedHacker[]> {
     const response = await axios.get(process.env.SORTED_HACKER_PATH || "")
     const data = response.data;
     return data;
@@ -41,6 +42,7 @@ async function loadFromDatabase (): Promise<any[]> {
 // loops through each user row in the given array
 // -> for each question: increment count for corresponding cabin if answers match
 function matchAnswers () {
+  console.log(hackerList)
   hackerList.forEach((hacker: any) => {
     // each element = a different cabin, all initialized to 0
     const cabinScore = Array<number>(CABIN_SIZE).fill(0)
@@ -123,4 +125,4 @@ async function hackerSortingAlgo () {
 }
 
 // let's get sorting!!
-hackerSortingAlgo();
+await hackerSortingAlgo();
