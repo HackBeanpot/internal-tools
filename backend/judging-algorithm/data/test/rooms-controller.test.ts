@@ -1,6 +1,7 @@
 import db from './db.js'
 import controller from '../controllers/rooms-controller.js'
 import { mockResponse, testCreateRoomRequest } from './test-constants.js';
+import { Room } from '../../types.js';
 
 beforeAll(async () => await db.connectDatabase())
 afterAll(async () => {
@@ -9,7 +10,7 @@ afterAll(async () => {
 
 describe("Room Tests", () => { 
     it("Test create room", async () => {
-        const { id } = await controller.createRoom(testCreateRoomRequest, mockResponse);
+        const { id } = (await controller.createRoom(testCreateRoomRequest, mockResponse)) as Room;
     
         const createdRoomIdRequest = {
             params: {
@@ -54,7 +55,7 @@ describe("Room Tests", () => {
     })
     
     it("Test delete room", async () => {
-        const { id } = await controller.createRoom(testCreateRoomRequest, mockResponse);
+        const { id } = (await controller.createRoom(testCreateRoomRequest, mockResponse)) as Room;
     
         const createdRoomIdRequest = {
             params: {
