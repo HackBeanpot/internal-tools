@@ -1,24 +1,30 @@
+import { Types } from "mongoose";
 import * as sortedHackersDao from "../dao/sortedHackers-dao.js";
+
+interface HackerDataType {
+  id: string,
+  email: string,
+  [key: string] : string,
+}
 
 const getSortedHackers = async () => {
     const rawHackerData = await sortedHackersDao.getSortedHackers();
-    const sortedHackers = rawHackerData.map(hackerData => {
+    const formattedHackerData = rawHackerData.map(hackerData => {
       const {_id, email, applicationResponses} = hackerData
-      const initialHackerData = {
-        id: _id,
-        email
+      const initialHackerData : HackerDataType = {
+        id: _id.toString(),
+        email: email,
       }
 
-      function formatApplicationResponses(accumulatedResponse : any, currentResponse : string, responseIndex : number) {
-        applicationResponses["question" + responseIndex] = applicationResponses[responseIndex]
-        delete applicationResponses[responseIndex]
-        return {...accumulatedResponse, currentResponse}
+      function formatApplicationResponses(accumulatedResponse : HackerDataType, currentResponseKey : any, currentResponseIndex : number) {
+        const currentResponseQuestionKey = "question" + currentResponseIndex;
+        accumulatedResponse[currentResponseQuestionKey] = applicationResponses[currentResponseKey]
+        return accumulatedResponse
       }
 
-      Object.keys(applicationResponses).reduce(formatApplicationResponses, initialHackerData)
-
+      return Object.keys(applicationResponses).reduce(formatApplicationResponses, initialHackerData)
     })
-    return sortedHackers;
+    return formattedHackerData;
 };
 
 const createSortedHacker = async (hacker : any) => {
