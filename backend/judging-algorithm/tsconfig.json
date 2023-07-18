@@ -23,6 +23,9 @@
     "strictPropertyInitialization": true, 
     "resolveJsonModule": true,
   },
+  "types": [
+    "jest"
+  ],
   "include": [
     "main-site", 
     "live-site", 

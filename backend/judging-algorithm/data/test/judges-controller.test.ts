@@ -1,12 +1,22 @@
 import db from './db.js'
 import controller from '../controllers/judges-controller.js'
 import { mockResponse, testCreateJudgeRequest, testDeleteJudgeRequest } from './test-constants.js';
-import { Judge } from '../../types.js';
+import judgesSchema from '../schemas/judges-schema.js';
+import mongoose from "mongoose";
 
-beforeAll(async () => await db.connectDatabase())
+beforeAll(
+    async () => await db.connectDatabase()
+)
 afterAll(async () => {
     await db.closeDatabase();
 })
+
+jest.mock('../models/judges-models.js', () => ({
+    __esModule: true,
+    default: function () {
+        return mongoose.model("Judge", judgesSchema)
+    } 
+}))
 
 describe("Judge Tests", () => {
     it("Test create judge", async () => {

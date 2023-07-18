@@ -1,6 +1,10 @@
-import monogoose from "mongoose";
+import connection from "../../../connections.js";
 import rotationTimesSchema from "../schemas/rotationTimes-schema.js";
 
-const rotationTimesModel = monogoose.model("RotationTime", rotationTimesSchema);
+const judgingConnection = connection.connectJudgingDatabase()
+
+const rotationTimesModel = async () => {
+    return (await judgingConnection).model("RotationTime", rotationTimesSchema);
+}
 
 export default rotationTimesModel;
