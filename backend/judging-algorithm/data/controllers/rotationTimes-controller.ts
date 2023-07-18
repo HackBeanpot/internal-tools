@@ -35,5 +35,10 @@ const deleteRotationTime = async (req: any, res: any) => {
   return deleted;
 };
 
+const deleteAllRotationTimes = async (_req: any, res: any) => {
+  const deleted = await rotationTimesDao.deleteAllRotationTimes();
+  res.json(deleted);
+  return deleted;
+};
 
-export default {getRotationTime, getRotationTimeById, createRotationTime, updateRotationTime, deleteRotationTime};
+export default {getRotationTime, getRotationTimeById, createRotationTime, updateRotationTime, deleteRotationTime, deleteAllRotationTimes};

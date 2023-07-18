@@ -8,5 +8,6 @@ router.get("/rooms/:id", controller.getRoomById);
 router.put("/rooms", controller.updateRoom);
 router.post("/rooms", controller.createRoom)
 router.delete("/rooms/:id", controller.deleteRoom);
+router.delete("/rooms", controller.deleteAllRooms);
 
 export default router;

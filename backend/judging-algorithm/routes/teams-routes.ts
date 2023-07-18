@@ -8,5 +8,6 @@ router.get("/teams/:id", controller.getTeamById);
 router.put("/teams/:id", controller.updateTeam);
 router.post("/teams", controller.createTeam)
 router.delete("/teams/:id", controller.deleteTeam);
+router.delete("/teams", controller.deleteAllTeams);
 
 export default router;

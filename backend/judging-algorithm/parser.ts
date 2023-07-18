@@ -4,6 +4,7 @@ import { parse } from 'csv-parse/sync'
 import { HackerTeam, Judge, Room, RotationTime } from './types.js'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
+import {updateJudgeData, updatesTeamData, updateRoomsData, updateRotationTimes} from './parser-functions.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -37,4 +38,11 @@ export function parseRoomsCSV (roomCsvFilePath: string): Room[] {
 
 export function parseRotationTimeCSV (rotationTimesCsvFilePath: string): RotationTime[] {
   return parseCsv<RotationTime>(rotationTimesCsvFilePath, true)
+}
+
+export async function updateAllData() {
+  await updateJudgeData();
+  await updateRoomsData();
+  await updateRotationTimes();
+  await updatesTeamData();
 }

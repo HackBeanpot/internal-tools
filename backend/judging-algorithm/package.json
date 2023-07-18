@@ -12,6 +12,7 @@
     "@babel/preset-env": "^7.22.5",
     "@types/jest": "^29.5.2",
     "@types/node": "^18.11.18",
+    "axios": "^1.4.0",
     "babel-jest": "^29.5.0",
     "csv": "^6.3.0",
     "csv-parse": "^5.3.10",
@@ -19,6 +20,7 @@
     "mongodb-memory-server": "^8.13.0",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
+    "typescript": "^5.1.6",
     "write-json-file": "^5.0.0"
   },
   "type": "module"

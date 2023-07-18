@@ -18,7 +18,7 @@ jest.mock('../models/rooms-models.js', () => ({
 
 describe("Room Tests", () => { 
     it("Test create room", async () => {
-        const { id } = await controller.createRoom(testCreateRoomRequest, mockResponse);
+        const { id } = (await controller.createRoom(testCreateRoomRequest, mockResponse)) as Room;
     
         const createdRoomIdRequest = {
             params: {
@@ -63,7 +63,7 @@ describe("Room Tests", () => {
     })
     
     it("Test delete room", async () => {
-        const { id } = await controller.createRoom(testCreateRoomRequest, mockResponse);
+        const { id } = (await controller.createRoom(testCreateRoomRequest, mockResponse)) as Room;
     
         const createdRoomIdRequest = {
             params: {

@@ -8,5 +8,6 @@ router.get("/rotationTimes/:id", controller.getRotationTimeById);
 router.put("/rotationTimes/:id", controller.updateRotationTime);
 router.post("/rotationTimes", controller.createRotationTime);
 router.delete("/rotationTimes/:id", controller.deleteRotationTime);
+router.delete("/rotationTimes", controller.deleteAllRotationTimes);
 
 export default router;
