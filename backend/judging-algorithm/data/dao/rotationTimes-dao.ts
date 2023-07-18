@@ -18,3 +18,6 @@ export const updateRotationTime = async (rotationTime: RotationTime, rotationTim
 
 export const deleteRotationTime = async (rotationTimesID: string) => 
   (await rotationTimesModel()).deleteOne({_id: rotationTimesID}); 
+
+export const deleteAllRotationTimes = async () => 
+  (await rotationTimesModel()).deleteMany({}); 
