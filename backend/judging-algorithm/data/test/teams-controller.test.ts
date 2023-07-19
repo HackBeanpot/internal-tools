@@ -1,11 +1,20 @@
 import db from './db.js'
 import controller from '../controllers/teams-controller.js'
 import { mockResponse, testCreateTeamRequest } from './test-constants.js';
+import teamsSchema from '../schemas/teams-schema.js';
+import mongoose from 'mongoose';
 
 beforeAll(async () => await db.connectDatabase())
 afterAll(async () => {
     await db.closeDatabase();
 })
+
+jest.mock('../models/teams-models.js', () => ({
+    __esModule: true,
+    default: function () {
+        return mongoose.model("Team", teamsSchema)
+    } 
+}))
 
 describe("Team Tests", () => { 
     it("Test create team", async () => {

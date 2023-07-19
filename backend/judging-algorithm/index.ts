@@ -2,6 +2,7 @@ import { FinalOutputTables, HackerTeam, Judge, Room, RotationTime } from './type
 import { sortJudgesAndPeople } from './formSchedule'
 import { parseHackerTeamCSV, parseJudgeCSV, parseRoomsCSV, parseRotationTimeCSV } from './parser'
 import { convertHackersTablesToJson, convertJudgesTablesToJson } from './formJsonOutput'
+import { updateAllData } from './parser.js'
 
 // hardcode based on hackathon needs
 const allTimes: string[] =
@@ -14,6 +15,8 @@ function main (): FinalOutputTables {
   const teamsCsvFilePath = '../judging-algorithm/data/csv_inputs/hackers.csv'
   const rotationTimesCsvFilePath = '../judging-algorithm/data/csv_inputs/rotationTimes.csv'
 
+  // uploads the csv data to mongo
+  updateAllData();
 
   // parse the hacker CSV in to TS objects
   const allJudges: Judge[] = parseJudgeCSV(judgeCsvFilePath)

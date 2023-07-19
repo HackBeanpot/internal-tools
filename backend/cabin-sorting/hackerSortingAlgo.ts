@@ -1,6 +1,9 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { parse } from 'csv-parse/sync'
+import axios from 'axios'
+import 'dotenv/config';
+import { FormattedHacker, Hacker } from './types.js';
 
 let hackerList: any[]
 let answerList: any[]
@@ -10,7 +13,7 @@ let QUESTIONS_SIZE: number
 
 // Go to the given csv filepath and parse its contents into an array
 function loadCSV (filepath: string, headers: boolean): any[] {
-  const csvFileAbsolutePath = path.resolve(__dirname, 'data', 'csv_inputs', filepath)
+  const csvFileAbsolutePath = path.resolve('data', 'csv_inputs', filepath)
 
   // error handling in case file is missing
   let fileContent
@@ -30,9 +33,16 @@ function loadCSV (filepath: string, headers: boolean): any[] {
   return parse(fileContent, options)
 }
 
+async function loadFromDatabase (): Promise<FormattedHacker[]> {
+    const response = await axios.get(process.env.SORTED_HACKER_PATH || "")
+    const data = response.data;
+    return data;
+}
+
 // loops through each user row in the given array
 // -> for each question: increment count for corresponding cabin if answers match
 function matchAnswers () {
+  console.log(hackerList)
   hackerList.forEach((hacker: any) => {
     // each element = a different cabin, all initialized to 0
     const cabinScore = Array<number>(CABIN_SIZE).fill(0)
@@ -86,16 +96,16 @@ function printMembers () {
 // Output the hacker data in JSON format to sortedHackers.json
 function writeDataToFile () {
   const hackerTables = JSON.stringify(hackerList)
-  const pathToWrite = path.resolve(__dirname, 'data', 'json_outputs', 'sortedHackers.json')
+  const pathToWrite = path.resolve('data', 'json_outputs', 'sortedHackers.json')
   fs.writeFileSync(pathToWrite, hackerTables)
 }
 
 // Assigns two cabins to each Hacker.
 // assignedCabin = the cabin a Hacker is best suited to
 // secondAssignedCabin = their next best cabin option
-function hackerSortingAlgo () {
+async function hackerSortingAlgo () {
   // variable values first declared globally within the file and initialized on runtime
-  hackerList = loadCSV('hackerData.csv', true)
+  hackerList = await loadFromDatabase();
   answerList = loadCSV('answer.csv', true)
   cabinList = loadCSV('cabinTypes.csv', false)[0]
 
@@ -110,9 +120,9 @@ function hackerSortingAlgo () {
   } else {
     matchAnswers()
     printMembers()
-    writeDataToFile()
+    writeDataToFile()    
   }
 }
 
 // let's get sorting!!
-hackerSortingAlgo()
+await hackerSortingAlgo();

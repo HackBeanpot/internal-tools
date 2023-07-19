@@ -12,6 +12,8 @@
 <hr>
 <br>
 
+### !! Please Remember to add in the environment variables for this file before continuing !!
+
 ## **How to Store Data**
 > **N.B. Make sure all 3 input files are in the csv_inputs folder to produce a valid output**
 
@@ -37,10 +39,44 @@ npm install -g ts-node typescript '@types/node'
 
 <br>
 
+### Install dependencies for all the repos in the repo
+In internal-tools root directory:
+`
+yarn install
+`
+<br>
+In internal-tools/backend directory:
+`
+yarn install
+`
+<br>
+In internal-tools/backend/cabin-sorting directory:
+`
+yarn install
+`
+<br>
+In internal-tools/backend/judging-algorithm directory:
+`
+yarn install
+`
+<br>
+
+### Install dependencies for all the repos in the repo
+<br>
+
+Start up the database server connection
+<br>
+In interal-tools/backend
+`yarn dev`
+
 ### Run ts-node on the script
+Go back to cabin sorting and run the following script:
 `
 npx ts-node --experimental-specifier-resolution=node hackerSortingAlgo.ts
 `
+
+<br>
+
 
 <br>
 <hr>
@@ -62,6 +98,13 @@ npx ts-node --experimental-specifier-resolution=node hackerSortingAlgo.ts
 
 <br>
 <hr>
+<br>
+
+## **How to manage the data**
+
+### To add/get hackers
+- Use `Postman` or a VSCode extension like `Thunder Client` to post/get data on the hacker using the following route:
+`/sortedHackers`
 <br>
 
 ## **Enjoy Party People!**

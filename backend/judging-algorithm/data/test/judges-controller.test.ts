@@ -1,15 +1,26 @@
 import db from './db.js'
 import controller from '../controllers/judges-controller.js'
 import { mockResponse, testCreateJudgeRequest, testDeleteJudgeRequest } from './test-constants.js';
+import judgesSchema from '../schemas/judges-schema.js';
+import mongoose from "mongoose";
 
-beforeAll(async () => await db.connectDatabase())
+beforeAll(
+    async () => await db.connectDatabase()
+)
 afterAll(async () => {
     await db.closeDatabase();
 })
 
+jest.mock('../models/judges-models.js', () => ({
+    __esModule: true,
+    default: function () {
+        return mongoose.model("Judge", judgesSchema)
+    } 
+}))
+
 describe("Judge Tests", () => {
     it("Test create judge", async () => {
-        const { id } = await controller.createJudge(testCreateJudgeRequest, mockResponse);
+        const { id } = (await controller.createJudge(testCreateJudgeRequest, mockResponse)) as Judge;
 
         const createdJudgeIdRequest = {
             params: {
@@ -59,7 +70,7 @@ describe("Judge Tests", () => {
 
     // delete judge
     it("Test delete judge", async () => {
-        const { id } = await controller.createJudge(testDeleteJudgeRequest, mockResponse);
+        const { id } = (await controller.createJudge(testDeleteJudgeRequest, mockResponse)) as Judge;
 
         const testDeleteJudgeId = {
             params: {

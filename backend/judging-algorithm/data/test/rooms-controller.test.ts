@@ -1,15 +1,24 @@
 import db from './db.js'
 import controller from '../controllers/rooms-controller.js'
 import { mockResponse, testCreateRoomRequest } from './test-constants.js';
+import mongoose from "mongoose";
+import roomsSchema from '../schemas/rooms-schema.js';
 
 beforeAll(async () => await db.connectDatabase())
 afterAll(async () => {
     await db.closeDatabase();
 })
 
+jest.mock('../models/rooms-models.js', () => ({
+    __esModule: true,
+    default: function () {
+        return mongoose.model("Room", roomsSchema)
+    } 
+}))
+
 describe("Room Tests", () => { 
     it("Test create room", async () => {
-        const { id } = await controller.createRoom(testCreateRoomRequest, mockResponse);
+        const { id } = (await controller.createRoom(testCreateRoomRequest, mockResponse)) as Room;
     
         const createdRoomIdRequest = {
             params: {
@@ -54,7 +63,7 @@ describe("Room Tests", () => {
     })
     
     it("Test delete room", async () => {
-        const { id } = await controller.createRoom(testCreateRoomRequest, mockResponse);
+        const { id } = (await controller.createRoom(testCreateRoomRequest, mockResponse)) as Room;
     
         const createdRoomIdRequest = {
             params: {

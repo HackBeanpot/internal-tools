@@ -1,7 +1,8 @@
 export type Judge = {
   name: string,
   inPerson: boolean,
-  company?: string
+  company?: string,
+  id?: string
 }
 
 export type HackerTeam = {
@@ -10,7 +11,8 @@ export type HackerTeam = {
 }
 
 export type Room = {
-  name: string
+  name: string,
+  id?: string
 }
 
 export type RotationTime = {
