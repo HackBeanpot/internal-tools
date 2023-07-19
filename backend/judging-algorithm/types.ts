@@ -23,7 +23,8 @@ export type JudgeOutput = {
   judge: string,
   time: string,
   project: string,
-  room: string
+  room: string,
+  id?: string
 }
 
 export type JudgeOutputProjectsLiveSite = {

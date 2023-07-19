@@ -1,6 +1,6 @@
 import db from './db.js'
 import controller from '../controllers/hackerTable-controller.js'
-import { mockResponse, testCreateHackerTableRequest, testDeleteHackerTableRequest, testDeleteJudgeRequest } from './test-constants.js';
+import { mockResponse, testCreateHackerTableRequest, testDeleteHackerTableRequest } from './test-constants.js';
 import hackerTableSchema from '../schemas/hackerTable-schema.js';
 import mongoose from "mongoose";
 import { HackerOutput } from '../../types.js';
