@@ -1,6 +1,10 @@
-import monogoose from "mongoose";
-import hacketTableSchema from "../schemas/hackerTable-schema.js";
+import connection from "../../../connections.js";
+import hackerTableSchema from "../schemas/hackerTable-schema.js";
 
-const hackerTableModel = monogoose.model("HackerTable", hacketTableSchema);
+const judgingConnection = connection.connectJudgingDatabase()
+
+const hackerTableModel = async () => {
+    return (await judgingConnection).model("Judge", hackerTableSchema);
+}
 
 export default hackerTableModel;

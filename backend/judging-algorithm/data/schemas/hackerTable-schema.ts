@@ -6,7 +6,6 @@ export const hackerTableSchema = new mongoose.Schema(
     time: { type: String, required: true},
     judges: { type: [String], required: true},
     room: { type: String, required: true}
-
   },
   { 
     collection: "HackerTable",

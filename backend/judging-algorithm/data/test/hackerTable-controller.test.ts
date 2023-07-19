@@ -1,9 +1,8 @@
 import db from './db.js'
 import controller from '../controllers/judges-controller.js'
 import { mockResponse, testCreateJudgeRequest, testDeleteJudgeRequest } from './test-constants.js';
-import judgesSchema from '../schemas/judges-schema.js';
+import hackerTableSchema from '../schemas/hackerTable-schema.js';
 import mongoose from "mongoose";
-import { Judge } from '../../types.js';
 
 beforeAll(
     async () => await db.connectDatabase()
@@ -12,15 +11,15 @@ afterAll(async () => {
     await db.closeDatabase();
 })
 
-jest.mock('../models/judges-models.js', () => ({
+jest.mock('../models/hackerTable-model.js', () => ({
     __esModule: true,
     default: function () {
-        return mongoose.model("Judge", judgesSchema)
+        return mongoose.model("Hacker Table", hackerTableSchema)
     } 
 }))
 
-describe("Judge Tests", () => {
-    it("Test create judge", async () => {
+describe("HackerTable Tests", () => {
+    it("Test create hacker table", async () => {
         const { id } = (await controller.createJudge(testCreateJudgeRequest, mockResponse)) as Judge;
 
         const createdJudgeIdRequest = {

@@ -7,9 +7,6 @@ export const getTeam = async () =>
 export const getTeamsById = async (teamID: string) => 
   (await teamsModel()).find({_id: teamID});
 
-export const getTeamByName =async (teamName: string) =>
-  (await teamsModel()).findOne({name: teamName});  
-
 export const createTeam = async (team: HackerTeam) => 
   (await teamsModel()).create(team); 
 
@@ -18,3 +15,6 @@ export const updateTeam = async (team: HackerTeam, teamID: string) =>
 
 export const deleteTeam = async (teamID: string) =>
   (await teamsModel()).deleteOne({_id: teamID});
+
+  export const deleteAllTeams = async () =>
+  (await teamsModel()).deleteMany({});
