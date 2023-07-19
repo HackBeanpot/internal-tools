@@ -7,7 +7,7 @@ export const getHackerTable = async () =>
 export const getHackerTableById = async (hackerTableId: string) => 
   (await hackerTeamModel()).find({_id: hackerTableId});
 
-  export const updateJudge = async (hackerTable: HackerOutput, hackerTableID: string) => 
+  export const updateHackerTable = async (hackerTable: HackerOutput, hackerTableID: string) => 
   (await hackerTeamModel()).updateOne({_id: hackerTableID}, hackerTable); 
 
 export const createHackerTable = async (hackerTable: HackerOutput) => 

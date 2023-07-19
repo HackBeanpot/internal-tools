@@ -16,7 +16,7 @@ const getHackerTableById = async (req: any, res: any) => {
 const updateHackerTable = async (req: any, res: any) => {
   const hackerTable = req.body;
   const hackerTableId = req.params.id;
-  const update = await hackerTableDao.updateJudge(hackerTable, hackerTableId);
+  const update = await hackerTableDao.updateHackerTable(hackerTable, hackerTableId);
   res.status(200).json({
     message: update
   });
