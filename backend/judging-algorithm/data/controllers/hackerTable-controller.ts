@@ -16,7 +16,7 @@ const getHackerTableById = async (req: any, res: any) => {
 const updateHackerTable = async (req: any, res: any) => {
   const hackerTable = req.body;
   const hackerTableId = req.params.id;
-  const update = await hackerTableDao.updateJudge(judge, hackerTableId);
+  const update = await hackerTableDao.updateJudge(hackerTable, hackerTableId);
   res.status(200).json({
     message: update
   });
@@ -30,10 +30,17 @@ const createHackerTable = async (req: any, res: any) => {
   return create;
 };
 
+const deleteHackerTable = async (req: any, res: any) => {
+  const hackerTableID = req.params.id;
+  const deleted = await hackerTableDao.deleteHackerTable(hackerTableID)
+  res.json(deleted);
+  return deleted;
+};
+
 const deleteAllHackerTable = async (_req: any, res: any) => {
   const deleted = await hackerTableDao.deleteAllHackerTable()
   res.json(deleted);
   return deleted;
 };
 
-export default {getHackerTable, getHackerTableById, updateHackerTable, createHackerTable, deleteAllHackerTable}
+export default {getHackerTable, getHackerTableById, updateHackerTable, createHackerTable, deleteHackerTable, deleteAllHackerTable}

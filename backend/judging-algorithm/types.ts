@@ -41,7 +41,8 @@ export type HackerOutput = {
   project: string,
   time: string,
   judges: string[],
-  room: string
+  room: string,
+  id?: string
 }
 
 export type FinalOutputTables = {

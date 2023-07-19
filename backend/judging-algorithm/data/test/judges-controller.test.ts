@@ -33,7 +33,6 @@ describe("Judge Tests", () => {
         expect(judge[0].name).toEqual("test judge");
     })
 
-    // create multiple judge
     it("Test create judge", async () => {
         await controller.createJudge(testCreateJudgeRequest, mockResponse);
         await controller.createJudge(testCreateJudgeRequest, mockResponse);
@@ -42,7 +41,6 @@ describe("Judge Tests", () => {
         expect(judges.length).toEqual(3);
     })
 
-    // update judge
     it("Test update judge", async () => {
 
         const { id } = (await controller.getJudge(undefined, mockResponse))[0]
@@ -69,7 +67,6 @@ describe("Judge Tests", () => {
         expect(updatedJudge[0].name).toEqual("updated judge");
     })
 
-    // delete judge
     it("Test delete judge", async () => {
         const { id } = (await controller.createJudge(testDeleteJudgeRequest, mockResponse)) as Judge;
 

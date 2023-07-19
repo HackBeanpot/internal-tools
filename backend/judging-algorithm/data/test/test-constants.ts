@@ -31,6 +31,24 @@ export const testCreateTeamRequest = {
     }
 }
 
+export const testCreateHackerTableRequest = {
+    body: {
+        "project": "test project",
+        "time": "3:00",
+        "judges": ["Judge1", "Judge2"],
+        "room": "Room1"
+    }
+}
+
+export const testDeleteHackerTableRequest = {
+    body: {
+        "project": "test delete project",
+        "time": "3:00",
+        "judges": ["Judge1", "Judge2"],
+        "room": "Room1"
+    }
+}
+
 export const mockResponse = {
     status: jest.fn().mockReturnThis(),
     json: jest.fn()

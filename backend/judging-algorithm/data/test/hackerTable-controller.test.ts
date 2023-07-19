@@ -1,8 +1,9 @@
 import db from './db.js'
-import controller from '../controllers/judges-controller.js'
-import { mockResponse, testCreateJudgeRequest, testDeleteJudgeRequest } from './test-constants.js';
+import controller from '../controllers/hackerTable-controller.js'
+import { mockResponse, testCreateHackerTableRequest, testDeleteHackerTableRequest, testDeleteJudgeRequest } from './test-constants.js';
 import hackerTableSchema from '../schemas/hackerTable-schema.js';
 import mongoose from "mongoose";
+import { HackerOutput } from '../../types.js';
 
 beforeAll(
     async () => await db.connectDatabase()
@@ -11,7 +12,7 @@ afterAll(async () => {
     await db.closeDatabase();
 })
 
-jest.mock('../models/hackerTable-model.js', () => ({
+jest.mock('../models/hackerTable-models.js', () => ({
     __esModule: true,
     default: function () {
         return mongoose.model("Hacker Table", hackerTableSchema)
@@ -20,67 +21,73 @@ jest.mock('../models/hackerTable-model.js', () => ({
 
 describe("HackerTable Tests", () => {
     it("Test create hacker table", async () => {
-        const { id } = (await controller.createJudge(testCreateJudgeRequest, mockResponse)) as Judge;
+        const { id } = (await controller.createHackerTable(testCreateHackerTableRequest, mockResponse)) as HackerOutput;
 
-        const createdJudgeIdRequest = {
+        const createdHackerTableIdRequest = {
             params: {
                 id: id
             }
         }
 
-        const judge  = await controller.getJudgeById(createdJudgeIdRequest, mockResponse);
-        expect(judge[0].name).toEqual("test judge");
+        const hackerTable  = await controller.getHackerTableById(createdHackerTableIdRequest, mockResponse);
+        expect(hackerTable[0].project).toEqual("test project");
+        expect(hackerTable[0].time).toEqual("3:00");
+        expect(hackerTable[0].judges).toEqual(["Judge1", "Judge2"]);
+        expect(hackerTable[0].room).toEqual("Room1");
     })
 
-    // create multiple judge
-    it("Test create judge", async () => {
-        await controller.createJudge(testCreateJudgeRequest, mockResponse);
-        await controller.createJudge(testCreateJudgeRequest, mockResponse);
+    it("Test create and get multiple hacker tables", async () => {
+        await controller.createHackerTable(testCreateHackerTableRequest, mockResponse);
+        await controller.createHackerTable(testCreateHackerTableRequest, mockResponse);
 
-        const judges = await controller.getJudge(undefined, mockResponse);
-        expect(judges.length).toEqual(3);
+        const hackerTables = await controller.getHackerTable(undefined, mockResponse);
+        expect(hackerTables.length).toEqual(3);
     })
 
-    // update judge
-    it("Test update judge", async () => {
+    it("Test update hacker table", async () => {
 
-        const { id } = (await controller.getJudge(undefined, mockResponse))[0]
+        const { id } = (await controller.getHackerTable(undefined, mockResponse))[0]
 
-        const updatedJudgeRequest = {
+        const updatedHackerTableRequest = {
             params: {
                 id: id
             },
             body: {
-                name: "updated judge",
-                inPerson: true
+                "project": "updated test project",
+                "time": "3:00",
+                "judges": ["Judge1", "Judge2"],
+                "room": "updated Room1"
             }
         }
 
-        await controller.updateJudge(updatedJudgeRequest, mockResponse);
+        await controller.updateHackerTable(updatedHackerTableRequest, mockResponse);
 
-        const updatedJudgeId = {
+        const updatedHackerTableId = {
             params: {
                 id: id
             }
         }
 
-        const updatedJudge  = await controller.getJudgeById(updatedJudgeId, mockResponse);
-        expect(updatedJudge[0].name).toEqual("updated judge");
+        const hackerTable  = await controller.getHackerTableById(updatedHackerTableId, mockResponse);
+        expect(hackerTable[0].project).toEqual("updated test project");
+        expect(hackerTable[0].time).toEqual("3:00");
+        expect(hackerTable[0].judges).toEqual(["Judge1", "Judge2"]);
+        expect(hackerTable[0].room).toEqual("updated Room1");
     })
 
-    // delete judge
-    it("Test delete judge", async () => {
-        const { id } = (await controller.createJudge(testDeleteJudgeRequest, mockResponse)) as Judge;
 
-        const testDeleteJudgeId = {
+    it("Test delete hacker table", async () => {
+        const { id } = (await controller.createHackerTable(testDeleteHackerTableRequest, mockResponse)) as HackerOutput;
+
+        const testDeleteHackerTableId = {
             params: {
                 id: id
             }
         }
 
-        await controller.deleteJudge(testDeleteJudgeId, mockResponse);
+        await controller.deleteHackerTable(testDeleteHackerTableId, mockResponse);
         
-        const deletedJudge = await controller.getJudgeById(testDeleteJudgeId, mockResponse);
-        expect(deletedJudge).toEqual([]);
+        const deletedHackerTable = await controller.getHackerTableById(testDeleteHackerTableId, mockResponse);
+        expect(deletedHackerTable).toEqual([]);
     })
 })

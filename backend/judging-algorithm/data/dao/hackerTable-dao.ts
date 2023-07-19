@@ -13,5 +13,8 @@ export const getHackerTableById = async (hackerTableId: string) =>
 export const createHackerTable = async (hackerTable: HackerOutput) => 
   (await hackerTeamModel()).create(hackerTable); 
 
+export const deleteHackerTable = async (hackerTableID: String) => 
+  (await hackerTeamModel()).deleteOne({_id: hackerTableID});
+
 export const deleteAllHackerTable = async () => 
   (await hackerTeamModel()).deleteMany({});

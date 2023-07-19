@@ -5,7 +5,8 @@ const router = express.Router();
 
 router.get('/hackerTable', controller.getHackerTable);
 router.get('/hackerTable/:id', controller.getHackerTableById);
-router.put('/hackerTable/:id', controller.);
+router.put('/hackerTable/:id', controller.updateHackerTable);
+router.delete('/hackerTable/:id', controller.deleteHackerTable);
 router.delete('/hackerTable', controller.deleteAllHackerTable);
 router.post('/hackerTable', controller.createHackerTable);
 
