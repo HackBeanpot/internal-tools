@@ -19,6 +19,6 @@ export const updateJudge = async (judge: Judge, judgeID: string) =>
 export const deleteJudge = async (judgeID: string) => 
   (await judgesModel()).deleteOne({_id: judgeID}); 
 
-export const deleteAllJudges = async () => {
+export const deleteAllJudges = async () => 
   (await judgesModel()).deleteMany({})
-}
+

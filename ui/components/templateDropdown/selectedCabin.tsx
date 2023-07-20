@@ -15,17 +15,18 @@ import SimpleSnackBar from '../snackBar/simpleSnackBar'
 
 type SelectedCabinProps = {
   cabinNames: string[];
-  cabinValues: any;
+  cabinValues: string[][];
 };
 
 export default function SelectedCabin ({ cabinNames, cabinValues }: SelectedCabinProps) {
-  const [selectedItem, setSelectedItem] = React.useState('')
+  const [selectedItem, setSelectedItem] = React.useState(-1)
   const [copied, setCopied] = React.useState(false)
 
   const [openSnackBar, setOpenSnackBar] = React.useState(false)
 
   const handleChange = (event: SelectChangeEvent) => {
-    setSelectedItem(event.target.value)
+    const str = event.target.value
+    setSelectedItem(Number(str.charAt(str.length - 1)))
     setCopied(false)
     setOpenSnackBar(false)
   }
@@ -37,7 +38,7 @@ export default function SelectedCabin ({ cabinNames, cabinValues }: SelectedCabi
       <StyledFormControl style={{ width: '9em', display: 'inline-block' }}>
         <InputLabel>Cabin</InputLabel>
         <Select
-          value={selectedItem}
+          value={cabinNames[selectedItem]}
           onChange={handleChange}
           label="Cabin"
           displayEmpty
@@ -79,7 +80,7 @@ export default function SelectedCabin ({ cabinNames, cabinValues }: SelectedCabi
                 cursor: hoverCopy ? 'pointer' : 'none'
               }}
               onClick={() => {
-                navigator.clipboard.writeText(cabinValues[selectedItem])
+                navigator.clipboard.writeText(cabinValues[selectedItem].toString())
                 setCopied(true)
                 setOpenSnackBar(true)
               }}

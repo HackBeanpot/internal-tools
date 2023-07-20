@@ -21,4 +21,4 @@ export const deleteTeam = async (teamID: string) =>
 
 export const deleteAllTeams = async () =>
     (await teamsModel()).deleteMany({});
-  
+ 
