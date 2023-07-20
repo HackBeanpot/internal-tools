@@ -125,4 +125,4 @@ async function hackerSortingAlgo () {
 }
 
 // let's get sorting!!
-await hackerSortingAlgo();
+hackerSortingAlgo();
