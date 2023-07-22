@@ -19,3 +19,5 @@ export const updateRoom = async (room: Room, roomID: string) =>
 export const deleteRoom = async (roomID: string) => 
   (await (roomsModel())).deleteOne({_id: roomID}); 
 
+export const deleteAllRooms = async () => 
+  (await roomsModel()).deleteMany({})
