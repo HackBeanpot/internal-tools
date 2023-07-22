@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../components/layout/Layout'
 import { Button, Divider, ThemeProvider, Typography } from '@mui/material'
 import { theme } from '../styles/theme'
@@ -7,8 +7,19 @@ import { CSVLink } from 'react-csv'
 import CSVCabinTable from '../components/csvTable/CSVCabinTable'
 import SelectedCabin from '../components/templateDropdown/selectedCabin'
 import BackArrow from '../components/backArrow/backArrow'
+import axios from 'axios'
 
 export default function CabinSorting () {
+  
+  type HackerEmails = {
+    emails: string[]
+  }
+  
+  type GetGroupedHackersResponse = {
+    data: HackerEmails[]
+  }
+
+
   const cabinHeaders: string[] = [
     'Cabin 1',
     'Cabin 2',
@@ -18,14 +29,17 @@ export default function CabinSorting () {
     'Cabin 6'
   ]
 
-  const cabinValues: string[][] = [
-    ['email1-1', 'email1-2'],
-    ['email2-1', 'email2-2', 'email2-3'],
-    ['email3-1', 'email3-2'],
-    ['email4-1', 'email4-2'],
-    [],
-    ['email6-1', 'email6-2']
-  ]
+  const [cabinValues, setCabinValues] = useState<HackerEmails>([])
+
+  async function updateCabinValues () {
+    axios.get<GetGroupedHackersResponse>(process.env.GROUPED_HACKERS_URL!).then(groupedHackersResponse => {
+      setCabinValues(groupedHackersResponse.data)
+    })
+  }
+
+  useEffect(() => {
+    updateCabinValues()
+  }, [])
 
   const rows: string[][] = [[]]
   Object.values(cabinValues).forEach((value: any, index: number) => {

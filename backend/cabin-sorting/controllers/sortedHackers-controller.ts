@@ -14,4 +14,10 @@ const createSortedHacker = async (req: any, res: any) => {
   return createResponse;
 };
 
-export default {getSortedHackers, createSortedHacker};
+const getGroupedHackers = async (_req: any, res: any) => {
+  const groupedHackers = await sortedHackersService.getGroupedHackers()
+  res.json(groupedHackers)
+  return groupedHackers
+}
+
+export default {getSortedHackers, createSortedHacker, getGroupedHackers };
