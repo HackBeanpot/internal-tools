@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Layout from '../components/layout/Layout'
 import { Button, Divider, ThemeProvider, Typography } from '@mui/material'
 import { theme } from '../styles/theme'
@@ -8,18 +8,20 @@ import CSVCabinTable from '../components/csvTable/CSVCabinTable'
 import SelectedCabin from '../components/templateDropdown/selectedCabin'
 import BackArrow from '../components/backArrow/backArrow'
 import axios from 'axios'
+import 'dotenv/config'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 
-export default function CabinSorting () {
-  
-  type HackerEmails = {
-    emails: string[]
-  }
-  
-  type GetGroupedHackersResponse = {
-    data: HackerEmails[]
-  }
+export const getStaticProps: GetStaticProps<{
+  data: string[][]
+}> = async () => {
+  const url = process.env.GROUPED_HACKERS_URL || ''
+  const res = await axios.get(url)
+  const data = res.data
+  return { props: { data } }
+}
 
-
+export default function CabinSorting (props : InferGetStaticPropsType<typeof getStaticProps>) {
+  const cabinValues = props.data
   const cabinHeaders: string[] = [
     'Cabin 1',
     'Cabin 2',
@@ -29,23 +31,14 @@ export default function CabinSorting () {
     'Cabin 6'
   ]
 
-  const [cabinValues, setCabinValues] = useState<HackerEmails>([])
+  const rows: string[][] = []
+  cabinHeaders.forEach(() => {
+    rows.push([])
+  })
 
-  async function updateCabinValues () {
-    axios.get<GetGroupedHackersResponse>(process.env.GROUPED_HACKERS_URL!).then(groupedHackersResponse => {
-      setCabinValues(groupedHackersResponse.data)
-    })
-  }
-
-  useEffect(() => {
-    updateCabinValues()
-  }, [])
-
-  const rows: string[][] = [[]]
-  Object.values(cabinValues).forEach((value: any, index: number) => {
+  cabinValues.forEach((value: any, index: number) => {
     value.forEach((entry: string, entryIndex: number) => {
-      if (rows.length < entryIndex + 1) rows.push([])
-      rows[entryIndex][index] = entry
+      rows[index][entryIndex] = entry
     })
   })
 
@@ -87,11 +80,11 @@ export default function CabinSorting () {
             </span>
           </div>
           <br />
-          <CSVCabinTable headers={cabinHeaders} cabinValues={cabinValues} />
+          <CSVCabinTable headers={cabinHeaders} cabinValues={rows} />
           <br />
           <Typography variant="h5">Copy email list</Typography>
           <br />
-          <SelectedCabin cabinNames={cabinHeaders} cabinValues={cabinValues} />
+          <SelectedCabin cabinNames={cabinHeaders} cabinValues={rows} />
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>

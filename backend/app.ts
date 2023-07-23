@@ -8,12 +8,14 @@ import teamsRouter from "./judging-algorithm/routes/teams-routes.js"
 import cabinsRouter from "./cabin-sorting/routes/sortedHackers-routes.js"
 
 const app = express();
+const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
 
 app.use(
   cors({
-    origin: 'http://localhost:4000',
+    // problem lies here
+    origin: [`http://localhost:${PORT}`, 'http://localhost:3000'],
     credentials: true
   })
 );
@@ -24,7 +26,6 @@ app.use('/', roomsRouter);
 app.use('/', rotationTimesRouter);
 app.use('/', teamsRouter);
 
-const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
   console.log(`Server is running in http://localhost:${PORT}`);

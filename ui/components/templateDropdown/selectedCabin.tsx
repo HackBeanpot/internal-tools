@@ -26,7 +26,7 @@ export default function SelectedCabin ({ cabinNames, cabinValues }: SelectedCabi
 
   const handleChange = (event: SelectChangeEvent) => {
     const str = event.target.value
-    setSelectedItem(Number(str.charAt(str.length - 1)))
+    setSelectedItem(Number(str.charAt(str.length - 1)) - 1)
     setCopied(false)
     setOpenSnackBar(false)
   }
@@ -57,6 +57,7 @@ export default function SelectedCabin ({ cabinNames, cabinValues }: SelectedCabi
             </MenuItem>
           ))}
         </Select>
+
         {copied
           ? (
           <span
@@ -80,6 +81,9 @@ export default function SelectedCabin ({ cabinNames, cabinValues }: SelectedCabi
                 cursor: hoverCopy ? 'pointer' : 'none'
               }}
               onClick={() => {
+                if (!cabinValues[selectedItem]) {
+                  return
+                }
                 navigator.clipboard.writeText(cabinValues[selectedItem].toString())
                 setCopied(true)
                 setOpenSnackBar(true)
