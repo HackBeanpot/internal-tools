@@ -8,7 +8,6 @@ import CSVCabinTable from '../components/csvTable/CSVCabinTable'
 import SelectedCabin from '../components/templateDropdown/selectedCabin'
 import BackArrow from '../components/backArrow/backArrow'
 import axios from 'axios'
-import 'dotenv/config'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 
 export const getStaticProps: GetStaticProps<{
