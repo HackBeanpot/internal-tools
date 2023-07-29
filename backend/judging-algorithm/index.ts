@@ -1,8 +1,9 @@
-import { FinalOutputTables, HackerTeam, Judge, Room, RotationTime } from './types'
-import { sortJudgesAndPeople } from './formSchedule'
-import { parseHackerTeamCSV, parseJudgeCSV, parseRoomsCSV, parseRotationTimeCSV } from './parser'
-import { convertHackersTablesToJson, convertJudgesTablesToJson } from './formJsonOutput'
+import { FinalOutputTables, HackerTeam, Judge, Room, RotationTime } from './types.js'
+import { sortJudgesAndPeople } from './formSchedule.js'
+import { parseHackerTeamCSV, parseJudgeCSV, parseRoomsCSV, parseRotationTimeCSV } from './parser.js'
+import { convertHackersTablesToJson, convertJudgesTablesToJson } from './formJsonOutput.js'
 import { updateAllData } from './parser.js'
+import {readJsonAndCreateInMongo} from './output-functions.js'
 
 // hardcode based on hackathon needs
 const allTimes: string[] =
@@ -17,6 +18,9 @@ function main (): FinalOutputTables {
 
   // uploads the csv data to mongo
   updateAllData();
+
+  // uploads the output data to mongo
+  readJsonAndCreateInMongo();
 
   // parse the hacker CSV in to TS objects
   const allJudges: Judge[] = parseJudgeCSV(judgeCsvFilePath)
