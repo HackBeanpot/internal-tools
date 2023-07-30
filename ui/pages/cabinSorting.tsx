@@ -3,6 +3,7 @@ import Layout from '../components/layout/Layout'
 import { Button, Divider, ThemeProvider, Typography } from '@mui/material'
 import { theme } from '../styles/theme'
 import { StyledButton, StyledPageContainer } from '../styles/common'
+import { CSVLink } from 'react-csv'
 import CSVCabinTable from '../components/csvTable/CSVCabinTable'
 import SelectedCabin from '../components/templateDropdown/selectedCabin'
 import BackArrow from '../components/backArrow/backArrow'
@@ -17,14 +18,22 @@ export default function CabinSorting () {
     'Cabin 6'
   ]
 
-  const cabinValues: any = {
-    'Cabin 1': ['email1-1', 'email1-2'],
-    'Cabin 2': ['email2-1', 'email2-2', 'email2-3'],
-    'Cabin 3': ['email3-1', 'email3-2'],
-    'Cabin 4': ['email4-1', 'email4-2'],
-    'Cabin 5': [],
-    'Cabin 6': ['email6-1', 'email6-2']
-  }
+  const cabinValues: string[][] = [
+    ['email1-1', 'email1-2'],
+    ['email2-1', 'email2-2', 'email2-3'],
+    ['email3-1', 'email3-2'],
+    ['email4-1', 'email4-2'],
+    [],
+    ['email6-1', 'email6-2']
+  ]
+
+  const rows: string[][] = [[]]
+  Object.values(cabinValues).forEach((value: any, index: number) => {
+    value.forEach((entry: string, entryIndex: number) => {
+      if (rows.length < entryIndex + 1) rows.push([])
+      rows[entryIndex][index] = entry
+    })
+  })
 
   return (
     <Layout>
@@ -51,14 +60,16 @@ export default function CabinSorting () {
               Regenerate Sorted Hackers
             </StyledButton>
             <span style={{ float: 'right' }}>
-              <Button
-                variant="contained"
-                component="span"
-                size="large"
-                style={{ textTransform: 'none', width: '10em' }}
-              >
-                Export CSV
-              </Button>
+              <CSVLink data={rows} headers={cabinHeaders} separator={','}>
+                <Button
+                  variant="contained"
+                  component="span"
+                  size="large"
+                  style={{ textTransform: 'none', width: '10em' }}
+                >
+                  Export CSV
+                </Button>
+              </CSVLink>
             </span>
           </div>
           <br />
@@ -66,7 +77,7 @@ export default function CabinSorting () {
           <br />
           <Typography variant="h5">Copy email list</Typography>
           <br />
-          <SelectedCabin cabinNames={cabinHeaders} cabinValues={cabinValues}/>
+          <SelectedCabin cabinNames={cabinHeaders} cabinValues={cabinValues} />
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
