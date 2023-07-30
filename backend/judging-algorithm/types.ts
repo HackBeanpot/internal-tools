@@ -35,7 +35,8 @@ export type JudgeOutputProjectsLiveSite = {
 export type JudgeOutputLiveSite = {
   judge: string,
   room: string,
-  projects: JudgeOutputProjectsLiveSite[]
+  projects: JudgeOutputProjectsLiveSite[],
+  id?: string
 }
 
 export type HackerOutput = {

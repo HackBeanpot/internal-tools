@@ -49,21 +49,18 @@ export const testDeleteHackerTableRequest = {
     }
 }
 
-export const testCreateJudgeTableRequest = {
-    body: {
-        "judge": "judge1",
-        "time": "3:00",
-        "project": "test create judge table",
-        "room": "Room1"
-    }
+export const testCreateJudgeTableProject = {
+    "room": "room1",
+    "judge": "judge1",
+    "time": "10:00",
+    "project": "project1"
 }
 
-export const testDeleteJudgeTableRequest = {
+export const testCreateJudgeTableRequest = {
     body: {
+        "room": "room1",
         "judge": "judge1",
-        "time": "3:00",
-        "project": "test delete judge table",
-        "room": "Room1"
+        "projects": [testCreateJudgeTableProject]
     }
 }
 

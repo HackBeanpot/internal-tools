@@ -1,9 +1,9 @@
 import db from './db.js'
 import controller from '../controllers/judgeTable-controller.js'
-import { mockResponse, testCreateJudgeTableRequest, testDeleteJudgeTableRequest } from './test-constants.js';
-import judgeTableSchema from '../schemas/judgeTable-models.js';
+import { mockResponse, testCreateJudgeTableProject, testCreateJudgeTableRequest } from './test-constants.js';
+import judgeTableSchema from '../schemas/judgeTable-schema.js';
 import mongoose from "mongoose";
-import { JudgeOutput } from '../../types.js';
+import { JudgeOutput, JudgeOutputLiveSite } from '../../types.js';
 
 beforeAll(
     async () => await db.connectDatabase()
@@ -15,13 +15,13 @@ afterAll(async () => {
 jest.mock('../models/judgeTable-models.js', () => ({
     __esModule: true,
     default: function () {
-        return mongoose.model("Hacker Table", judgeTableSchema)
+        return mongoose.model("Judge Table", judgeTableSchema)
     } 
 }))
 
-describe("HackerTable Tests", () => {
-    it("Test create hacker table", async () => {
-        const { id } = (await controller.createJudgeTable(testCreateJudgeTableRequest, mockResponse)) as JudgeOutput;
+describe("JudgeTable Tests", () => {
+    it("Test create judge table", async () => {
+        const { id } = (await controller.createJudgeTable(testCreateJudgeTableRequest, mockResponse)) as JudgeOutputLiveSite;
 
         const createdJudgeTableIdRequest = {
             params: {
@@ -31,9 +31,10 @@ describe("HackerTable Tests", () => {
 
         const judgeTable  = await controller.getJudgeTableById(createdJudgeTableIdRequest, mockResponse);
         expect(judgeTable[0].judge).toEqual("judge1");
-        expect(judgeTable[0].time).toEqual("3:00");
-        expect(judgeTable[0].project).toEqual("test create judge table");
-        expect(judgeTable[0].room).toEqual("Room1");
+        expect(judgeTable[0].projects[0].room).toEqual(testCreateJudgeTableProject.room);
+        expect(judgeTable[0].projects[0].time).toEqual(testCreateJudgeTableProject.time);
+        expect(judgeTable[0].projects[0].judge).toEqual(testCreateJudgeTableProject.judge);
+        expect(judgeTable[0].projects[0].project).toEqual(testCreateJudgeTableProject.project);
     })
 
     it("Test create and get multiple judge tables", async () => {
@@ -48,15 +49,21 @@ describe("HackerTable Tests", () => {
 
         const { id } = (await controller.getJudgeTable(undefined, mockResponse))[0]
 
+        const updatedProject = {
+            "room": "updated room1",
+            "judge": "updated judge1",
+            "time": "12:00",
+            "project": "updated project1"
+        }
+
         const updatedJudgeTableRequest = {
             params: {
                 id: id
             },
             body: {
                 "judge": "judge1",
-                "time": "3:00",
-                "project": "updated create judge table",
-                "room": "updated room1"
+                "room": "updated room1",
+                "projects": [updatedProject],
             }
         }
 
@@ -70,14 +77,16 @@ describe("HackerTable Tests", () => {
 
         const judgeTable  = await controller.getJudgeTableById(updatedJudgeTableId, mockResponse);
         expect(judgeTable[0].judge).toEqual("judge1");
-        expect(judgeTable[0].time).toEqual("3:00");
-        expect(judgeTable[0].project).toEqual("updated create judge table");
         expect(judgeTable[0].room).toEqual("updated room1");
+        expect(judgeTable[0].projects[0].room).toEqual(updatedProject.room);
+        expect(judgeTable[0].projects[0].judge).toEqual(updatedProject.judge);
+        expect(judgeTable[0].projects[0].time).toEqual(updatedProject.time);
+        expect(judgeTable[0].projects[0].project).toEqual(updatedProject.project);
     })
 
 
     it("Test delete judge table", async () => {
-        const { id } = (await controller.createJudgeTable(testDeleteJudgeTableRequest, mockResponse)) as JudgeOutput;
+        const { id } = (await controller.createJudgeTable(testCreateJudgeTableRequest, mockResponse)) as JudgeOutputLiveSite;
 
         const testDeleteJudgeTableId = {
             params: {

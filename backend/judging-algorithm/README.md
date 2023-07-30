@@ -15,7 +15,7 @@ c. Download and save as `hackers.csv` within `/judging-algorithm/data/csv_inputs
 
 3. KICK OFF THE SORTING SCRIPT
 
-In terminal 1: cd to backend => use `node 16` => run `ts-node ./app.ts`
+In terminal 1: cd to backend => use `node 16` => run `npx ts-node ./app.ts`
 
 In terminal 2: cd to judging algorithm => run `npx ts-node --experimental-specifier-resolution=node index.ts` to split our judges and
 hackers in to the inputted rooms
@@ -24,7 +24,7 @@ This outputs our results in to JSON files `hackerResults.json` and `judgeResults
 
 --
 
-NOTE: Using `yarn dev` instead of `ts-node .\app.ts` will cause `ECONNRESET` error from axios.
+NOTE: Using `yarn dev` instead of `npx ts-node .\app.ts` will cause `ECONNRESET` error from axios.
 
 IMPLEMENTATION STRATEGY:
 

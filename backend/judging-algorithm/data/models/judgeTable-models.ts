@@ -1,5 +1,5 @@
 import connection from "../../../connections.js";
-import judgeTableSchema from "../schemas/judgeTable-models.js";
+import judgeTableSchema from "../schemas/judgeTable-schema.js";
 
 const judgingConnection = connection.connectJudgingDatabase()
 
