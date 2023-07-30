@@ -19,9 +19,6 @@ function main (): FinalOutputTables {
   // uploads the csv data to mongo
   updateAllData();
 
-  // uploads the output data to mongo
-  readJsonAndCreateInMongo();
-
   // parse the hacker CSV in to TS objects
   const allJudges: Judge[] = parseJudgeCSV(judgeCsvFilePath)
   const allRooms: Room[] = parseRoomsCSV(roomsCsvFilePath)
@@ -44,6 +41,9 @@ function main (): FinalOutputTables {
   // parse the judgeOutput and place in JSON files for the front-end to consume
   convertHackersTablesToJson(allPeopleSorted)
   convertJudgesTablesToJson(judgeStringsForJSON, allPeopleSorted)
+
+  // uploads the output data to mongo
+  readJsonAndCreateInMongo();
 
   return allPeopleSorted
 }
