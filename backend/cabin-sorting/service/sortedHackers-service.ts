@@ -46,7 +46,7 @@ const getSortedHackers = async (): Promise<HackerDataType[]> => {
   return formattedHackerData;
 };
 
-const createSortedHacker = async (hacker: Hacker): Promise<Hacker> => {
+const createSortedHacker = async (hacker: Hacker) => {
   const createResponse = await sortedHackersDao.createdSortedHacker(hacker);
   return createResponse;
 };
@@ -57,11 +57,11 @@ const groupHackersByCabin = async (): Promise<string[][]> => {
 
 
   const groupedHackers = hackers.reduce((accum, hacker) => {
-    const {assignedCabin, email} = hacker
+    const {assignedCabin, email, id} = hacker
     const cabinNum = cabinList.indexOf(assignedCabin);
     if (cabinNum === -1) {
       console.error(
-        `Cabin assigned to Hacker ${assignedCabin.id} could not be found`
+        `Cabin assigned to Hacker ${id} could not be found`
       );
       return accum;
     }
