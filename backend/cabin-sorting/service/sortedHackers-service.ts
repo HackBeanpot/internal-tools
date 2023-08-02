@@ -3,12 +3,14 @@ import * as path from 'path';
 import { parse } from 'csv-parse/sync';
 import { Types } from 'mongoose';
 import * as sortedHackersDao from '../dao/sortedHackers-dao.js';
+import { FormattedHacker, Hacker } from '../types.js';
+import sortedHackersSchema from '../schemas/sortedHackers-schema.js';
 
-let hackerList: any[];
-let answerList: any[];
-let cabinList: any[];
 let CABIN_SIZE: number;
 let QUESTIONS_SIZE: number;
+let hackerList: HackerDataType[];
+let answerList: string[];
+let cabinList: string[];
 
 interface HackerDataType {
   id: string;
@@ -16,7 +18,7 @@ interface HackerDataType {
   [key: string]: string;
 }
 
-const getSortedHackers = async () => {
+const getSortedHackers = async (): Promise<HackerDataType[]> => {
   const rawHackerData = await sortedHackersDao.getSortedHackers();
   const formattedHackerData = rawHackerData.map((hackerData) => {
     const { _id, email, applicationResponses } = hackerData;
@@ -44,22 +46,18 @@ const getSortedHackers = async () => {
   return formattedHackerData;
 };
 
-const createSortedHacker = async (hacker: any) => {
+const createSortedHacker = async (hacker: Hacker): Promise<Hacker> => {
   const createResponse = await sortedHackersDao.createdSortedHacker(hacker);
   return createResponse;
 };
 
-const getGroupedHackers = async () => {
+const groupHackersByCabin = async (): Promise<string[][]> => {
   const hackers = await assignHackerCabins();
-  console.log(hackers)
   let cabinEmails: string[][] = [];
 
-  hackers.forEach((hacker) => {
-    console.log(hacker)
-  })
 
-  const groupedHackers = hackers.reduce((accum, currVal) => {
-    const assignedCabin = currVal.assignedCabin;
+  const groupedHackers = hackers.reduce((accum, hacker) => {
+    const {assignedCabin, email} = hacker
     const cabinNum = cabinList.indexOf(assignedCabin);
     if (cabinNum === -1) {
       console.error(
@@ -67,13 +65,11 @@ const getGroupedHackers = async () => {
       );
       return accum;
     }
-    const hackerEmail = currVal.email;
     if (!accum[cabinNum]) {
       accum[cabinNum] = []
     }
-    accum[cabinNum].push(hackerEmail);
+    accum[cabinNum].push(email);
     
-    console.log(accum)
     return accum;
   }, cabinEmails);
 
@@ -86,7 +82,6 @@ function loadCSV(filepath: string, headers: boolean): any[] {
     'data', 
     'csv_inputs', 
     filepath);
-  console.log(csvFileAbsolutePath)
 
   // error handling in case file is missing
   let fileContent;
@@ -135,7 +130,7 @@ function matchAnswers() {
     // each element = a different cabin, all initialized to 0
     const cabinScore = Array<number>(CABIN_SIZE).fill(0);
 
-    hydrateCabinScore(hacker, cabinScore);
+    incrementCabinScores(hacker, cabinScore);
 
     // create extra column for hacker that determines the cabin they should
     // join (the one with the most points)
@@ -151,7 +146,7 @@ function matchAnswers() {
   });
 }
 
-function hydrateCabinScore(hacker: any, cabinScore: number[]) {
+function incrementCabinScores(hacker: any, cabinScore: number[]) {
   answerList.forEach((cabin: any, cabinIndex: number) => {
     for (
       let questionIndex = 0;
@@ -168,4 +163,4 @@ function hydrateCabinScore(hacker: any, cabinScore: number[]) {
   });
 }
 
-export default { getSortedHackers, createSortedHacker, getGroupedHackers };
+export default { getSortedHackers, createSortedHacker, groupHackersByCabin };

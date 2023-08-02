@@ -15,6 +15,7 @@ export const sortedHackersSchema = new mongoose.Schema(
     versionKey: false
   },
 );
+
 export default sortedHackersSchema;
 
 
