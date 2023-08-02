@@ -46,7 +46,7 @@ const getSortedHackers = async (): Promise<HackerDataType[]> => {
   return formattedHackerData;
 };
 
-const createSortedHacker = async (hacker: Hacker) => {
+const createSortedHacker = async (hacker: Hacker): Promise<any> => {
   const createResponse = await sortedHackersDao.createdSortedHacker(hacker);
   return createResponse;
 };
