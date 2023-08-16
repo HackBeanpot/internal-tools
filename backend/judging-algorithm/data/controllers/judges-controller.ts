@@ -13,13 +13,6 @@ const getJudgeById = async (req: any, res: any) => {
   return judge;
 };
 
-const getJudgeByName = async (req: any, res: any) => {
-  const judgesName = req.params.name;
-  const judge = await judgesDao.getJudgeByName(judgesName);
-  res.json(judge);
-  return judge;
-};
-
 const createJudge = async (req: any, res: any) => {
   const judge = req.body;
   let create;
@@ -58,4 +51,4 @@ const deleteAllJudges = async (_req: any, res: any) => {
 
 
 
-export default {getJudge, getJudgeById, getJudgeByName, createJudge, updateJudge, deleteJudge, deleteAllJudges};
+export default {getJudge, getJudgeById, createJudge, updateJudge, deleteJudge, deleteAllJudges};

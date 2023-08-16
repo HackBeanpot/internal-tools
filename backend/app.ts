@@ -6,6 +6,8 @@ import roomsRouter from "./judging-algorithm/routes/rooms-routes.js"
 import rotationTimesRouter from "./judging-algorithm/routes/rotationTimes-routes.js"
 import teamsRouter from "./judging-algorithm/routes/teams-routes.js"
 import cabinsRouter from "./cabin-sorting/routes/sortedHackers-routes.js"
+import hackerTableRouter from "./judging-algorithm/routes/hackerTable-routes.js"
+import judgesTableRouter from "./judging-algorithm/routes/judgeTable-routes.js"
 
 const app = express();
 
@@ -23,6 +25,8 @@ app.use('/', judgesRouter);
 app.use('/', roomsRouter);
 app.use('/', rotationTimesRouter);
 app.use('/', teamsRouter);
+app.use('/', hackerTableRouter);
+app.use('/', judgesTableRouter);
 
 const PORT = process.env.PORT || 4000;
 

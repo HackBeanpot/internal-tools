@@ -23,7 +23,8 @@ export type JudgeOutput = {
   judge: string,
   time: string,
   project: string,
-  room: string
+  room: string,
+  id?: string
 }
 
 export type JudgeOutputProjectsLiveSite = {
@@ -34,14 +35,16 @@ export type JudgeOutputProjectsLiveSite = {
 export type JudgeOutputLiveSite = {
   judge: string,
   room: string,
-  projects: JudgeOutputProjectsLiveSite[]
+  projects: JudgeOutputProjectsLiveSite[],
+  id?: string
 }
 
 export type HackerOutput = {
   project: string,
   time: string,
   judges: string[],
-  room: string
+  room: string,
+  id?: string
 }
 
 export type FinalOutputTables = {

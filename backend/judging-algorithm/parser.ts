@@ -9,7 +9,7 @@ import {updateJudgeData, updatesTeamData, updateRoomsData, updateRotationTimes} 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-function parseCsv<T> (csvFilePath: string, headers: string[] | boolean): T[] {
+export function parseCsv<T> (csvFilePath: string, headers: string[] | boolean): T[] {
   const csvFileAbsolutePath = path.resolve(__dirname, csvFilePath)
 
   const fileContent = fs.readFileSync(csvFileAbsolutePath, {

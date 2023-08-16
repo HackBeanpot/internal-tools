@@ -7,9 +7,6 @@ export const getRotationTime = async () =>
 export const getRotationTimeById = async (rotationTimeID: string) => 
   (await rotationTimesModel()).find({_id: rotationTimeID});
 
-export const getRotationTimeByName = async (rotationTimeName: string) =>
-  (await rotationTimesModel()).findOne({name: rotationTimeName});  
-
 export const createRotationTime = async (rotationTime: RotationTime) => 
   (await rotationTimesModel()).create(rotationTime); 
 

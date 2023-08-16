@@ -3,7 +3,7 @@ import https from 'https';
 import { parseJudgeCSV, parseHackerTeamCSV, parseRoomsCSV, parseRotationTimeCSV } from  "./parser.js";
 import 'dotenv/config';
 
-async function deleteAndPostData(resource: string, data: any[]) {
+export async function deleteAndPostData(resource: string, data: any[]) {
     try {
         await axios.delete(`${process.env.SERVER_URL}/${resource}`);
 

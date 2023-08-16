@@ -3,6 +3,7 @@ import controller from '../controllers/rooms-controller.js'
 import { mockResponse, testCreateRoomRequest } from './test-constants.js';
 import mongoose from "mongoose";
 import roomsSchema from '../schemas/rooms-schema.js';
+import { Room } from '../../types.js';
 
 beforeAll(async () => await db.connectDatabase())
 afterAll(async () => {
