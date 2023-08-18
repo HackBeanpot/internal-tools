@@ -18,7 +18,10 @@ type SelectedCabinProps = {
   cabinValues: string[][];
 };
 
-export default function SelectedCabin ({ cabinNames, cabinValues }: SelectedCabinProps) {
+export default function SelectedCabin ({
+  cabinNames,
+  cabinValues
+}: SelectedCabinProps) {
   const [selectedItem, setSelectedItem] = React.useState(-1)
   const [copied, setCopied] = React.useState(false)
 
@@ -26,7 +29,7 @@ export default function SelectedCabin ({ cabinNames, cabinValues }: SelectedCabi
 
   const handleChange = (event: SelectChangeEvent) => {
     const str = event.target.value
-    setSelectedItem(Number(str.charAt(str.length - 1)))
+    setSelectedItem(Number(str.charAt(str.length - 1)) - 1)
     setCopied(false)
     setOpenSnackBar(false)
   }
@@ -57,43 +60,42 @@ export default function SelectedCabin ({ cabinNames, cabinValues }: SelectedCabi
             </MenuItem>
           ))}
         </Select>
-        {copied
-          ? (
+
+        <span
+          style={{
+            marginLeft: '1em',
+            position: 'absolute',
+            top: '21%',
+            cursor: hoverCopy ? 'pointer' : 'none'
+          }}
+          onClick={() => {
+            if (!cabinValues[selectedItem]) {
+              return
+            }
+            navigator.clipboard.writeText(cabinValues[selectedItem].toString())
+            setCopied(true)
+            setOpenSnackBar(true)
+          }}
+          onMouseEnter={() => setHoverCopy(true)}
+          onMouseLeave={() => setHoverCopy(false)}
+        >
+          <span color="#5e5d5d">
+            <ContentCopyIcon fontSize="medium" />
+          </span>
+        </span>
+
+        {copied && (
           <span
             style={{
               color: 'green',
-              marginLeft: '1em',
+              marginLeft: '3em',
               position: 'absolute',
               top: '21%'
             }}
           >
             <CheckIcon fontSize="medium" />
           </span>
-            )
-          : (
-              selectedItem && (
-            <span
-              style={{
-                marginLeft: '1em',
-                position: 'absolute',
-                top: '21%',
-                cursor: hoverCopy ? 'pointer' : 'none'
-              }}
-              onClick={() => {
-                navigator.clipboard.writeText(cabinValues[selectedItem].toString())
-                setCopied(true)
-                setOpenSnackBar(true)
-              }}
-              onMouseEnter={() => setHoverCopy(true)}
-              onMouseLeave={() => setHoverCopy(false)}
-            >
-              <span color="#5e5d5d">
-                <ContentCopyIcon fontSize="medium" />
-              </span>
-            </span>
-              )
-            )}
-
+        )}
         {openSnackBar && (
           <SimpleSnackBar
             message="Copied to Clipboard"

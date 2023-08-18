@@ -6,4 +6,6 @@ const router = express.Router();
 router.get('/sortedHackers', controller.getSortedHackers);
 router.post('/sortedHackers', controller.createSortedHacker);
 
+router.get('/groupedHackers', controller.groupHackersByCabin);
+
 export default router;

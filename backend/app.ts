@@ -10,12 +10,14 @@ import hackerTableRouter from "./judging-algorithm/routes/hackerTable-routes.js"
 import judgesTableRouter from "./judging-algorithm/routes/judgeTable-routes.js"
 
 const app = express();
+const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
 
 app.use(
   cors({
-    origin: 'http://localhost:4000',
+    // problem lies here
+    origin: [`http://localhost:${PORT}`, 'http://localhost:3000'],
     credentials: true
   })
 );
@@ -28,7 +30,6 @@ app.use('/', teamsRouter);
 app.use('/', hackerTableRouter);
 app.use('/', judgesTableRouter);
 
-const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
   console.log(`Server is running in http://localhost:${PORT}`);

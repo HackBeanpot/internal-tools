@@ -7,8 +7,20 @@ import { CSVLink } from 'react-csv'
 import CSVCabinTable from '../components/csvTable/CSVCabinTable'
 import SelectedCabin from '../components/templateDropdown/selectedCabin'
 import BackArrow from '../components/backArrow/backArrow'
+import axios from 'axios'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 
-export default function CabinSorting () {
+export const getStaticProps: GetStaticProps<{
+  data: string[][]
+}> = async () => {
+  const url = process.env.GROUPED_HACKERS_URL || ''
+  const res = await axios.get(url)
+  const data = res.data
+  return { props: { data } }
+}
+
+export default function CabinSorting (props : InferGetStaticPropsType<typeof getStaticProps>) {
+  const cabinValues = props.data
   const cabinHeaders: string[] = [
     'Cabin 1',
     'Cabin 2',
@@ -18,20 +30,14 @@ export default function CabinSorting () {
     'Cabin 6'
   ]
 
-  const cabinValues: string[][] = [
-    ['email1-1', 'email1-2'],
-    ['email2-1', 'email2-2', 'email2-3'],
-    ['email3-1', 'email3-2'],
-    ['email4-1', 'email4-2'],
-    [],
-    ['email6-1', 'email6-2']
-  ]
+  const rows: string[][] = []
+  cabinHeaders.forEach(() => {
+    rows.push([])
+  })
 
-  const rows: string[][] = [[]]
-  Object.values(cabinValues).forEach((value: any, index: number) => {
+  cabinValues.forEach((value: any, index: number) => {
     value.forEach((entry: string, entryIndex: number) => {
-      if (rows.length < entryIndex + 1) rows.push([])
-      rows[entryIndex][index] = entry
+      rows[index][entryIndex] = entry
     })
   })
 
@@ -73,11 +79,11 @@ export default function CabinSorting () {
             </span>
           </div>
           <br />
-          <CSVCabinTable headers={cabinHeaders} cabinValues={cabinValues} />
+          <CSVCabinTable headers={cabinHeaders} cabinValues={rows} />
           <br />
           <Typography variant="h5">Copy email list</Typography>
           <br />
-          <SelectedCabin cabinNames={cabinHeaders} cabinValues={cabinValues} />
+          <SelectedCabin cabinNames={cabinHeaders} cabinValues={rows} />
         </StyledPageContainer>
       </ThemeProvider>
     </Layout>
