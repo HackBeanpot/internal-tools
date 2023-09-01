@@ -1,7 +1,9 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
+import clientPromise from '../../../lib/mongodb'
 
-export default NextAuth({
+const nextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
@@ -15,6 +17,7 @@ export default NextAuth({
       }
     })
   ],
+  adapter: MongoDBAdapter(clientPromise),
   callbacks: {
     async signIn ({ account, profile }) {
       if (account.provider === 'google') {
@@ -23,7 +26,7 @@ export default NextAuth({
       return false
     },
     async session ({ session, token, user }) {
-      session.accessToken = token.accessToken
+      session.accessToken = token?.accessToken
       return session
     }
   },
@@ -33,4 +36,6 @@ export default NextAuth({
     error: '/auth/signin',
     verifyRequest: '/auth/signin'
   }
-})
+}
+
+export default NextAuth(nextAuthOptions)
