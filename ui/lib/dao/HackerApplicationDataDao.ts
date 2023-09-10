@@ -11,7 +11,7 @@ async function connectToHackerApplicationData () {
 
 connectToHackerApplicationData()
 
-export default { findByEmail, find, create, insertMany }
+export default { findByEmail, find, create, insertMany, pingServer }
 
 async function findByEmail (email: string) {
   return await HackerApplicationData.findOne({ email })
@@ -27,4 +27,8 @@ async function create (hackerApplication : HackerApplicationDataType) {
 
 async function insertMany (hackerApplications : HackerApplicationDataType[]) {
   return await HackerApplicationData.insertMany(hackerApplications)
+}
+
+async function pingServer () {
+  return await HackerApplicationData.db.db.admin().ping()
 }

@@ -30,11 +30,16 @@ const saveAllHackerApplications = async (
   return await HackerApplicationDataDao.insertMany(hackerApplications)
 }
 
+const pingServer = async () : Promise<void> => {
+  await HackerApplicationDataDao.pingServer()
+}
+
 export default {
   findHackerApplicationByEmail,
   findAllHackerApplications,
   saveHackerApplication,
-  saveAllHackerApplications
+  saveAllHackerApplications,
+  pingServer
 }
 
 function validatePostRequestBody (

@@ -21,7 +21,7 @@ export default async function handler (
     case 'DELETE':
       return res.status(200).send({ message: 'works' })
     case 'PUT':
-      return res.status(200).send({ message: 'works' })
+      return PutHandler(req, res)
   }
 }
 
@@ -40,7 +40,7 @@ async function GetHandler (req: HackerApiRequest, res: NextApiResponse) {
       .status(200)
       .send(await HackerApplicationDataService.findAllHackerApplications())
   } catch (err) {
-    return res.status(500).send({ message: err })
+    return res.status(500).send(err)
   }
 }
 
@@ -63,5 +63,14 @@ async function PostHandler (req: HackerApiRequest, res: NextApiResponse) {
     }
   } catch (err: any) {
     return res.status(500).send({ message: err.message })
+  }
+}
+
+async function PutHandler (req: HackerApiRequest, res: NextApiResponse) {
+  try {
+    await HackerApplicationDataService.pingServer()
+    return res.status(200).send({ message: 'PING PING PING PING' })
+  } catch (err) {
+    return res.status(500).send({ message: 'Unable to ping server' })
   }
 }
