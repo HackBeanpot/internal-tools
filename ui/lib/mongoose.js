@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 
 export async function mongooseConnect (databaseClusterName) {
-  mongoose.connections.forEach(connection => console.log(connection.name))
   if (
     mongoose.connections.some(
       (connection) =>
