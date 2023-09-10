@@ -1,8 +1,9 @@
+// TODO: restructure code to service and dao files
+
 import { NextApiRequest, NextApiResponse } from 'next'
-import { mongooseConnect } from '../../../lib/mongoose'
-import { HackerApplicationDataType, createModelWithConnection }
+import { HackerApplicationDataType }
   from '../../../models/HackerApplicationData'
-import { Model } from 'mongoose'
+import HackerApplicationDataDao from '../../../lib/dao/HackerApplicationDataDao'
 interface FormattedHackerDataType {
     email: string,
     [key: string] : string,
@@ -19,11 +20,9 @@ const QUESTIONS_SIZE = 12
 
 export default async function handler (req: NextApiRequest, res: NextApiResponse) {
   const requestMethod = req.method
-  const cabinConnection = await mongooseConnect(process.env.CABIN_CLUSTER_NAME)
-  const HackerApplicationData = createModelWithConnection(cabinConnection)
 
   if (requestMethod === 'GET') {
-    return GetHandler(req, res, HackerApplicationData)
+    return GetHandler(req, res)
   }
 
   if (requestMethod === 'POST') {
@@ -40,8 +39,7 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
 }
 
 async function GetHandler (req: NextApiRequest,
-  res: NextApiResponse,
-  HackerApplicationData : Model<HackerApplicationDataType>) {
+  res: NextApiResponse) {
   try {
     // TODO: will replace with real endpoints once
     await fetch('http://localhost:3000/api/cabinSorting/answerList')
@@ -52,7 +50,7 @@ async function GetHandler (req: NextApiRequest,
       .then(response => response.json())
       .then(data => { cabinList = data.content[0] })
 
-    const rawHackerData = await HackerApplicationData.find()
+    const rawHackerData = await HackerApplicationDataDao.find()
     const formattedHackerData = formatRawData(rawHackerData)
     const formattedHackerWithCabinData = matchAnswers(formattedHackerData)
     res.status(200).send({ formattedHackerWithCabinData })
