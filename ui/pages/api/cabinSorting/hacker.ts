@@ -1,8 +1,5 @@
 import { NextApiResponse } from 'next'
-import {
-  HackerApplicationDataSchema,
-  HackerApplicationDataType
-} from '../../../models/HackerApplicationData'
+import { HackerApplicationDataType } from '../../../models/HackerApplicationData'
 import HackerApplicationDataService from '../../../lib/service/HackerApplicationDataService'
 
 type HackerApiRequest = {
@@ -49,8 +46,6 @@ async function GetHandler (req: HackerApiRequest, res: NextApiResponse) {
 
 async function PostHandler (req: HackerApiRequest, res: NextApiResponse) {
   try {
-    validatePostRequestBody(req.body)
-
     if (Array.isArray(req.body)) {
       const savedHackers =
         await HackerApplicationDataService.saveAllHackerApplications(req.body)
@@ -69,34 +64,4 @@ async function PostHandler (req: HackerApiRequest, res: NextApiResponse) {
   } catch (err: any) {
     return res.status(500).send({ message: err.message })
   }
-}
-
-function validatePostRequestBody (requestBody: any): void {
-  if (Array.isArray(requestBody)) {
-    requestBody.forEach((requestBodyElement) =>
-      validateBody(requestBodyElement)
-    )
-  } else {
-    validateBody(requestBody)
-  }
-
-  function validateBody (body: any) {
-    if (
-      !isValidBody<HackerApplicationDataType>(
-        body,
-        Object.keys(HackerApplicationDataSchema.paths).map(
-          (key) => key as keyof HackerApplicationDataType
-        )
-      )
-    ) {
-      throw Error('Invalid Request Body')
-    }
-  }
-}
-
-function isValidBody<T extends Record<string, unknown>> (
-  body: any,
-  fields: (keyof T)[]
-): body is T {
-  return Object.keys(body).every((key) => fields.includes(key))
 }
