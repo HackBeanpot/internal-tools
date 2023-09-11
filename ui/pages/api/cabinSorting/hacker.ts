@@ -61,8 +61,8 @@ async function PostHandler (req: HackerApiRequest, res: NextApiResponse) {
         message: `Saved hacker application data with email: ${savedHackerEmail}`
       })
     }
-  } catch (err: any) {
-    return res.status(500).send({ message: err.message })
+  } catch (err) {
+    return res.status(500).send({ message: err })
   }
 }
 

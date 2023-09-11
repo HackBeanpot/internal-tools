@@ -56,6 +56,8 @@ export default {
   pingServer
 }
 
+// Helper Functions
+
 function validatePostRequestBody (
   requestBody: HackerApplicationDataType | HackerApplicationDataType[]
 ): void {

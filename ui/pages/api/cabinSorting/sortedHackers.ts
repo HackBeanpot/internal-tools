@@ -1,16 +1,15 @@
 // TODO: restructure code to service and dao files
 
 import { NextApiRequest, NextApiResponse } from 'next'
-import { HackerApplicationDataType }
-  from '../../../models/HackerApplicationData'
+import { HackerApplicationDataType } from '../../../models/HackerApplicationData'
 import HackerApplicationDataDao from '../../../lib/dao/HackerApplicationDataDao'
 interface FormattedHackerDataType {
-    email: string,
-    [key: string] : string,
+  email: string;
+  [key: string]: string;
 }
 interface FormattedHackerWithCabinsDataType extends FormattedHackerDataType {
-    assignedCabin: string,
-    secondAssignedCabin: string
+  assignedCabin: string;
+  secondAssignedCabin: string;
 }
 
 let answerList: any[]
@@ -18,37 +17,38 @@ let cabinList: any[]
 const CABIN_SIZE = 5
 const QUESTIONS_SIZE = 12
 
-export default async function handler (req: NextApiRequest, res: NextApiResponse) {
+export default async function handler (
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const requestMethod = req.method
 
-  if (requestMethod === 'GET') {
-    return GetHandler(req, res)
-  }
-
-  if (requestMethod === 'POST') {
-    return res.status(200).send({ message: 'Works' })
-  }
-
-  if (requestMethod === 'DELETE') {
-    return res.status(200).send({ message: 'works' })
-  }
-
-  if (requestMethod === 'PUT') {
-    return res.status(200).send({ message: 'works' })
+  switch (requestMethod) {
+    case 'GET':
+      return GetHandler(req, res)
+    case 'POST':
+      return res.status(200).send({ message: 'works' })
+    case 'DELETE':
+      return res.status(200).send({ message: 'works' })
+    case 'PUT':
+      return res.status(200).send({ message: 'works' })
   }
 }
 
-async function GetHandler (req: NextApiRequest,
-  res: NextApiResponse) {
+async function GetHandler (req: NextApiRequest, res: NextApiResponse) {
   try {
     // TODO: will replace with real endpoints once
     await fetch('http://localhost:3000/api/cabinSorting/answerList')
-      .then(response => response.json())
-      .then(data => { answerList = data.content })
+      .then((response) => response.json())
+      .then((data) => {
+        answerList = data.content
+      })
 
     await fetch('http://localhost:3000/api/cabinSorting/cabinList')
-      .then(response => response.json())
-      .then(data => { cabinList = data.content[0] })
+      .then((response) => response.json())
+      .then((data) => {
+        cabinList = data.content[0]
+      })
 
     const rawHackerData = await HackerApplicationDataDao.find()
     const formattedHackerData = formatRawData(rawHackerData)
@@ -59,32 +59,43 @@ async function GetHandler (req: NextApiRequest,
   }
 }
 
-function formatRawData (rawHackerData : HackerApplicationDataType[]) : FormattedHackerDataType[] {
-  return rawHackerData.map(hackerData => {
+function formatRawData (
+  rawHackerData: HackerApplicationDataType[]
+): FormattedHackerDataType[] {
+  return rawHackerData.map((hackerData) => {
     const { email, applicationResponses } = hackerData
-    const initialHackerData : FormattedHackerDataType = {
+    const initialHackerData: FormattedHackerDataType = {
       email
     }
 
     function formatApplicationResponses (
-      accumulatedResponse : FormattedHackerDataType,
-      currentResponseKey : any,
-      currentResponseIndex : number) {
+      accumulatedResponse: FormattedHackerDataType,
+      currentResponseKey: any,
+      currentResponseIndex: number
+    ) {
       const currentResponseQuestionKey = 'question' + currentResponseIndex
-      accumulatedResponse[currentResponseQuestionKey] = applicationResponses[currentResponseKey]
+      accumulatedResponse[currentResponseQuestionKey] =
+        applicationResponses[currentResponseKey]
       return accumulatedResponse
     }
 
-    return Object.keys(applicationResponses)
-      .reduce(formatApplicationResponses, initialHackerData)
+    return Object.keys(applicationResponses).reduce(
+      formatApplicationResponses,
+      initialHackerData
+    )
   })
 }
 
-function matchAnswers (formattedHackerData : FormattedHackerDataType[])
-: FormattedHackerWithCabinsDataType[] {
-  const formattedHackerWithCabinsData : FormattedHackerWithCabinsDataType[] = []
+function matchAnswers (
+  formattedHackerData: FormattedHackerDataType[]
+): FormattedHackerWithCabinsDataType[] {
+  const formattedHackerWithCabinsData: FormattedHackerWithCabinsDataType[] = []
   formattedHackerData.forEach((hacker: FormattedHackerDataType) => {
-    const hackerWithCabins = { ...hacker, assignedCabin: '', secondAssignedCabin: '' }
+    const hackerWithCabins = {
+      ...hacker,
+      assignedCabin: '',
+      secondAssignedCabin: ''
+    }
     // each element = a different cabin, all initialized to 0
     const cabinScore = Array<number>(CABIN_SIZE).fill(0)
 
@@ -100,7 +111,7 @@ function matchAnswers (formattedHackerData : FormattedHackerDataType[])
     const counterCopy = cabinScore.slice()
     counterCopy[maxIndex] = -1
     hackerWithCabins.secondAssignedCabin =
-    cabinOptions[counterCopy.indexOf(Math.max(...counterCopy))]
+      cabinOptions[counterCopy.indexOf(Math.max(...counterCopy))]
 
     formattedHackerWithCabinsData.push(hackerWithCabins)
   })
@@ -109,12 +120,19 @@ function matchAnswers (formattedHackerData : FormattedHackerDataType[])
 
 // Increment the given hacker's given cabinScore each time their answer
 // matches the Cabin's answer
-function hydrateCabinScore (hacker: FormattedHackerWithCabinsDataType, cabinScore: number[]) {
+function hydrateCabinScore (
+  hacker: FormattedHackerWithCabinsDataType,
+  cabinScore: number[]
+) {
   answerList.forEach((cabin: any, cabinIndex: number) => {
-    for (let questionIndex = 0; questionIndex < QUESTIONS_SIZE; questionIndex++) {
+    for (
+      let questionIndex = 0;
+      questionIndex < QUESTIONS_SIZE;
+      questionIndex++
+    ) {
       if (
         cabin['question' + questionIndex.toString()] ===
-          hacker['question' + questionIndex.toString()]
+        hacker['question' + questionIndex.toString()]
       ) {
         cabinScore[cabinIndex]++
       }

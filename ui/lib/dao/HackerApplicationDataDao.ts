@@ -4,7 +4,7 @@ import {
 } from '../../models/HackerApplicationData'
 import { Model } from 'mongoose'
 
-// Definse the Model connection to the database and connects to it
+// Defines the Model connection to the database and connects to it
 let HackerApplicationData: Model<HackerApplicationDataType>
 
 databaseConnection().then((result) => {
