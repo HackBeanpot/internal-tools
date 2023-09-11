@@ -30,8 +30,22 @@ const saveAllHackerApplications = async (
   return await HackerApplicationDataDao.insertMany(hackerApplications)
 }
 
-const pingServer = async () : Promise<void> => {
-  await HackerApplicationDataDao.pingServer()
+const pingServer = async (): Promise<void> => {
+  for (let i = 1; i <= 3; i++) {
+    console.log('Attempting ping to Mongo Server for Hacker Application Data')
+    try {
+      await HackerApplicationDataDao.pingServer()
+      console.log(`Attempt ${i} succeeded`)
+      return
+    } catch (err) {
+      if (i <= 3) {
+        console.log(`Attempt ${i} failed`)
+        continue
+      } else {
+        throw err
+      }
+    }
+  }
 }
 
 export default {

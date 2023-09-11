@@ -30,5 +30,5 @@ async function insertMany (hackerApplications: HackerApplicationDataType[]) {
 }
 
 async function pingServer () {
-  return await HackerApplicationData.db.db.admin().ping()
+  return await HackerApplicationData.db.db?.admin().ping()
 }
