@@ -1,6 +1,7 @@
 import { NextApiResponse } from 'next'
-import { HackerApplicationDataType } from '../../../models/HackerApplicationData'
-import HackerApplicationDataService from '../../../lib/service/HackerApplicationDataService'
+import { HackerApplicationDataType }
+  from '../../../../models/HackerApplicationData'
+import HackerApplicationDataService from '../../../../lib/service/HackerApplicationDataService'
 
 type HackerApiRequest = {
   method: String;
@@ -22,25 +23,19 @@ export default async function handler (
       return res.status(200).send({ message: 'works' })
     case 'PUT':
       return PutHandler(req, res)
+    default:
+      return res.status(400).send({ message: 'Invalid Request Method Type' })
   }
 }
 
 async function GetHandler (req: HackerApiRequest, res: NextApiResponse) {
   try {
-    if (req.query?.email) {
-      return res
-        .status(200)
-        .json(
-          await HackerApplicationDataService.findHackerApplicationByEmail(
-            req.query.email
-          )
-        )
-    }
+    const allHackerApplications = await HackerApplicationDataService.findAllHackerApplications()
     return res
       .status(200)
-      .send(await HackerApplicationDataService.findAllHackerApplications())
+      .send(allHackerApplications)
   } catch (err) {
-    return res.status(500).send(err)
+    return res.status(500).send({ message: `${err}` })
   }
 }
 
@@ -62,7 +57,7 @@ async function PostHandler (req: HackerApiRequest, res: NextApiResponse) {
       })
     }
   } catch (err) {
-    return res.status(500).send({ message: err })
+    return res.status(500).send({ message: `${err}` })
   }
 }
 

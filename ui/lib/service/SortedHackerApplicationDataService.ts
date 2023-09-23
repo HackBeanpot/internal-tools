@@ -1,12 +1,13 @@
-// TODO: restructure code to service and dao files
+import {
+  HackerApplicationDataType
+} from '../../models/HackerApplicationData'
+import HackerApplicationDataDao from '../dao/HackerApplicationDataDao'
 
-import { NextApiRequest, NextApiResponse } from 'next'
-import { HackerApplicationDataType } from '../../../models/HackerApplicationData'
-import HackerApplicationDataDao from '../../../lib/dao/HackerApplicationDataDao'
 interface FormattedHackerDataType {
   email: string;
   [key: string]: string;
 }
+
 interface FormattedHackerWithCabinsDataType extends FormattedHackerDataType {
   assignedCabin: string;
   secondAssignedCabin: string;
@@ -17,48 +18,52 @@ let cabinList: any[]
 const CABIN_SIZE = 5
 const QUESTIONS_SIZE = 12
 
-export default async function handler (
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const requestMethod = req.method
+const getAllHackersWithAssignedCabins = async (): Promise<
+  FormattedHackerWithCabinsDataType[]
+> => {
+  await fetch('http://localhost:3000/api/cabinSorting/answerList')
+    .then((response) => response.json())
+    .then((data) => {
+      answerList = data.content
+    })
 
-  switch (requestMethod) {
-    case 'GET':
-      return GetHandler(req, res)
-    case 'POST':
-      return res.status(200).send({ message: 'works' })
-    case 'DELETE':
-      return res.status(200).send({ message: 'works' })
-    case 'PUT':
-      return res.status(200).send({ message: 'works' })
+  await fetch('http://localhost:3000/api/cabinSorting/cabinList')
+    .then((response) => response.json())
+    .then((data) => {
+      cabinList = data.content[0]
+    })
+
+  console.log(answerList, cabinList)
+
+  const rawHackerData = await HackerApplicationDataDao.find()
+  const formattedHackerData = formatRawData(rawHackerData)
+  return matchAnswers(formattedHackerData)
+}
+
+const pingServer = async (): Promise<void> => {
+  for (let i = 1; i <= 3; i++) {
+    console.log('Attempting ping to Mongo Server for Hacker Application Data')
+    try {
+      await HackerApplicationDataDao.pingServer()
+      console.log(`Attempt ${i} succeeded`)
+      return
+    } catch (err) {
+      if (i <= 3) {
+        console.log(`Attempt ${i} failed`)
+        continue
+      } else {
+        throw err
+      }
+    }
   }
 }
 
-async function GetHandler (req: NextApiRequest, res: NextApiResponse) {
-  try {
-    // TODO: will replace with real endpoints once
-    await fetch('http://localhost:3000/api/cabinSorting/answerList')
-      .then((response) => response.json())
-      .then((data) => {
-        answerList = data.content
-      })
-
-    await fetch('http://localhost:3000/api/cabinSorting/cabinList')
-      .then((response) => response.json())
-      .then((data) => {
-        cabinList = data.content[0]
-      })
-
-    const rawHackerData = await HackerApplicationDataDao.find()
-    const formattedHackerData = formatRawData(rawHackerData)
-    const formattedHackerWithCabinData = matchAnswers(formattedHackerData)
-    res.status(200).send({ formattedHackerWithCabinData })
-  } catch (error) {
-    res.status(500).send({ error })
-  }
+export default {
+  getAllHackersWithAssignedCabins,
+  pingServer
 }
 
+// Helper Functions
 function formatRawData (
   rawHackerData: HackerApplicationDataType[]
 ): FormattedHackerDataType[] {
