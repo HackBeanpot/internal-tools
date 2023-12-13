@@ -13,12 +13,8 @@ export default async function handler (
   switch (requestMethod) {
     case 'GET':
       return GetHandler(req, res)
-    case 'POST':
-      return res.status(200).send({ message: 'works' })
-    case 'DELETE':
-      return res.status(200).send({ message: 'works' })
-    case 'PUT':
-      return res.status(200).send({ message: 'works' })
+    default:
+      return res.status(405).send({ message: 'Invalid Request Method Type' })
   }
 }
 

@@ -4,7 +4,10 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { parse } from 'csv-parse/sync'
 
-export default async function handler (req: NextApiRequest, res: NextApiResponse) {
+export default async function handler (
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const requestMethod = req.method
 
   if (requestMethod === 'GET') {
@@ -12,9 +15,8 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
   }
 }
 
-async function GetHandler (req: NextApiRequest,
-  res: NextApiResponse) {
-  const csvFileAbsolutePath = path.resolve('lib', 'cabinTypes.csv')
+async function GetHandler (req: NextApiRequest, res: NextApiResponse) {
+  const csvFileAbsolutePath = path.resolve('lib', 'questionNameMapping.csv')
   console.log('reading from csv file: ' + csvFileAbsolutePath)
 
   // error handling in case file is missing
@@ -32,7 +34,11 @@ async function GetHandler (req: NextApiRequest,
     delimiter: ',',
     columns: false
   }
-  const content = parse(fileContent, options)
+  const content: string[][] = parse(fileContent, options)
+  const ret: { [key: string]: string } = {}
 
-  return res.status(200).json({ content })
+  for (let i = 0; i < content[0].length; i++) {
+    ret[content[0][i]] = content[1][i]
+  }
+  return res.status(200).send(ret)
 }

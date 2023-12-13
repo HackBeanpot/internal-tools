@@ -1,6 +1,4 @@
-import {
-  HackerApplicationDataType
-} from '../../models/HackerApplicationData'
+import { HackerApplicationDataType } from '../../models/HackerApplicationData'
 import HackerApplicationDataDao from '../dao/HackerApplicationDataDao'
 
 interface FormattedHackerDataType {
@@ -15,8 +13,9 @@ interface FormattedHackerWithCabinsDataType extends FormattedHackerDataType {
 
 let answerList: any[]
 let cabinList: any[]
+let questionNameMapping: { [key: string]: string }
 const CABIN_SIZE = 5
-const QUESTIONS_SIZE = 12
+const QUESTIONS_SIZE = 8
 
 const getAllHackersWithAssignedCabins = async (): Promise<
   FormattedHackerWithCabinsDataType[]
@@ -33,7 +32,11 @@ const getAllHackersWithAssignedCabins = async (): Promise<
       cabinList = data.content[0]
     })
 
-  console.log(answerList, cabinList)
+  await fetch('http://localhost:3000/api/cabinSorting/questionNameMapping')
+    .then((response) => response.json())
+    .then((data) => {
+      questionNameMapping = data
+    })
 
   const rawHackerData = await HackerApplicationDataDao.find()
   const formattedHackerData = formatRawData(rawHackerData)
@@ -67,28 +70,35 @@ export default {
 function formatRawData (
   rawHackerData: HackerApplicationDataType[]
 ): FormattedHackerDataType[] {
-  return rawHackerData.map((hackerData) => {
-    const { email, applicationResponses } = hackerData
-    const initialHackerData: FormattedHackerDataType = {
-      email
-    }
+  return rawHackerData
+    .filter((hackerData) => !!hackerData.postAcceptanceResponses)
+    .map((hackerData) => {
+      const { email, postAcceptanceResponses } = hackerData
 
-    function formatApplicationResponses (
-      accumulatedResponse: FormattedHackerDataType,
-      currentResponseKey: any,
-      currentResponseIndex: number
-    ) {
-      const currentResponseQuestionKey = 'question' + currentResponseIndex
-      accumulatedResponse[currentResponseQuestionKey] =
-        applicationResponses[currentResponseKey]
-      return accumulatedResponse
-    }
+      let initialHackerData: FormattedHackerDataType = {
+        email
+      }
 
-    return Object.keys(applicationResponses).reduce(
-      formatApplicationResponses,
-      initialHackerData
-    )
-  })
+      const { firstName, lastName } = postAcceptanceResponses!
+      initialHackerData = { ...initialHackerData, firstName, lastName }
+
+      // transform the question name fields to the question mapping ex.
+      /*
+      zombie: question0,
+      study: question1,
+      ...
+    */
+      Object.keys(postAcceptanceResponses!).forEach(
+        (acceptanceResponseField) => {
+          if (acceptanceResponseField in questionNameMapping) {
+            initialHackerData[questionNameMapping[acceptanceResponseField]] =
+              postAcceptanceResponses![acceptanceResponseField]
+          }
+        }
+      )
+
+      return initialHackerData
+    })
 }
 
 function matchAnswers (
@@ -110,13 +120,14 @@ function matchAnswers (
     // join (the one with the most points)
     const cabinOptions: string[] = Object.values(cabinList)
     const maxIndex: number = cabinScore.indexOf(Math.max(...cabinScore))
-    hackerWithCabins.assignedCabin = cabinOptions[maxIndex]
+    hackerWithCabins.assignedCabin = cabinOptions[maxIndex] || 'Not Assigned'
 
     // find backup cabin for hacker (in case the first choice fills up)
     const counterCopy = cabinScore.slice()
     counterCopy[maxIndex] = -1
     hackerWithCabins.secondAssignedCabin =
-      cabinOptions[counterCopy.indexOf(Math.max(...counterCopy))]
+      cabinOptions[counterCopy.indexOf(Math.max(...counterCopy))] ||
+      'Not Assigned'
 
     formattedHackerWithCabinsData.push(hackerWithCabins)
   })
@@ -130,13 +141,15 @@ function hydrateCabinScore (
   cabinScore: number[]
 ) {
   answerList.forEach((cabin: any, cabinIndex: number) => {
+    // skip first row of answerList because of question name
+    if (cabinIndex === 0) return
     for (
       let questionIndex = 0;
       questionIndex < QUESTIONS_SIZE;
       questionIndex++
     ) {
       if (
-        cabin['question' + questionIndex.toString()] ===
+        cabin[questionIndex] ===
         hacker['question' + questionIndex.toString()]
       ) {
         cabinScore[cabinIndex]++

@@ -8,8 +8,8 @@ export type HackerApplicationDataType = {
   rsvpStatus: string;
   decisionStatus?: string;
   appSubmissionTime?: string;
-  applicationResponses?: any;
-  postAcceptanceResponses?: any;
+  applicationResponses: any;
+  postAcceptanceResponses?: {[key: string]: any};
 };
 
 const PostAcceptanceResponseSchema = new Schema(

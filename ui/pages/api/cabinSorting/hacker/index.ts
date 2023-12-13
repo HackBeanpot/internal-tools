@@ -19,12 +19,10 @@ export default async function handler (
       return GetHandler(req, res)
     case 'POST':
       return PostHandler(req, res)
-    case 'DELETE':
-      return res.status(200).send({ message: 'works' })
     case 'PUT':
       return PutHandler(req, res)
     default:
-      return res.status(400).send({ message: 'Invalid Request Method Type' })
+      return res.status(405).send({ message: 'Invalid Request Method Type' })
   }
 }
 

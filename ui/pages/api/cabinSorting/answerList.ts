@@ -4,7 +4,10 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { parse } from 'csv-parse/sync'
 
-export default async function handler (req: NextApiRequest, res: NextApiResponse) {
+export default async function handler (
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const requestMethod = req.method
 
   if (requestMethod === 'GET') {
@@ -12,10 +15,9 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
   }
 }
 
-async function GetHandler (req: NextApiRequest,
-  res: NextApiResponse) {
+async function GetHandler (req: NextApiRequest, res: NextApiResponse) {
   const csvFileAbsolutePath = path.resolve('lib', 'answer.csv')
-  console.log(csvFileAbsolutePath)
+  console.log('reading from csv file: ' + csvFileAbsolutePath)
 
   // error handling in case file is missing
   let fileContent

@@ -87,13 +87,14 @@ function isValidBody<T extends Record<string, unknown>> (
   body: any,
   fields: (keyof T)[]
 ): body is T {
-  const bodyFields = Object.keys(body)
+  const bodyFields = [...Object.keys(body), '_id']
   if (bodyFields === fields) return true
   if (bodyFields == null || fields == null) return false
   if (bodyFields.length !== fields.length) return false
-
-  for (let i = 0; i < bodyFields.length; ++i) {
-    if (bodyFields[i] !== fields[i]) return false
+  for (let i = 0; i < fields.length; ++i) {
+    if (!bodyFields.includes(fields[i].toString())) {
+      return false
+    }
   }
   return true
 }
