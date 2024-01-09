@@ -11,6 +11,15 @@ interface FormattedHackerWithCabinsDataType extends FormattedHackerDataType {
   secondAssignedCabin: string;
 }
 
+interface HackersInAssignedCabinsType {
+  [key: string]: string[];
+}
+
+interface SortedHackersReturnType {
+  cabins: HackersInAssignedCabinsType;
+  hackers: FormattedHackerWithCabinsDataType[];
+}
+
 let answerList: any[]
 let cabinList: any[]
 let questionNameMapping: { [key: string]: string }
@@ -18,7 +27,7 @@ const CABIN_SIZE = 5
 const QUESTIONS_SIZE = 8
 
 const getAllHackersWithAssignedCabins = async (): Promise<
-  FormattedHackerWithCabinsDataType[]
+  SortedHackersReturnType
 > => {
   await fetch('http://localhost:3000/api/cabinSorting/answerList')
     .then((response) => response.json())
@@ -103,8 +112,10 @@ function formatRawData (
 
 function matchAnswers (
   formattedHackerData: FormattedHackerDataType[]
-): FormattedHackerWithCabinsDataType[] {
+): SortedHackersReturnType {
+  const hackersInCabins: HackersInAssignedCabinsType = {}
   const formattedHackerWithCabinsData: FormattedHackerWithCabinsDataType[] = []
+  const cabinOptions: string[] = Object.values(cabinList)
   formattedHackerData.forEach((hacker: FormattedHackerDataType) => {
     const hackerWithCabins = {
       ...hacker,
@@ -118,9 +129,14 @@ function matchAnswers (
 
     // create extra column for hacker that determines the cabin they should
     // join (the one with the most points)
-    const cabinOptions: string[] = Object.values(cabinList)
     const maxIndex: number = cabinScore.indexOf(Math.max(...cabinScore))
     hackerWithCabins.assignedCabin = cabinOptions[maxIndex] || 'Not Assigned'
+
+    // add current hacker to cabin list
+    if (!(hackerWithCabins.assignedCabin in hackersInCabins)) {
+      hackersInCabins[cabinOptions[maxIndex]] = []
+    }
+    hackersInCabins[cabinOptions[maxIndex]].push(hacker.email)
 
     // find backup cabin for hacker (in case the first choice fills up)
     const counterCopy = cabinScore.slice()
@@ -131,7 +147,7 @@ function matchAnswers (
 
     formattedHackerWithCabinsData.push(hackerWithCabins)
   })
-  return formattedHackerWithCabinsData
+  return { cabins: hackersInCabins, hackers: formattedHackerWithCabinsData }
 }
 
 // Increment the given hacker's given cabinScore each time their answer
@@ -149,8 +165,7 @@ function hydrateCabinScore (
       questionIndex++
     ) {
       if (
-        cabin[questionIndex] ===
-        hacker['question' + questionIndex.toString()]
+        cabin[questionIndex] === hacker['question' + questionIndex.toString()]
       ) {
         cabinScore[cabinIndex]++
       }

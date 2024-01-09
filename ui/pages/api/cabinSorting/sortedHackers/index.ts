@@ -22,7 +22,7 @@ async function GetHandler (req: NextApiRequest, res: NextApiResponse) {
   try {
     const hackersWithAssignedCabins =
       await SortedHackerApplicationDataService.getAllHackersWithAssignedCabins()
-    return res.status(200).send({ hackersWithAssignedCabins })
+    return res.status(200).send(hackersWithAssignedCabins)
   } catch (error) {
     res.status(500).send({ error })
   }
