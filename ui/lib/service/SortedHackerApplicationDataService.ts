@@ -116,6 +116,10 @@ function matchAnswers (
   const hackersInCabins: HackersInAssignedCabinsType = {}
   const formattedHackerWithCabinsData: FormattedHackerWithCabinsDataType[] = []
   const cabinOptions: string[] = Object.values(cabinList)
+  for (const cabinKey of cabinOptions) {
+    hackersInCabins[cabinKey] = []
+  }
+
   formattedHackerData.forEach((hacker: FormattedHackerDataType) => {
     const hackerWithCabins = {
       ...hacker,
@@ -132,10 +136,6 @@ function matchAnswers (
     const maxIndex: number = cabinScore.indexOf(Math.max(...cabinScore))
     hackerWithCabins.assignedCabin = cabinOptions[maxIndex] || 'Not Assigned'
 
-    // add current hacker to cabin list
-    if (!(hackerWithCabins.assignedCabin in hackersInCabins)) {
-      hackersInCabins[cabinOptions[maxIndex]] = []
-    }
     hackersInCabins[cabinOptions[maxIndex]].push(hacker.email)
 
     // find backup cabin for hacker (in case the first choice fills up)

@@ -7,25 +7,34 @@ import { CSVLink } from 'react-csv'
 import CSVCabinTable from '../components/csvTable/CSVCabinTable'
 import SelectedCabin from '../components/templateDropdown/selectedCabin'
 import BackArrow from '../components/backArrow/backArrow'
+import { InferGetServerSidePropsType } from 'next/types'
 
-export default function CabinSorting () {
+export const getServerSideProps = async () => {
+  // Fetch data from external API
+  const res = await fetch(
+    'http://localhost:3000/api/cabinSorting/sortedHackers'
+  )
+  const cabinData = await res.json().then(response => response.cabins)
+  // Pass data to the page via props
+  return { props: { cabinData } }
+}
+
+export default function CabinSorting ({
+  cabinData
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const cabinHeaders: string[] = [
+    'Cabin 0',
     'Cabin 1',
     'Cabin 2',
     'Cabin 3',
-    'Cabin 4',
-    'Cabin 5',
-    'Cabin 6'
+    'Cabin 4'
   ]
 
-  const cabinValues: string[][] = [
-    ['email1-1', 'email1-2'],
-    ['email2-1', 'email2-2', 'email2-3'],
-    ['email3-1', 'email3-2'],
-    ['email4-1', 'email4-2'],
-    [],
-    ['email6-1', 'email6-2']
-  ]
+  const cabinValues: string[][] = []
+
+  for (const cabinList of Object.values(cabinData)) {
+    cabinValues.push(cabinList)
+  }
 
   const rows: string[][] = [[]]
   Object.values(cabinValues).forEach((value: any, index: number) => {
