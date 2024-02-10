@@ -33,7 +33,8 @@ export default function CabinSorting ({
   const cabinValues: string[][] = []
 
   for (const cabinList of Object.values(cabinData)) {
-    cabinValues.push(cabinList)
+    const cabinListString: string[] = cabinList as string[]
+    cabinValues.push(cabinListString)
   }
 
   const rows: string[][] = [[]]
