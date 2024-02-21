@@ -1,20 +1,15 @@
 import { MongoClient } from 'mongodb'
-import nextConnect from 'next-connect'
 
-const client = new MongoClient(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-
-async function database (req, rses, next) {
-  await client.connect()
-  req.dbClient = client
-  req.db = client.db('internal-tools')
-  return next()
+if (!process.env.MONGODB_URI) {
+  throw new Error('Invalid/Missing environment variable: "MONGODB_URI"')
 }
 
-const middleware = nextConnect()
+const uri = process.env.MONGODB_URI
+const options = {}
 
-middleware.use(database)
+const client = new MongoClient(uri, options)
+const clientPromise = client.connect()
 
-export default middleware
+// Export a module-scoped MongoClient promise. By doing this in a
+// separate module, the client can be shared across functions.
+export default clientPromise
