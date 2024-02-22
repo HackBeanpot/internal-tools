@@ -23,11 +23,11 @@ export default function CabinSorting ({
   cabinData
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const cabinHeaders: string[] = [
-    'Cabin 0',
-    'Cabin 1',
-    'Cabin 2',
-    'Cabin 3',
-    'Cabin 4'
+    'Finding Nemo',
+    'Sharknado',
+    'Northern Water Tribe',
+    'Bikini Bottom',
+    'Minecraft Ocean Monument'
   ]
 
   const cabinValues: string[][] = []
