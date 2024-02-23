@@ -48,7 +48,7 @@ export const HackerApplicationDataSchema =
       }
     },
     {
-      collection: 'hacker_applications',
+      collection: 'applicant_data',
       versionKey: false
     }
   )
