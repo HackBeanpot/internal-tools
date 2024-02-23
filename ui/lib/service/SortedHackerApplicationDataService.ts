@@ -80,7 +80,8 @@ function formatRawData (
   rawHackerData: HackerApplicationDataType[]
 ): FormattedHackerDataType[] {
   return rawHackerData
-    .filter((hackerData) => hackerData.decisionStatus === "Admitted" && hackerData.rsvpStatus === "Confirmed" && !!hackerData.postAcceptanceResponses)
+    .filter((hackerData) => hackerData.decisionStatus === 'Admitted' &&
+    hackerData.rsvpStatus === 'Confirmed' && !!hackerData.postAcceptanceResponses)
     .map((hackerData) => {
       const { email, postAcceptanceResponses } = hackerData
 
@@ -130,12 +131,12 @@ function matchAnswers (
     const cabinScore = Array<number>(CABIN_SIZE).fill(0)
 
     hydrateCabinScore(hackerWithCabins, cabinScore)
-    console.log(cabinScore)
-    let sum = 0
-    cabinScore.forEach(score => sum += score)
-    if (sum != QUESTIONS_SIZE) {
-      console.log(hacker)
-    }
+    // console.log(cabinScore)
+    // let sum = 0
+    // cabinScore.forEach(score => sum += score)
+    // if (sum != QUESTIONS_SIZE) {
+    //   console.log(hacker)
+    // }
     // create extra column for hacker that determines the cabin they should
     // join (the one with the most points)
     const maxIndex: number = cabinScore.indexOf(Math.max(...cabinScore))
@@ -170,7 +171,7 @@ function hydrateCabinScore (
     ) {
       if (
         cabin[questionIndex].trim() === hacker['question' + questionIndex.toString()].trim()
-        ) {
+      ) {
         cabinScore[cabinIndex]++
       }
     }
