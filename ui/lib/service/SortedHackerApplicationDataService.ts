@@ -26,31 +26,30 @@ let questionNameMapping: { [key: string]: string }
 const CABIN_SIZE = 5
 const QUESTIONS_SIZE = 9
 
-const getAllHackersWithAssignedCabins = async (): Promise<
-  SortedHackersReturnType
-> => {
-  await fetch('http://localhost:3000/api/cabinSorting/answerList')
-    .then((response) => response.json())
-    .then((data) => {
-      answerList = data.content
-    })
+const getAllHackersWithAssignedCabins =
+  async (): Promise<SortedHackersReturnType> => {
+    await fetch('http://localhost:3000/api/cabinSorting/answerList')
+      .then((response) => response.json())
+      .then((data) => {
+        answerList = data.content
+      })
 
-  await fetch('http://localhost:3000/api/cabinSorting/cabinList')
-    .then((response) => response.json())
-    .then((data) => {
-      cabinList = data.content[0]
-    })
+    await fetch('http://localhost:3000/api/cabinSorting/cabinList')
+      .then((response) => response.json())
+      .then((data) => {
+        cabinList = data.content[0]
+      })
 
-  await fetch('http://localhost:3000/api/cabinSorting/questionNameMapping')
-    .then((response) => response.json())
-    .then((data) => {
-      questionNameMapping = data
-    })
+    await fetch('http://localhost:3000/api/cabinSorting/questionNameMapping')
+      .then((response) => response.json())
+      .then((data) => {
+        questionNameMapping = data
+      })
 
-  const rawHackerData = await HackerApplicationDataDao.find()
-  const formattedHackerData = formatRawData(rawHackerData)
-  return matchAnswers(formattedHackerData)
-}
+    const rawHackerData = await HackerApplicationDataDao.find()
+    const formattedHackerData = formatRawData(rawHackerData)
+    return matchAnswers(formattedHackerData)
+  }
 
 const pingServer = async (): Promise<void> => {
   for (let i = 1; i <= 3; i++) {
@@ -80,7 +79,12 @@ function formatRawData (
   rawHackerData: HackerApplicationDataType[]
 ): FormattedHackerDataType[] {
   return rawHackerData
-    .filter((hackerData) => hackerData.decisionStatus === "Admitted" && hackerData.rsvpStatus === "Confirmed" && !!hackerData.postAcceptanceResponses)
+    .filter(
+      (hackerData) =>
+        hackerData.decisionStatus === 'Admitted' &&
+        hackerData.rsvpStatus === 'Confirmed' &&
+        !!hackerData.postAcceptanceResponses
+    )
     .map((hackerData) => {
       const { email, postAcceptanceResponses } = hackerData
 
@@ -132,8 +136,8 @@ function matchAnswers (
     hydrateCabinScore(hackerWithCabins, cabinScore)
     console.log(cabinScore)
     let sum = 0
-    cabinScore.forEach(score => sum += score)
-    if (sum != QUESTIONS_SIZE) {
+    cabinScore.forEach((score) => (sum += score))
+    if (sum !== QUESTIONS_SIZE) {
       console.log(hacker)
     }
     // create extra column for hacker that determines the cabin they should
@@ -169,8 +173,9 @@ function hydrateCabinScore (
       questionIndex++
     ) {
       if (
-        cabin[questionIndex].trim() === hacker['question' + questionIndex.toString()].trim()
-        ) {
+        cabin[questionIndex].trim() ===
+        hacker['question' + questionIndex.toString()].trim()
+      ) {
         cabinScore[cabinIndex]++
       }
     }
