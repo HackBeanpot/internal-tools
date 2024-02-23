@@ -134,12 +134,7 @@ function matchAnswers (
     const cabinScore = Array<number>(CABIN_SIZE).fill(0)
 
     hydrateCabinScore(hackerWithCabins, cabinScore)
-    console.log(cabinScore)
-    let sum = 0
-    cabinScore.forEach((score) => (sum += score))
-    if (sum !== QUESTIONS_SIZE) {
-      console.log(hacker)
-    }
+
     // create extra column for hacker that determines the cabin they should
     // join (the one with the most points)
     const maxIndex: number = cabinScore.indexOf(Math.max(...cabinScore))
