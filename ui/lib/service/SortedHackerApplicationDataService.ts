@@ -161,7 +161,8 @@ function hydrateCabinScore (
   cabinScore: number[]
 ) {
   // skip first row of answerList because of question name
-  answerList.slice(1, -1).forEach((cabin: any, cabinIndex: number) => {
+  answerList.slice(1).forEach((cabin: any, cabinIndex: number) => {
+    console.log(cabin, cabinIndex)
     for (
       let questionIndex = 0;
       questionIndex < QUESTIONS_SIZE;
